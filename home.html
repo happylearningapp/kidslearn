@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reyan's Learning World &#127775;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<style>
+#page-home{background:linear-gradient(145deg,#FFFDE7,#FFF3E0,#FCE4EC);}
+.home-header{text-align:center;padding:50px 16px 16px;}
+.em-row{font-size:var(--xl);animation:bounce 2s ease-in-out infinite;display:block;margin-bottom:6px;}
+.home-header h1{font-size:var(--hero);font-weight:900;line-height:1.15;background:linear-gradient(135deg,#FF6B6B,#FF8E53,#FFC300,#4CAF50,#2196F3,#9C27B0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.home-header .sub{font-size:var(--md);color:#999;margin-top:4px;}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;margin:0 auto;padding:10px 20px 40px;}
+.tile{border-radius:24px;padding:20px 12px 16px;text-align:center;cursor:pointer;transition:transform .22s,box-shadow .22s;position:relative;border:none;font-family:var(--f);text-decoration:none;display:block;}
+.tile:hover{transform:translateY(-6px) scale(1.04);}
+.tile:active{transform:scale(.97);}
+.tile-icon{font-size:3rem;display:block;margin-bottom:8px;}
+.tile-title{font-size:var(--md);font-weight:900;color:#fff;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
+.tile-sub{font-size:var(--sm);color:rgba(255,255,255,.82);margin-top:3px;}
+.tile-badge{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.3);border-radius:10px;padding:2px 7px;font-size:.6rem;font-weight:900;color:#fff;}
+.t1{background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 20px rgba(255,107,107,.35);}
+.t2{background:linear-gradient(135deg,#1976D2,#29B6F6);box-shadow:0 6px 20px rgba(25,118,210,.35);}
+.t3{background:linear-gradient(135deg,#E91E63,#FF8E53);box-shadow:0 6px 20px rgba(233,30,99,.35);}
+.t4{background:linear-gradient(135deg,#43A047,#00C9A7);box-shadow:0 6px 20px rgba(67,160,71,.35);}
+.t5{background:linear-gradient(135deg,#7B1FA2,#1565C0);box-shadow:0 6px 20px rgba(123,31,162,.35);}
+.t6{background:linear-gradient(135deg,#6A1B9A,#E91E63);box-shadow:0 6px 20px rgba(106,27,154,.35);}
+.t7{background:linear-gradient(135deg,#FF6B00,#FFC300);box-shadow:0 6px 20px rgba(255,107,0,.35);}
+.t8{background:linear-gradient(135deg,#00897B,#26C6DA);box-shadow:0 6px 20px rgba(0,137,123,.35);}
+.home-footer{text-align:center;padding:0 16px 30px;font-size:var(--sm);color:#ccc;}
+.home-footer b{color:#FF6B6B;}
+@media(max-width:600px){
+  .app-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .tile-icon{font-size:2.2rem;}
+  .home-header h1{font-size:var(--xl);}
+}
+</style>
+</head>
+<body id="page-home">
+
+<div class="home-header">
+  <span class="em-row">&#127775;&#10024;&#127775;</span>
+  <h1>Reyan's Learning World</h1>
+  <p class="sub">Tap a tile to start learning! &#128640;</p>
+</div>
+
+<div class="app-grid">
+  <a class="tile t1" href="abc.html">
+    <span class="tile-icon">&#128292;</span>
+    <div class="tile-title">ABC World</div>
+    <div class="tile-sub">Letters &amp; Words</div>
+    <span class="tile-badge">6 topics</span>
+  </a>
+  <a class="tile t2" href="numbers.html">
+    <span class="tile-icon">&#128290;</span>
+    <div class="tile-title">Numbers &amp; Colors</div>
+    <div class="tile-sub">Count &amp; Colours</div>
+    <span class="tile-badge">6 topics</span>
+  </a>
+  <a class="tile t3" href="myworld.html">
+    <span class="tile-icon">&#127752;</span>
+    <div class="tile-title">My World</div>
+    <div class="tile-sub">Me &amp; My Life</div>
+    <span class="tile-badge">7 topics</span>
+  </a>
+  <a class="tile t4" href="nature.html">
+    <span class="tile-icon">&#128062;</span>
+    <div class="tile-title">Nature World</div>
+    <div class="tile-sub">Animals &amp; Nature</div>
+    <span class="tile-badge">6 topics</span>
+  </a>
+  <a class="tile t5" href="around.html">
+    <span class="tile-icon">&#127757;</span>
+    <div class="tile-title">Around Me</div>
+    <div class="tile-sub">Places &amp; Culture</div>
+    <span class="tile-badge">7 topics</span>
+  </a>
+  <a class="tile t6" href="quiz.html">
+    <span class="tile-icon">&#129504;</span>
+    <div class="tile-title">Quiz Time</div>
+    <div class="tile-sub">GK + MCQ</div>
+    <span class="tile-badge">150+ Qs</span>
+  </a>
+  <a class="tile t7" href="games.html">
+    <span class="tile-icon">&#127918;</span>
+    <div class="tile-title">Fun Games</div>
+    <div class="tile-sub">Play &amp; Learn</div>
+    <span class="tile-badge">6 Games</span>
+  </a>
+  <a class="tile t8" href="music.html">
+    <span class="tile-icon">&#127925;</span>
+    <div class="tile-title">Music &amp; Stories</div>
+    <div class="tile-sub">Rhymes &amp; Tales</div>
+    <span class="tile-badge">21 Stories</span>
+  </a>
+</div>
+
+<div class="home-footer">Made with &#10084; for <b>Reyan Dutta</b> &nbsp;|&nbsp; Keep learning, keep growing! &#127807;</div>
+
+</body>
+</html>
