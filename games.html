@@ -61,7 +61,7 @@
 
 <div class="subbody">
   <div class="stabs">
-    
+    <button class="stab" onclick="sw('games','memory','#FF6B00');initMem()"><span class="stabico">&#129513;</span>Memory</button>
     <button class="stab" onclick="sw('games','odd','#FF6B00');initOdd()"><span class="stabico">&#127919;</span>Odd One</button>
     <button class="stab" onclick="sw('games','count','#FF6B00');initCT()"><span class="stabico">&#128290;</span>Count</button>
     <button class="stab" onclick="sw('games','quiz','#FF6B00');initGQ()"><span class="stabico">&#127942;</span>Quiz</button>
@@ -72,10 +72,13 @@
       <button class="stab" onclick="sw('games','simon','#FF6B00');initSimon()"><span class="stabico">&#127912;</span>Simon</button>
       <button class="stab" onclick="sw('games','sortit','#FF6B00');initSort()"><span class="stabico">&#128230;</span>Sort It</button>
       <button class="stab" onclick="sw('games','tf','#FF6B00');initTF()"><span class="stabico">&#9989;</span>True/False</button>
-    <button class="stab" onclick="sw('games','memory','#FF6B00');initMem()"><span class="stabico">&#129513;</span>Memory</button>
     </div>
   <div class="submain">
 
+    <div id="games-memory" class="sec active">
+      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B00,#FFC300)"><div class="bigchar">&#129513;</div><div class="bigsub">Memory Match</div></div>
+      <div id="memArea"></div>
+    </div>
 
     <div id="games-odd" class="sec">
       <div class="bigbox" style="background:linear-gradient(135deg,#E91E63,#7B1FA2)"><div class="bigchar">&#127919;</div><div class="bigsub">Odd One Out</div></div>
@@ -101,12 +104,6 @@
       <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#29B6F6)"><div class="bigchar">&#127880;</div><div class="bigsub">Balloon Pop!</div></div>
       <div id="balArea"></div>
     </div>
-
-     <div id="games-memory" class="sec active">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B00,#FFC300)"><div class="bigchar">&#129513;</div><div class="bigsub">Memory Match</div></div>
-      <div id="memArea"></div>
-    </div>
-
 
   </div>
 </div>
