@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Numbers &amp; Colors &#128290;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<style>
+.cswatch{width:80px;height:80px;border-radius:50%;margin:0 auto 9px;box-shadow:0 5px 15px rgba(0,0,0,.2);border:5px solid rgba(255,255,255,.6);}
+.ptrow{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.pitem{font-size:2.4rem;padding:7px;background:#f5f5f5;border-radius:12px;min-width:52px;text-align:center;}
+.pblank{font-size:2.4rem;padding:7px;background:#f0f0f0;border-radius:12px;min-width:52px;text-align:center;border:3px dashed #ccc;}
+.cprow{display:flex;gap:16px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.cpitem{background:#f9f9f9;border-radius:16px;padding:14px 16px;text-align:center;cursor:pointer;border:3px solid #eee;flex:1;min-width:110px;}
+.cpitem:hover{border-color:#FF6B6B;}
+.solgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.plncrd{background:#111;border-radius:15px;padding:11px 5px 9px;text-align:center;box-shadow:0 4px 13px rgba(0,0,0,.3);cursor:pointer;transition:transform .17s;}
+.plncrd:hover{transform:scale(1.05);}
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="home.html">&#8592; Home</a>
+
+<div class="subhdr" style="background:linear-gradient(135deg,#1976D2,#29B6F6)">
+  <h1>&#128290; Numbers &amp; Colors</h1>
+  <p>Count, Colours &amp; Shapes</p>
+  <div class="sndbr">
+    <span>&#128263;</span>
+    <span class="sndlbl">Sound</span>
+    <label class="tog"><input type="checkbox" id="sndTog"/><span class="togsl"></span></label>
+    <span>&#128266;</span>
+  </div>
+</div>
+
+<div class="subbody">
+  <div class="stabs">
+    <button class="stab" onclick="sw('num','numbers','#1976D2')"><span class="stabico">&#128290;</span>Numbers</button>
+    <button class="stab" onclick="sw('num','colors','#1976D2')"><span class="stabico">&#127912;</span>Colors</button>
+    <button class="stab" onclick="sw('num','shapes','#1976D2')"><span class="stabico">&#128311;</span>Shapes</button>
+    <button class="stab" onclick="sw('num','addition','#1976D2')"><span class="stabico">&#10133;</span>Addition</button>
+    <button class="stab" onclick="sw('num','patterns','#1976D2')"><span class="stabico">&#128308;</span>Patterns</button>
+    <button class="stab" onclick="sw('num','compare','#1976D2')"><span class="stabico">&#9878;</span>Big/Small</button>
+  </div>
+  <div class="submain">
+
+    <div id="num-numbers" class="sec active">
+      <div class="selgrid" id="ng"></div>
+      <div class="bigbox" id="nb"><div class="bigchar" id="bnc"></div><div class="bigsub" id="bns"></div></div>
+      <div class="cntbox" id="cb"></div>
+    </div>
+
+    <div id="num-colors" class="sec">
+      <div class="selgrid" id="cog"></div>
+      <div class="bigbox" id="cob">
+        <div class="cswatch" id="csw"></div>
+        <div class="bigchar" id="cnb" style="font-size:var(--xxl)"></div>
+      </div>
+      <div class="cgrid" id="coCards"></div>
+    </div>
+
+    <div id="num-shapes" class="sec">
+      <div class="selgrid" id="shg"></div>
+      <div class="bigbox" id="shb"><div class="bigchar" id="shE"></div><div class="bigsub" id="shN"></div></div>
+      <div class="cgrid" id="shCards"></div>
+    </div>
+
+    <div id="num-addition" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#1976D2,#29B6F6)">
+        <div class="bigchar">&#10133;</div><div class="bigsub">Simple Addition</div>
+      </div>
+      <div id="addArea"></div>
+    </div>
+
+    <div id="num-patterns" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#9C27B0,#E91E63)">
+        <div class="bigchar">&#128308;</div><div class="bigsub">Complete the Pattern!</div>
+      </div>
+      <div id="patArea"></div>
+    </div>
+
+    <div id="num-compare" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#00897B,#FFC300)">
+        <div class="bigchar">&#9878;</div><div class="bigsub">Big &amp; Small</div>
+      </div>
+      <div id="cmpArea"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var ND=[{w:"Zero",c:"#B0BEC5",e:"",n:""},{w:"One",c:"#FF6B6B",e:"&#127822;",n:"Apple"},{w:"Two",c:"#FF8E53",e:"&#128024;",n:"Elephant"},{w:"Three",c:"#FFC300",e:"&#128049;",n:"Cat"},{w:"Four",c:"#8BC34A",e:"&#127820;",n:"Banana"},{w:"Five",c:"#00C9A7",e:"&#128056;",n:"Frog"},{w:"Six",c:"#1976D2",e:"&#127827;",n:"Strawberry"},{w:"Seven",c:"#7B1FA2",e:"&#128037;",n:"Chick"},{w:"Eight",c:"#E91E63",e:"&#127818;",n:"Orange"},{w:"Nine",c:"#FF5722",e:"&#128032;",n:"Fish"}];
+var CD=[{n:"Red",bg:"#E53935",t:"#fff",i:[["Apple","&#127822;"],["Rose","&#127801;"],["Tomato","&#127813;"],["Ladybug","&#128030;"],["Heart","&#10084;"]]},{n:"Blue",bg:"#1E88E5",t:"#fff",i:[["Sky","&#127754;"],["Whale","&#128051;"],["Water","&#128167;"],["Butterfly","&#129419;"],["Ice","&#129482;"]]},{n:"Yellow",bg:"#FDD835",t:"#333",i:[["Sun","&#9728;"],["Banana","&#127820;"],["Star","&#11088;"],["Chick","&#128037;"],["Lemon","&#127819;"]]},{n:"Green",bg:"#43A047",t:"#fff",i:[["Tree","&#127795;"],["Frog","&#128056;"],["Leaf","&#127811;"],["Broccoli","&#129382;"],["Turtle","&#128034;"]]},{n:"Orange",bg:"#FB8C00",t:"#fff",i:[["Orange","&#127818;"],["Tiger","&#128047;"],["Pumpkin","&#127875;"],["Carrot","&#129365;"],["Fox","&#129418;"]]},{n:"Purple",bg:"#8E24AA",t:"#fff",i:[["Grapes","&#127815;"],["Eggplant","&#127814;"],["Flower","&#128144;"],["Gem","&#128142;"],["Balloon","&#127880;"]]},{n:"Pink",bg:"#E91E63",t:"#fff",i:[["Flamingo","&#129441;"],["Flower","&#127800;"],["Pig","&#128055;"],["Candy","&#127852;"],["Heart","&#129322;"]]},{n:"Brown",bg:"#6D4C41",t:"#fff",i:[["Bear","&#128059;"],["Chocolate","&#127851;"],["Monkey","&#128018;"],["Bread","&#127838;"],["Acorn","&#127808;"]]},{n:"Black",bg:"#212121",t:"#fff",i:[["Cat","&#128049;"],["Crow","&#128038;"],["Spider","&#128375;"],["Hat","&#127913;"],["Panther","&#128006;"]]},{n:"White",bg:"#CFD8DC",t:"#333",i:[["Rabbit","&#128048;"],["Sheep","&#128017;"],["Snowman","&#9923;"],["Egg","&#129370;"],["Swan","&#129442;"]]},{n:"Grey",bg:"#78909C",t:"#fff",i:[["Elephant","&#128024;"],["Koala","&#128040;"],["Cloud","&#9729;"],["Rhino","&#129423;"],["Hippo","&#129435;"]]},{n:"Gold",bg:"#F9A825",t:"#333",i:[["Trophy","&#127942;"],["Crown","&#128081;"],["Star","&#127775;"],["Coin","&#129689;"],["Sun","&#127774;"]]}];
+var SHD=[{n:"Circle",c:"#FF6B6B",e:"&#11093;",i:[["Sun","&#9728;"],["Moon","&#127765;"],["Ball","&#9917;"],["Cookie","&#127850;"],["Coin","&#129689;"]]},{n:"Square",c:"#FF8E53",e:"&#128998;",i:[["Window","&#129695;"],["Box","&#128230;"],["Book","&#128218;"],["Frame","&#128444;"],["TV","&#128250;"]]},{n:"Triangle",c:"#FFC300",e:"&#128314;",i:[["Pizza","&#127829;"],["Mountain","&#9968;"],["Cone","&#127846;"],["Arrow","&#128314;"],["Tent","&#9978;"]]},{n:"Rectangle",c:"#8BC34A",e:"&#9644;",i:[["Door","&#128682;"],["Phone","&#128241;"],["Brick","&#129521;"],["Ruler","&#128208;"],["Book","&#128214;"]]},{n:"Star",c:"#00C9A7",e:"&#11088;",i:[["Night","&#127747;"],["Badge","&#127885;"],["Sparkle","&#10024;"],["Wand","&#129668;"],["Starfish","&#127775;"]]},{n:"Heart",c:"#E91E63",e:"&#10084;",i:[["Love","&#128149;"],["Valentine","&#128140;"],["Hug","&#129303;"],["Candy","&#127852;"],["Rose","&#127801;"]]},{n:"Diamond",c:"#9C27B0",e:"&#128142;",i:[["Ring","&#128141;"],["Gem","&#128142;"],["Kite","&#129473;"],["Crystal","&#128302;"],["Card","&#127183;"]]},{n:"Oval",c:"#1976D2",e:"&#129370;",i:[["Egg","&#129370;"],["Mango","&#129389;"],["Mirror","&#129518;"],["Ball","&#127953;"],["Avocado","&#129361;"]]}];
+var ADDP=[{a:1,ae:"&#127822;",b:1,be:"&#127822;",ans:2},{a:2,ae:"&#128049;",b:1,be:"&#128049;",ans:3},{a:1,ae:"&#127820;",b:2,be:"&#127820;",ans:3},{a:2,ae:"&#11088;",b:2,be:"&#11088;",ans:4},{a:3,ae:"&#128056;",b:1,be:"&#128056;",ans:4},{a:2,ae:"&#128053;",b:3,be:"&#128053;",ans:5},{a:3,ae:"&#127827;",b:2,be:"&#127827;",ans:5},{a:4,ae:"&#127800;",b:1,be:"&#127800;",ans:5},{a:1,ae:"&#127822;",b:3,be:"&#127822;",ans:4},{a:2,ae:"&#11088;",b:3,be:"&#11088;",ans:5}];
+var PATP=[{seq:["&#128308;","&#128309;","&#128308;","&#128309;"],missing:3,ans:"&#128309;",opts:["&#128309;","&#128993;","&#128994;"]},{seq:["&#128993;","&#128994;","&#128993;","&#128994;"],missing:3,ans:"&#128994;",opts:["&#128308;","&#128994;","&#128309;"]},{seq:["&#11088;","&#127769;","&#11088;","&#127769;"],missing:2,ans:"&#11088;",opts:["&#11088;","&#127752;","&#127769;"]},{seq:["&#128049;","&#128053;","&#128049;","&#128053;"],missing:3,ans:"&#128053;",opts:["&#128049;","&#128053;","&#128056;"]},{seq:["&#127822;","&#127820;","&#127822;","&#127820;"],missing:2,ans:"&#127822;",opts:["&#127822;","&#127818;","&#127820;"]},{seq:["&#128314;","&#11093;","&#128314;","&#11093;"],missing:3,ans:"&#11093;",opts:["&#128314;","&#11093;","&#128998;"]},{seq:["&#9728;","&#127769;","&#9728;","&#127769;"],missing:2,ans:"&#9728;",opts:["&#9728;","&#127769;","&#11088;"]},{seq:["&#128024;","&#128045;","&#128024;","&#128045;"],missing:3,ans:"&#128045;",opts:["&#128024;","&#128047;","&#128045;"]}];
+var CMPP=[{q:"Which is BIGGER?",a:{e:"&#128024;",n:3,l:"Elephant"},b:{e:"&#128045;",n:1,l:"Mouse"},ans:"a",msg:"Elephant is BIGGER!"},{q:"Which group has MORE?",a:{e:"&#127822;",n:4,l:"4 Apples"},b:{e:"&#127822;",n:2,l:"2 Apples"},ans:"a",msg:"4 is MORE than 2!"},{q:"Which is SMALLER?",a:{e:"&#128049;",n:1,l:"Cat"},b:{e:"&#129409;",n:1,l:"Lion"},ans:"a",msg:"Cat is SMALLER!"},{q:"Which group has LESS?",a:{e:"&#11088;",n:2,l:"2 Stars"},b:{e:"&#11088;",n:5,l:"5 Stars"},ans:"a",msg:"2 is LESS than 5!"},{q:"Which is TALLER?",a:{e:"&#129426;",n:1,l:"Giraffe"},b:{e:"&#128034;",n:1,l:"Turtle"},ans:"a",msg:"Giraffe is TALLER!"},{q:"Which is SHORTER?",a:{e:"&#128027;",n:1,l:"Worm"},b:{e:"&#128013;",n:1,l:"Snake"},ans:"a",msg:"Worm is SHORTER!"}];
+
+// Numbers
+function rN(n){var d=ND[n];aS('nbtn',n,d.c);var b=document.getElementById('nb');b.style.background=d.c;document.getElementById('bnc').textContent=n;document.getElementById('bns').innerHTML=d.w+(n>0?' '+d.n+(n>1?'s':''):'');var a=document.getElementById('cb');a.style.border='3px solid '+d.c+'44';if(n===0){a.innerHTML='<div class="zeromsg">Nothing here... Zero!</div>';}else{a.innerHTML=Array.from({length:n},function(_,i){return '<span class="cntem" style="animation-delay:'+i*.08+'s">'+d.e+'</span>';}).join('');}spkSeq([d.w+'!']);}
+(function(){var el=document.getElementById('ng');for(var i=0;i<=9;i++){(function(n){var b=document.createElement('button');b.className='selbtn nbtn';b.textContent=n;b.style.minWidth='44px';b.style.fontSize='1.2rem';b.onclick=function(){rN(n);};el.appendChild(b);})(i);}})();
+
+// Colors
+function rC(i){var d=CD[i];aS('cobtn',i,d.bg);var b=document.getElementById('cob');b.style.background=d.bg;document.getElementById('csw').style.background=d.bg;var nm=document.getElementById('cnb');nm.textContent=d.n;nm.style.color=d.t;document.getElementById('coCards').innerHTML=d.i.map(function(x){return mcard(x[1],x[0],d.bg);}).join('');spkSeq([d.n+'!'].concat(d.i.map(function(x){return x[0]+' is '+d.n;})));}
+(function(){var el=document.getElementById('cog');CD.forEach(function(c,i){var b=document.createElement('button');b.className='selbtn cobtn';b.textContent=c.n;b.style.background=c.bg;b.style.color=c.t;b.onclick=function(){rC(i);};el.appendChild(b);});})();
+
+// Shapes
+function rSh(i){var d=SHD[i];aS('shbtn',i,d.c);var b=document.getElementById('shb');b.style.background=d.c;document.getElementById('shE').innerHTML=d.e;document.getElementById('shN').textContent=d.n;document.getElementById('shCards').innerHTML=d.i.map(function(x){return mcard(x[1],x[0],d.c);}).join('');spkSeq([d.n+'!'].concat(d.i.map(function(x){return x[0];})));}
+(function(){var el=document.getElementById('shg');SHD.forEach(function(s,i){var b=document.createElement('button');b.className='selbtn shbtn';b.innerHTML=s.e+' '+s.n;b.onclick=function(){rSh(i);};el.appendChild(b);});})();
+
+// Addition
+var addIdx=0,addSc=0;
+function buildAdd(){var p=ADDP[addIdx%ADDP.length];var opts=[p.ans];while(opts.length<3){var r=Math.floor(Math.random()*8)+1;if(opts.indexOf(r)<0)opts.push(r);}opts.sort(function(){return Math.random()-.5;});var aE=Array(p.a).fill(p.ae).join(' ');var bE=Array(p.b).fill(p.be).join(' ');document.getElementById('addArea').innerHTML='<div class="scorebar">Score: <b>'+addSc+'</b></div><div class="ibox"><div class="iq">How many altogether?</div><div style="font-size:2rem;text-align:center;margin-bottom:16px;line-height:1.6">'+aE+' <b style="color:#1976D2">+</b> '+bE+' <b>=</b> ?</div><div class="achc">'+opts.map(function(o){return '<button class="cbtn" onclick="chkAdd(this,'+o+','+p.ans+')">'+o+'</button>';}).join('')+'</div><div class="rmsg" id="addR"></div><button class="nxtbtn" id="addN" style="display:none" onclick="addIdx++;buildAdd()">Next</button></div>';}
+function chkAdd(b,c,cr){if(b.classList.contains('correct')||b.classList.contains('wrong'))return;if(c===cr){b.classList.add('correct');addSc++;document.getElementById('addR').innerHTML='Correct! '+c+' is right!';spk('Correct!');}else{b.classList.add('wrong');document.getElementById('addR').innerHTML='Answer is '+cr;spk('The answer is '+cr);}document.getElementById('addN').style.display='inline-block';}
+
+// Patterns
+var patIdx=0,patSc=0;
+function buildPat(){var p=PATP[patIdx%PATP.length];var sH=p.seq.map(function(item,i){return i===p.missing?'<div class="pblank" id="pB">?</div>':'<div class="pitem">'+item+'</div>';}).join('');document.getElementById('patArea').innerHTML='<div class="scorebar">Score: <b>'+patSc+'</b></div><div class="ibox"><div class="iq">What comes next?</div><div class="ptrow">'+sH+'</div><div class="achc">'+p.opts.map(function(o){return '<button class="cbtn" onclick="chkPat(this,\''+o+'\',\''+p.ans+'\')">'+o+'</button>';}).join('')+'</div><div class="rmsg" id="patR"></div><button class="nxtbtn" id="patN" style="display:none" onclick="patIdx++;buildPat()">Next</button></div>';}
+function chkPat(b,c,cr){if(b.classList.contains('correct')||b.classList.contains('wrong'))return;var bl=document.getElementById('pB');if(c===cr){b.classList.add('correct');if(bl)bl.innerHTML=c;patSc++;document.getElementById('patR').innerHTML='Correct!';spk('Correct!');}else{b.classList.add('wrong');document.getElementById('patR').innerHTML='Try again!';spk('Try again!');}document.getElementById('patN').style.display='inline-block';}
+
+// Compare
+var cmpIdx=0,cmpSc=0;
+function buildCmp(){var p=CMPP[cmpIdx%CMPP.length];var aE=Array(p.a.n).fill(p.a.e).join(' ');var bE=Array(p.b.n).fill(p.b.e).join(' ');var sm=p.msg.replace(/'/g,"&#39;");document.getElementById('cmpArea').innerHTML='<div class="scorebar">Score: <b>'+cmpSc+'</b></div><div class="ibox"><div class="iq">'+p.q+'</div><div class="cprow"><div class="cpitem" onclick="chkCmp(\'a\',\''+p.ans+'\',\''+sm+'\')">'+'<span style="font-size:1.8rem;display:block;margin-bottom:6px">'+aE+'</span>'+'<div style="font-weight:700">'+p.a.l+'</div></div><div style="font-size:var(--xl);font-weight:900;color:#ccc">VS</div>'+'<div class="cpitem" onclick="chkCmp(\'b\',\''+p.ans+'\',\''+sm+'\')">'+'<span style="font-size:1.8rem;display:block;margin-bottom:6px">'+bE+'</span>'+'<div style="font-weight:700">'+p.b.l+'</div></div></div><div class="rmsg" id="cmpR"></div><button class="nxtbtn" id="cmpN" style="display:none" onclick="cmpIdx++;buildCmp()">Next</button></div>';}
+function chkCmp(c,cr,msg){if(document.getElementById('cmpN').style.display==='inline-block')return;if(c===cr){cmpSc++;document.getElementById('cmpR').innerHTML='Correct! '+msg;spk(msg);}else{document.getElementById('cmpR').innerHTML='Try again! '+msg;spk(msg);}document.getElementById('cmpN').style.display='inline-block';}
+
+document.addEventListener('DOMContentLoaded',function(){
+  rN(1);rC(0);rSh(0);buildAdd();buildPat();buildCmp();
+  var f=document.querySelector('.stab');
+  if(f){f.classList.add('active');f.style.background='#1976D2';f.style.color='#fff';}
+});
+</script>
+</body>
+</html>
