@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ABC World &#128292;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<style>
+.cswatch{width:80px;height:80px;border-radius:50%;margin:0 auto 9px;box-shadow:0 5px 15px rgba(0,0,0,.2);border:5px solid rgba(255,255,255,.6);}
+.trsel{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:14px;}
+.trbtn{padding:5px 10px;border-radius:10px;border:none;background:#fff;color:#333;font-weight:700;font-size:var(--md);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12);min-width:34px;text-align:center;}
+.trbtn.active{background:#FF6B6B;color:#fff;}
+.trwrap{background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 20px rgba(0,0,0,.12);text-align:center;margin-bottom:12px;}
+.trwrap h3{font-size:var(--xl);font-weight:900;color:#FF6B6B;margin-bottom:4px;}
+.trwrap p{font-size:var(--sm);color:#aaa;margin-bottom:10px;}
+#trCanvas{border:3px dashed #FF6B6B;border-radius:14px;touch-action:none;cursor:crosshair;background:#FFF9F9;max-width:100%;}
+.trbtns{display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap;}
+.trb{padding:8px 18px;border-radius:16px;border:none;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;}
+.trb-g{background:#1976D2;color:#fff;}.trb-c{background:#FF6B6B;color:#fff;}
+.trtip{background:#FFF3E0;border-radius:12px;padding:10px 14px;font-size:var(--sm);font-weight:700;color:#F57C00;text-align:center;}
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="home.html">&#8592; Home</a>
+
+<div class="subhdr" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
+  <h1>&#128292; ABC World</h1>
+  <p>Letters, Words &amp; Language</p>
+  <div class="sndbr">
+    <span>&#128263;</span>
+    <span class="sndlbl">Sound</span>
+    <label class="tog"><input type="checkbox" id="sndTog"/><span class="togsl"></span></label>
+    <span>&#128266;</span>
+  </div>
+</div>
+
+<div class="subbody">
+  <div class="stabs">
+    <button class="stab" onclick="sw('abc','alpha','#FF6B6B')"><span class="stabico">&#128292;</span>A-Z</button>
+    <button class="stab" onclick="sw('abc','phonics','#FF6B6B')"><span class="stabico">&#128266;</span>Phonics</button>
+    <button class="stab" onclick="sw('abc','sight','#FF6B6B')"><span class="stabico">&#128065;</span>Sight</button>
+    <button class="stab" onclick="sw('abc','action','#FF6B6B')"><span class="stabico">&#127939;</span>Action</button>
+    <button class="stab" onclick="sw('abc','opp','#FF6B6B')"><span class="stabico">&#8596;</span>Opposites</button>
+    <button class="stab" onclick="sw('abc','trace','#FF6B6B')"><span class="stabico">&#9999;</span>Tracing</button>
+  </div>
+  <div class="submain">
+
+    <!-- A-Z -->
+    <div id="abc-alpha" class="sec active">
+      <div class="selgrid" id="lg"></div>
+      <div class="bigbox" id="lb">
+        <div class="bigchar" id="blc"></div>
+        <div class="bigsub"  id="bls"></div>
+      </div>
+      <div class="cgrid" id="ac"></div>
+    </div>
+
+    <!-- Phonics -->
+    <div id="abc-phonics" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
+        <div class="bigchar">&#128266;</div><div class="bigsub">Letter Sounds</div>
+      </div>
+      <div class="cgrid" id="phonicsCards"></div>
+    </div>
+
+    <!-- Sight Words -->
+    <div id="abc-sight" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#C2185B,#E91E63)">
+        <div class="bigchar">&#128065;</div><div class="bigsub">Sight Words</div>
+      </div>
+      <div class="cgrid" id="sightCards"></div>
+    </div>
+
+    <!-- Action Words -->
+    <div id="abc-action" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#F57C00,#FFC300)">
+        <div class="bigchar">&#127939;</div><div class="bigsub">Action Words</div>
+      </div>
+      <div class="cgrid" id="actionCards"></div>
+    </div>
+
+    <!-- Opposites -->
+    <div id="abc-opp" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#00897B,#26C6DA)">
+        <div class="bigchar">&#8596;</div><div class="bigsub">Opposites</div>
+      </div>
+      <div class="oppgrid" id="opCards"></div>
+    </div>
+
+    <!-- Letter Tracing -->
+    <div id="abc-trace" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
+        <div class="bigchar">&#9999;</div><div class="bigsub">Letter Tracing</div>
+      </div>
+      <div class="trsel" id="trSel"></div>
+      <div class="trwrap">
+        <h3 id="trLetter">A</h3>
+        <p>Trace with finger or mouse!</p>
+        <canvas id="trCanvas" width="300" height="260"></canvas>
+        <div class="trbtns">
+          <button class="trb trb-g" onclick="drawGuide()">Show Guide</button>
+          <button class="trb trb-c" onclick="clearTr()">Clear</button>
+        </div>
+      </div>
+      <div class="trtip">Tip: Show Guide first, then trace over it!</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var AD={A:{c:"#FF6B6B",w:[["Apple","&#127822;"],["Ant","&#128028;"],["Airplane","&#9992;"],["Alligator","&#128010;"],["Avocado","&#129361;"]]},B:{c:"#FF8E53",w:[["Ball","&#9917;"],["Butterfly","&#129419;"],["Banana","&#127820;"],["Bear","&#128059;"],["Boat","&#9973;"]]},C:{c:"#FFC300",w:[["Cat","&#128049;"],["Car","&#128663;"],["Cake","&#127874;"],["Cow","&#128046;"],["Cloud","&#9729;"]]},D:{c:"#A8E063",w:[["Dog","&#128053;"],["Duck","&#129414;"],["Diamond","&#128142;"],["Drum","&#129345;"],["Dolphin","&#128044;"]]},E:{c:"#56D364",w:[["Elephant","&#128024;"],["Egg","&#129370;"],["Earth","&#127757;"],["Eye","&#128065;"],["Eagle","&#129413;"]]},F:{c:"#00C9A7",w:[["Fish","&#128031;"],["Flower","&#127800;"],["Frog","&#128056;"],["Fire","&#128293;"],["Flag","&#128681;"]]},G:{c:"#0097A7",w:[["Grapes","&#127815;"],["Giraffe","&#129426;"],["Ghost","&#128123;"],["Guitar","&#127928;"],["Goat","&#128016;"]]},H:{c:"#1976D2",w:[["Horse","&#128052;"],["Hat","&#127913;"],["Heart","&#10084;"],["House","&#127968;"],["Honey","&#127855;"]]},I:{c:"#7B1FA2",w:[["Ice Cream","&#127846;"],["Island","&#127965;"],["Insect","&#128027;"],["Ink","&#128394;"],["Ivy","&#127807;"]]},J:{c:"#C2185B",w:[["Juice","&#129411;"],["Jar","&#129785;"],["Jaguar","&#128006;"],["Jelly","&#127810;"],["Jet","&#9992;"]]},K:{c:"#E91E63",w:[["Kite","&#129473;"],["Kangaroo","&#129432;"],["Key","&#128273;"],["Koala","&#128040;"],["King","&#128081;"]]},L:{c:"#FF5722",w:[["Lion","&#129409;"],["Lemon","&#127819;"],["Leaf","&#127811;"],["Lamp","&#128161;"],["Lobster","&#129422;"]]},M:{c:"#795548",w:[["Moon","&#127769;"],["Monkey","&#128018;"],["Mango","&#129389;"],["Mouse","&#128045;"],["Mushroom","&#127812;"]]},N:{c:"#607D8B",w:[["Nest","&#129466;"],["Nose","&#128067;"],["Night","&#127747;"],["Noodle","&#127836;"],["Nut","&#129394;"]]},O:{c:"#FF7043",w:[["Orange","&#127818;"],["Octopus","&#129585;"],["Owl","&#129417;"],["Onion","&#129485;"],["Ostrich","&#129412;"]]},P:{c:"#8BC34A",w:[["Pizza","&#127829;"],["Penguin","&#128039;"],["Peach","&#127825;"],["Pig","&#128055;"],["Panda","&#128060;"]]},Q:{c:"#4CAF50",w:[["Queen","&#128120;"],["Question","&#10067;"],["Quilt","&#129509;"],["Quiet","&#129296;"],["Quarter","&#129689;"]]},R:{c:"#00BCD4",w:[["Rainbow","&#127752;"],["Rabbit","&#128048;"],["Robot","&#129302;"],["Rose","&#127801;"],["Rocket","&#128640;"]]},S:{c:"#2196F3",w:[["Sun","&#9728;"],["Star","&#11088;"],["Snake","&#128013;"],["Strawberry","&#127827;"],["Sheep","&#128017;"]]},T:{c:"#9C27B0",w:[["Tiger","&#128047;"],["Tree","&#127795;"],["Train","&#128642;"],["Turtle","&#128034;"],["Tomato","&#127813;"]]},U:{c:"#E040FB",w:[["Umbrella","&#9730;"],["Unicorn","&#129412;"],["Urchin","&#129428;"],["Ukulele","&#127928;"],["Up","&#11014;"]]},V:{c:"#F06292",w:[["Violin","&#127931;"],["Van","&#128656;"],["Volcano","&#127755;"],["Vulture","&#129413;"],["Vase","&#128139;"]]},W:{c:"#FF8A65",w:[["Watermelon","&#127817;"],["Wolf","&#128058;"],["Whale","&#128051;"],["Watch","&#8987;"],["Worm","&#129714;"]]},X:{c:"#A1887F",w:[["Xylophone","&#127925;"],["Fox","&#129418;"],["Box","&#128230;"],["Mix","&#127908;"],["Ox","&#128002;"]]},Y:{c:"#DCE775",w:[["Yak","&#129454;"],["Yarn","&#129526;"],["Yawn","&#128554;"],["Yacht","&#9973;"],["Yellow","&#128155;"]]},Z:{c:"#80DEEA",w:[["Zebra","&#129427;"],["Zoo","&#127914;"],["Zero","0"],["Zipper","&#129488;"],["Zucchini","&#129382;"]]}};
+var PH=[["A","&#127822;","Aah","Apple"],["B","&#128029;","Buh","Bee"],["C","&#128049;","Kuh","Cat"],["D","&#128053;","Duh","Dog"],["E","&#129370;","Eh","Egg"],["F","&#128031;","Fuh","Fish"],["G","&#128016;","Guh","Goat"],["H","&#127968;","Huh","Hat"],["I","&#127846;","Ih","Ice Cream"],["J","&#129785;","Juh","Jar"],["K","&#129473;","Kuh","Kite"],["L","&#129409;","Luh","Lion"],["M","&#127769;","Muh","Moon"],["N","&#129466;","Nuh","Nest"],["O","&#127818;","Oh","Orange"],["P","&#128055;","Puh","Pig"],["Q","&#128120;","Kwuh","Queen"],["R","&#127752;","Ruh","Rainbow"],["S","&#9728;","Suh","Sun"],["T","&#128047;","Tuh","Tiger"],["U","&#9730;","Uh","Umbrella"],["V","&#127931;","Vuh","Violin"],["W","&#127817;","Wuh","Watermelon"],["X","&#129659;","Ks","X-ray"],["Y","&#129454;","Yuh","Yak"],["Z","&#129427;","Zuh","Zebra"]];
+var SW=[["I","I am Reyan"],["Me","That is me"],["My","My toy"],["We","We play"],["Am","I am happy"],["Is","This is a star"],["The","The book"],["A","A apple"],["An","An elephant"],["Big","Big elephant"],["Red","Red apple"],["Go","Go run"],["No","No running"],["Yes","Yes please"],["See","I see you"],["Can","I can jump"],["Run","I can run"],["Eat","I eat food"],["Hot","Hot fire"],["Old","Very old"]];
+var AW=[["Run","&#127939;","Run fast!"],["Jump","&#129432;","Jump high!"],["Eat","&#127869;","Eat food!"],["Sleep","&#128564;","Sleep tight!"],["Swim","&#127946;","Swim in water!"],["Fly","&#9992;","Birds fly!"],["Read","&#128218;","Read a book!"],["Play","&#127918;","Play and learn!"],["Sing","&#127925;","Sing a song!"],["Dance","&#128131;","Dance with joy!"],["Draw","&#9999;","Draw a picture!"],["Wash","&#129516;","Wash your hands!"],["Clap","&#128079;","Clap your hands!"],["Sit","&#129393;","Sit down!"],["Stand","&#129347;","Stand up!"]];
+var OPP=[["Big","&#128024;","Small","&#128045;"],["Hot","&#128293;","Cold","&#129482;"],["Day","&#9728;","Night","&#127769;"],["Happy","&#128522;","Sad","&#128546;"],["Fast","&#128006;","Slow","&#128034;"],["Up","&#11014;","Down","&#11015;"],["Open","&#128214;","Closed","&#128213;"],["Full","&#129695;","Empty","&#129789;"],["Clean","&#10024;","Dirty","&#129314;"],["Tall","&#129426;","Short","&#128027;"],["Loud","&#128226;","Quiet","&#129300;"],["Wet","&#127783;","Dry","&#9728;"]];
+
+function rL(l){
+  var d=AD[l];
+  aS('lbtn',Object.keys(AD).indexOf(l),d.c);
+  var b=document.getElementById('lb');
+  b.style.background=d.c;b.style.boxShadow='0 6px 20px '+d.c+'66';
+  document.getElementById('blc').textContent=l;
+  document.getElementById('bls').textContent=l.toLowerCase();
+  document.getElementById('ac').innerHTML=d.w.map(function(w){return mcard(w[1],w[0],d.c);}).join('');
+  spkSeq([l+'!'].concat(d.w.map(function(w){return l+' for '+w[0];})));
+}
+
+// Build A-Z selector
+(function(){
+  var el=document.getElementById('lg');
+  Object.keys(AD).forEach(function(l){
+    var b=document.createElement('button');
+    b.className='selbtn lbtn';b.textContent=l;
+    b.onclick=function(){rL(l);};
+    el.appendChild(b);
+  });
+})();
+
+// Phonics
+document.getElementById('phonicsCards').innerHTML=PH.map(function(p){
+  return '<div class="crd" style="border:3px solid #FF6B6B33" onclick="spkSeq([\''+p[0]+' says '+p[2]+'\',\''+p[3]+'\'])">'
+    +'<span class="crdem">'+p[1]+'</span>'
+    +'<div class="crdlbl" style="color:#FF6B6B;font-weight:900">'+p[0]+' = '+p[2]+'</div>'
+    +'<div class="crdlbl">'+p[3]+'</div></div>';
+}).join('');
+
+// Sight Words
+document.getElementById('sightCards').innerHTML=SW.map(function(s){
+  return '<div class="crd" style="border:3px solid #C2185B33;background:linear-gradient(135deg,#FCE4EC,#fff)" onclick="spkSeq([\''+s[0]+'\',\''+s[1]+'\'])">'
+    +'<span class="crdem" style="font-size:2rem;font-weight:900;color:#C2185B">'+s[0]+'</span>'
+    +'<div class="crdlbl">'+s[1]+'</div></div>';
+}).join('');
+
+// Action Words
+document.getElementById('actionCards').innerHTML=AW.map(function(a){
+  var safe=a[2].replace(/'/g,"&#39;");
+  return '<div class="crd" style="border:3px solid #F57C0033" onclick="spk(\''+a[0]+'. '+safe+'\')">'
+    +'<span class="crdem">'+a[1]+'</span>'
+    +'<div class="crdlbl" style="color:#F57C00;font-weight:900">'+a[0]+'</div>'
+    +'<div class="crdlbl">'+a[2]+'</div></div>';
+}).join('');
+
+// Opposites
+document.getElementById('opCards').innerHTML=OPP.map(function(o){
+  return '<div class="opppair" style="border:3px solid #00897B33" onclick="spkSeq([\''+o[0]+'\',\'opposite is\',\''+o[2]+'\'])">'
+    +'<div class="oppside"><span class="oppem">'+o[1]+'</span><div class="oppword" style="color:#00897B">'+o[0]+'</div></div>'
+    +'<div style="font-size:var(--lg);font-weight:900;color:#ccc">vs</div>'
+    +'<div class="oppside"><span class="oppem">'+o[3]+'</span><div class="oppword" style="color:#00897B">'+o[2]+'</div></div></div>';
+}).join('');
+
+// Init first letter
+document.addEventListener('DOMContentLoaded',function(){
+  rL('A');
+  // set first tab active
+  var f=document.querySelector('.stab');
+  if(f){f.classList.add('active');f.style.background='#FF6B6B';f.style.color='#fff';}
+});
+
+/* ── LETTER TRACING ── */
+var trLetter='A',trDrawing=false,trCanvas,trCtx;
+document.addEventListener('DOMContentLoaded',function(){
+  var el=document.getElementById('trSel');
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(l){
+    var b=document.createElement('button');
+    b.className='trbtn'+(l==='A'?' active':'');
+    b.textContent=l;
+    b.onclick=function(){
+      document.querySelectorAll('.trbtn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');trLetter=l;
+      document.getElementById('trLetter').textContent=l;
+      clearTr();
+    };
+    el.appendChild(b);
+  });
+  trCanvas=document.getElementById('trCanvas');
+  trCtx=trCanvas.getContext('2d');
+  setupTr();
+});
+function setupTr(){trCtx.fillStyle='#FFF9F9';trCtx.fillRect(0,0,trCanvas.width,trCanvas.height);trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';}
+function clearTr(){setupTr();}
+function drawGuide(){clearTr();trCtx.font='bold 190px Nunito,sans-serif';trCtx.fillStyle='rgba(255,107,107,0.14)';trCtx.textAlign='center';trCtx.textBaseline='middle';trCtx.fillText(trLetter,150,140);trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';spk(trLetter+'! Trace the letter '+trLetter);}
+function gPos(e){var r=trCanvas.getBoundingClientRect();var sx=trCanvas.width/r.width,sy=trCanvas.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};}
+document.addEventListener('DOMContentLoaded',function(){
+  trCanvas=document.getElementById('trCanvas');
+  trCtx=trCanvas.getContext('2d');
+  trCanvas.addEventListener('mousedown',function(e){trDrawing=true;var p=gPos(e);trCtx.beginPath();trCtx.moveTo(p.x,p.y);});
+  trCanvas.addEventListener('mousemove',function(e){if(!trDrawing)return;var p=gPos(e);trCtx.lineTo(p.x,p.y);trCtx.stroke();});
+  trCanvas.addEventListener('mouseup',function(){trDrawing=false;trCtx.beginPath();});
+  trCanvas.addEventListener('mouseleave',function(){trDrawing=false;});
+  trCanvas.addEventListener('touchstart',function(e){e.preventDefault();trDrawing=true;var p=gPos(e);trCtx.beginPath();trCtx.moveTo(p.x,p.y);},{passive:false});
+  trCanvas.addEventListener('touchmove',function(e){e.preventDefault();if(!trDrawing)return;var p=gPos(e);trCtx.lineTo(p.x,p.y);trCtx.stroke();},{passive:false});
+  trCanvas.addEventListener('touchend',function(){trDrawing=false;trCtx.beginPath();});
+});
+</script>
+</body>
+</html>
