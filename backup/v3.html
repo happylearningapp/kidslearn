@@ -1,0 +1,916 @@
+buildInfo(personalData,'peCards','#E91E63');
+
+/* ════════════════════ GK DATA ════════════════════ */
+const gkData = [
+  // 1. Personal & Daily Life
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"👦",q:"What is your name?",a:"My name is Reyan Dutta 😊"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🎈",q:"How old are you?",a:"I am 3 years old 🎂"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🇮🇳",q:"What country do you live in?",a:"I live in India 🇮🇳"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🏙️",q:"What city do you live in?",a:"I live in Hyderabad 🌆"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🛏️",q:"Where do you sleep?",a:"I sleep on my bed 🛏️"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"💧",q:"What do you drink when thirsty?",a:"I drink Water 💧"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🪥",q:"What do you use to brush teeth?",a:"A Toothbrush 🪥"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"👟",q:"What do you wear on your feet?",a:"Shoes 👟"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🏫",q:"Where do you go to study?",a:"I go to School 🏫"},
+  {cat:"👦 Personal",color:"#E91E63",bg:"#FCE4EC",em:"🎒",q:"What do you use to carry books?",a:"A Bag 🎒"},
+  // 2. Colors
+  {cat:"🎨 Colors",color:"#FDD835",bg:"#FFFDE7",em:"☀️",q:"What color is the sun?",a:"The sun is Yellow ☀️"},
+  {cat:"🎨 Colors",color:"#43A047",bg:"#E8F5E9",em:"🌿",q:"What color is grass?",a:"Grass is Green 🌿"},
+  {cat:"🎨 Colors",color:"#1E88E5",bg:"#E3F2FD",em:"🌤️",q:"What color is the sky?",a:"The sky is Blue 💙"},
+  {cat:"🎨 Colors",color:"#90A4AE",bg:"#ECEFF1",em:"🥛",q:"What color is milk?",a:"Milk is White 🥛"},
+  {cat:"🎨 Colors",color:"#212121",bg:"#F5F5F5",em:"🖤",q:"What color is coal?",a:"Coal is Black 🖤"},
+  {cat:"🎨 Colors",color:"#FDD835",bg:"#FFFDE7",em:"🍌",q:"What color is a banana?",a:"A banana is Yellow 🍌"},
+  {cat:"🎨 Colors",color:"#E53935",bg:"#FFEBEE",em:"🍎",q:"What color is an apple usually?",a:"An apple is usually Red 🍎"},
+  {cat:"🎨 Colors",color:"#FB8C00",bg:"#FFF3E0",em:"🍊",q:"What color is an orange fruit?",a:"An orange fruit is Orange 🍊"},
+  {cat:"🎨 Colors",color:"#6D4C41",bg:"#EFEBE9",em:"🍫",q:"What color is chocolate?",a:"Chocolate is Brown 🍫"},
+  {cat:"🎨 Colors",color:"#E53935",bg:"#FFEBEE",em:"🍓",q:"What color is a strawberry?",a:"A strawberry is Red 🍓"},
+  {cat:"🎨 Colors",color:"#8E24AA",bg:"#F3E5F5",em:"🍇",q:"What color are grapes usually?",a:"Grapes are Green or Purple 🍇"},
+  {cat:"🎨 Colors",color:"#FB8C00",bg:"#FFF3E0",em:"🥕",q:"What color is a carrot?",a:"A carrot is Orange 🥕"},
+  {cat:"🎨 Colors",color:"#E53935",bg:"#FFEBEE",em:"🍅",q:"What color is a tomato?",a:"A tomato is Red 🍅"},
+  {cat:"🎨 Colors",color:"#FDD835",bg:"#FFFDE7",em:"🍋",q:"What color is a lemon?",a:"A lemon is Yellow 🍋"},
+  {cat:"🎨 Colors",color:"#90A4AE",bg:"#ECEFF1",em:"❄️",q:"What color is snow?",a:"Snow is White ❄️"},
+  // 3. Numbers
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"2️⃣",q:"What comes after 1?",a:"2 comes after 1! 1️⃣➡️2️⃣"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"6️⃣",q:"What comes after 5?",a:"6 comes after 5! 5️⃣➡️6️⃣"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"9️⃣",q:"What comes before 10?",a:"9 comes before 10! 9️⃣➡️🔟"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"🖐️",q:"How many fingers are on one hand?",a:"5 fingers on one hand! 🖐️"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"👀",q:"How many eyes do we have?",a:"We have 2 eyes! 👀"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"👂",q:"How many ears do we have?",a:"We have 2 ears! 👂👂"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"🐶",q:"How many legs does a dog have?",a:"A dog has 4 legs! 🐶"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"🚲",q:"How many wheels does a bicycle have?",a:"A bicycle has 2 wheels! 🚲"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"🚗",q:"How many wheels does a car have?",a:"A car has 4 wheels! 🚗"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"📅",q:"How many days in a week?",a:"There are 7 days in a week! 📅"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"📆",q:"How many months in a year?",a:"There are 12 months in a year! 📆"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"1️⃣1️⃣",q:"What comes after 10?",a:"11 comes after 10! 🔟➡️1️⃣1️⃣"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"4️⃣",q:"What comes before 5?",a:"4 comes before 5! 4️⃣➡️5️⃣"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"8️⃣",q:"Which is bigger: 8 or 3?",a:"8 is bigger than 3! 8️⃣ > 3️⃣"},
+  {cat:"🔢 Numbers",color:"#1976D2",bg:"#E3F2FD",em:"2️⃣",q:"Which is smaller: 2 or 7?",a:"2 is smaller than 7! 2️⃣ < 7️⃣"},
+  // 4. Shapes
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"⭕",q:"Which shape is like a ball?",a:"A Circle ⭕ is like a ball!"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🔺",q:"Which shape has three sides?",a:"A Triangle 🔺 has 3 sides!"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🟥",q:"Which shape has four equal sides?",a:"A Square 🟥 has 4 equal sides!"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🚪",q:"Which shape looks like a door?",a:"A Rectangle looks like a door 🚪"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🥚",q:"Which shape is like an egg?",a:"An Oval 🥚 is like an egg!"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"⭐",q:"Which shape has five points?",a:"A Star ⭐ has 5 points!"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🪙",q:"Which shape is used for coins?",a:"Coins are Circles 🪙⭕"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🪟",q:"Which shape is used for windows?",a:"Windows are usually Squares or Rectangles 🪟"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"🍕",q:"Which shape is a pizza slice?",a:"A pizza slice is a Triangle 🔺🍕"},
+  {cat:"🔷 Shapes",color:"#9C27B0",bg:"#F3E5F5",em:"💎",q:"Which shape looks like a kite?",a:"A Diamond 💎 looks like a kite!"},
+  // 5. Animals
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐱",q:"Which animal says meow?",a:"Cat 🐱 says Meow!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐶",q:"Which animal says woof?",a:"Dog 🐶 says Woof!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐮",q:"Which animal says moo?",a:"Cow 🐮 says Moo!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🦁",q:"Which animal is king of the jungle?",a:"Lion 🦁 is the king of the jungle!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐘",q:"Which animal has a long trunk?",a:"Elephant 🐘 has a long trunk!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🦓",q:"Which animal has black and white stripes?",a:"Zebra 🦓 has black and white stripes!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐸",q:"Which animal jumps and croaks?",a:"Frog 🐸 jumps and croaks!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🥛",q:"Which animal gives us milk?",a:"Cow 🐮 gives us milk!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🦒",q:"Which animal has a very long neck?",a:"Giraffe 🦒 has a very long neck!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐒",q:"Which animal likes bananas?",a:"Monkey 🐒 loves bananas!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐪",q:"Which animal has humps and lives in desert?",a:"Camel 🐪 has humps and lives in the desert!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐯",q:"Which animal roars?",a:"Lion 🦁 and Tiger 🐯 both roar!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🦘",q:"Which animal carries babies in a pouch?",a:"Kangaroo 🦘 carries babies in a pouch!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐢",q:"Which animal moves very slowly?",a:"Turtle 🐢 moves very slowly!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐟",q:"Which animal lives in water and has fins?",a:"Fish 🐟 lives in water and has fins!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐒",q:"Which animal swings on trees?",a:"Monkey 🐒 swings on trees!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐭",q:"Which animal hunts mice?",a:"Cat 🐱 hunts mice!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐳",q:"Which animal is very big in the ocean?",a:"Whale 🐳 is the biggest ocean animal!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐷",q:"Which animal is pink and likes mud?",a:"Pig 🐷 is pink and likes mud!"},
+  {cat:"🐾 Animals",color:"#FF8E53",bg:"#FFF3E0",em:"🐴",q:"Which animal says neigh?",a:"Horse 🐴 says Neigh!"},
+  // 6. Birds
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦚",q:"Which bird is the national bird of India?",a:"Peacock 🦚 is India's national bird!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦆",q:"Which bird says quack?",a:"Duck 🦆 says Quack!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦉",q:"Which bird hoots at night?",a:"Owl 🦉 hoots at night!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦜",q:"Which bird is green and can talk?",a:"Parrot 🦜 is green and can talk!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦆",q:"Which bird swims and quacks?",a:"Duck 🦆 swims and quacks!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦚",q:"Which bird spreads colorful feathers?",a:"Peacock 🦚 spreads beautiful feathers!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🐦",q:"Which bird is small and chirps?",a:"Sparrow 🐦 is small and chirps!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🐦‍⬛",q:"Which bird is black and says caw?",a:"Crow 🐦‍⬛ is black and says Caw!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🥚",q:"Which bird lays eggs?",a:"All birds 🥚 lay eggs!"},
+  {cat:"🐦 Birds",color:"#29B6F6",bg:"#E1F5FE",em:"🦅",q:"Which bird flies high in the sky?",a:"Eagle 🦅 flies very high!"},
+  // 7. Fruits
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍌",q:"Which fruit is yellow and long?",a:"Banana 🍌 is yellow and long!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍎",q:"Which fruit keeps the doctor away?",a:"Apple 🍎 keeps the doctor away!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🥭",q:"What is the national fruit of India?",a:"Mango 🥭 is the national fruit of India!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍇",q:"Which fruit grows in bunches?",a:"Grapes 🍇 grow in bunches!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍉",q:"Which fruit has red inside and green outside?",a:"Watermelon 🍉 — red inside, green outside!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍍",q:"Which fruit has a crown on top?",a:"Pineapple 🍍 has a crown on top!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🥥",q:"Which fruit grows on coconut tree?",a:"Coconut 🥥 grows on a coconut tree!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍊",q:"Which fruit is orange in color?",a:"Orange 🍊 is orange in color!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍓",q:"Which fruit is small and red?",a:"Strawberry 🍓 is small and red!"},
+  {cat:"🍎 Fruits",color:"#FF6B6B",bg:"#FFEBEE",em:"🍉",q:"Which fruit is juicy in summer?",a:"Watermelon 🍉 is very juicy in summer!"},
+  // 8. Vegetables
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥕",q:"Which vegetable is orange and rabbits like?",a:"Carrot 🥕 — rabbits love it!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🧅",q:"Which vegetable makes you cry when cutting?",a:"Onion 🧅 makes your eyes water!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥔",q:"Which vegetable is used to make fries?",a:"Potato 🥔 is used to make fries!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🍅",q:"Which vegetable is round and red?",a:"Tomato 🍅 is round and red!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥬",q:"Which vegetable is green and leafy?",a:"Spinach 🥬 is green and leafy!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🍆",q:"Which vegetable is purple?",a:"Brinjal/Eggplant 🍆 is purple!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥒",q:"Which vegetable is long and green?",a:"Cucumber 🥒 is long and green!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥔",q:"Which vegetable grows underground?",a:"Potato 🥔 grows underground!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥒",q:"Which vegetable is used in salad?",a:"Cucumber 🥒 is used in salad!"},
+  {cat:"🥦 Vegetables",color:"#43A047",bg:"#E8F5E9",em:"🥦",q:"Which vegetable looks like a small tree?",a:"Broccoli 🥦 looks like a tiny tree!"},
+  // 9. Transport
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"✈️",q:"Which vehicle flies in the sky?",a:"Airplane ✈️ flies in the sky!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚂",q:"Which vehicle runs on tracks?",a:"Train 🚂 runs on tracks!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"⛵",q:"Which vehicle sails in water?",a:"Boat ⛵ sails in water!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚲",q:"Which vehicle has two wheels?",a:"Bicycle 🚲 has two wheels!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚌",q:"Which vehicle takes children to school?",a:"School Bus 🚌 takes children to school!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚒",q:"Which vehicle puts out fire?",a:"Fire Truck 🚒 puts out fires!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚑",q:"Which vehicle takes sick people to hospital?",a:"Ambulance 🚑 takes sick people to hospital!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚁",q:"Which vehicle flies with rotating blades?",a:"Helicopter 🚁 has rotating blades!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🚗",q:"Which vehicle runs on roads and carries people?",a:"Car 🚗 runs on roads!"},
+  {cat:"🚗 Transport",color:"#F57C00",bg:"#FFF3E0",em:"🌊",q:"Which vehicle travels under the sea?",a:"Submarine 🌊 travels under the sea!"},
+  // 10. Body Parts
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"👀",q:"Which body part helps you see?",a:"Eyes 👀 help you see!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"👂",q:"Which body part helps you hear?",a:"Ears 👂 help you hear!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"👃",q:"Which body part helps you smell?",a:"Nose 👃 helps you smell!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"👅",q:"Which body part helps you taste?",a:"Tongue 👅 helps you taste!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"🦵",q:"Which body part helps you walk?",a:"Legs 🦵 help you walk!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"🖐️",q:"Which body part helps you hold things?",a:"Hands 🖐️ help you hold things!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"🧠",q:"Which body part helps you think?",a:"Brain 🧠 helps you think!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"❤️",q:"Which body part pumps blood?",a:"Heart ❤️ pumps blood!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"🦷",q:"Which body part do we brush every day?",a:"Teeth 🦷 — we brush every day!"},
+  {cat:"🧒 Body Parts",color:"#E91E63",bg:"#FCE4EC",em:"🫁",q:"Which body part helps us breathe?",a:"Lungs 🫁 help us breathe!"},
+  // 11. India GK
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🗺️",q:"What is the name of our country?",a:"Our country is India 🇮🇳"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"👨‍💼",q:"Who is the Prime Minister of India?",a:"Narendra Modi 👨‍💼 is the Prime Minister!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🐯",q:"What is the national animal of India?",a:"Tiger 🐯 is India's national animal!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🦚",q:"What is the national bird of India?",a:"Peacock 🦚 is India's national bird!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🪷",q:"What is the national flower of India?",a:"Lotus 🪷 is India's national flower!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🥭",q:"What is the national fruit of India?",a:"Mango 🥭 is India's national fruit!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🎶",q:"What is the national anthem of India?",a:"Jana Gana Mana 🎶 is our national anthem!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🎉",q:"What do we celebrate on 15 August?",a:"Independence Day 🎉 on 15 August!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🥳",q:"What do we celebrate on 26 January?",a:"Republic Day 🥳 on 26 January!"},
+  {cat:"🇮🇳 India GK",color:"#FF6B00",bg:"#FFF3E0",em:"🇮🇳",q:"What colors are in the Indian flag?",a:"Saffron 🟠, White ⚪ and Green 🟢 with a blue Chakra!"},
+  // 12. Thinking Questions
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"☂️",q:"What do we use when it rains?",a:"Umbrella ☂️ keeps us dry in rain!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🧥",q:"What do we wear when it is cold?",a:"A Jacket 🧥 keeps us warm!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🛏️",q:"What do we sleep on?",a:"We sleep on a Bed 🛏️!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"✂️",q:"What do we use to cut paper?",a:"Scissors ✂️ cut paper!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"⏰",q:"What do we use to tell time?",a:"A Clock ⏰ tells us the time!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"📱",q:"What do we use to call someone far away?",a:"A Phone 📱 helps us call people!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🔦",q:"What do we use to see in the dark?",a:"A Torch 🔦 helps us see in the dark!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🖊️",q:"What do we use to write on a board?",a:"Chalk or Marker 🖊️ writes on a board!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🪥",q:"What do we use to clean our teeth?",a:"Toothbrush 🪥 cleans our teeth!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🔑",q:"What do we use to open a lock?",a:"A Key 🔑 opens a lock!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🍳",q:"What do we use to cook food?",a:"A Stove 🍳 is used to cook food!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🥛",q:"What do we drink in the morning often?",a:"We drink Milk 🥛 in the morning!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"📚",q:"What do we read to learn stories?",a:"We read a Book 📚 for stories!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🧹",q:"What do we use to clean the floor?",a:"A Broom 🧹 or Mop cleans the floor!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🛍️",q:"What do we use to carry groceries?",a:"A Bag 🛍️ carries groceries!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🛁",q:"What do we use to dry our body after bath?",a:"A Towel 🛁 dries our body!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🧼",q:"What do we use to wash hands?",a:"Soap 🧼 washes our hands!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🔭",q:"What do we use to see far away?",a:"Binoculars 🔭 help us see far away!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🖍️",q:"What do we use to draw pictures?",a:"Crayons 🖍️ are used to draw pictures!"},
+  {cat:"💡 Thinking",color:"#6A1B9A",bg:"#F3E5F5",em:"🎵",q:"What do we use to listen to music?",a:"A Speaker or Headphones 🎵 plays music!"},
+];
+
+/* ── GK Styles ── */
+const gkStyle = document.createElement('style');
+gkStyle.textContent = `
+#gk-cat-bar{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:16px;}
+.gk-cat-btn{padding:7px 14px;border-radius:20px;border:none;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,0.13);}
+.gk-cat-btn.active{color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.2);transform:scale(1.07);}
+.gk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.gk-card{border-radius:18px;padding:14px 12px 12px;cursor:pointer;transition:transform .18s;box-shadow:0 4px 14px rgba(0,0,0,0.1);position:relative;}
+.gk-card:hover{transform:translateY(-3px) scale(1.02);}
+.gk-num{position:absolute;top:10px;right:12px;font-size:.65rem;font-weight:900;opacity:.5;}
+.gk-top{display:flex;align-items:flex-start;gap:10px;}
+.gk-em{font-size:2rem;min-width:36px;}
+.gk-q{font-size:.8rem;font-weight:700;color:#333;line-height:1.4;flex:1;}
+.gk-ans{margin-top:10px;background:rgba(255,255,255,.75);border-radius:12px;padding:8px 10px;font-size:.78rem;font-weight:700;color:#333;display:none;animation:popIn .25s ease;}
+.gk-ans.show{display:block;}
+.gk-tap{font-size:.62rem;color:#aaa;margin-top:6px;text-align:right;}
+.gk-score{text-align:center;font-size:.95rem;font-weight:700;color:#666;margin-bottom:12px;}
+.gk-score span{color:#FF6B6B;font-size:1.1rem;}
+@media(max-width:520px){.gk-grid{grid-template-columns:1fr;}}
+`;
+document.head.appendChild(gkStyle);
+
+/* ── GK Build ── */
+const gkCats = [...new Set(gkData.map(q=>q.cat))];
+let gkActiveCat = gkCats[0];
+let gkRevealed = 0;
+
+function buildGKCatBar(){
+  const bar = document.getElementById('gk-cat-bar');
+  bar.innerHTML = gkCats.map(c=>`<button class="gk-cat-btn${c===gkActiveCat?' active':''}" style="background:${c===gkActiveCat?gkData.find(q=>q.cat===c).color:'#fff'};color:${c===gkActiveCat?'#fff':'#555'}" onclick="setGKCat('${c.replace(/'/g,"\\'")}')">${c}</button>`).join('');
+}
+
+function setGKCat(cat){
+  gkActiveCat=cat; gkRevealed=0;
+  buildGKCatBar(); buildGKCards();
+}
+
+function buildGKCards(){
+  const items = gkData.filter(q=>q.cat===gkActiveCat);
+  const total = items.length;
+  document.getElementById('gk-cards').innerHTML =
+    `<div class="gk-score">Tap a card to reveal answer! 🌟 Revealed: <span id="gk-rev">0</span> / ${total}</div>
+     <div class="gk-grid">${items.map((q,i)=>`
+      <div class="gk-card" id="gkc-${i}" style="background:${q.bg};border:2.5px solid ${q.color}33" onclick="revealGK(${i},'${q.a.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+        <div class="gk-num">${i+1}</div>
+        <div class="gk-top"><span class="gk-em">${q.em}</span><div class="gk-q">${q.q}</div></div>
+        <div class="gk-ans" id="gka-${i}">✅ ${q.a}</div>
+        <div class="gk-tap">👆 Tap to see answer</div>
+      </div>`).join('')}
+     </div>`;
+}
+
+function revealGK(i, ans){
+  const el = document.getElementById('gka-'+i);
+  if(!el.classList.contains('show')){
+    el.classList.add('show');
+    gkRevealed++;
+    const rev = document.getElementById('gk-rev');
+    if(rev) rev.textContent = gkRevealed;
+    el.parentElement.querySelector('.gk-tap').style.display='none';
+  }
+  speak(ans.replace(/[🎂🎈🇮🇳🌆🛏️🛝🏠🧸💧🪥👟🏫🎒☀️🌿💙🥛🖤🍌🍎🍊🍫🍓🍇🥕🍅🍋❄️2️⃣6️⃣9️⃣🖐️👀👂🐶🚲🚗📅📆🔟4️⃣⭕🔺🟥🚪🥚⭐🪙🪟💎🐱🐶🐮🦁🐘🦓🐸🥛🦒🐒🐪🐯🦘🐢🐟🐳🐷🐴🦚🦆🦉🦜🐦🐦‍⬛🦅🍌🍎🥭🍇🍉🍍🥥🍊🍓🥕🧅🥔🍅🥬🍆🥒🥦✈️🚂⛵🚲🚌🚒🚑🚁🚗🌊👀👂👃👅🦵🖐️🧠❤️🦷🫁🗺️👨‍💼🐯🦚🪷🥭🎶🎉🥳🇮🇳☂️🧥🛏️✂️⏰📱🔦🖊️🪥🔑🍳🥛📚🧹🛍️🛁🧼🔭🖍️🎵]/gu,'').trim());
+}
+
+buildGKCatBar();
+buildGKCards();<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reyan's Learning App 🌟</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Comic Sans MS','Chalkboard SE',cursive;background:#FFFDE7;min-height:100vh;}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#FF6B6B,#FF8E53);padding:14px 16px 10px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.header h1{font-size:1.7rem;color:#fff;text-shadow:2px 2px 6px rgba(0,0,0,0.2);}
+.sound-bar{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px;}
+.sound-label{font-size:.9rem;font-weight:bold;color:#fff;}
+.toggle-wrap{position:relative;width:52px;height:26px;cursor:pointer;}
+.toggle-wrap input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,0.35);border-radius:26px;transition:.3s;}
+.toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.toggle-wrap input:checked+.toggle-slider{background:#4CAF50;}
+.toggle-wrap input:checked+.toggle-slider:before{transform:translateX(26px);}
+
+/* ── LAYOUT ── */
+.app-body{display:flex;min-height:calc(100vh - 90px);}
+
+/* ── SIDEBAR ── */
+.sidebar{width:130px;min-width:130px;background:#fff;box-shadow:3px 0 12px rgba(0,0,0,0.08);overflow-y:auto;padding:10px 6px;}
+.cat-group{margin-bottom:10px;}
+.cat-group-title{font-size:.62rem;font-weight:900;color:#aaa;text-transform:uppercase;letter-spacing:.5px;padding:0 4px 4px;}
+.nav-btn{display:flex;align-items:center;gap:6px;width:100%;padding:8px 8px;border-radius:12px;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:.78rem;font-weight:700;color:#555;transition:all .18s;text-align:left;margin-bottom:3px;}
+.nav-btn:hover{background:#FFF3E0;color:#FF6B6B;}
+.nav-btn.active{background:linear-gradient(135deg,#FF6B6B,#FF8E53);color:#fff;box-shadow:0 3px 10px rgba(255,107,107,.4);}
+.nav-btn .nav-icon{font-size:1.1rem;min-width:22px;text-align:center;}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;padding:14px;overflow-y:auto;}
+.section{display:none;max-width:680px;margin:0 auto;}
+.section.active{display:block;}
+
+/* ── BIG BOX ── */
+.big-box{border-radius:24px;padding:18px 16px 14px;margin-bottom:14px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,0.13);transition:background .4s;}
+.big-char{font-size:4.5rem;font-weight:900;color:#fff;line-height:1;text-shadow:3px 3px 8px rgba(0,0,0,0.2);}
+.big-sub{font-size:1.5rem;color:#fff;opacity:.92;margin-top:4px;}
+
+/* ── SELECTOR ── */
+.sel-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px;}
+.sel-btn{padding:6px 12px;border-radius:12px;border:none;background:#fff;color:#333;font-weight:700;font-size:.88rem;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.13);transition:all .2s;font-family:inherit;min-width:40px;text-align:center;}
+.sel-btn.active{color:#fff;transform:scale(1.13);}
+
+/* ── CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+.card{background:#fff;border-radius:15px;padding:10px 5px 8px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,0.09);transition:transform .17s;cursor:pointer;}
+.card:hover{transform:translateY(-3px) scale(1.04);}
+.card-em{font-size:2.5rem;display:block;margin-bottom:4px;}
+.card-lbl{font-size:.67rem;font-weight:700;color:#333;line-height:1.3;}
+.first-ch{font-size:.82rem;}
+
+/* ── COUNT BOX ── */
+.count-box{background:#fff;border-radius:18px;padding:16px;min-height:90px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;box-shadow:0 3px 12px rgba(0,0,0,0.09);margin-bottom:12px;}
+.count-em{font-size:2.8rem;animation:popIn .3s ease forwards;opacity:0;cursor:pointer;}
+.zero-msg{font-size:1.1rem;color:#aaa;text-align:center;width:100%;}
+
+/* ── COLOR SWATCH ── */
+.color-swatch{width:90px;height:90px;border-radius:50%;margin:0 auto 10px;box-shadow:0 5px 16px rgba(0,0,0,0.2);border:5px solid rgba(255,255,255,.6);}
+
+/* ── OPPOSITES ── */
+.opp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.opp-pair{background:#fff;border-radius:16px;padding:12px 8px;box-shadow:0 3px 10px rgba(0,0,0,0.09);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:transform .17s;}
+.opp-pair:hover{transform:scale(1.03);}
+.opp-side{text-align:center;flex:1;}
+.opp-em{font-size:2.2rem;display:block;}
+.opp-word{font-size:.68rem;font-weight:700;margin-top:2px;}
+.opp-vs{font-size:1.2rem;font-weight:900;color:#ccc;}
+
+/* ── INFO CARDS (National/Personal) ── */
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.info-card{background:#fff;border-radius:16px;padding:14px 12px;box-shadow:0 3px 10px rgba(0,0,0,0.09);display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .17s;}
+.info-card:hover{transform:scale(1.02);}
+.info-em{font-size:2.2rem;min-width:40px;text-align:center;}
+.info-text .info-key{font-size:.62rem;color:#aaa;font-weight:700;text-transform:uppercase;}
+.info-text .info-val{font-size:.82rem;font-weight:700;color:#333;margin-top:2px;}
+
+/* ── SOLAR ── */
+.solar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+.planet-card{background:#111;border-radius:16px;padding:12px 6px 10px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.3);cursor:pointer;transition:transform .17s;}
+.planet-card:hover{transform:translateY(-3px) scale(1.05);}
+.planet-em{font-size:2.4rem;display:block;margin-bottom:4px;}
+.planet-lbl{font-size:.67rem;font-weight:700;color:#fff;}
+
+/* ── WEATHER ── */
+.weather-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.weather-card{border-radius:20px;padding:18px 10px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.12);cursor:pointer;transition:transform .18s;}
+.weather-card:hover{transform:scale(1.04);}
+.weather-em{font-size:3rem;display:block;margin-bottom:6px;}
+.weather-lbl{font-size:.82rem;font-weight:700;}
+.weather-desc{font-size:.65rem;margin-top:3px;opacity:.8;}
+
+/* ── TIME ── */
+.time-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.time-card{border-radius:20px;padding:18px 12px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.12);cursor:pointer;transition:transform .18s;}
+.time-card:hover{transform:scale(1.04);}
+.time-em{font-size:3rem;display:block;margin-bottom:6px;}
+.time-lbl{font-size:1rem;font-weight:700;}
+.time-items{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
+.time-tag{background:rgba(255,255,255,.5);border-radius:10px;padding:3px 8px;font-size:.65rem;font-weight:700;}
+
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.fun-msg{text-align:center;margin-top:10px;font-size:.88rem;color:#999;}
+
+@media(max-width:600px){
+  .sidebar{width:100px;min-width:100px;}
+  .nav-btn{font-size:.7rem;padding:7px 5px;}
+  .cards-grid{grid-template-columns:repeat(3,1fr);}
+  .solar-grid{grid-template-columns:repeat(3,1fr);}
+  .info-grid{grid-template-columns:1fr;}
+  .big-char{font-size:3.2rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🌟 Reyan's Learning App 🌟</h1>
+  <div class="sound-bar">
+    <span style="font-size:1.1rem">🔇</span>
+    <span class="sound-label">Sound</span>
+    <label class="toggle-wrap"><input type="checkbox" id="sndTgl"/><span class="toggle-slider"></span></label>
+    <span style="font-size:1.1rem">🔊</span>
+  </div>
+</div>
+
+<div class="app-body">
+<!-- ── SIDEBAR ── -->
+<div class="sidebar">
+  <div class="cat-group">
+    <div class="cat-group-title">Basics</div>
+    <button class="nav-btn active" onclick="switchTab('alpha')"><span class="nav-icon">🔤</span>Alphabets</button>
+    <button class="nav-btn"       onclick="switchTab('num')"><span class="nav-icon">🔢</span>Numbers</button>
+    <button class="nav-btn"       onclick="switchTab('color')"><span class="nav-icon">🎨</span>Colors</button>
+    <button class="nav-btn"       onclick="switchTab('shapes')"><span class="nav-icon">🔷</span>Shapes</button>
+  </div>
+  <div class="cat-group">
+    <div class="cat-group-title">Nature</div>
+    <button class="nav-btn" onclick="switchTab('animals')"><span class="nav-icon">🐾</span>Animals</button>
+    <button class="nav-btn" onclick="switchTab('birds')"><span class="nav-icon">🐦</span>Birds</button>
+    <button class="nav-btn" onclick="switchTab('fruits')"><span class="nav-icon">🍎</span>Fruits</button>
+    <button class="nav-btn" onclick="switchTab('vegs')"><span class="nav-icon">🥦</span>Vegetables</button>
+    <button class="nav-btn" onclick="switchTab('weather')"><span class="nav-icon">🌦️</span>Weather</button>
+    <button class="nav-btn" onclick="switchTab('solar')"><span class="nav-icon">🪐</span>Solar System</button>
+  </div>
+  <div class="cat-group">
+    <div class="cat-group-title">World</div>
+    <button class="nav-btn" onclick="switchTab('transport')"><span class="nav-icon">🚗</span>Transport</button>
+    <button class="nav-btn" onclick="switchTab('places')"><span class="nav-icon">🏫</span>Places</button>
+    <button class="nav-btn" onclick="switchTab('helpers')"><span class="nav-icon">👨‍⚕️</span>Helpers</button>
+    <button class="nav-btn" onclick="switchTab('body')"><span class="nav-icon">🧒</span>Body Parts</button>
+    <button class="nav-btn" onclick="switchTab('daily')"><span class="nav-icon">🏠</span>Daily Things</button>
+  </div>
+  <div class="cat-group">
+    <div class="cat-group-title">Learn</div>
+    <button class="nav-btn" onclick="switchTab('opp')"><span class="nav-icon">↔️</span>Opposites</button>
+    <button class="nav-btn" onclick="switchTab('time')"><span class="nav-icon">🕐</span>Time</button>
+    <button class="nav-btn" onclick="switchTab('national')"><span class="nav-icon">🇮🇳</span>National</button>
+    <button class="nav-btn" onclick="switchTab('personal')"><span class="nav-icon">👦</span>About Me</button>
+    <button class="nav-btn" onclick="switchTab('gk')"><span class="nav-icon">🧠</span>GK Quiz</button>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+<!-- ALPHABET -->
+<div id="sec-alpha" class="section active">
+  <div class="sel-grid" id="lg"></div>
+  <div class="big-box" id="lb"><div class="big-char" id="blc"></div><div class="big-sub" id="bls"></div></div>
+  <div class="cards-grid" id="ac"></div>
+  <div class="fun-msg">🎉 Tap any letter to learn!</div>
+</div>
+
+<!-- NUMBERS -->
+<div id="sec-num" class="section">
+  <div class="sel-grid" id="ng"></div>
+  <div class="big-box" id="nb"><div class="big-char" id="bnc"></div><div class="big-sub" id="bns"></div></div>
+  <div class="count-box" id="cb"></div>
+  <div class="fun-msg">🎉 Tap a number to count!</div>
+</div>
+
+<!-- COLORS -->
+<div id="sec-color" class="section">
+  <div class="sel-grid" id="cog"></div>
+  <div class="big-box" id="cob"><div class="color-swatch" id="csw"></div><div class="big-char" id="cnb" style="font-size:2.2rem"></div></div>
+  <div class="cards-grid" id="coCards"></div>
+  <div class="fun-msg">🎉 Tap a color to explore!</div>
+</div>
+
+<!-- SHAPES -->
+<div id="sec-shapes" class="section">
+  <div class="sel-grid" id="shg"></div>
+  <div class="big-box" id="shb"><div class="big-char" id="shE"></div><div class="big-sub" id="shN"></div></div>
+  <div class="cards-grid" id="shCards"></div>
+  <div class="fun-msg">🎉 Tap a shape to explore!</div>
+</div>
+
+<!-- ANIMALS -->
+<div id="sec-animals" class="section">
+  <div class="big-box" style="background:#FF8E53;box-shadow:0 6px 20px #FF8E5366"><div class="big-char">🐾</div><div class="big-sub">Animals</div></div>
+  <div class="cards-grid" id="anCards"></div>
+</div>
+
+<!-- BIRDS -->
+<div id="sec-birds" class="section">
+  <div class="big-box" style="background:#29B6F6;box-shadow:0 6px 20px #29B6F666"><div class="big-char">🐦</div><div class="big-sub">Birds</div></div>
+  <div class="cards-grid" id="biCards"></div>
+</div>
+
+<!-- FRUITS -->
+<div id="sec-fruits" class="section">
+  <div class="big-box" style="background:#FF6B6B;box-shadow:0 6px 20px #FF6B6B66"><div class="big-char">🍎</div><div class="big-sub">Fruits</div></div>
+  <div class="cards-grid" id="frCards"></div>
+</div>
+
+<!-- VEGS -->
+<div id="sec-vegs" class="section">
+  <div class="big-box" style="background:#43A047;box-shadow:0 6px 20px #43A04766"><div class="big-char">🥦</div><div class="big-sub">Vegetables</div></div>
+  <div class="cards-grid" id="veCards"></div>
+</div>
+
+<!-- WEATHER -->
+<div id="sec-weather" class="section">
+  <div class="big-box" style="background:#0288D1;box-shadow:0 6px 20px #0288D166"><div class="big-char">🌦️</div><div class="big-sub">Weather</div></div>
+  <div class="weather-grid" id="weCards"></div>
+</div>
+
+<!-- SOLAR -->
+<div id="sec-solar" class="section">
+  <div class="big-box" style="background:#1a1a2e;box-shadow:0 6px 20px #1a1a2e88"><div class="big-char">🌌</div><div class="big-sub">Solar System</div></div>
+  <div class="solar-grid" id="solCards"></div>
+</div>
+
+<!-- TRANSPORT -->
+<div id="sec-transport" class="section">
+  <div class="big-box" style="background:#F57C00;box-shadow:0 6px 20px #F57C0066"><div class="big-char">🚗</div><div class="big-sub">Transport</div></div>
+  <div class="cards-grid" id="trCards"></div>
+</div>
+
+<!-- PLACES -->
+<div id="sec-places" class="section">
+  <div class="big-box" style="background:#5C6BC0;box-shadow:0 6px 20px #5C6BC066"><div class="big-char">🏫</div><div class="big-sub">Places Around Us</div></div>
+  <div class="cards-grid" id="plCards"></div>
+</div>
+
+<!-- HELPERS -->
+<div id="sec-helpers" class="section">
+  <div class="big-box" style="background:#00897B;box-shadow:0 6px 20px #00897B66"><div class="big-char">🤝</div><div class="big-sub">Community Helpers</div></div>
+  <div class="cards-grid" id="heCards"></div>
+</div>
+
+<!-- BODY -->
+<div id="sec-body" class="section">
+  <div class="big-box" style="background:#E91E63;box-shadow:0 6px 20px #E91E6366"><div class="big-char">🧒</div><div class="big-sub">Body Parts</div></div>
+  <div class="cards-grid" id="boCards"></div>
+</div>
+
+<!-- DAILY -->
+<div id="sec-daily" class="section">
+  <div class="big-box" style="background:#7B1FA2;box-shadow:0 6px 20px #7B1FA266"><div class="big-char">🏠</div><div class="big-sub">Daily Things</div></div>
+  <div class="cards-grid" id="daCards"></div>
+</div>
+
+<!-- OPPOSITES -->
+<div id="sec-opp" class="section">
+  <div class="big-box" style="background:#00897B;box-shadow:0 6px 20px #00897B66"><div class="big-char">↔️</div><div class="big-sub">Opposites</div></div>
+  <div class="opp-grid" id="opCards"></div>
+</div>
+
+<!-- TIME -->
+<div id="sec-time" class="section">
+  <div class="big-box" style="background:#5C6BC0;box-shadow:0 6px 20px #5C6BC066"><div class="big-char">🕐</div><div class="big-sub">Time &amp; Routines</div></div>
+  <div class="time-grid" id="tmCards"></div>
+</div>
+
+<!-- NATIONAL -->
+<div id="sec-national" class="section">
+  <div class="big-box" style="background:#FF6B00;box-shadow:0 6px 20px #FF6B0066"><div class="big-char">🇮🇳</div><div class="big-sub">National Knowledge</div></div>
+  <div class="info-grid" id="naCards"></div>
+</div>
+
+<!-- PERSONAL -->
+<div id="sec-personal" class="section">
+  <div class="big-box" style="background:#E91E63;box-shadow:0 6px 20px #E91E6366"><div class="big-char">👦</div><div class="big-sub">About Me — Reyan!</div></div>
+  <div class="info-grid" id="peCards"></div>
+</div>
+
+<!-- GK QUIZ -->
+<div id="sec-gk" class="section">
+  <div class="big-box" style="background:linear-gradient(135deg,#6A1B9A,#1565C0);box-shadow:0 6px 20px #6A1B9A66">
+    <div class="big-char">🧠</div>
+    <div class="big-sub">GK Quiz — 150 Questions!</div>
+  </div>
+  <div id="gk-cat-bar"></div>
+  <div id="gk-cards"></div>
+  <div class="fun-msg">🎉 Tap a question to reveal the answer!</div>
+</div>
+
+</div><!-- end .main -->
+</div><!-- end .app-body -->
+
+<script>
+/* ════════════════════ SOUND ════════════════════ */
+const snd=()=>document.getElementById('sndTgl').checked;
+
+// Pick best available voice — prefers Google/Premium voices
+let _bestVoice = null;
+function getBestVoice() {
+  if (_bestVoice) return _bestVoice;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  // Priority list: best-sounding natural voices across devices
+  const preferred = [
+    'Google US English',
+    'Google UK English Female',
+    'Microsoft Aria Online (Natural)',
+    'Microsoft Jenny Online (Natural)',
+    'Samantha',           // macOS/iOS — very natural
+    'Karen',              // macOS Australian
+    'Moira',              // macOS Irish
+    'Veena',              // macOS Indian English
+    'Google UK English Male',
+  ];
+  for (const name of preferred) {
+    const v = voices.find(v => v.name === name);
+    if (v) { _bestVoice = v; return v; }
+  }
+  // Fallback: any en-US or en-GB voice
+  const enVoice = voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB');
+  _bestVoice = enVoice || voices[0];
+  return _bestVoice;
+}
+// Voices load async on some browsers — reset cache when ready
+window.speechSynthesis.onvoiceschanged = () => { _bestVoice = null; };
+
+function makeUtt(text, isTitle=false) {
+  const u = new SpeechSynthesisUtterance(text);
+  const v = getBestVoice();
+  if (v) u.voice = v;
+  u.lang   = 'en-US';
+  u.rate   = isTitle ? 0.72 : 0.82;   // title words slower & clearer
+  u.pitch  = isTitle ? 1.25 : 1.1;    // slightly higher pitch = kid-friendly
+  u.volume = 1.0;
+  return u;
+}
+
+function speak(t) {
+  if (!snd()) return;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(makeUtt(t, false));
+}
+
+// Speak a sequence with a natural pause between each item
+function speakSeq(arr) {
+  if (!snd()) return;
+  window.speechSynthesis.cancel();
+  arr.forEach((t, i) => {
+    const u = makeUtt(t, i === 0);
+    // Add a short pause after each utterance via empty pause trick
+    u.onend = () => {
+      if (i < arr.length - 1) {
+        const pause = new SpeechSynthesisUtterance(' ');
+        pause.volume = 0; pause.rate = 0.1;
+        if (getBestVoice()) pause.voice = getBestVoice();
+        window.speechSynthesis.speak(pause);
+      }
+    };
+    window.speechSynthesis.speak(u);
+  });
+}
+
+/* ════════════════════ DATA ════════════════════ */
+const alphaData={
+  A:{color:"#FF6B6B",words:[["Apple","🍎"],["Ant","🐜"],["Airplane","✈️"],["Alligator","🐊"],["Avocado","🥑"]]},
+  B:{color:"#FF8E53",words:[["Ball","⚽"],["Butterfly","🦋"],["Banana","🍌"],["Bear","🐻"],["Boat","⛵"]]},
+  C:{color:"#FFC300",words:[["Cat","🐱"],["Car","🚗"],["Cake","🎂"],["Cow","🐮"],["Cloud","☁️"]]},
+  D:{color:"#A8E063",words:[["Dog","🐶"],["Duck","🦆"],["Diamond","💎"],["Drum","🥁"],["Dolphin","🐬"]]},
+  E:{color:"#56D364",words:[["Elephant","🐘"],["Egg","🥚"],["Earth","🌍"],["Eye","👁️"],["Eagle","🦅"]]},
+  F:{color:"#00C9A7",words:[["Fish","🐟"],["Flower","🌸"],["Frog","🐸"],["Fire","🔥"],["Flag","🚩"]]},
+  G:{color:"#0097A7",words:[["Grapes","🍇"],["Giraffe","🦒"],["Ghost","👻"],["Guitar","🎸"],["Goat","🐐"]]},
+  H:{color:"#1976D2",words:[["Horse","🐴"],["Hat","🎩"],["Heart","❤️"],["House","🏠"],["Honey","🍯"]]},
+  I:{color:"#7B1FA2",words:[["Ice Cream","🍦"],["Island","🏝️"],["Igloo","🏔️"],["Insect","🐛"],["Ink","🖊️"]]},
+  J:{color:"#C2185B",words:[["Jellyfish","🪼"],["Juice","🧃"],["Jar","🫙"],["Jaguar","🐆"],["Jet","🛩️"]]},
+  K:{color:"#E91E63",words:[["Kite","🪁"],["Kangaroo","🦘"],["Key","🔑"],["Koala","🐨"],["King","👑"]]},
+  L:{color:"#FF5722",words:[["Lion","🦁"],["Lemon","🍋"],["Leaf","🍃"],["Lamp","💡"],["Lobster","🦞"]]},
+  M:{color:"#795548",words:[["Moon","🌙"],["Monkey","🐒"],["Mango","🥭"],["Mouse","🐭"],["Mushroom","🍄"]]},
+  N:{color:"#607D8B",words:[["Nest","🪺"],["Nose","👃"],["Night","🌃"],["Noodle","🍜"],["Narwhal","🦭"]]},
+  O:{color:"#FF7043",words:[["Orange","🍊"],["Octopus","🐙"],["Owl","🦉"],["Onion","🧅"],["Ostrich","🦤"]]},
+  P:{color:"#8BC34A",words:[["Pizza","🍕"],["Penguin","🐧"],["Peach","🍑"],["Pig","🐷"],["Panda","🐼"]]},
+  Q:{color:"#4CAF50",words:[["Queen","👸"],["Quail","🐦"],["Question","❓"],["Quilt","🛏️"],["Quarter","🪙"]]},
+  R:{color:"#00BCD4",words:[["Rainbow","🌈"],["Rabbit","🐰"],["Robot","🤖"],["Rose","🌹"],["Rocket","🚀"]]},
+  S:{color:"#2196F3",words:[["Sun","☀️"],["Star","⭐"],["Snake","🐍"],["Strawberry","🍓"],["Sheep","🐑"]]},
+  T:{color:"#9C27B0",words:[["Tiger","🐯"],["Tree","🌳"],["Train","🚂"],["Turtle","🐢"],["Tomato","🍅"]]},
+  U:{color:"#E040FB",words:[["Umbrella","☂️"],["Unicorn","🦄"],["UFO","🛸"],["Urchin","🦔"],["Ukulele","🎸"]]},
+  V:{color:"#F06292",words:[["Violin","🎻"],["Van","🚐"],["Volcano","🌋"],["Vulture","🦅"],["Vest","👘"]]},
+  W:{color:"#FF8A65",words:[["Watermelon","🍉"],["Wolf","🐺"],["Whale","🐳"],["Watch","⌚"],["Worm","🪱"]]},
+  X:{color:"#A1887F",words:[["X-ray","🩻"],["Xylophone","🎵"],["Fox","🦊"],["Box","📦"],["Mix","🎛️"]]},
+  Y:{color:"#DCE775",words:[["Yak","🦬"],["Yarn","🧶"],["Yawn","😪"],["Yacht","⛵"],["Yellow","💛"]]},
+  Z:{color:"#80DEEA",words:[["Zebra","🦓"],["Zoo","🎪"],["Zucchini","🥬"],["Zero","0️⃣"],["Zipper","🤐"]]},
+};
+const numData=[
+  {word:"Zero",color:"#B0BEC5",emoji:"",name:""},
+  {word:"One",color:"#FF6B6B",emoji:"🍎",name:"Apple"},
+  {word:"Two",color:"#FF8E53",emoji:"🐘",name:"Elephant"},
+  {word:"Three",color:"#FFC300",emoji:"🐱",name:"Cat"},
+  {word:"Four",color:"#8BC34A",emoji:"🍌",name:"Banana"},
+  {word:"Five",color:"#00C9A7",emoji:"🐸",name:"Frog"},
+  {word:"Six",color:"#1976D2",emoji:"🍓",name:"Strawberry"},
+  {word:"Seven",color:"#7B1FA2",emoji:"🐥",name:"Chick"},
+  {word:"Eight",color:"#E91E63",emoji:"🍊",name:"Orange"},
+  {word:"Nine",color:"#FF5722",emoji:"🐠",name:"Fish"},
+];
+const colorData=[
+  {name:"Red",bg:"#E53935",txt:"#fff",items:[["Apple","🍎"],["Rose","🌹"],["Tomato","🍅"],["Ladybug","🐞"],["Heart","❤️"]]},
+  {name:"Blue",bg:"#1E88E5",txt:"#fff",items:[["Sky","🌀"],["Blueberry","🫐"],["Whale","🐳"],["Water","💧"],["Butterfly","🦋"]]},
+  {name:"Yellow",bg:"#FDD835",txt:"#333",items:[["Sun","☀️"],["Banana","🍌"],["Star","⭐"],["Chick","🐥"],["Lemon","🍋"]]},
+  {name:"Green",bg:"#43A047",txt:"#fff",items:[["Tree","🌳"],["Frog","🐸"],["Leaf","🍃"],["Broccoli","🥦"],["Turtle","🐢"]]},
+  {name:"Orange",bg:"#FB8C00",txt:"#fff",items:[["Orange","🍊"],["Tiger","🐯"],["Pumpkin","🎃"],["Carrot","🥕"],["Fox","🦊"]]},
+  {name:"Purple",bg:"#8E24AA",txt:"#fff",items:[["Grapes","🍇"],["Eggplant","🍆"],["Butterfly","🦋"],["Plum","🫐"],["Flower","💜"]]},
+  {name:"Pink",bg:"#E91E63",txt:"#fff",items:[["Flamingo","🦩"],["Flower","🌸"],["Pig","🐷"],["Candy","🍬"],["Heart","🩷"]]},
+  {name:"Brown",bg:"#6D4C41",txt:"#fff",items:[["Bear","🐻"],["Chocolate","🍫"],["Monkey","🐒"],["Bread","🍞"],["Acorn","🌰"]]},
+  {name:"Black",bg:"#212121",txt:"#fff",items:[["Cat","🐈‍⬛"],["Crow","🐦‍⬛"],["Spider","🕷️"],["Hat","🎩"],["Panther","🐆"]]},
+  {name:"White",bg:"#CFD8DC",txt:"#333",items:[["Rabbit","🐰"],["Sheep","🐑"],["Snowman","⛄"],["Egg","🥚"],["Swan","🦢"]]},
+  {name:"Grey",bg:"#78909C",txt:"#fff",items:[["Elephant","🐘"],["Koala","🐨"],["Cloud","☁️"],["Rhino","🦏"],["Hippo","🦛"]]},
+  {name:"Sky Blue",bg:"#29B6F6",txt:"#fff",items:[["Sky","🌤️"],["Bluebird","🐦"],["Ice","🧊"],["Pool","🏊"],["Balloon","🎈"]]},
+  {name:"Maroon",bg:"#880E4F",txt:"#fff",items:[["Cherry","🍒"],["Pomegranate","🍎"],["Crab","🦀"],["Lobster","🦞"],["Flower","🌺"]]},
+  {name:"Gold",bg:"#F9A825",txt:"#333",items:[["Trophy","🏆"],["Crown","👑"],["Star","🌟"],["Coin","🪙"],["Sun","🌞"]]},
+  {name:"Silver",bg:"#90A4AE",txt:"#333",items:[["Robot","🤖"],["Key","🔑"],["Rocket","🚀"],["Mirror","🪞"],["Sword","⚔️"]]},
+];
+const shapesData=[
+  {name:"Circle",color:"#FF6B6B",emoji:"⭕",items:[["Sun","☀️"],["Moon","🌕"],["Ball","⚽"],["Cookie","🍪"],["Coin","🪙"]]},
+  {name:"Square",color:"#FF8E53",emoji:"🟧",items:[["Window","🪟"],["Box","📦"],["Book","📚"],["Pillow","🛏️"],["Frame","🖼️"]]},
+  {name:"Triangle",color:"#FFC300",emoji:"🔺",items:[["Pizza","🍕"],["Mountain","⛰️"],["Cone","🍦"],["Pyramid","🏔️"],["Hanger","👔"]]},
+  {name:"Rectangle",color:"#8BC34A",emoji:"▬",items:[["Door","🚪"],["Phone","📱"],["Brick","🧱"],["Ruler","📏"],["Book","📖"]]},
+  {name:"Star",color:"#00C9A7",emoji:"⭐",items:[["Night","🌃"],["Badge","🏅"],["Sparkle","✨"],["Wand","🪄"],["Starfish","🌟"]]},
+  {name:"Heart",color:"#E91E63",emoji:"❤️",items:[["Love","💕"],["Valentine","💌"],["Hug","🤗"],["Candy","🍬"],["Rose","🌹"]]},
+  {name:"Diamond",color:"#9C27B0",emoji:"💎",items:[["Ring","💍"],["Gem","💎"],["Kite","🪁"],["Crystal","🔮"],["Card","🃏"]]},
+  {name:"Oval",color:"#1976D2",emoji:"🥚",items:[["Egg","🥚"],["Mango","🥭"],["Mirror","🪞"],["Rugby","🏉"],["Avocado","🥑"]]},
+];
+const animalsData=[["Lion","🦁"],["Elephant","🐘"],["Tiger","🐯"],["Giraffe","🦒"],["Zebra","🦓"],["Monkey","🐒"],["Bear","🐻"],["Wolf","🐺"],["Fox","🦊"],["Rabbit","🐰"],["Dog","🐶"],["Cat","🐱"],["Cow","🐮"],["Pig","🐷"],["Horse","🐴"],["Sheep","🐑"],["Goat","🐐"],["Deer","🦌"],["Panda","🐼"],["Koala","🐨"],["Frog","🐸"],["Turtle","🐢"],["Snake","🐍"],["Crocodile","🐊"],["Kangaroo","🦘"]];
+const birdsData=[["Eagle","🦅"],["Owl","🦉"],["Parrot","🦜"],["Penguin","🐧"],["Flamingo","🦩"],["Peacock","🦚"],["Swan","🦢"],["Duck","🦆"],["Chick","🐥"],["Rooster","🐓"],["Turkey","🦃"],["Ostrich","🦤"],["Pigeon","🕊️"],["Crow","🐦‍⬛"],["Sparrow","🐦"]];
+const fruitsData=[["Apple","🍎"],["Banana","🍌"],["Mango","🥭"],["Grapes","🍇"],["Orange","🍊"],["Strawberry","🍓"],["Watermelon","🍉"],["Pineapple","🍍"],["Cherry","🍒"],["Peach","🍑"],["Lemon","🍋"],["Coconut","🥥"],["Kiwi","🥝"],["Pear","🍐"],["Blueberry","🫐"]];
+const vegsData=[["Carrot","🥕"],["Broccoli","🥦"],["Tomato","🍅"],["Corn","🌽"],["Onion","🧅"],["Potato","🥔"],["Eggplant","🍆"],["Pepper","🌶️"],["Cucumber","🥒"],["Mushroom","🍄"],["Garlic","🧄"],["Pumpkin","🎃"],["Cabbage","🥬"],["Peas","🫛"],["Avocado","🥑"]];
+const transportData=[["Car","🚗"],["Bus","🚌"],["Train","🚂"],["Bicycle","🚲"],["Motorcycle","🏍️"],["Airplane","✈️"],["Helicopter","🚁"],["Boat","⛵"],["Ship","🚢"],["Rocket","🚀"],["Truck","🚛"],["Ambulance","🚑"],["Fire Truck","🚒"],["Tractor","🚜"],["Scooter","🛵"]];
+const placesData=[["Home","🏠"],["School","🏫"],["Park","🌳"],["Hospital","🏥"],["Zoo","🦁"],["Market","🛒"],["Airport","✈️"],["Railway Station","🚉"],["Temple","🛕"],["Library","📚"],["Restaurant","🍽️"],["Beach","🏖️"],["Farm","🌾"],["Playground","🛝"],["Museum","🏛️"]];
+const helpersData=[["Doctor","👨‍⚕️"],["Teacher","👩‍🏫"],["Police","👮"],["Firefighter","🧑‍🚒"],["Farmer","👨‍🌾"],["Driver","👨‍✈️"],["Chef","👨‍🍳"],["Nurse","👩‍⚕️"],["Engineer","👷"],["Postman","📬"],["Soldier","🪖"],["Dentist","🦷"],["Pilot","👨‍✈️"],["Scientist","🔬"],["Artist","🎨"]];
+const bodyData=[["Head","🗣️"],["Eyes","👀"],["Nose","👃"],["Mouth","👄"],["Ears","👂"],["Hair","💇"],["Hands","👐"],["Fingers","🖐️"],["Feet","🦶"],["Legs","🦵"],["Arms","💪"],["Teeth","🦷"],["Tongue","👅"],["Heart","❤️"],["Tummy","🫃"]];
+const dailyData=[["Toothbrush","🪥"],["Soap","🧼"],["Towel","🛁"],["Bed","🛏️"],["Cup","🥤"],["Spoon","🥄"],["Plate","🍽️"],["Bag","🎒"],["Shoes","👟"],["Umbrella","☂️"],["Book","📚"],["Pencil","✏️"],["Clock","⏰"],["Bicycle","🚲"],["Phone","📱"]];
+const opposites=[["Big","🐘","Small","🐭"],["Hot","🔥","Cold","🧊"],["Day","☀️","Night","🌙"],["Happy","😊","Sad","😢"],["Fast","🐆","Slow","🐢"],["Up","⬆️","Down","⬇️"],["Open","📖","Closed","📕"],["Full","🪣","Empty","🫙"],["Clean","✨","Dirty","🤧"],["Tall","🦒","Short","🐛"],["Loud","📢","Quiet","🤫"],["Wet","🌧️","Dry","☀️"]];
+const weatherData=[
+  {name:"Sunny",emoji:"☀️",bg:"#FDD835",txt:"#333",desc:"Bright and warm day!",items:["😎","🌻","🧴","🕶️","🏖️"]},
+  {name:"Rainy",emoji:"🌧️",bg:"#1E88E5",txt:"#fff",desc:"Get your umbrella!",items:["☂️","🌈","🥾","🐸","💧"]},
+  {name:"Cloudy",emoji:"☁️",bg:"#78909C",txt:"#fff",desc:"Grey skies today!",items:["🧥","🌫️","🐦","🌥️","😶‍🌫️"]},
+  {name:"Windy",emoji:"💨",bg:"#4DD0E1",txt:"#333",desc:"Hold your hat!",items:["🪁","🍃","🌬️","🧣","🎏"]},
+  {name:"Snowy",emoji:"❄️",bg:"#B3E5FC",txt:"#333",desc:"Bundle up warm!",items:["⛄","🛷","🧤","🧣","🏔️"]},
+  {name:"Stormy",emoji:"⛈️",bg:"#37474F",txt:"#fff",desc:"Stay indoors!",items:["⚡","🌪️","🌊","🏠","🕯️"]},
+];
+const solarData=[
+  {name:"Sun",emoji:"☀️",color:"#FDD835",fact:"Our star!"},
+  {name:"Mercury",emoji:"🪨",color:"#9E9E9E",fact:"Closest to Sun"},
+  {name:"Venus",emoji:"🌟",color:"#FFA000",fact:"Hottest planet"},
+  {name:"Earth",emoji:"🌍",color:"#1E88E5",fact:"Our home!"},
+  {name:"Moon",emoji:"🌕",color:"#CFD8DC",fact:"Earth's moon"},
+  {name:"Mars",emoji:"🔴",color:"#E53935",fact:"The red planet"},
+  {name:"Jupiter",emoji:"🟤",color:"#795548",fact:"Largest planet"},
+  {name:"Saturn",emoji:"🪐",color:"#F9A825",fact:"Has rings!"},
+  {name:"Uranus",emoji:"🔵",color:"#00BCD4",fact:"Spins sideways"},
+  {name:"Neptune",emoji:"💙",color:"#1565C0",fact:"Farthest planet"},
+];
+const timeData=[
+  {name:"Morning",emoji:"🌅",bg:"#FF8F00",items:["⏰ Wake up","🪥 Brush teeth","🍳 Breakfast","👕 Get dressed","🎒 Go to school"]},
+  {name:"Afternoon",emoji:"☀️",bg:"#F57F17",items:["📚 Study","🍱 Lunch","🏃 Play","💤 Rest","🎨 Art time"]},
+  {name:"Evening",emoji:"🌆",bg:"#7B1FA2",items:["🏠 Come home","🍽️ Dinner","📺 TV time","🛁 Bath","📖 Story time"]},
+  {name:"Night",emoji:"🌙",bg:"#1A237E",items:["😴 Sleep","⭐ Stars out","🌙 Moon rises","💤 Dream","🛏️ Bedtime"]},
+  {name:"Today",emoji:"📅",bg:"#00695C",items:["🌞 Right now","📆 This day","🎯 Today's plan","✅ Do tasks","🎉 Enjoy!"]},
+  {name:"Tomorrow",emoji:"🔜",bg:"#4527A0",items:["⏭️ Next day","🌅 New morning","📋 New plans","🌟 New chances","😊 Stay happy"]},
+];
+const nationalData=[
+  {key:"Prime Minister",val:"Narendra Modi",em:"👨‍💼"},
+  {key:"National Flag",val:"Tiranga 🟠⚪🟢",em:"🇮🇳"},
+  {key:"National Song",val:"Vande Mataram",em:"🎵"},
+  {key:"National Anthem",val:"Jana Gana Mana",em:"🎶"},
+  {key:"National Animal",val:"Tiger 🐯",em:"🦁"},
+  {key:"National Bird",val:"Peacock 🦚",em:"🦚"},
+  {key:"National Flower",val:"Lotus 🪷",em:"🪷"},
+  {key:"National Fruit",val:"Mango 🥭",em:"🥭"},
+  {key:"National Tree",val:"Banyan Tree",em:"🌳"},
+  {key:"National River",val:"Ganga",em:"🌊"},
+  {key:"Capital City",val:"New Delhi",em:"🏛️"},
+  {key:"Our Country",val:"India 🇮🇳",em:"🗺️"},
+];
+const personalData=[
+  {key:"My Name",val:"Reyan Dutta",em:"👦"},
+  {key:"My Age",val:"3 Years Old 🎂",em:"🎈"},
+  {key:"Father",val:"Sekhar Dutta",em:"👨"},
+  {key:"Mother",val:"Sangita Sinha Dutta",em:"👩"},
+  {key:"Grand Father",val:"Pulin Chandra Dutta",em:"👴"},
+  {key:"Grand Mother",val:"Jaya Dutta",em:"👵"},
+  {key:"My City",val:"Hyderabad",em:"🌆"},
+  {key:"My Country",val:"India 🇮🇳",em:"🗺️"},
+  {key:"My Address",val:"My Home Mangala, Block 1, Kondapur, Hyderabad",em:"🏠"},
+  {key:"My School",val:"Going to school soon! 📚",em:"🏫"},
+];
+
+/* ════════════════════ HELPERS ════════════════════ */
+const TABS=['alpha','num','color','shapes','animals','birds','fruits','vegs','weather','solar','transport','places','helpers','body','daily','opp','time','national','personal','gk'];
+
+function switchTab(tab){
+  TABS.forEach(t=>document.getElementById('sec-'+t).classList.toggle('active',t===tab));
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    const on=TABS[i]===tab;
+    b.classList.toggle('active',on);
+  });
+}
+
+function activateSel(cls,idx,color){
+  document.querySelectorAll('.'+cls).forEach((b,i)=>{
+    const on=i===idx;
+    b.classList.toggle('active',on);
+    b.style.background=on?color:'#fff';
+    b.style.color=on?'#fff':'#333';
+    b.style.boxShadow=on?`0 4px 12px ${color}88`:'0 2px 6px rgba(0,0,0,0.13)';
+  });
+}
+
+function card(em,lbl,color,firstLetter){
+  const l=firstLetter?`<span class="first-ch" style="color:${color}">${lbl[0]}</span>${lbl.slice(1)}`:lbl;
+  return`<div class="card" style="border:3px solid ${color}33" onclick="speak('${lbl.replace(/'/g,"\\'")}')"><span class="card-em">${em}</span><div class="card-lbl">${l}</div></div>`;
+}
+
+function simpleGrid(items,color,id){
+  document.getElementById(id).innerHTML=items.map(([w,e])=>card(e,w,color,false)).join('');
+}
+
+/* ════════════════════ ALPHABET ════════════════════ */
+function renderLetter(l){
+  const d=alphaData[l];
+  activateSel('lbtn',Object.keys(alphaData).indexOf(l),d.color);
+  const b=document.getElementById('lb');
+  b.style.background=d.color;b.style.boxShadow=`0 6px 22px ${d.color}66`;
+  document.getElementById('blc').textContent=l;
+  document.getElementById('bls').textContent=l.toLowerCase();
+  document.getElementById('ac').innerHTML=d.words.map(([w,e])=>card(e,w,d.color,true)).join('');
+  speakSeq([l+'!',...d.words.map(([w])=>`${l} for ${w}`)]);
+}
+
+/* ════════════════════ NUMBERS ════════════════════ */
+function renderNumber(n){
+  const d=numData[n];
+  activateSel('nbtn',n,d.color);
+  const b=document.getElementById('nb');
+  b.style.background=d.color;b.style.boxShadow=`0 6px 22px ${d.color}66`;
+  document.getElementById('bnc').textContent=n;
+  document.getElementById('bns').textContent=d.word+(n>0?` ${d.name}${n>1?'s':''}` :'');
+  const a=document.getElementById('cb');
+  a.style.border=`3px solid ${d.color}44`;
+  if(n===0){a.innerHTML=`<div class="zero-msg">🫙 Nothing here... that's <strong>Zero!</strong> 🤭</div>`;}
+  else{a.innerHTML=Array.from({length:n},(_,i)=>`<span class="count-em" style="animation-delay:${i*.08}s" onclick="speak('${d.name}')">${d.emoji}</span>`).join('');}
+  const nums=['One','Two','Three','Four','Five','Six','Seven','Eight','Nine'];
+  speakSeq([d.word+'!',...(n>0?nums.slice(0,n):[])]);
+}
+
+/* ════════════════════ COLORS ════════════════════ */
+function renderColor(i){
+  const d=colorData[i];
+  activateSel('cobtn',i,d.bg);
+  const b=document.getElementById('cob');
+  b.style.background=d.bg;b.style.boxShadow=`0 6px 22px ${d.bg}66`;
+  document.getElementById('csw').style.background=d.bg;
+  const nm=document.getElementById('cnb');nm.textContent=d.name;nm.style.color=d.txt;
+  document.getElementById('coCards').innerHTML=d.items.map(([l,e])=>card(e,l,d.bg,false)).join('');
+  speakSeq([d.name+'!',...d.items.map(([l])=>`${l} is ${d.name}`)]);
+}
+
+/* ════════════════════ SHAPES ════════════════════ */
+function renderShape(i){
+  const d=shapesData[i];
+  activateSel('shbtn',i,d.color);
+  const b=document.getElementById('shb');
+  b.style.background=d.color;b.style.boxShadow=`0 6px 22px ${d.color}66`;
+  document.getElementById('shE').textContent=d.emoji;
+  document.getElementById('shN').textContent=d.name;
+  document.getElementById('shCards').innerHTML=d.items.map(([w,e])=>card(e,w,d.color,false)).join('');
+  speakSeq([d.name+'!',...d.items.map(([w])=>w)]);
+}
+
+/* ════════════════════ WEATHER ════════════════════ */
+function buildWeather(){
+  document.getElementById('weCards').innerHTML=weatherData.map(w=>
+    `<div class="weather-card" style="background:${w.bg};color:${w.txt}" onclick="speak('${w.name}. ${w.desc}')">
+      <span class="weather-em">${w.emoji}</span>
+      <div class="weather-lbl" style="color:${w.txt}">${w.name}</div>
+      <div class="weather-desc" style="color:${w.txt}">${w.desc}</div>
+      <div style="margin-top:8px;font-size:1.4rem">${w.items.join(' ')}</div>
+    </div>`).join('');
+}
+
+/* ════════════════════ SOLAR ════════════════════ */
+function buildSolar(){
+  document.getElementById('solCards').innerHTML=solarData.map(p=>
+    `<div class="planet-card" onclick="speak('${p.name}. ${p.fact}')">
+      <span class="planet-em">${p.emoji}</span>
+      <div class="planet-lbl" style="color:${p.color}">${p.name}</div>
+      <div style="font-size:.58rem;color:#aaa;margin-top:2px">${p.fact}</div>
+    </div>`).join('');
+}
+
+/* ════════════════════ TIME ════════════════════ */
+function buildTime(){
+  document.getElementById('tmCards').innerHTML=timeData.map(t=>
+    `<div class="time-card" style="background:${t.bg}" onclick="speak('${t.name}')">
+      <span class="time-em">${t.emoji}</span>
+      <div class="time-lbl" style="color:#fff">${t.name}</div>
+      <div class="time-items">${t.items.map(i=>`<span class="time-tag">${i}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+/* ════════════════════ OPPOSITES ════════════════════ */
+function buildOpp(){
+  document.getElementById('opCards').innerHTML=opposites.map(([w1,e1,w2,e2])=>
+    `<div class="opp-pair" style="border:3px solid #00897B33" onclick="speakSeq(['${w1}','opposite is','${w2}'])">
+      <div class="opp-side"><span class="opp-em">${e1}</span><div class="opp-word" style="color:#00897B">${w1}</div></div>
+      <div class="opp-vs">↔️</div>
+      <div class="opp-side"><span class="opp-em">${e2}</span><div class="opp-word" style="color:#00897B">${w2}</div></div>
+    </div>`).join('');
+}
+
+/* ════════════════════ INFO CARDS ════════════════════ */
+function buildInfo(data,id,color){
+  document.getElementById(id).innerHTML=data.map(d=>
+    `<div class="info-card" style="border:3px solid ${color}33" onclick="speak('${d.key}. ${d.val.replace(/'/g,"\\'")}')">
+      <div class="info-em">${d.em}</div>
+      <div class="info-text">
+        <div class="info-key">${d.key}</div>
+        <div class="info-val">${d.val}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ════════════════════ BUILD BUTTONS ════════════════════ */
+const lgEl=document.getElementById('lg');
+Object.keys(alphaData).forEach(l=>{const b=document.createElement('button');b.className='sel-btn lbtn';b.textContent=l;b.onclick=()=>renderLetter(l);lgEl.appendChild(b);});
+
+const ngEl=document.getElementById('ng');
+for(let i=0;i<=9;i++){const b=document.createElement('button');b.className='sel-btn nbtn';b.textContent=i;b.style.fontSize='1.3rem';b.style.minWidth='48px';b.onclick=()=>renderNumber(i);ngEl.appendChild(b);}
+
+const cogEl=document.getElementById('cog');
+colorData.forEach((c,i)=>{const b=document.createElement('button');b.className='sel-btn cobtn';b.textContent=c.name;b.style.background=c.bg;b.style.color=c.txt;b.onclick=()=>renderColor(i);cogEl.appendChild(b);});
+
+const shgEl=document.getElementById('shg');
+shapesData.forEach((s,i)=>{const b=document.createElement('button');b.className='sel-btn shbtn';b.textContent=s.emoji+' '+s.name;b.onclick=()=>renderShape(i);shgEl.appendChild(b);});
+
+/* ════════════════════ INIT ════════════════════ */
+simpleGrid(animalsData,'#FF8E53','anCards');
+simpleGrid(birdsData,'#29B6F6','biCards');
+simpleGrid(fruitsData,'#FF6B6B','frCards');
+simpleGrid(vegsData,'#43A047','veCards');
+simpleGrid(transportData,'#F57C00','trCards');
+simpleGrid(placesData,'#5C6BC0','plCards');
+simpleGrid(helpersData,'#00897B','heCards');
+simpleGrid(bodyData,'#E91E63','boCards');
+simpleGrid(dailyData,'#7B1FA2','daCards');
+buildWeather();
+buildSolar();
+buildTime();
+buildOpp();
+buildInfo(nationalData,'naCards','#FF6B00');
+buildInfo(personalData,'peCards','#E91E63');
+
+switchTab('alpha');
+renderLetter('A');
+renderNumber(1);
+renderColor(0);
+renderShape(0);
+</script>
+</body>
+</html>
