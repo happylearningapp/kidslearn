@@ -61,19 +61,21 @@
 
 <div class="subbody">
   <div class="stabs">
-    <button class="stab" onclick="sw('games','memory','#FF6B00');initMem()"><span class="stabico">&#129513;</span>Memory</button>
+    
     <button class="stab" onclick="sw('games','odd','#FF6B00');initOdd()"><span class="stabico">&#127919;</span>Odd One</button>
     <button class="stab" onclick="sw('games','count','#FF6B00');initCT()"><span class="stabico">&#128290;</span>Count</button>
     <button class="stab" onclick="sw('games','quiz','#FF6B00');initGQ()"><span class="stabico">&#127942;</span>Quiz</button>
     <button class="stab" onclick="sw('games','word','#FF6B00');initWM()"><span class="stabico">&#128292;</span>Words</button>
-    <button class="stab" onclick="sw('games','balloon','#FF6B00');initBal()"><span class="stabico">&#127880;</span>Balloons</button>
-  </div>
+      <button class="stab" onclick="sw('games','balloon','#FF6B00');initBal()"><span class="stabico">&#127880;</span>Balloons</button>
+      <button class="stab" onclick="sw('games','shadow','#FF6B00');initShadow()"><span class="stabico">&#128065;</span>Shadow</button>
+      <button class="stab" onclick="sw('games','missing','#FF6B00');initMissing()"><span class="stabico">&#10067;</span>Missing</button>
+      <button class="stab" onclick="sw('games','simon','#FF6B00');initSimon()"><span class="stabico">&#127912;</span>Simon</button>
+      <button class="stab" onclick="sw('games','sortit','#FF6B00');initSort()"><span class="stabico">&#128230;</span>Sort It</button>
+      <button class="stab" onclick="sw('games','tf','#FF6B00');initTF()"><span class="stabico">&#9989;</span>True/False</button>
+    <button class="stab" onclick="sw('games','memory','#FF6B00');initMem()"><span class="stabico">&#129513;</span>Memory</button>
+    </div>
   <div class="submain">
 
-    <div id="games-memory" class="sec active">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B00,#FFC300)"><div class="bigchar">&#129513;</div><div class="bigsub">Memory Match</div></div>
-      <div id="memArea"></div>
-    </div>
 
     <div id="games-odd" class="sec">
       <div class="bigbox" style="background:linear-gradient(135deg,#E91E63,#7B1FA2)"><div class="bigchar">&#127919;</div><div class="bigsub">Odd One Out</div></div>
@@ -99,6 +101,12 @@
       <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#29B6F6)"><div class="bigchar">&#127880;</div><div class="bigsub">Balloon Pop!</div></div>
       <div id="balArea"></div>
     </div>
+
+     <div id="games-memory" class="sec active">
+      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B00,#FFC300)"><div class="bigchar">&#129513;</div><div class="bigsub">Memory Match</div></div>
+      <div id="memArea"></div>
+    </div>
+
 
   </div>
 </div>
@@ -291,6 +299,375 @@ var balC=["&#128308;","&#128993;","&#128994;","&#128309;","&#128992;","&#128310;
 function initBal(){balSc=0;balRd=0;nextBal();}
 function nextBal(){if(balRd>=10){var pct=Math.round(balSc/10*100);document.getElementById('balArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+balSc+' / 10</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Champion!':'Good job!')+'</div><button class="rbtn" onclick="initBal()">Play Again</button></div>';spk(pct>=80?'Champion!':'Good job!');return;}balTgt=Math.floor(Math.random()*9)+1;var nums=[balTgt];while(nums.length<5){var r=Math.floor(Math.random()*9)+1;if(nums.indexOf(r)<0)nums.push(r);}nums.sort(function(){return Math.random()-.5;});var pos=[{l:'8%',t:'65%'},{l:'24%',t:'45%'},{l:'42%',t:'60%'},{l:'62%',t:'42%'},{l:'78%',t:'57%'}];document.getElementById('balArea').innerHTML='<div class="scorebar">Score: <b>'+balSc+'</b> Round: <b>'+(balRd+1)+'/10</b></div><div class="balarea" id="bArea"><div class="balq">Pop number <b>'+balTgt+'</b>!</div>'+nums.map(function(n,i){return '<div class="bal" id="bl_'+n+'" style="left:'+pos[i].l+';top:'+pos[i].t+'" onclick="popBal('+n+','+balTgt+')">'+'<span class="balbody">'+balC[i%balC.length]+'</span>'+'<span class="balnum">'+n+'</span>'+'<div class="balstr"></div></div>';}).join('')+'</div><div class="rmsg" id="balR" style="padding:8px;text-align:center"></div>';spk('Pop the balloon with number '+balTgt);nums.forEach(function(n,i){var el=document.getElementById('bl_'+n);if(!el)return;var top=parseFloat(pos[i].t);var spd=0.22+Math.random()*.22;(function anim(){if(!el||!el.parentNode)return;top-=spd;if(top<-15)top=80+Math.random()*15;el.style.top=top+'%';requestAnimationFrame(anim);})();});}
 function popBal(n,t){var el=document.getElementById('bl_'+n);if(!el)return;if(n===t){el.style.animation='bpop .35s ease forwards';setTimeout(function(){if(el&&el.parentNode)el.style.display='none';},400);balSc++;document.getElementById('balR').innerHTML='POP! Correct!';spk('Pop! Correct!');balRd++;setTimeout(nextBal,1200);}else{document.getElementById('balR').innerHTML='Try again! Find number '+t+'!';spk('Try again! Find number '+t);}}
+
+// ── SHADOW MATCH ──
+var SHDW=[
+  {ans:"&#129409;",opts:["&#129409;","&#128056;","&#128049;"],lbl:"Lion"},
+  {ans:"&#128024;",opts:["&#128024;","&#129426;","&#128018;"],lbl:"Elephant"},
+  {ans:"&#127822;",opts:["&#127822;","&#127820;","&#127818;"],lbl:"Apple"},
+  {ans:"&#128663;",opts:["&#128663;","&#128652;","&#128642;"],lbl:"Car"},
+  {ans:"&#128049;",opts:["&#128049;","&#128053;","&#128046;"],lbl:"Cat"},
+  {ans:"&#127820;",opts:["&#127820;","&#127819;","&#129389;"],lbl:"Banana"},
+  {ans:"&#128056;",opts:["&#128056;","&#128034;","&#128013;"],lbl:"Frog"},
+  {ans:"&#9992;",opts:["&#9992;","&#128641;","&#9973;"],lbl:"Airplane"},
+  {ans:"&#129413;",opts:["&#129413;","&#129417;","&#129412;"],lbl:"Eagle"},
+  {ans:"&#127815;",opts:["&#127815;","&#127827;","&#127817;"],lbl:"Grapes"},
+  {ans:"&#128047;",opts:["&#128047;","&#129409;","&#128058;"],lbl:"Tiger"},
+  {ans:"&#128640;",opts:["&#128640;","&#9992;","&#128641;"],lbl:"Rocket"},
+  {ans:"&#129427;",opts:["&#129427;","&#128059;","&#129426;"],lbl:"Zebra"},
+  {ans:"&#127817;",opts:["&#127817;","&#127815;","&#127822;"],lbl:"Watermelon"},
+  {ans:"&#128018;",opts:["&#128018;","&#128060;","&#128040;"],lbl:"Monkey"},
+  {ans:"&#128652;",opts:["&#128652;","&#128663;","&#128667;"],lbl:"Bus"},
+  {ans:"&#129434;",opts:["&#129434;","&#129441;","&#129442;"],lbl:"Peacock"},
+  {ans:"&#127829;",opts:["&#127829;","&#127874;","&#127869;"],lbl:"Pizza"},
+  {ans:"&#128059;",opts:["&#128059;","&#128060;","&#128040;"],lbl:"Bear"},
+  {ans:"&#127813;",opts:["&#127813;","&#127822;","&#127818;"],lbl:"Tomato"}
+];
+var shIdx=0,shSc=0,shAnswered=false;
+function initShadow(){shIdx=0;shSc=0;shAnswered=false;buildShadow();}
+function buildShadow(){
+  if(shIdx>=SHDW.length){
+    var pct=Math.round(shSc/SHDW.length*100);
+    document.getElementById('shadowArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+shSc+' / '+SHDW.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Amazing! Shadow expert!':pct>=50?'Good job!':'Keep trying!')+'</div><button class="rbtn" onclick="initShadow()">Play Again</button></div>';
+    spk(pct>=80?'Amazing! You are a shadow expert!':'Good job!');return;
+  }
+  shAnswered=false;
+  var p=SHDW[shIdx];
+  var shuffled=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var prev=shIdx>0?'<button class="prvbtn" onclick="shIdx--;buildShadow()">&#8592; Prev</button>':'';
+  document.getElementById('shadowArea').innerHTML=
+    '<div class="scorebar">Q <b>'+(shIdx+1)+'</b>/'+SHDW.length+' &nbsp; Score: <b>'+shSc+'</b></div>'
+    +'<div class="shadow-box"><div class="iq">What animal or thing is this shadow?</div>'
+    +'<span class="shadow-em">'+p.ans+'</span>'
+    +'<div class="shadow-opts">'+shuffled.map(function(o){
+      return '<div class="shadow-opt" id="sh_'+o+'" onclick="chkShadow(\''+o+'\',\''+p.ans+'\',\''+p.lbl+'\')">'+o+'</div>';
+    }).join('')+'</div>'
+    +'<div class="rmsg" id="shR"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:10px">'+prev
+    +'<button class="nxtbtn" id="shN" style="display:none" onclick="shIdx++;buildShadow()">Next &#8594;</button></div></div>';
+  spk('What is this shadow?');
+}
+function chkShadow(chosen,ans,lbl){
+  if(shAnswered)return;
+  var el=document.getElementById('sh_'+chosen);
+  if(chosen===ans){
+    shAnswered=true;el.classList.add('correct');shSc++;
+    document.getElementById('shR').innerHTML='&#127881; Yes! It is a '+lbl+'!';
+    spk('Correct! It is a '+lbl+'!');
+    document.getElementById('shN').style.display='inline-block';
+  }else{
+    el.classList.add('wrong');
+    document.getElementById('shR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong! Try again!');
+    setTimeout(function(){el.classList.remove('wrong');document.getElementById('shR').innerHTML='';},900);
+  }
+}
+
+// ── WHAT'S MISSING ──
+var MISS=[
+  {items:["&#127822;","&#127820;","&#128049;","&#11088;"]},
+  {items:["&#128053;","&#128056;","&#9728;","&#127800;"]},
+  {items:["&#128663;","&#129409;","&#127817;","&#128038;"]},
+  {items:["&#127752;","&#128024;","&#127829;","&#129432;"]},
+  {items:["&#128640;","&#127813;","&#129417;","&#128652;"]},
+  {items:["&#129426;","&#127815;","&#128641;","&#128046;"]},
+  {items:["&#128047;","&#127819;","&#129442;","&#128663;"]},
+  {items:["&#9917;","&#128018;","&#127874;","&#128057;"]},
+  {items:["&#129427;","&#127827;","&#128652;","&#128064;"]},
+  {items:["&#129413;","&#127821;","&#129364;","&#128059;"]},
+  {items:["&#128056;","&#127805;","&#128642;","&#129441;"]},
+  {items:["&#127795;","&#128031;","&#127878;","&#128661;"]},
+  {items:["&#129382;","&#128034;","&#127880;","&#128053;"]},
+  {items:["&#9728;","&#128039;","&#127826;","&#128663;"]},
+  {items:["&#127769;","&#128055;","&#129389;","&#128641;"]},
+  {items:["&#128013;","&#127822;","&#129413;","&#128652;"]},
+  {items:["&#128040;","&#127825;","&#9992;","&#128056;"]},
+  {items:["&#128060;","&#127817;","&#128038;","&#128663;"]},
+  {items:["&#128016;","&#127820;","&#128641;","&#11088;"]},
+  {items:["&#129432;","&#127827;","&#128640;","&#128049;"]}
+];
+var msIdx=0,msSc=0,msAnswered=false,msMissIdx=0;
+function initMissing(){msIdx=0;msSc=0;msAnswered=false;buildMissing();}
+function buildMissing(){
+  if(msIdx>=MISS.length){
+    var pct=Math.round(msSc/MISS.length*100);
+    document.getElementById('missingArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+msSc+' / '+MISS.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Great memory!':'Keep practising!')+'</div><button class="rbtn" onclick="initMissing()">Play Again</button></div>';
+    spk(pct>=80?'Great memory!':'Good job!');return;
+  }
+  msAnswered=false;
+  var p=MISS[msIdx];
+  msMissIdx=Math.floor(Math.random()*p.items.length);
+  var missingEm=p.items[msMissIdx];
+  /* show all 4 briefly, then hide one */
+  var prev=msIdx>0?'<button class="prvbtn" onclick="msIdx--;buildMissing()">&#8592; Prev</button>':'';
+  /* wrong opts: 2 randoms from other rounds */
+  var wrongPool=[];
+  MISS.forEach(function(r,ri){if(ri!==msIdx)r.items.forEach(function(it){if(it!==missingEm&&wrongPool.indexOf(it)<0)wrongPool.push(it);});});
+  wrongPool.sort(function(){return Math.random()-.5;});
+  var opts=[missingEm,wrongPool[0],wrongPool[1]].sort(function(){return Math.random()-.5;});
+  /* phase 1: show all */
+  document.getElementById('missingArea').innerHTML=
+    '<div class="scorebar">Q <b>'+(msIdx+1)+'</b>/'+MISS.length+' &nbsp; Score: <b>'+msSc+'</b></div>'
+    +'<div class="ibox"><div class="iq">&#128064; Look carefully...</div>'
+    +'<div class="missing-grid" id="msGrid">'+p.items.map(function(it){return '<div class="missing-item">'+it+'</div>';}).join('')+'</div>'
+    +'<div class="rmsg" id="msR">Remember what you see!</div></div>';
+  spk('Look carefully! Remember all the items!');
+  /* phase 2: hide after 2s */
+  setTimeout(function(){
+    var grid=document.getElementById('msGrid');
+    if(!grid)return;
+    grid.innerHTML=p.items.map(function(it,i){
+      return '<div class="missing-item'+(i===msMissIdx?' hidden':'')+'">'+it+'</div>';
+    }).join('');
+    document.getElementById('msR').innerHTML='Which one is MISSING?';
+    spk('Which one is missing?');
+    /* show opts */
+    var area=document.getElementById('missingArea');
+    if(!area)return;
+    var optHtml='<div class="missing-opts">'+opts.map(function(o){
+      return '<div class="missing-opt" id="ms_'+encodeURIComponent(o)+'" onclick="chkMissing(this,\''+o+'\',\''+missingEm+'\')">'+o+'</div>';
+    }).join('')+'</div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:10px">'+prev
+    +'<button class="nxtbtn" id="msN" style="display:none" onclick="msIdx++;buildMissing()">Next &#8594;</button></div>';
+    area.querySelector('.ibox').insertAdjacentHTML('beforeend',optHtml);
+  },2200);
+}
+function chkMissing(el,chosen,ans){
+  if(msAnswered)return;
+  if(chosen===ans){
+    msAnswered=true;el.classList.add('correct');msSc++;
+    document.getElementById('msR').innerHTML='&#127881; Correct! That was the missing one!';
+    spk('Correct! Great memory!');
+    document.getElementById('msN').style.display='inline-block';
+  }else{
+    el.classList.add('wrong');
+    document.getElementById('msR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong! Try again!');
+    setTimeout(function(){el.classList.remove('wrong');document.getElementById('msR').innerHTML='Which one is missing?';},900);
+  }
+}
+
+// ── SIMON SAYS ──
+var SIMON_COLORS=[
+  {id:'s0',bg:'#E53935',lbl:'Red'},
+  {id:'s1',bg:'#1E88E5',lbl:'Blue'},
+  {id:'s2',bg:'#43A047',lbl:'Green'},
+  {id:'s3',bg:'#FDD835',lbl:'Yellow'}
+];
+var simonSeq=[],simonStep=0,simonRound=0,simonSc=0,simonPlaying=false,simonMaxRound=10;
+function initSimon(){simonSeq=[];simonStep=0;simonRound=0;simonSc=0;simonPlaying=false;buildSimonBoard();nextSimonRound();}
+function buildSimonBoard(){
+  document.getElementById('simonArea').innerHTML=
+    '<div class="scorebar">Round: <b id="simonRnd">1</b>/'+simonMaxRound+' &nbsp; Score: <b id="simonSc">0</b></div>'
+    +'<div class="simon-status" id="simonStatus">Watch the sequence!</div>'
+    +'<div class="simon-seq" id="simonDots"></div>'
+    +'<div class="simon-board">'
+    +SIMON_COLORS.map(function(c){
+      return '<button class="simon-btn" id="'+c.id+'" style="background:'+c.bg+'" onclick="simonPress(\''+c.id+'\',\''+c.lbl+'\')">'+c.lbl+'</button>';
+    }).join('')+'</div>'
+    +'<div class="rmsg" id="simonR"></div>';
+}
+function nextSimonRound(){
+  if(simonRound>=simonMaxRound){
+    document.getElementById('simonArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">&#127942;&#127942;&#127942;</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+simonSc+' / '+simonMaxRound+'</div><div style="color:#777;margin-bottom:12px">Amazing memory champion!</div><button class="rbtn" onclick="initSimon()">Play Again</button></div>';
+    spk('Amazing! You are a memory champion!');return;
+  }
+  simonRound++;
+  var newColor=SIMON_COLORS[Math.floor(Math.random()*SIMON_COLORS.length)];
+  simonSeq.push(newColor);
+  simonStep=0;simonPlaying=true;
+  var rdEl=document.getElementById('simonRnd');
+  if(rdEl)rdEl.textContent=simonRound;
+  updateSimonDots();
+  document.getElementById('simonStatus').textContent='Watch carefully!';
+  spk('Watch carefully!');
+  playSimonSeq(0);
+}
+function updateSimonDots(){
+  var el=document.getElementById('simonDots');
+  if(!el)return;
+  el.innerHTML=simonSeq.map(function(c,i){
+    return '<span class="simon-dot'+(i<simonStep?' done':'')+'"></span>';
+  }).join('');
+}
+function playSimonSeq(i){
+  if(i>=simonSeq.length){
+    simonPlaying=false;simonStep=0;
+    document.getElementById('simonStatus').textContent='Your turn! Tap the same colors!';
+    spk('Your turn!');
+    updateSimonDots();return;
+  }
+  var c=simonSeq[i];
+  setTimeout(function(){
+    litBtn(c.id,600);
+    spk(c.lbl);
+    setTimeout(function(){playSimonSeq(i+1);},900);
+  },300);
+}
+function litBtn(id,dur){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('lit');
+  setTimeout(function(){el.classList.remove('lit');},dur);
+}
+function simonPress(id,lbl){
+  if(simonPlaying)return;
+  var el=document.getElementById(id);
+  el.classList.add('active-press');
+  setTimeout(function(){el.classList.remove('active-press');},200);
+  spk(lbl);
+  if(simonSeq[simonStep].id===id){
+    simonStep++;
+    updateSimonDots();
+    if(simonStep===simonSeq.length){
+      simonSc++;
+      var sc=document.getElementById('simonSc');if(sc)sc.textContent=simonSc;
+      document.getElementById('simonStatus').textContent='&#127881; Correct!';
+      document.getElementById('simonR').innerHTML='';
+      spk('Correct! Well done!');
+      setTimeout(function(){nextSimonRound();},1200);
+    }
+  }else{
+    simonPlaying=true;
+    document.getElementById('simonStatus').textContent='&#10060; Wrong! Watch again...';
+    document.getElementById('simonR').innerHTML='';
+    spk('Wrong! Watch again!');
+    setTimeout(function(){simonStep=0;simonPlaying=false;playSimonSeq(0);},1200);
+  }
+}
+
+// ── SORT IT ──
+var SORT_CATS=[
+  {lbl:"Animals",em:"&#128062;",bg:"#FF8E53",items:["&#129409;","&#128024;","&#128047;","&#128056;","&#128049;","&#128053;","&#129426;","&#129427;","&#128018;","&#128059;"]},
+  {lbl:"Fruits",em:"&#127822;",bg:"#E53935",items:["&#127822;","&#127820;","&#127818;","&#127815;","&#127817;","&#127827;","&#127825;","&#129389;","&#127819;","&#127826;"]},
+  {lbl:"Vehicles",em:"&#128663;",bg:"#1976D2",items:["&#128663;","&#128652;","&#128642;","&#9992;","&#128641;","&#128640;","&#9973;","&#128690;","&#128657;","&#128658;"]},
+  {lbl:"Birds",em:"&#128038;",bg:"#43A047",items:["&#129413;","&#129417;","&#129412;","&#128039;","&#129441;","&#129434;","&#129442;","&#129414;","&#128037;","&#128038;"]}
+];
+/* build flat pool of {em, catIdx} */
+var SORT_POOL=[];
+SORT_CATS.forEach(function(cat,ci){cat.items.forEach(function(em){SORT_POOL.push({em:em,ci:ci});});});
+var sortPool=[],sortIdx=0,sortSc=0,sortAnswered=false;
+function initSort(){
+  sortPool=SORT_POOL.slice().sort(function(){return Math.random()-.5;});
+  sortIdx=0;sortSc=0;sortAnswered=false;buildSort();
+}
+function buildSort(){
+  if(sortIdx>=sortPool.length){
+    var pct=Math.round(sortSc/sortPool.length*100);
+    document.getElementById('sortArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+sortSc+' / '+sortPool.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Perfect sorting!':'Good effort!')+'</div><button class="rbtn" onclick="initSort()">Play Again</button></div>';
+    spk(pct>=80?'Perfect sorting!':'Good effort!');return;
+  }
+  sortAnswered=false;
+  var item=sortPool[sortIdx];
+  var correctCat=SORT_CATS[item.ci];
+  /* pick 2 wrong cats */
+  var wrongCats=SORT_CATS.filter(function(_,i){return i!==item.ci;}).sort(function(){return Math.random()-.5;}).slice(0,3);
+  var allCats=[correctCat].concat(wrongCats).sort(function(){return Math.random()-.5;});
+  var prev=sortIdx>0?'<button class="prvbtn" onclick="sortIdx--;buildSort()">&#8592; Prev</button>':'';
+  document.getElementById('sortArea').innerHTML=
+    '<div class="scorebar">Item <b>'+(sortIdx+1)+'</b>/'+sortPool.length+' &nbsp; Score: <b>'+sortSc+'</b></div>'
+    +'<div class="ibox"><div class="iq">Where does this belong?</div>'
+    +'<div class="sort-item-box"><span class="sort-item-em">'+item.em+'</span></div>'
+    +'<div class="sort-buckets">'+allCats.map(function(cat,i){
+      var correct=cat===correctCat;
+      return '<div class="sort-bucket" id="sb'+i+'" style="background:'+cat.bg+'" onclick="chkSort(this,'+correct+',\''+cat.lbl+'\')">'
+        +'<span class="sort-bucket-em">'+cat.em+'</span>'
+        +'<span class="sort-bucket-lbl">'+cat.lbl+'</span></div>';
+    }).join('')+'</div>'
+    +'<div class="rmsg" id="sortR"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:10px">'+prev
+    +'<button class="nxtbtn" id="sortN" style="display:none" onclick="sortIdx++;buildSort()">Next &#8594;</button></div></div>';
+  spk('Where does this belong?');
+}
+function chkSort(el,correct,lbl){
+  if(sortAnswered)return;
+  if(correct){
+    sortAnswered=true;el.classList.add('correct');sortSc++;
+    document.getElementById('sortR').innerHTML='&#127881; Correct! It is a '+lbl+'!';
+    spk('Correct! It belongs with '+lbl+'!');
+    document.getElementById('sortN').style.display='inline-block';
+  }else{
+    el.classList.add('wrong');
+    document.getElementById('sortR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong! Try again!');
+    setTimeout(function(){el.classList.remove('wrong');document.getElementById('sortR').innerHTML='';},900);
+  }
+}
+
+// ── TRUE OR FALSE ──
+var TFD=[
+  {em:"&#128049;",stmt:"A cat can fly",ans:false},
+  {em:"&#128056;",stmt:"A frog can jump",ans:true},
+  {em:"&#9728;",stmt:"The sun is cold",ans:false},
+  {em:"&#128024;",stmt:"An elephant is bigger than a mouse",ans:true},
+  {em:"&#128038;",stmt:"Birds have wings",ans:true},
+  {em:"&#127820;",stmt:"A banana is red",ans:false},
+  {em:"&#128053;",stmt:"A dog says Meow",ans:false},
+  {em:"&#127822;",stmt:"An apple is a fruit",ans:true},
+  {em:"&#9992;",stmt:"Airplanes can fly",ans:true},
+  {em:"&#128046;",stmt:"A cow gives us milk",ans:true},
+  {em:"&#127813;",stmt:"A tomato is blue",ans:false},
+  {em:"&#128039;",stmt:"Penguins can fly high in the sky",ans:false},
+  {em:"&#127752;",stmt:"A rainbow has many colors",ans:true},
+  {em:"&#128013;",stmt:"A snake has legs",ans:false},
+  {em:"&#128034;",stmt:"A turtle moves very slowly",ans:true},
+  {em:"&#127815;",stmt:"Grapes grow in bunches",ans:true},
+  {em:"&#128642;",stmt:"A train runs on roads",ans:false},
+  {em:"&#129434;",stmt:"Peacock is the national bird of India",ans:true},
+  {em:"&#128047;",stmt:"Tiger is the national animal of India",ans:true},
+  {em:"&#127769;",stmt:"We can see the moon at night",ans:true},
+  {em:"&#128293;",stmt:"Fire is safe to touch",ans:false},
+  {em:"&#129426;",stmt:"A giraffe has a very long neck",ans:true},
+  {em:"&#128655;",stmt:"A fish can live on land",ans:false},
+  {em:"&#129432;",stmt:"A kangaroo carries its baby in a pouch",ans:true},
+  {em:"&#127817;",stmt:"A watermelon is green outside and red inside",ans:true},
+  {em:"&#128640;",stmt:"Rockets go to space",ans:true},
+  {em:"&#128046;",stmt:"A cow can fly",ans:false},
+  {em:"&#128018;",stmt:"Monkeys like bananas",ans:true},
+  {em:"&#9728;",stmt:"The sun rises in the West",ans:false},
+  {em:"&#128167;",stmt:"We should drink water every day",ans:true}
+];
+var tfIdx=0,tfSc=0,tfAnswered=false;
+function initTF(){tfIdx=0;tfSc=0;tfAnswered=false;buildTF();}
+function buildTF(){
+  if(tfIdx>=TFD.length){
+    var pct=Math.round(tfSc/TFD.length*100);
+    document.getElementById('tfArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+tfSc+' / '+TFD.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Brilliant! You know everything!':pct>=50?'Good thinking!':'Keep learning!')+'</div><button class="rbtn" onclick="initTF()">Play Again</button></div>';
+    spk(pct>=80?'Brilliant! You know everything!':'Good thinking!');return;
+  }
+  tfAnswered=false;
+  var p=TFD[tfIdx];
+  var prev=tfIdx>0?'<button class="prvbtn" onclick="tfIdx--;buildTF()">&#8592; Prev</button>':'';
+  document.getElementById('tfArea').innerHTML=
+    '<div class="scorebar">Q <b>'+(tfIdx+1)+'</b>/'+TFD.length+' &nbsp; Score: <b>'+tfSc+'</b></div>'
+    +'<div class="tf-card"><span class="tf-em">'+p.em+'</span>'
+    +'<div class="tf-stmt">'+p.stmt+'</div>'
+    +'<div class="tf-btns">'
+    +'<button class="tf-btn tf-true" id="tfT" onclick="chkTF(true,'+p.ans+')">&#9989; TRUE</button>'
+    +'<button class="tf-btn tf-false" id="tfF" onclick="chkTF(false,'+p.ans+')">&#10060; FALSE</button>'
+    +'</div>'
+    +'<div class="rmsg" id="tfR" style="margin-top:14px"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:10px">'+prev
+    +'<button class="nxtbtn" id="tfN" style="display:none" onclick="tfIdx++;buildTF()">Next &#8594;</button></div></div>';
+  spk(p.stmt+'. True or False?');
+}
+function chkTF(chosen,ans){
+  if(tfAnswered)return;tfAnswered=true;
+  var tBtn=document.getElementById('tfT'),fBtn=document.getElementById('tfF');
+  if(chosen===ans){
+    (chosen?tBtn:fBtn).classList.add('correct');
+    (chosen?fBtn:tBtn).classList.add('wrong');
+    tfSc++;
+    document.getElementById('tfR').innerHTML='&#127881; Correct!';
+    spk('Correct! Well done Reyan!');
+  }else{
+    (chosen?tBtn:fBtn).classList.add('wrong');
+    (chosen?fBtn:tBtn).classList.add('correct');
+    document.getElementById('tfR').innerHTML='&#10060; The answer is '+(ans?'TRUE':'FALSE')+'!';
+    spk('The answer is '+(ans?'True':'False')+'!');
+  }
+  document.getElementById('tfN').style.display='inline-block';
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   initMem();initOdd();initCT();initGQ();initWM();
