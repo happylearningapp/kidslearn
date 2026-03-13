@@ -35,7 +35,8 @@
 .balnum{display:block;font-size:1rem;font-weight:900;color:#333;margin-top:-4px;}
 .balstr{width:2px;height:28px;background:rgba(0,0,0,.2);margin:0 auto;}
 @keyframes bpop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(0);opacity:0}}
-.ptrow{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.prvbtn{display:inline-block;padding:10px 26px;border-radius:20px;border:2px solid #FF6B6B;background:#fff;color:#FF6B6B;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;}
+.prvbtn:hover{background:#FF6B6B;color:#fff;}
 .pitem{font-size:2.4rem;padding:7px;background:#f5f5f5;border-radius:12px;min-width:52px;text-align:center;}
 .pblank{font-size:2.4rem;padding:7px;background:#f0f0f0;border-radius:12px;min-width:52px;text-align:center;border:3px dashed #ccc;}
 .cprow{display:flex;gap:16px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
@@ -118,26 +119,171 @@ function flipC(i){if(memSt.lk||memSt.fl.length>=2||memSt.ma.indexOf(i)>=0||memSt
 // ODD ONE OUT
 var oddIdx=0,oddSc=0;
 function initOdd(){oddIdx=0;oddSc=0;buildOdd();}
-function buildOdd(){var p=ODD[oddIdx%ODD.length];var h='<div class="scorebar">Score: <b>'+oddSc+'</b> of '+ODD.length+'</div><div class="ibox"><div class="iq">'+p.q+'</div><div class="ogrid">'+p.i.map(function(it,i){return '<div class="ocrd" id="oc'+i+'" onclick="chkOdd('+i+','+oddIdx+')">'+'<span style="font-size:2.2rem;display:block;margin-bottom:5px">'+it.e+'</span>'+'<div style="font-size:var(--sm);font-weight:700;color:#333">'+it.l+'</div></div>';}).join('')+'</div><div class="rmsg" id="oddR"></div><button class="nxtbtn" id="oddN" style="display:none" onclick="oddIdx++;buildOdd()">Next</button></div>';document.getElementById('oddArea').innerHTML=h;}
-function chkOdd(i,qi){var nb=document.getElementById('oddN');if(nb&&nb.style.display==='inline-block')return;var p=ODD[qi%ODD.length];if(p.multi){var ok=p.correct.indexOf(i)>=0;document.getElementById('oc'+i).classList.add(ok?'correct':'wrong');p.correct.forEach(function(ci){document.getElementById('oc'+ci).classList.add('correct');});if(ok){oddSc++;document.getElementById('oddR').innerHTML='Correct!';spk('Correct!');}else{document.getElementById('oddR').innerHTML='Those are the correct ones!';spk('Those are the correct ones!');}}else{var isO=p.i[i].o;document.getElementById('oc'+i).classList.add(isO?'correct':'wrong');if(!isO){p.i.forEach(function(it,ci){if(it.o)document.getElementById('oc'+ci).classList.add('correct');});}if(isO){oddSc++;document.getElementById('oddR').innerHTML='Correct! '+p.i[i].l+' is the odd one!';spk('Correct!');}else{document.getElementById('oddR').innerHTML='Not quite!';spk('Try again!');}}document.getElementById('oddN').style.display='inline-block';}
+function buildOdd(){
+  var p=ODD[oddIdx%ODD.length];
+  var prevBtn=oddIdx>0?'<button class="prvbtn" onclick="oddIdx--;buildOdd()">&#8592; Prev</button>':'';
+  var h='<div class="scorebar">Q <b>'+(oddIdx+1)+'</b>/'+ODD.length+' &nbsp; Score: <b>'+oddSc+'</b></div>'
+    +'<div class="ibox"><div class="iq">'+p.q+'</div>'
+    +'<div class="ogrid">'+p.i.map(function(it,i){
+      return '<div class="ocrd" id="oc'+i+'" onclick="chkOdd('+i+','+oddIdx+')">'
+        +'<span style="font-size:2.2rem;display:block;margin-bottom:5px">'+it.e+'</span>'
+        +'<div style="font-size:var(--sm);font-weight:700;color:#333">'+it.l+'</div></div>';
+    }).join('')+'</div>'
+    +'<div class="rmsg" id="oddR"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:12px">'
+    +prevBtn+'<button class="nxtbtn" id="oddN" style="display:none" onclick="oddIdx++;buildOdd()">Next &#8594;</button></div></div>';
+  document.getElementById('oddArea').innerHTML=h;
+  spk(p.q);
+}
+function chkOdd(i,qi){
+  var nb=document.getElementById('oddN');
+  if(nb&&nb.style.display==='inline-block')return;
+  var p=ODD[qi%ODD.length];
+  if(p.multi){
+    var ok=p.correct.indexOf(i)>=0;
+    if(ok){
+      document.getElementById('oc'+i).classList.add('correct');
+      /* reveal all correct */
+      p.correct.forEach(function(ci){document.getElementById('oc'+ci).classList.add('correct');});
+      oddSc++;
+      document.getElementById('oddR').innerHTML='&#127881; Correct!';
+      spk('Correct!');
+      document.getElementById('oddN').style.display='inline-block';
+    }else{
+      var el=document.getElementById('oc'+i);
+      el.classList.add('wrong');
+      document.getElementById('oddR').innerHTML='&#10060; Wrong! Try again!';
+      spk('Wrong answer! Try again!');
+      setTimeout(function(){el.classList.remove('wrong');document.getElementById('oddR').innerHTML='';},900);
+    }
+  }else{
+    var isO=p.i[i].o;
+    if(isO){
+      document.getElementById('oc'+i).classList.add('correct');
+      oddSc++;
+      document.getElementById('oddR').innerHTML='&#127881; Correct! '+p.i[i].l+' is the odd one!';
+      spk('Correct! '+p.i[i].l+' is the odd one!');
+      document.getElementById('oddN').style.display='inline-block';
+    }else{
+      var el2=document.getElementById('oc'+i);
+      el2.classList.add('wrong');
+      document.getElementById('oddR').innerHTML='&#10060; Wrong! Try again!';
+      spk('Wrong answer! Try again!');
+      setTimeout(function(){el2.classList.remove('wrong');document.getElementById('oddR').innerHTML='';},900);
+    }
+  }
+}
 
 // COUNT & TAP
-var ctIdx=0,ctSc=0;
-function initCT(){ctIdx=0;ctSc=0;buildCT();}
-function buildCT(){var p=CTD[ctIdx%CTD.length];var ems=Array(p.n).fill(p.e).join(' ');var opts=[p.n];while(opts.length<4){var r=Math.floor(Math.random()*8)+1;if(opts.indexOf(r)<0)opts.push(r);}opts.sort(function(){return Math.random()-.5;});document.getElementById('ctArea').innerHTML='<div class="scorebar">Score: <b>'+ctSc+'</b></div><div class="ctarea"><div class="iq">'+p.q+'</div><div style="font-size:2.2rem;margin-bottom:16px;min-height:56px">'+ems+'</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+opts.map(function(o){return '<button class="ctnbtn" onclick="chkCT(this,'+o+','+p.n+')">'+o+'</button>';}).join('')+'</div><div class="rmsg" id="ctR" style="margin-top:10px"></div><button class="nxtbtn" id="ctN" style="display:none" onclick="ctIdx++;buildCT()">Next</button></div>';}
-function chkCT(b,c,cr){if(b.classList.contains('correct')||b.classList.contains('wrong'))return;if(c===cr){b.classList.add('correct');ctSc++;document.getElementById('ctR').innerHTML='Yes! There are '+cr+'!';spk('Correct! There are '+cr+'!');}else{b.classList.add('wrong');document.getElementById('ctR').innerHTML='Answer is '+cr;spk('The answer is '+cr);}document.getElementById('ctN').style.display='inline-block';}
+var ctIdx=0,ctSc=0,ctAnswered=false;
+function initCT(){ctIdx=0;ctSc=0;ctAnswered=false;buildCT();}
+function buildCT(){
+  var p=CTD[ctIdx%CTD.length];
+  var ems=Array(p.n).fill(p.e).join(' ');
+  var opts=[p.n];
+  while(opts.length<4){var r=Math.floor(Math.random()*8)+1;if(opts.indexOf(r)<0)opts.push(r);}
+  opts.sort(function(){return Math.random()-.5;});
+  ctAnswered=false;
+  var prevBtn=ctIdx>0?'<button class="prvbtn" onclick="ctIdx--;buildCT()">&#8592; Prev</button>':'';
+  document.getElementById('ctArea').innerHTML=
+    '<div class="scorebar">Q <b>'+(ctIdx+1)+'</b>/'+CTD.length+' &nbsp; Score: <b>'+ctSc+'</b></div>'
+    +'<div class="ctarea"><div class="iq">'+p.q+'</div>'
+    +'<div style="font-size:2.2rem;margin-bottom:16px;min-height:56px">'+ems+'</div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+opts.map(function(o){return '<button class="ctnbtn" id="cto_'+o+'" onclick="chkCT(this,'+o+','+p.n+')">'+o+'</button>';}).join('')+'</div>'
+    +'<div class="rmsg" id="ctR" style="margin-top:10px"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:12px">'+prevBtn+'<button class="nxtbtn" id="ctN" style="display:none" onclick="ctIdx++;ctAnswered=false;buildCT()">Next &#8594;</button></div></div>';
+  spk(p.q);
+}
+function chkCT(b,c,cr){
+  if(ctAnswered)return;
+  if(c===cr){
+    ctAnswered=true;
+    b.classList.add('correct');ctSc++;
+    document.getElementById('ctR').innerHTML='&#127881; Yes! There are '+cr+'!';
+    spk('Correct! There are '+cr+'!');
+    document.getElementById('ctN').style.display='inline-block';
+  }else{
+    b.classList.add('wrong');
+    document.getElementById('ctR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong answer! Try again!');
+    setTimeout(function(){b.classList.remove('wrong');document.getElementById('ctR').innerHTML='';},900);
+  }
+}
 
 // GAME QUIZ
-var gqIdx=0,gqSc=0;
-function initGQ(){gqIdx=0;gqSc=0;buildGQ();}
-function buildGQ(){if(gqIdx>=GQD.length){var pct=Math.round(gqSc/GQD.length*100);document.getElementById('gqArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+gqSc+' / '+GQD.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Excellent! You are a star!':pct>=50?'Good job! Keep practising!':'Keep trying!')+'</div><button class="rbtn" onclick="initGQ()">Play Again</button></div>';spk(pct>=80?'Excellent!':'Good job!');return;}var p=GQD[gqIdx];document.getElementById('gqArea').innerHTML='<div class="scorebar">Q <b>'+(gqIdx+1)+'</b>/'+GQD.length+' Score: <b>'+gqSc+'</b></div><div class="ibox"><div style="font-size:3rem;text-align:center;margin-bottom:8px">'+p.e+'</div><div class="iq">'+p.q+'</div><div class="achc" style="flex-wrap:wrap;gap:8px">'+p.o.map(function(o,i){return '<button class="cbtn" style="font-size:var(--md);min-width:110px" onclick="chkGQ(this,'+i+','+p.a+')">'+o+'</button>';}).join('')+'</div><div class="rmsg" id="gqR"></div><button class="nxtbtn" id="gqN" style="display:none" onclick="gqIdx++;buildGQ()">Next</button></div>';}
-function chkGQ(b,c,cr){if(b.classList.contains('correct')||b.classList.contains('wrong'))return;if(c===cr){b.classList.add('correct');gqSc++;document.getElementById('gqR').innerHTML='Correct!';spk('Correct!');}else{b.classList.add('wrong');document.getElementById('gqR').innerHTML='Answer: '+GQD[gqIdx].o[cr];spk('The answer is '+GQD[gqIdx].o[cr]);}document.getElementById('gqN').style.display='inline-block';}
+var gqIdx=0,gqSc=0,gqAnswered=false;
+function initGQ(){gqIdx=0;gqSc=0;gqAnswered=false;buildGQ();}
+function buildGQ(){
+  if(gqIdx>=GQD.length){
+    var pct=Math.round(gqSc/GQD.length*100);
+    document.getElementById('gqArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+gqSc+' / '+GQD.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Excellent! You are a star!':pct>=50?'Good job! Keep practising!':'Keep trying!')+'</div><button class="rbtn" onclick="initGQ()">Play Again</button></div>';
+    spk(pct>=80?'Excellent! You are a star!':'Good job!');return;
+  }
+  gqAnswered=false;
+  var p=GQD[gqIdx];
+  var prevBtn=gqIdx>0?'<button class="prvbtn" onclick="gqIdx--;buildGQ()">&#8592; Prev</button>':'';
+  document.getElementById('gqArea').innerHTML=
+    '<div class="scorebar">Q <b>'+(gqIdx+1)+'</b>/'+GQD.length+' &nbsp; Score: <b>'+gqSc+'</b></div>'
+    +'<div class="ibox"><div style="font-size:3rem;text-align:center;margin-bottom:8px">'+p.e+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="achc" style="flex-wrap:wrap;gap:8px">'+p.o.map(function(o,i){return '<button class="cbtn" style="font-size:var(--md);min-width:110px" id="gqo_'+i+'" onclick="chkGQ(this,'+i+','+p.a+')">'+o+'</button>';}).join('')+'</div>'
+    +'<div class="rmsg" id="gqR"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:4px">'+prevBtn+'<button class="nxtbtn" id="gqN" style="display:none" onclick="gqIdx++;gqAnswered=false;buildGQ()">Next &#8594;</button></div></div>';
+  spk(p.q);
+}
+function chkGQ(b,c,cr){
+  if(gqAnswered)return;
+  if(c===cr){
+    gqAnswered=true;
+    b.classList.add('correct');gqSc++;
+    document.getElementById('gqR').innerHTML='&#127881; Correct!';
+    spk('Correct!');
+    document.getElementById('gqN').style.display='inline-block';
+  }else{
+    b.classList.add('wrong');
+    document.getElementById('gqR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong answer! Try again!');
+    setTimeout(function(){b.classList.remove('wrong');document.getElementById('gqR').innerHTML='';},900);
+  }
+}
 
 // WORD MATCH
 var wmIdx=0,wmSc=0,wmAns=false;
 function initWM(){wmIdx=0;wmSc=0;wmAns=false;buildWM();}
-function buildWM(){if(wmIdx>=WMD.length){var pct=Math.round(wmSc/WMD.length*100);document.getElementById('wmArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+wmSc+' / '+WMD.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Amazing spelling!':'Keep practising!')+'</div><button class="rbtn" onclick="initWM()">Play Again</button></div>';spk(pct>=80?'Amazing!':'Good job!');return;}var p=WMD[wmIdx];var sh=p.o.slice().sort(function(){return Math.random()-.5;});document.getElementById('wmArea').innerHTML='<div class="scorebar">Word <b>'+(wmIdx+1)+'</b>/'+WMD.length+' Score: <b>'+wmSc+'</b></div><div class="wmbox"><div style="font-size:5rem;display:block;margin-bottom:8px">'+p.e+'</div><div style="font-size:var(--lg);font-weight:900;color:#333;margin-bottom:18px">Which word matches?</div><div class="wopts">'+sh.map(function(o){return '<button class="wopt" id="wo_'+o+'" onclick="chkWM(this,\''+o+'\',\''+p.w+'\')">'+o+'</button>';}).join('')+'</div><div class="rmsg" id="wmR"></div><button class="nxtbtn" id="wmN" style="display:none" onclick="wmIdx++;wmAns=false;buildWM()">Next</button></div>';spk('Which word matches?');}
-function chkWM(b,c,cr){if(wmAns)return;wmAns=true;if(c===cr){b.classList.add('correct');wmSc++;document.getElementById('wmR').innerHTML='Yes! '+cr+'!';spk('Correct! '+cr+'!');}else{b.classList.add('wrong');var el=document.getElementById('wo_'+cr);if(el)el.classList.add('reveal');document.getElementById('wmR').innerHTML='The word is: '+cr;spk('The word is '+cr);}document.getElementById('wmN').style.display='inline-block';}
+function buildWM(){
+  if(wmIdx>=WMD.length){
+    var pct=Math.round(wmSc/WMD.length*100);
+    document.getElementById('wmArea').innerHTML='<div class="scorescreen"><div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':'&#127942;')+'</div><div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+wmSc+' / '+WMD.length+'</div><div style="color:#777;margin-bottom:12px">'+(pct>=80?'Amazing spelling!':'Keep practising!')+'</div><button class="rbtn" onclick="initWM()">Play Again</button></div>';
+    spk(pct>=80?'Amazing spelling!':'Good job!');return;
+  }
+  wmAns=false;
+  var p=WMD[wmIdx];
+  var sh=p.o.slice().sort(function(){return Math.random()-.5;});
+  var prevBtn=wmIdx>0?'<button class="prvbtn" onclick="wmIdx--;buildWM()">&#8592; Prev</button>':'';
+  document.getElementById('wmArea').innerHTML=
+    '<div class="scorebar">Word <b>'+(wmIdx+1)+'</b>/'+WMD.length+' &nbsp; Score: <b>'+wmSc+'</b></div>'
+    +'<div class="wmbox"><div style="font-size:5rem;display:block;margin-bottom:8px">'+p.e+'</div>'
+    +'<div style="font-size:var(--lg);font-weight:900;color:#333;margin-bottom:18px">Which word matches?</div>'
+    +'<div class="wopts">'+sh.map(function(o){return '<button class="wopt" id="wo_'+o+'" onclick="chkWM(this,\''+o+'\',\''+p.w+'\')">'+o+'</button>';}).join('')+'</div>'
+    +'<div class="rmsg" id="wmR"></div>'
+    +'<div style="display:flex;gap:10px;justify-content:center;margin-top:4px">'+prevBtn+'<button class="nxtbtn" id="wmN" style="display:none" onclick="wmIdx++;wmAns=false;buildWM()">Next &#8594;</button></div></div>';
+  spk('Which word matches?');
+}
+function chkWM(b,c,cr){
+  if(wmAns)return;
+  if(c===cr){
+    wmAns=true;
+    b.classList.add('correct');wmSc++;
+    document.getElementById('wmR').innerHTML='&#127881; Yes! '+cr+'!';
+    spk('Correct! '+cr+'!');
+    document.getElementById('wmN').style.display='inline-block';
+  }else{
+    b.classList.add('wrong');
+    document.getElementById('wmR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong answer! Try again!');
+    setTimeout(function(){b.classList.remove('wrong');document.getElementById('wmR').innerHTML='';},900);
+  }
+}
 
 // BALLOON POP
 var balSc=0,balRd=0,balTgt=0;
