@@ -103,15 +103,17 @@ html { height: 100%; }
 /* ── Mobile adjustments ── */
 @media (max-width: 600px) {
   #page-home { height: 100dvh; } /* dvh = dynamic, accounts for address bar */
-  .app-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 4px 14px 6px; }
-  .tile { border-radius: 18px; padding: 14px 7px; }
-  .tile-icon { font-size: 2.1rem; margin-bottom: 5px; }
-  .tile-title { font-size: .82rem; }
-  .tile-sub { font-size: .61rem; }
-  .home-header { padding: 10px 56px 6px; }
-  .home-header h1 { font-size: 1.32rem; }
-  .home-header .sub { font-size: .72rem; }
-  .em-row { font-size: 1.25rem; margin-bottom: 2px; }
+  .home-header { padding: 5px 52px 3px; }
+  .em-row { font-size: .95rem; margin-bottom: 1px; }
+  .home-header h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .home-header .sub { font-size: .66rem; }
+  .app-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; padding: 2px 10px 3px; }
+  .tile { border-radius: 16px; padding: 10px 6px; }
+  .tile-icon { font-size: 1.8rem; margin-bottom: 3px; }
+  .tile-title { font-size: .78rem; }
+  .tile-sub { font-size: .58rem; }
+  .tile-badge { font-size: .5rem; padding: 1px 5px; }
+  .home-footer { padding: 2px 10px 4px; font-size: .62rem; }
 }
 
 /* ── Welcome Modal ── */
@@ -312,9 +314,7 @@ function applyKidName() {
   var foot = document.getElementById('homeFooter');
   if (name) {
     h1.innerHTML   = name + '&#8217;s Learning World &#127775;';
-    sub.innerHTML  = age
-      ? 'Hi ' + name + '! Age ' + age + ' &mdash; Let&#8217;s learn! &#127775;'
-      : 'Hi ' + name + '! Tap a tile to start! &#128640;';
+    sub.innerHTML  = 'Hi ' + name + '! Tap a tile to start! &#128640;';
     foot.innerHTML = 'Made with &#10084; for <b>' + name + '</b> &nbsp;|&nbsp; Keep learning! &#127807;';
   } else {
     h1.innerHTML   = 'Happy Learning World &#127775;';
