@@ -7,7 +7,8 @@
 /* ── SETTINGS (localStorage) ── */
 var FONT_KEY  = 'rlw_font';
 var SIZE_KEY  = 'rlw_size';
-var SND_KEY   = 'rlw_sound'; // 'on' | 'off'
+var SND_KEY   = 'rlw_sound';   // 'on' | 'off'  (defaults to ON if unset)
+var VOICE_KEY = 'rlw_voice';   // voice name string
 
 function loadSettings() {
   var f = localStorage.getItem(FONT_KEY) || 'Nunito,sans-serif';
@@ -23,10 +24,11 @@ function loadSettings() {
     b.classList.toggle('active', b.getAttribute('data-size') === s);
   });
 
-  // restore sound toggle on this page
-  var snd = localStorage.getItem(SND_KEY) === 'on';
+  // restore sound toggle on this page  (default ON if never set)
+  var snd = isSoundOn();
   var tog = document.getElementById('sndTog');
   if (tog) tog.checked = snd;
+  updateSoundBtn();
 }
 
 function setFont(f, btn) {
@@ -48,8 +50,11 @@ function saveSound(on) {
 }
 
 /* ── GEAR DRAWER ── */
-function toggleSettings() {
-  document.getElementById('sdrawer').classList.toggle('open');
+function toggleSettings(e) {
+  if (e && e.stopPropagation) e.stopPropagation();
+  var d = document.getElementById('sdrawer');
+  d.classList.toggle('open');
+  if (d.classList.contains('open')) populateVoices(); // refresh list on open
 }
 function initGear() {
   var gear = document.getElementById('gearBtn');
@@ -70,18 +75,27 @@ function getBV() {
   if (_bv) return _bv;
   var vs = window.speechSynthesis.getVoices();
   if (!vs.length) return null;
+  // 1. User-saved voice preference
+  var saved = localStorage.getItem(VOICE_KEY);
+  if (saved) {
+    var sv = vs.find(function(v) { return v.name === saved; });
+    if (sv) { _bv = sv; return sv; }
+  }
+  // 2. Built-in preference list
   var pref = ['Google US English', 'Samantha', 'Karen', 'Moira'];
   for (var i = 0; i < pref.length; i++) {
     var v = vs.find(function(x) { return x.name === pref[i]; });
     if (v) { _bv = v; return v; }
   }
+  // 3. Any en-US, then any voice
   _bv = vs.find(function(v) { return v.lang === 'en-US'; }) || vs[0];
   return _bv;
 }
-window.speechSynthesis.onvoiceschanged = function() { _bv = null; };
+window.speechSynthesis.onvoiceschanged = function() { _bv = null; populateVoices(); };
 
 function isSoundOn() {
-  return localStorage.getItem(SND_KEY) === 'on';
+  var val = localStorage.getItem(SND_KEY);
+  return val === null ? true : val === 'on'; // default ON for first-time visitors
 }
 
 function _doSpeak(text, rate, pitch) {
@@ -153,9 +167,9 @@ var SHARED_CSS = `
   --xxl:calc(var(--b)*2.2); --hero:calc(var(--b)*2.8); }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7;overflow-x:hidden;}
-.back-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:30px;border:none;background:rgba(255,255,255,.93);color:#FF6B6B;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.12);position:fixed;top:12px;left:12px;z-index:999;}
-.gear-btn{position:fixed;top:12px;right:12px;z-index:1000;width:40px;height:40px;border-radius:50%;border:none;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.15);cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
-.sdrawer{position:fixed;top:60px;right:12px;z-index:999;background:#fff;border-radius:18px;padding:18px 20px;box-shadow:0 8px 30px rgba(0,0,0,.15);min-width:280px;display:none;}
+.back-btn{display:none!important;}
+.gear-btn{display:none!important;}
+.sdrawer{position:fixed;top:66px;right:12px;z-index:999;background:#fff;border-radius:18px;padding:18px 20px;box-shadow:0 8px 30px rgba(0,0,0,.15);min-width:280px;display:none;}
 .sdrawer.open{display:block;}
 .sdrawer h3{font-size:var(--md);font-weight:900;color:#555;margin-bottom:12px;border-bottom:2px solid #f0f0f0;padding-bottom:8px;}
 .srow{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
@@ -163,18 +177,9 @@ body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7
 .sbtns{display:flex;flex-wrap:wrap;gap:6px;}
 .fbtn,.zbtn{padding:5px 12px;border-radius:14px;border:2px solid #eee;background:#f9f9f9;cursor:pointer;font-size:var(--sm);font-weight:600;color:#666;}
 .fbtn.active,.zbtn.active{background:#FF6B6B;color:#fff;border-color:#FF6B6B;}
-.subhdr{padding:44px 16px 12px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.15);}
-.subhdr h1{font-size:var(--xl);color:#fff;font-weight:900;}
-.subhdr p{font-size:var(--sm);color:rgba(255,255,255,.85);margin-top:3px;}
-.sndbr{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px;}
-.sndlbl{font-size:var(--sm);font-weight:bold;color:#fff;}
-.tog{position:relative;width:50px;height:25px;cursor:pointer;}
-.tog input{opacity:0;width:0;height:0;}
-.togsl{position:absolute;inset:0;background:rgba(255,255,255,.35);border-radius:25px;transition:.3s;}
-.togsl::before{content:'';position:absolute;width:19px;height:19px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
-.tog input:checked+.togsl{background:#4CAF50;}
-.tog input:checked+.togsl::before{transform:translateX(25px);}
-.subbody{display:flex;min-height:calc(100vh - 95px);}
+.subhdr{padding:0 10px;height:58px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 4px 14px rgba(0,0,0,.15);}
+.subhdr h1,.subhdr p,.sndbr{display:none;}
+.subbody{display:flex;min-height:calc(100vh - 58px);}
 .stabs{width:108px;min-width:108px;background:#fff;box-shadow:3px 0 10px rgba(0,0,0,.07);overflow-y:auto;padding:8px 4px;}
 .stab{display:flex;align-items:center;gap:5px;width:100%;padding:7px 5px;border-radius:11px;border:none;background:transparent;cursor:pointer;font-family:var(--f);font-size:.68rem;font-weight:700;color:#555;text-align:left;margin-bottom:2px;transition:all .15s;}
 .stab:hover{background:#f5f5f5;color:#FF6B6B;}
@@ -230,6 +235,18 @@ body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7
 .rbtn{padding:12px 28px;border-radius:20px;border:none;background:linear-gradient(135deg,#6A1B9A,#E91E63);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;margin-top:12px;}
 @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hdr-home{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;font-size:1.2rem;text-decoration:none;font-weight:900;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.hdr-home:active{background:rgba(255,255,255,.42);}
+.hdr-title{flex:1;color:#fff;font-size:1.05rem;font-weight:900;font-family:var(--f);text-align:center;line-height:1.2;}
+.hdr-title small{display:block;font-size:.6rem;font-weight:700;opacity:.75;letter-spacing:.6px;text-transform:uppercase;margin-top:1px;}
+.hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.hdr-snd-btn{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);border:none;font-size:1.3rem;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent;}
+.hdr-snd-btn:active{transform:scale(.88);}
+.hdr-snd-btn.muted{background:rgba(0,0,0,.28);opacity:.75;}
+.hdr-gear{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);border:none;color:#fff;font-size:1.1rem;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.hdr-gear:active{background:rgba(255,255,255,.42);}
+.vsel{flex:1;padding:7px 10px;border-radius:12px;border:2px solid #eee;font-family:var(--f);font-size:var(--sm);background:#f9f9f9;color:#555;cursor:pointer;min-width:0;}
+.vsel:focus{border-color:#FF6B6B;outline:none;}
 `;
 
 function injectSharedCSS() {
@@ -261,8 +278,47 @@ function injectGear() {
       <button class="zbtn" data-size="1rem"    onclick="setSize('1rem',this)">M</button>
       <button class="zbtn" data-size="1.1rem"  onclick="setSize('1.1rem',this)">L</button>
       <button class="zbtn" data-size="1.25rem" onclick="setSize('1.25rem',this)">XL</button>
-    </div></div>`;
+    </div></div>
+    <div class="srow" id="voiceRow">
+      <span class="slbl">&#127908; Voice</span>
+      <select class="vsel" id="voiceSel" onchange="setVoice(this.value)">
+        <option>Loading voices…</option>
+      </select>
+    </div>`;
   document.body.insertBefore(drawer, gear.nextSibling);
+}
+
+/* ── COMPACT PAGE HEADER (reads data-page-* from <body>) ── */
+function injectPageHeader() {
+  var body = document.body;
+  var title = body.getAttribute('data-page-title');
+  if (!title) return; // home page – no subhdr needed
+  var sub      = body.getAttribute('data-page-sub')      || '';
+  var gradient = body.getAttribute('data-page-gradient') || 'linear-gradient(135deg,#FF6B6B,#FF8E53)';
+  var backUrl  = body.getAttribute('data-page-back')     || 'home.html';
+
+  var inner =
+    '<a class="hdr-home" href="' + backUrl + '">&#8592;</a>' +
+    '<div class="hdr-title">' + title + '<small>' + sub + '</small></div>' +
+    '<div class="hdr-right">' +
+      '<input type="checkbox" id="sndTog" style="display:none"/>' +
+      '<button id="sndIconBtn" class="hdr-snd-btn" onclick="toggleSoundBtn()" title="Sound">&#128266;</button>' +
+      '<button class="hdr-gear" onclick="toggleSettings(event)" title="Settings">&#9881;</button>' +
+    '</div>';
+
+  // Find and reuse existing header div, or create new one
+  var hdr = document.querySelector('.subhdr') || document.querySelector('.gkhdr');
+  if (hdr) {
+    hdr.className = 'subhdr';
+    hdr.style.cssText = 'background:' + gradient;
+    hdr.innerHTML = inner;
+  } else {
+    hdr = document.createElement('div');
+    hdr.className = 'subhdr';
+    hdr.style.cssText = 'background:' + gradient;
+    hdr.innerHTML = inner;
+    document.body.insertBefore(hdr, document.body.firstChild);
+  }
 }
 
 /* ── SOUND TOGGLE WIRE-UP ── */
@@ -274,6 +330,58 @@ function initSoundToggle() {
     saveSound(this.checked);
     if (!this.checked) window.speechSynthesis.cancel();
   });
+}
+
+/* ── SOUND ICON BUTTON (compact header) ── */
+function toggleSoundBtn() {
+  var on = !isSoundOn();
+  saveSound(on);
+  var tog = document.getElementById('sndTog');
+  if (tog) tog.checked = on;
+  if (!on) window.speechSynthesis.cancel();
+  updateSoundBtn();
+}
+function updateSoundBtn() {
+  var btn = document.getElementById('sndIconBtn');
+  if (!btn) return;
+  var on = isSoundOn();
+  btn.innerHTML = on ? '&#128266;' : '&#128263;';
+  btn.classList.toggle('muted', !on);
+  btn.title = on ? 'Sound On \u2013 tap to mute' : 'Muted \u2013 tap to unmute';
+}
+
+/* ── VOICE SELECTION ── */
+function setVoice(name) {
+  localStorage.setItem(VOICE_KEY, name);
+  _bv = null; // clear cache so getBV() re-reads saved value
+  // Play a quick test so user can hear the chosen voice
+  spkForce('Hello! This is your new voice.');
+}
+
+function populateVoices() {
+  var sel = document.getElementById('voiceSel');
+  if (!sel) return;
+  var vs = window.speechSynthesis.getVoices();
+  // Only English voices
+  var eng = vs.filter(function(v) { return v.lang && v.lang.startsWith('en'); });
+  if (!eng.length) return; // voices not ready yet – voiceschanged will retry
+
+  var saved = localStorage.getItem(VOICE_KEY);
+  if (!saved) { var bv = getBV(); if (bv) saved = bv.name; }
+
+  sel.innerHTML = eng.map(function(v) {
+    // Shorten noisy vendor prefixes for a cleaner list
+    var label = v.name
+      .replace('Microsoft ', '')
+      .replace('Google ', 'Google ')   // keep Google prefix – useful on Android
+      .replace(' Online (Natural)', ' ✨')
+      .replace(' Desktop', '');
+    var locale = v.lang;
+    return '<option value="' + v.name.replace(/"/g, '&quot;') + '"'
+      + (v.name === saved ? ' selected' : '') + '>'
+      + label + '  [' + locale + ']'
+      + '</option>';
+  }).join('');
 }
 
 /* ── CARD BUILDERS (shared helpers) ── */
@@ -319,7 +427,10 @@ function aS(cls, idx, col) {
 document.addEventListener('DOMContentLoaded', function() {
   injectSharedCSS();
   injectGear();
+  injectPageHeader();
   loadSettings();
   initGear();
   initSoundToggle();
+  populateVoices();                    // try immediately (desktop Chrome)
+  setTimeout(populateVoices, 400);     // retry – Android/iOS deliver voices async
 });

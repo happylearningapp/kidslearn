@@ -375,108 +375,10 @@
 /* ── Big letter box is tappable ── */
 #lb { cursor: pointer; user-select: none; }
 
-/* ════════════════════════════════════════
-   COMPACT SINGLE-BAR HEADER
-   Replaces the tall subhdr + floating buttons
-   ════════════════════════════════════════ */
-
-/* Hide shared injected floating buttons – ours live inside the header */
-.back-btn { display: none !important; }
-#gearBtn  { display: none !important; }
-
-/* Override shared .subhdr to a slim flex row */
-.subhdr {
-  padding: 0 10px !important;
-  height: 58px !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 10px !important;
-}
-/* Hide the old internal elements */
-.subhdr h1, .subhdr p, .sndbr { display: none !important; }
-
-/* ── Home circle button (left) ── */
-.hdr-home {
-  display: flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 50%;
-  background: rgba(255,255,255,.22);
-  color: #fff; font-size: 1.2rem; text-decoration: none; font-weight: 900;
-  flex-shrink: 0;
-  transition: background .15s;
-  -webkit-tap-highlight-color: transparent;
-}
-.hdr-home:active { background: rgba(255,255,255,.42); }
-
-/* ── Center title ── */
-.hdr-title {
-  flex: 1;
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 900;
-  font-family: var(--f);
-  text-align: center;
-  line-height: 1.2;
-}
-.hdr-title small {
-  display: block;
-  font-size: .6rem;
-  font-weight: 700;
-  opacity: .75;
-  letter-spacing: .6px;
-  text-transform: uppercase;
-  margin-top: 1px;
-}
-
-/* ── Right cluster: sound toggle + gear ── */
-.hdr-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.hdr-snd-btn {
-  display: flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 50%;
-  background: rgba(255,255,255,.22);
-  border: none; font-size: 1.3rem; cursor: pointer;
-  transition: all .2s cubic-bezier(.34,1.56,.64,1);
-  -webkit-tap-highlight-color: transparent;
-}
-.hdr-snd-btn:active { transform: scale(.88); }
-.hdr-snd-btn.muted  { background: rgba(0,0,0,.28); opacity: .75; }
-
-.hdr-gear {
-  display: flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 50%;
-  background: rgba(255,255,255,.22);
-  border: none; color: #fff; font-size: 1.1rem; cursor: pointer;
-  transition: background .15s;
-  -webkit-tap-highlight-color: transparent;
-}
-.hdr-gear:active { background: rgba(255,255,255,.42); }
-
-/* Adjust body height & settings drawer position for smaller header */
-.subbody  { min-height: calc(100vh - 58px) !important; }
-#sdrawer  { top: 66px !important; }
 </style>
 </head>
-<body>
+<body data-page-title="&#128292; ABC World" data-page-sub="Letters &amp; Language" data-page-gradient="linear-gradient(135deg,#FF6B6B,#FF8E53)" data-page-back="home.html">
 
-<div class="subhdr" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
-  <!-- Home -->
-  <a class="hdr-home" href="home.html">&#8592;</a>
-
-  <!-- Title + tagline -->
-  <div class="hdr-title">
-    &#128292; ABC World
-    <small>Letters &amp; Language</small>
-  </div>
-
-  <!-- Sound icon + Settings gear -->
-  <div class="hdr-right">
-    <!-- Hidden checkbox kept for shared.js initSoundToggle() compatibility -->
-    <input type="checkbox" id="sndTog" style="display:none"/>
-    <button id="sndIconBtn" class="hdr-snd-btn" onclick="toggleSoundBtn()" title="Sound On">&#128266;</button>
-    <button class="hdr-gear" onclick="toggleSettings()" title="Settings">&#9881;</button>
-  </div>
-</div>
 
 <div class="subbody">
 
@@ -575,21 +477,6 @@ var OPP=[["Big","&#128024;","Small","&#128045;"],["Hot","&#128293;","Cold","&#12
 
 var letters=Object.keys(AD),curL='A';
 
-/* ── Sound icon button ── */
-function toggleSoundBtn(){
-  var on=!isSoundOn();
-  saveSound(on);
-  var tog=document.getElementById('sndTog');if(tog)tog.checked=on;
-  if(!on)window.speechSynthesis.cancel();
-  updateSoundBtn();
-}
-function updateSoundBtn(){
-  var btn=document.getElementById('sndIconBtn');if(!btn)return;
-  var on=isSoundOn();
-  btn.innerHTML=on?'&#128266;':'&#128263;';
-  btn.classList.toggle('muted',!on);
-  btn.title=on?'Sound On – tap to mute':'Muted – tap to unmute';
-}
 
 function rL(l){
   curL=l;
@@ -667,7 +554,6 @@ document.getElementById('opCards').innerHTML=OPP.map(function(o){
 document.addEventListener('DOMContentLoaded',function(){
   rL('A');
   swDock('alpha');
-  updateSoundBtn(); // sync icon with saved sound state
 });
 
 // Dock tab switcher
