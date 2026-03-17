@@ -313,6 +313,17 @@
   color: #fff;
   border-style: solid;
 }
+/* flex row: [toggle button] [shuffle icon] */
+.alpha-ctrl { display:flex; gap:8px; align-items:stretch; margin-bottom:12px; }
+.alpha-ctrl .alpha-toggle { flex:1; margin-bottom:0; }
+.alpha-shuf {
+  padding:12px 14px; border-radius:16px; border:2.5px solid #FF6B6B33;
+  background:#FFF5F5; color:#FF6B6B;
+  font-size:1.1rem; cursor:pointer; font-family:var(--f); font-weight:900;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color:transparent;
+}
+.alpha-shuf:active { transform:scale(.88); }
 
 /* ── Prev / Next letter navigation ── */
 .alpha-nav {
@@ -387,16 +398,19 @@
     <!-- A-Z -->
     <div id="abc-alpha" class="sec active">
 
-      <!-- Toggle A-Z grid button -->
-      <button class="alpha-toggle" id="alphaToggle" onclick="toggleAlpha()">
-        &#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;
-      </button>
+      <!-- Toggle + Shuffle row -->
+      <div class="alpha-ctrl">
+        <button class="alpha-toggle" id="alphaToggle" onclick="toggleAlpha()">
+          &#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;
+        </button>
+        <button class="alpha-shuf" onclick="shuffleAlpha()" title="Shuffle order">&#128256;</button>
+      </div>
 
       <!-- Collapsible A-Z letter selector (hidden by default) -->
       <div class="selgrid" id="lg" style="display:none"></div>
 
       <!-- Big letter display – tap to hear the letter -->
-      <div class="bigbox" id="lb" onclick="spk(curL)">
+      <div class="bigbox" id="lb" onclick="spk(curL.toLowerCase())">
         <div class="bigchar" id="blc"></div>
         <div class="bigsub"  id="bls"></div>
       </div>
@@ -515,16 +529,25 @@ function toggleAlpha(){
   btn.innerHTML=(!shown?'&#128292; Hide A&#8211;Z Alphabet &nbsp;&#9650;':'&#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;');
 }
 
-// Build A-Z selector
-(function(){
+// Build A-Z selector grid (called on init and after shuffle)
+function buildAlphaGrid(){
   var el=document.getElementById('lg');
-  Object.keys(AD).forEach(function(l){
+  el.innerHTML='';
+  letters.forEach(function(l){
     var b=document.createElement('button');
     b.className='selbtn lbtn';b.textContent=l;
     b.onclick=function(){rL(l);};
     el.appendChild(b);
   });
-})();
+}
+buildAlphaGrid();
+
+function shuffleAlpha(){
+  letters=Object.keys(AD).sort(function(){return Math.random()-.5;});
+  buildAlphaGrid();
+  rL(letters[0]);     // navigate to first letter in new order
+  spk('shuffled!');
+}
 
 // Sight Words
 document.getElementById('sightCards').innerHTML=SW.map(function(s){
