@@ -314,21 +314,16 @@
   border-style: solid;
 }
 
-/* ── Prev / Next letter navigation – sticky above dock ── */
+/* ── Prev / Next letter navigation ── */
 .alpha-nav {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 14px;
-  padding: 8px;
+  padding: 6px;
   border-radius: 22px;
   background: rgba(255,253,231,.94);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 18px rgba(0,0,0,.1);
-  position: sticky;
-  bottom: calc(76px + env(safe-area-inset-bottom));
-  z-index: 50;
+  box-shadow: 0 4px 18px rgba(0,0,0,.08);
 }
 .alpha-nav-btn {
   flex: 1;
@@ -347,15 +342,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 .alpha-nav-btn:active { transform: scale(.93); }
-.alpha-nav-cur {
-  font-size: calc(var(--b) * 2.4);
-  font-weight: 900;
-  color: #FF6B6B;
-  min-width: 52px;
-  text-align: center;
-  flex-shrink: 0;
-  line-height: 1;
-}
 
 /* ── Phonics sound card (fills the 6th empty slot in word grid) ── */
 .phcard {
@@ -407,9 +393,6 @@
   align-items: center !important;
   justify-content: space-between !important;
   gap: 10px !important;
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 190 !important;
 }
 /* Hide the old internal elements */
 .subhdr h1, .subhdr p, .sndbr { display: none !important; }
@@ -519,10 +502,9 @@
       <!-- 5 word cards + 1 phonics sound card (fills empty 6th slot) -->
       <div class="cgrid" id="ac"></div>
 
-      <!-- Prev / Next nav – bottom for easy single-hand reach, sticky above dock -->
+      <!-- Prev / Next nav – at bottom for easy single-hand reach -->
       <div class="alpha-nav">
         <button class="alpha-nav-btn" id="prevBtn" onclick="prevL()" style="visibility:hidden">&#8592; ?</button>
-        <span class="alpha-nav-cur" id="navCur">A</span>
         <button class="alpha-nav-btn" id="nextBtn" onclick="nextL()">B &#8594;</button>
       </div>
 
@@ -574,10 +556,9 @@
       </div>
       <div class="trtip">&#128161; Guide shown by default &#8212; trace over it, then tap Clear to try again!</div>
 
-      <!-- Prev / Next nav – bottom for easy single-hand reach, sticky above dock -->
+      <!-- Prev / Next nav – at bottom for easy single-hand reach -->
       <div class="alpha-nav">
         <button class="alpha-nav-btn" id="trPrevBtn" onclick="trPrevL()" style="visibility:hidden">&#8592; ?</button>
-        <span class="alpha-nav-cur" id="trNavCur">A</span>
         <button class="alpha-nav-btn" id="trNextBtn" onclick="trNextL()">B &#8594;</button>
       </div>
     </div>
@@ -632,7 +613,6 @@ function rL(l){
 function updateNav(l){
   var i=letters.indexOf(l);
   var pb=document.getElementById('prevBtn'),nb=document.getElementById('nextBtn');
-  document.getElementById('navCur').textContent=l;
   pb.style.visibility=i===0?'hidden':'visible';
   if(i>0) pb.innerHTML='&#8592; '+letters[i-1];
   nb.style.visibility=i===letters.length-1?'hidden':'visible';
@@ -720,7 +700,6 @@ function trActiveLetter(l){
 function updateTrNav(l){
   var i=trABC.indexOf(l);
   var pb=document.getElementById('trPrevBtn'),nb=document.getElementById('trNextBtn');
-  document.getElementById('trNavCur').textContent=l;
   pb.style.visibility=i===0?'hidden':'visible';
   if(i>0) pb.innerHTML='&#8592; '+trABC[i-1];
   nb.style.visibility=i===25?'hidden':'visible';
