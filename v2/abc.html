@@ -606,7 +606,7 @@ function rL(l){
     :'';
   document.getElementById('ac').innerHTML=d.w.map(function(w){return mcard(w[1],w[0],d.c);}).join('')+phCard;
   updateNav(l);
-  spk(l); // speak only the letter when displaying – words play on tap only
+  spk(l.toLowerCase()); // lowercase prevents TTS saying "Capital A"
 }
 
 /* ── A-Z navigation helpers ── */
@@ -693,7 +693,7 @@ function trActiveLetter(l){
   trLetter=l;
   document.getElementById('trLetter').textContent=l;
   drawGuide(true);  // show guide silently
-  spk(l);           // speak the letter
+  spk(l.toLowerCase()); // lowercase prevents TTS saying "Capital B" etc.
   updateTrNav(l);
   document.querySelectorAll('.trbtn').forEach(function(b){b.classList.toggle('active',b.textContent===l);});
 }
