@@ -287,6 +287,98 @@
   box-shadow: 0 5px 15px rgba(0,0,0,.2);
   border: 5px solid rgba(255,255,255,.6);
 }
+
+/* ── Show / Hide A–Z toggle button ── */
+.alpha-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 16px;
+  border: 2.5px dashed #FF6B6B;
+  background: #FFF5F5;
+  color: #FF6B6B;
+  font-family: var(--f);
+  font-size: var(--md);
+  font-weight: 900;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: all .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.alpha-toggle.open {
+  background: #FF6B6B;
+  color: #fff;
+  border-style: solid;
+}
+
+/* ── Prev / Next letter navigation ── */
+.alpha-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.alpha-nav-btn {
+  flex: 1;
+  padding: 14px 10px;
+  border-radius: 16px;
+  border: none;
+  background: #fff;
+  color: #FF6B6B;
+  font-family: var(--f);
+  font-size: var(--md);
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(0,0,0,.1);
+  min-height: 54px;
+  transition: all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
+}
+.alpha-nav-btn:active { transform: scale(.93); }
+.alpha-nav-cur {
+  font-size: calc(var(--b) * 2.4);
+  font-weight: 900;
+  color: #FF6B6B;
+  min-width: 52px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── Phonics sound card (fills the 6th empty slot in word grid) ── */
+.phcard {
+  background: linear-gradient(135deg,#FFF8E1,#FFE082) !important;
+  border: 3px solid rgba(255,142,83,.4) !important;
+  position: relative;
+  overflow: hidden;
+}
+.phcard::before {
+  content: '';
+  position: absolute;
+  top: -10px; right: -10px;
+  width: 40px; height: 40px;
+  background: #FF8E53;
+  border-radius: 50%;
+  opacity: .15;
+}
+.phsound {
+  font-size: calc(var(--b) * 0.78);
+  font-weight: 900;
+  color: #FF8E53;
+  margin-top: 3px;
+  letter-spacing: .4px;
+}
+.phsay {
+  font-size: calc(var(--b) * 1.6);
+  font-weight: 900;
+  color: #E65100;
+}
+
+/* ── Big letter box is tappable ── */
+#lb { cursor: pointer; user-select: none; }
 </style>
 </head>
 <body>
@@ -310,20 +402,31 @@
 
     <!-- A-Z -->
     <div id="abc-alpha" class="sec active">
-      <div class="selgrid" id="lg"></div>
-      <div class="bigbox" id="lb">
+
+      <!-- Toggle A-Z grid button -->
+      <button class="alpha-toggle" id="alphaToggle" onclick="toggleAlpha()">
+        &#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;
+      </button>
+
+      <!-- Collapsible A-Z letter selector (hidden by default) -->
+      <div class="selgrid" id="lg" style="display:none"></div>
+
+      <!-- Prev / Current letter / Next navigation row -->
+      <div class="alpha-nav">
+        <button class="alpha-nav-btn" id="prevBtn" onclick="prevL()" style="visibility:hidden">&#8592; ?</button>
+        <span class="alpha-nav-cur" id="navCur">A</span>
+        <button class="alpha-nav-btn" id="nextBtn" onclick="nextL()">B &#8594;</button>
+      </div>
+
+      <!-- Big letter display – tap to hear the letter -->
+      <div class="bigbox" id="lb" onclick="spk(curL)">
         <div class="bigchar" id="blc"></div>
         <div class="bigsub"  id="bls"></div>
       </div>
-      <div class="cgrid" id="ac"></div>
-    </div>
 
-    <!-- Phonics -->
-    <div id="abc-phonics" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
-        <div class="bigchar">&#128266;</div><div class="bigsub">Letter Sounds</div>
-      </div>
-      <div class="cgrid" id="phonicsCards"></div>
+      <!-- 5 word cards + 1 phonics sound card (fills empty 6th slot) -->
+      <div class="cgrid" id="ac"></div>
+
     </div>
 
     <!-- Sight Words -->
@@ -355,17 +458,28 @@
       <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
         <div class="bigchar">&#9999;</div><div class="bigsub">Letter Tracing</div>
       </div>
-      <div class="trsel" id="trSel"></div>
+      <!-- Toggle A-Z letter selector -->
+      <button class="alpha-toggle" id="trAlphaToggle" onclick="toggleTrAlpha()">
+        &#9999; Show A&#8211;Z Letters &nbsp;&#9660;
+      </button>
+      <!-- Collapsible letter selector (hidden by default) -->
+      <div class="trsel" id="trSel" style="display:none"></div>
+      <!-- Prev / Current letter / Next navigation -->
+      <div class="alpha-nav">
+        <button class="alpha-nav-btn" id="trPrevBtn" onclick="trPrevL()" style="visibility:hidden">&#8592; ?</button>
+        <span class="alpha-nav-cur" id="trNavCur">A</span>
+        <button class="alpha-nav-btn" id="trNextBtn" onclick="trNextL()">B &#8594;</button>
+      </div>
       <div class="trwrap">
         <h3 id="trLetter">A</h3>
         <p>Trace with finger or mouse!</p>
         <canvas id="trCanvas" width="300" height="260"></canvas>
         <div class="trbtns">
-          <button class="trb trb-g" onclick="drawGuide()">Show Guide</button>
-          <button class="trb trb-c" onclick="clearTr()">Clear</button>
+          <button class="trb trb-g" id="trGuideBtn" onclick="toggleGuide()">Hide Guide</button>
+          <button class="trb trb-c" onclick="clearTrOnly()">Clear</button>
         </div>
       </div>
-      <div class="trtip">&#128161; Tip: Show Guide first, then trace over it!</div>
+      <div class="trtip">&#128161; Guide shown by default &#8212; trace over it, then tap Clear to try again!</div>
     </div>
 
   </div>
@@ -378,15 +492,43 @@ var SW=[["I","I am Reyan"],["Me","That is me"],["My","My toy"],["We","We play"],
 var AW=[["Run","&#127939;","Run fast!"],["Jump","&#129432;","Jump high!"],["Eat","&#127869;","Eat food!"],["Sleep","&#128564;","Sleep tight!"],["Swim","&#127946;","Swim in water!"],["Fly","&#9992;","Birds fly!"],["Read","&#128218;","Read a book!"],["Play","&#127918;","Play and learn!"],["Sing","&#127925;","Sing a song!"],["Dance","&#128131;","Dance with joy!"],["Draw","&#9999;","Draw a picture!"],["Wash","&#129516;","Wash your hands!"],["Clap","&#128079;","Clap your hands!"],["Sit","&#129393;","Sit down!"],["Stand","&#129347;","Stand up!"]];
 var OPP=[["Big","&#128024;","Small","&#128045;"],["Hot","&#128293;","Cold","&#129482;"],["Day","&#9728;","Night","&#127769;"],["Happy","&#128522;","Sad","&#128546;"],["Fast","&#128006;","Slow","&#128034;"],["Up","&#11014;","Down","&#11015;"],["Open","&#128214;","Closed","&#128213;"],["Full","&#129695;","Empty","&#129789;"],["Clean","&#10024;","Dirty","&#129314;"],["Tall","&#129426;","Short","&#128027;"],["Loud","&#128226;","Quiet","&#129300;"],["Wet","&#127783;","Dry","&#9728;"]];
 
+var letters=Object.keys(AD),curL='A';
+
 function rL(l){
+  curL=l;
   var d=AD[l];
-  aS('lbtn',Object.keys(AD).indexOf(l),d.c);
+  aS('lbtn',letters.indexOf(l),d.c);
   var b=document.getElementById('lb');
   b.style.background=d.c;b.style.boxShadow='0 8px 24px '+d.c+'66';
   document.getElementById('blc').textContent=l;
   document.getElementById('bls').textContent=l.toLowerCase();
-  document.getElementById('ac').innerHTML=d.w.map(function(w){return mcard(w[1],w[0],d.c);}).join('');
-  spkSeq([l+'!'].concat(d.w.map(function(w){return l+' for '+w[0];})));
+  // 5 word cards + 1 phonics sound card filling the empty 6th slot
+  var ph=PH.filter(function(p){return p[0]===l;})[0];
+  var phCard=ph
+    ?'<div class="crd phcard" onclick="spkSeq([\''+l+' says '+ph[2]+'\',\'like in '+ph[3]+'\'])"><span class="crdem phsay">&#128266;</span><div class="phsound">'+l+' = &ldquo;'+ph[2]+'&rdquo;</div><div class="crdlbl" style="color:#E65100;margin-top:2px">&#128226; Tap!</div></div>'
+    :'';
+  document.getElementById('ac').innerHTML=d.w.map(function(w){return mcard(w[1],w[0],d.c);}).join('')+phCard;
+  updateNav(l);
+}
+
+/* ── A-Z navigation helpers ── */
+function updateNav(l){
+  var i=letters.indexOf(l);
+  var pb=document.getElementById('prevBtn'),nb=document.getElementById('nextBtn');
+  document.getElementById('navCur').textContent=l;
+  pb.style.visibility=i===0?'hidden':'visible';
+  if(i>0) pb.innerHTML='&#8592; '+letters[i-1];
+  nb.style.visibility=i===letters.length-1?'hidden':'visible';
+  if(i<letters.length-1) nb.innerHTML=letters[i+1]+' &#8594;';
+}
+function prevL(){var i=letters.indexOf(curL);if(i>0)rL(letters[i-1]);}
+function nextL(){var i=letters.indexOf(curL);if(i<letters.length-1)rL(letters[i+1]);}
+function toggleAlpha(){
+  var g=document.getElementById('lg'),btn=document.getElementById('alphaToggle');
+  var shown=g.style.display!=='none';
+  g.style.display=shown?'none':'';
+  btn.classList.toggle('open',!shown);
+  btn.innerHTML=(!shown?'&#128292; Hide A&#8211;Z Alphabet &nbsp;&#9650;':'&#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;');
 }
 
 // Build A-Z selector
@@ -399,14 +541,6 @@ function rL(l){
     el.appendChild(b);
   });
 })();
-
-// Phonics
-document.getElementById('phonicsCards').innerHTML=PH.map(function(p){
-  return '<div class="crd" style="border:3px solid #FF6B6B33" onclick="spkSeq([\''+p[0]+' says '+p[2]+'\',\''+p[3]+'\'])">'
-    +'<span class="crdem">'+p[1]+'</span>'
-    +'<div class="crdlbl" style="color:#FF6B6B;font-weight:900">'+p[0]+' = '+p[2]+'</div>'
-    +'<div class="crdlbl">'+p[3]+'</div></div>';
-}).join('');
 
 // Sight Words
 document.getElementById('sightCards').innerHTML=SW.map(function(s){
@@ -453,28 +587,71 @@ function swDock(tab) {
 }
 
 /* ── LETTER TRACING ── */
-var trLetter='A',trDrawing=false,trCanvas,trCtx;
+var trABC='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var trLetter='A',trDrawing=false,trCanvas,trCtx,trGuideShown=false;
+
+// Central function: activate a tracing letter (show guide + speak + update nav)
+function trActiveLetter(l){
+  trLetter=l;
+  document.getElementById('trLetter').textContent=l;
+  drawGuide(true);  // show guide silently
+  spk(l);           // speak the letter
+  updateTrNav(l);
+  document.querySelectorAll('.trbtn').forEach(function(b){b.classList.toggle('active',b.textContent===l);});
+}
+function updateTrNav(l){
+  var i=trABC.indexOf(l);
+  var pb=document.getElementById('trPrevBtn'),nb=document.getElementById('trNextBtn');
+  document.getElementById('trNavCur').textContent=l;
+  pb.style.visibility=i===0?'hidden':'visible';
+  if(i>0) pb.innerHTML='&#8592; '+trABC[i-1];
+  nb.style.visibility=i===25?'hidden':'visible';
+  if(i<25) nb.innerHTML=trABC[i+1]+' &#8594;';
+}
+function trPrevL(){var i=trABC.indexOf(trLetter);if(i>0)trActiveLetter(trABC[i-1]);}
+function trNextL(){var i=trABC.indexOf(trLetter);if(i<25)trActiveLetter(trABC[i+1]);}
+function toggleTrAlpha(){
+  var g=document.getElementById('trSel'),btn=document.getElementById('trAlphaToggle');
+  var shown=g.style.display!=='none';
+  g.style.display=shown?'none':'';
+  btn.classList.toggle('open',!shown);
+  btn.innerHTML=(!shown?'&#9999; Hide A&#8211;Z Letters &nbsp;&#9650;':'&#9999; Show A&#8211;Z Letters &nbsp;&#9660;');
+}
+
 document.addEventListener('DOMContentLoaded',function(){
   var el=document.getElementById('trSel');
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(l){
+  trABC.split('').forEach(function(l){
     var b=document.createElement('button');
     b.className='trbtn'+(l==='A'?' active':'');
     b.textContent=l;
-    b.onclick=function(){
-      document.querySelectorAll('.trbtn').forEach(function(x){x.classList.remove('active');});
-      b.classList.add('active');trLetter=l;
-      document.getElementById('trLetter').textContent=l;
-      clearTr();
-    };
+    b.onclick=function(){trActiveLetter(l);};
     el.appendChild(b);
   });
   trCanvas=document.getElementById('trCanvas');
   trCtx=trCanvas.getContext('2d');
   setupTr();
+  drawGuide(true);   // show guide by default on load
+  updateTrNav('A');  // init nav state
 });
 function setupTr(){trCtx.fillStyle='#FFF9F9';trCtx.fillRect(0,0,trCanvas.width,trCanvas.height);trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';}
 function clearTr(){setupTr();}
-function drawGuide(){clearTr();trCtx.font='bold 190px Nunito,sans-serif';trCtx.fillStyle='rgba(255,107,107,0.14)';trCtx.textAlign='center';trCtx.textBaseline='middle';trCtx.fillText(trLetter,150,140);trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';spk(trLetter+'! Trace the letter '+trLetter);}
+function clearTrOnly(){
+  clearTr();trGuideShown=false;
+  var btn=document.getElementById('trGuideBtn');if(btn)btn.textContent='Show Guide';
+}
+function drawGuide(silent){
+  clearTr();
+  trCtx.font='bold 190px Nunito,sans-serif';trCtx.fillStyle='rgba(255,107,107,0.14)';
+  trCtx.textAlign='center';trCtx.textBaseline='middle';trCtx.fillText(trLetter,150,140);
+  trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';
+  trGuideShown=true;
+  var btn=document.getElementById('trGuideBtn');if(btn)btn.textContent='Hide Guide';
+  if(!silent)spk(trLetter+'! Trace the letter '+trLetter);
+}
+function toggleGuide(){
+  if(trGuideShown){clearTr();trGuideShown=false;document.getElementById('trGuideBtn').textContent='Show Guide';}
+  else{drawGuide();}
+}
 function gPos(e){var r=trCanvas.getBoundingClientRect();var sx=trCanvas.width/r.width,sy=trCanvas.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};}
 document.addEventListener('DOMContentLoaded',function(){
   trCanvas=document.getElementById('trCanvas');
@@ -493,9 +670,6 @@ document.addEventListener('DOMContentLoaded',function(){
 <nav class="abc-dock">
   <button class="abc-dock-btn" data-tab="alpha"   onclick="swDock('alpha')">
     <span class="dock-ico">&#128292;</span>A–Z
-  </button>
-  <button class="abc-dock-btn" data-tab="phonics"  onclick="swDock('phonics')">
-    <span class="dock-ico">&#128266;</span>Phonics
   </button>
   <button class="abc-dock-btn" data-tab="sight"    onclick="swDock('sight')">
     <span class="dock-ico">&#128065;</span>Sight
