@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Music &amp; Stories &#127925;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<style>
+.rlist,.slist{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.ritem,.sitem{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 3px 10px rgba(0,0,0,.08);display:flex;align-items:center;gap:12px;cursor:pointer;}
+.ritem:hover,.sitem:hover{transform:scale(1.02);}
+.rem,.sem{font-size:1.9rem;min-width:38px;text-align:center;}
+.rtitle,.stitle{font-size:var(--md);font-weight:900;color:#333;}
+.rsub,.ssub{font-size:var(--sm);color:#888;margin-top:2px;}
+.rpbtn{margin-left:auto;padding:6px 12px;border-radius:12px;border:none;font-family:var(--f);font-size:var(--sm);font-weight:700;cursor:pointer;white-space:nowrap;background:#00897B;color:#fff;}
+.srbtn{margin-left:auto;padding:6px 12px;border-radius:12px;border:none;font-family:var(--f);font-size:var(--sm);font-weight:700;cursor:pointer;white-space:nowrap;background:#6A1B9A;color:#fff;}
+.reader{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.12);margin-bottom:14px;}
+.rdrhdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.rdrbody{font-size:var(--md);line-height:1.9;color:#444;white-space:pre-line;}
+.rdracts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.rdrb{padding:8px 16px;border-radius:14px;border:none;font-family:var(--f);font-size:var(--sm);font-weight:700;cursor:pointer;}
+.rdrb-play{background:#00897B;color:#fff;}.rdrb-stop{background:#FF6B6B;color:#fff;}
+.rdrcls{margin-left:auto;padding:6px 12px;border-radius:12px;border:2px solid #ccc;background:#fff;font-family:var(--f);font-size:var(--sm);font-weight:700;cursor:pointer;color:#888;}
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="home.html">&#8592; Home</a>
+
+<div class="subhdr" style="background:linear-gradient(135deg,#00897B,#26C6DA)">
+  <h1>&#127925; Music, Rhymes &amp; Stories</h1>
+  <p>Songs, Rhymes &amp; Tales</p>
+  <div class="sndbr">
+    <span>&#128263;</span>
+    <span class="sndlbl">Sound</span>
+    <label class="tog"><input type="checkbox" id="sndTog"/><span class="togsl"></span></label>
+    <span>&#128266;</span>
+  </div>
+</div>
+
+<div class="subbody">
+  <div class="stabs">
+    <button class="stab" onclick="sw('music','rhymes','#00897B')"><span class="stabico">&#127926;</span>Rhymes</button>
+    <button class="stab" onclick="sw('music','inst','#00897B')"><span class="stabico">&#127928;</span>Instruments</button>
+    <button class="stab" onclick="sw('music','stories','#00897B')"><span class="stabico">&#128214;</span>Stories</button>
+  </div>
+  <div class="submain">
+
+    <div id="music-rhymes" class="sec active">
+      <div class="bigbox" style="background:linear-gradient(135deg,#00897B,#26C6DA)">
+        <div class="bigchar">&#127926;</div><div class="bigsub">Nursery Rhymes</div>
+      </div>
+      <div id="rhymeReader" style="display:none"></div>
+      <div class="rlist" id="rhymeList"></div>
+    </div>
+
+    <div id="music-inst" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#7B1FA2,#26C6DA)">
+        <div class="bigchar">&#127928;</div><div class="bigsub">Musical Instruments</div>
+      </div>
+      <div class="cgrid" id="instCards"></div>
+    </div>
+
+    <div id="music-stories" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#6A1B9A,#E91E63)">
+        <div class="bigchar">&#128214;</div><div class="bigsub">Short Stories</div>
+      </div>
+      <div id="storyReader" style="display:none"></div>
+      <div class="slist" id="storyList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var INST=[["Piano","&#127929;"],["Guitar","&#127928;"],["Drums","&#129345;"],["Violin","&#127931;"],["Flute","&#129544;"],["Trumpet","&#127930;"],["Saxophone","&#127927;"],["Harp","&#127931;"],["Xylophone","&#127925;"],["Bell","&#128276;"],["Sitar","&#127928;"],["Tabla","&#129345;"],["Veena","&#127931;"],["Ukulele","&#127928;"],["Harmonica","&#127925;"]];
+var RHY=[
+  {e:"&#127775;",t:"Twinkle Twinkle Little Star",s:"Classic nursery rhyme",l:"Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.\nTwinkle, twinkle, little star,\nHow I wonder what you are!"},
+  {e:"&#128017;",t:"Mary Had a Little Lamb",s:"Classic nursery rhyme",l:"Mary had a little lamb,\nLittle lamb, little lamb.\nMary had a little lamb,\nWhose fleece was white as snow.\nEverywhere that Mary went,\nThe lamb was sure to go!"},
+  {e:"&#127925;",t:"Ba Ba Black Sheep",s:"Classic nursery rhyme",l:"Baa baa black sheep, have you any wool?\nYes sir, yes sir, three bags full!\nOne for the master, one for the dame,\nAnd one for the little boy who lives down the lane!"},
+  {e:"&#128027;",t:"Incy Wincy Spider",s:"Classic nursery rhyme",l:"Incy wincy spider, climbing up the spout.\nDown came the rain and washed the spider out.\nOut came the sunshine, dried up all the rain.\nIncy wincy spider climbed up the spout again!"},
+  {e:"&#128652;",t:"Wheels on the Bus",s:"Action rhyme",l:"The wheels on the bus go round and round,\nRound and round, round and round.\nThe wheels on the bus go round and round,\nAll through the town!"},
+  {e:"&#9728;",t:"Good Morning Song",s:"Morning rhyme",l:"Good morning, good morning, the sun is shining bright!\nWake up little Reyan, stretch your arms up high,\nSmile at the morning, and wave hello to the sky!"},
+  {e:"&#128056;",t:"Five Little Frogs",s:"Counting rhyme",l:"Five little speckled frogs sat on a speckled log,\nEating the most delicious bugs, yum yum!\nOne jumped into the pool where it was nice and cool,\nNow there are four green speckled frogs!"},
+  {e:"&#127752;",t:"I Can Sing a Rainbow",s:"Colors rhyme",l:"Red and yellow and pink and green,\nPurple and orange and blue!\nI can sing a rainbow, sing a rainbow, sing a rainbow too!"}
+];
+var STR=[
+  {e:"&#128034;",t:"The Tortoise and the Hare",s:"Slow and steady wins the race",y:"Once a hare and a tortoise had a race. The hare ran fast but stopped to nap. The tortoise walked slowly and never stopped.\n\nWhen the hare woke up, the tortoise had crossed the finish line!\n\nLesson: Slow and steady wins the race! Never give up!"},
+  {e:"&#129409;",t:"The Lion and the Mouse",s:"Even small friends can help",y:"A lion caught a tiny mouse. The mouse begged to be free, saying he would help one day.\n\nLater, the lion was trapped in a net. The mouse chewed through it and freed the lion!\n\nLesson: Even a small friend can be a big help!"},
+  {e:"&#128058;",t:"The Boy Who Cried Wolf",s:"Always tell the truth",y:"A shepherd boy cried Wolf! to trick villagers. They came but found no wolf.\n\nWhen a real wolf came, nobody believed him.\n\nLesson: Always tell the truth. Nobody believes a liar!"},
+  {e:"&#129442;",t:"The Ugly Duckling",s:"Believe in yourself",y:"A grey duckling was laughed at. He was very sad and ran away.\n\nIn spring, he saw his reflection. He had grown into a beautiful swan!\n\nLesson: You are beautiful and special. Believe in yourself!"},
+  {e:"&#128028;",t:"The Ant and the Grasshopper",s:"Work hard today",y:"The ant worked hard all summer saving food. The grasshopper sang and danced.\n\nIn winter, the grasshopper had nothing. The kind ant shared some food.\n\nLesson: Work hard today so you have enough tomorrow!"},
+  {e:"&#127775;",t:"The Star and Reyan",s:"A special story for Reyan",y:"Reyan looked up and saw a bright star.\n\nHello! said the star. I am YOUR special star. When you sleep well I shine bright. When you eat your vegetables I sparkle. When you are kind I dance!\n\nReyan smiled and the star shone brighter every night.\n\nYou are our shining star Reyan! We love you so much!"},
+  {e:"&#129408;",t:"The Golden Goose",s:"Do not be greedy",y:"A farmer had a goose that laid one golden egg each day.\n\nHis wife wanted all the gold at once. They opened the goose but found nothing inside.\n\nLesson: Being greedy can make you lose everything!"},
+  {e:"&#129409;",t:"Androcles and the Lion",s:"A kindness is never forgotten",y:"Androcles found a lion with a thorn in its paw. He gently pulled it out.\n\nLater in an arena, that same lion ran out and licked his face instead of attacking!\n\nLesson: A kindness is never forgotten!"},
+  {e:"&#127754;",t:"The Fisherman and the Fish",s:"Be grateful for what you have",y:"A fisherman caught a magical fish that granted wishes.\n\nHis wife kept wishing for more and more until the fish took everything back.\n\nLesson: Be grateful. Too much greed leads to nothing!"},
+  {e:"&#128024;",t:"The Elephant and the Ant",s:"Respect everyone",y:"A proud elephant stomped on everything saying I am the biggest!\n\nA tiny ant crawled into his ear and tickled him until he begged for mercy.\n\nLesson: Respect everyone, no matter how small!"},
+  {e:"&#128038;",t:"The Clever Crow",s:"Use your brain",y:"A thirsty crow found a tall pot with a little water at the bottom.\n\nHe dropped stones in one by one until the water rose and he could drink!\n\nLesson: When you cannot find a way, use your brain!"},
+  {e:"&#128018;",t:"The Monkey and the Crocodile",s:"Stay calm in danger",y:"A crocodile planned to eat his monkey friend.\n\nThe clever monkey tricked the crocodile and jumped to safety!\n\nLesson: Stay calm and think quickly in danger!"},
+  {e:"&#127795;",t:"The Giving Tree",s:"True love means giving",y:"A tree gave everything to a boy she loved, apples, branches, and trunk.\n\nIn old age, the man sat on the stump. And the tree was happy.\n\nLesson: True love means giving. Just like Mummy and Daddy love YOU Reyan!"},
+  {e:"&#128640;",t:"Eklavya the Determined Student",s:"Dedication always wins",y:"Eklavya was turned away by the great teacher. But he made a clay statue and practised archery every day.\n\nHe became the finest archer anyone had ever seen.\n\nLesson: Nothing can stop you if you truly dedicate yourself!"},
+  {e:"&#127769;",t:"The Moon and the Stars",s:"A bedtime story for Reyan",y:"The Moon smiled down at Reyan. Time to sleep, little one!\n\nI have a secret, said the Moon. Every star up here is a dream. They can only reach you when your eyes are closed!\n\nReyan smiled and closed his eyes. The stars rained down beautiful dreams.\n\nGoodnight Reyan. Sweet dreams! We love you!"},
+  {e:"&#127912;",t:"The Magic Paintbrush",s:"Use your gifts to help others",y:"Manu loved to draw. A fairy gave him a magic brush where everything he painted came to life!\n\nHe painted food for the hungry and books for children.\n\nA greedy king demanded gold but sank into the painted sea!\n\nLesson: Use your gifts to help others!"},
+  {e:"&#128029;",t:"The Bee and the Dove",s:"Help others and they will help you",y:"A bee fell in a stream. A dove dropped a leaf and saved her.\n\nLater, a hunter aimed at the dove. The bee stung his hand and the dove flew away!\n\nLesson: Help others and they will help you!"},
+  {e:"&#127968;",t:"The Three Little Pigs",s:"Hard work always wins",y:"Three pigs built houses of straw, sticks, and bricks.\n\nThe wolf blew down the straw and stick houses, but could not blow down the brick house!\n\nLesson: Hard work and planning always win!"},
+  {e:"&#129485;",t:"Reyan the Brave",s:"A special story for Reyan",y:"Reyan heard a tiny Cheep! A baby bird had fallen from its nest.\n\nHe gently picked it up. With Daddy they made a safe nest nearby.\n\nThe mother bird sang all evening.\n\nYou were very brave and very kind today, said Mummy.\n\nReyan you have the biggest heart. We love you to the moon and back!"},
+  {e:"&#128006;",t:"The Fox and the Grapes",s:"Be honest with yourself",y:"A fox saw beautiful grapes high up. He jumped and jumped but could not reach them.\n\nThose grapes are probably sour anyway, he said as he walked away.\n\nLesson: Do not pretend you do not want something just because you cannot have it!"},
+  {e:"&#129413;",t:"The Eagle and the Crow",s:"Know your own strengths",y:"A crow saw an eagle carry a lamb and tried to do the same.\n\nBut his tiny claws got tangled and the shepherd caught him!\n\nLesson: Know your strengths. You are perfect just as you are!"}
+];
+
+document.addEventListener('DOMContentLoaded',function(){
+  // Instruments
+  document.getElementById('instCards').innerHTML=INST.map(function(x){
+    return '<div class="crd" style="border:3px solid #7B1FA233" onclick="spk(\''+x[0]+'\')"><span class="crdem">'+x[1]+'</span><div class="crdlbl" style="color:#7B1FA2;font-weight:900">'+x[0]+'</div></div>';
+  }).join('');
+
+  // Rhymes list
+  document.getElementById('rhymeList').innerHTML=RHY.map(function(r,i){
+    return '<div class="ritem"><span class="rem">'+r.e+'</span>'
+      +'<div><div class="rtitle">'+r.t+'</div><div class="rsub">'+r.s+'</div></div>'
+      +'<button class="rpbtn" onclick="openRhyme('+i+')">Read</button></div>';
+  }).join('');
+
+  // Stories list
+  document.getElementById('storyList').innerHTML=STR.map(function(s,i){
+    return '<div class="sitem"><span class="sem">'+s.e+'</span>'
+      +'<div><div class="stitle">'+s.t+'</div><div class="ssub">'+s.s+'</div></div>'
+      +'<button class="srbtn" onclick="openStory('+i+')">Read</button></div>';
+  }).join('');
+
+  var f=document.querySelector('.stab');
+  if(f){f.classList.add('active');f.style.background='#00897B';f.style.color='#fff';}
+});
+
+function openRhyme(i){
+  var r=RHY[i];
+  var rd=document.getElementById('rhymeReader');
+  rd.style.display='block';
+  rd.innerHTML='<div class="reader"><div class="rdrhdr">'
+    +'<span style="font-size:2.2rem">'+r.e+'</span>'
+    +'<div style="font-size:var(--xl);font-weight:900;color:#333">'+r.t+'</div>'
+    +'<button class="rdrcls" onclick="closeRhyme()">Close</button></div>'
+    +'<div class="rdrbody">'+r.l+'</div>'
+    +'<div class="rdracts">'
+    +'<button class="rdrb rdrb-play" onclick="readAloud('+i+',1)">&#128266; Read Aloud</button>'
+    +'<button class="rdrb rdrb-stop" onclick="window.speechSynthesis.cancel()">&#9209; Stop</button>'
+    +'</div></div>';
+  rd.scrollIntoView({behavior:'smooth'});
+}
+function closeRhyme(){document.getElementById('rhymeReader').style.display='none';}
+
+function openStory(i){
+  var s=STR[i];
+  var rd=document.getElementById('storyReader');
+  rd.style.display='block';
+  rd.innerHTML='<div class="reader"><div class="rdrhdr">'
+    +'<span style="font-size:2.2rem">'+s.e+'</span>'
+    +'<div style="font-size:var(--xl);font-weight:900;color:#333">'+s.t+'</div>'
+    +'<button class="rdrcls" onclick="closeStory()">Close</button></div>'
+    +'<div class="rdrbody">'+s.y+'</div>'
+    +'<div class="rdracts">'
+    +'<button class="rdrb rdrb-play" onclick="readAloud('+i+',0)">&#128266; Read Aloud</button>'
+    +'<button class="rdrb rdrb-stop" onclick="window.speechSynthesis.cancel()">&#9209; Stop</button>'
+    +'</div></div>';
+  rd.scrollIntoView({behavior:'smooth'});
+}
+function closeStory(){document.getElementById('storyReader').style.display='none';}
+
+function readAloud(i,isRhyme){
+  window.speechSynthesis.cancel();
+  var txt=isRhyme?RHY[i].l:STR[i].y;
+  spkForce(txt.replace(/\n/g,' '),0.75,1.15);
+}
+</script>
+</body>
+</html>
