@@ -8,7 +8,9 @@
 var FONT_KEY  = 'rlw_font';
 var SIZE_KEY  = 'rlw_size';
 var SND_KEY   = 'rlw_sound';   // 'on' | 'off'  (defaults to ON if unset)
-var VOICE_KEY = 'rlw_voice';   // voice name string
+var VOICE_KEY    = 'rlw_voice';    // voice name string
+var KID_NAME_KEY = 'rlw_kid_name'; // child's display name
+var KID_AGE_KEY  = 'rlw_kid_age';  // child's age (2-12)
 
 function loadSettings() {
   var f = localStorage.getItem(FONT_KEY) || 'Nunito,sans-serif';
@@ -29,6 +31,7 @@ function loadSettings() {
   var tog = document.getElementById('sndTog');
   if (tog) tog.checked = snd;
   updateSoundBtn();
+  loadKidInfo(); // pre-populate name/age inputs in drawer
 }
 
 function setFont(f, btn) {
@@ -54,7 +57,7 @@ function toggleSettings(e) {
   if (e && e.stopPropagation) e.stopPropagation();
   var d = document.getElementById('sdrawer');
   d.classList.toggle('open');
-  if (d.classList.contains('open')) populateVoices(); // refresh list on open
+  if (d.classList.contains('open')) { populateVoices(); loadKidInfo(); }
 }
 function initGear() {
   var gear = document.getElementById('gearBtn');
@@ -284,7 +287,20 @@ function injectGear() {
       <select class="vsel" id="voiceSel" onchange="setVoice(this.value)">
         <option>Loading voices…</option>
       </select>
-    </div>`;
+    </div>
+    <hr style="border:none;border-top:1px solid #f0f0f0;margin:10px 0 8px">
+    <div class="srow">
+      <span class="slbl">&#128100; Name</span>
+      <input type="text" id="kidNameInp" class="vsel" placeholder="Child's name…"
+        maxlength="20" autocomplete="off" oninput="saveKidName(this.value)"/>
+    </div>
+    <div class="srow">
+      <span class="slbl">&#127874; Age</span>
+      <div id="ageBtns" class="sbtns" style="flex-wrap:wrap;gap:5px"></div>
+    </div>
+    <p style="font-size:.6rem;color:#bbb;text-align:center;margin-top:6px">
+      &#128274; Stored on this device only &mdash; never sent anywhere
+    </p>`;
   document.body.insertBefore(drawer, gear.nextSibling);
 }
 
@@ -382,6 +398,39 @@ function populateVoices() {
       + label + '  [' + locale + ']'
       + '</option>';
   }).join('');
+}
+
+/* ── KID INFO (name + age) ── */
+function saveKidName(name) {
+  if (name && name.trim()) localStorage.setItem(KID_NAME_KEY, name.trim());
+  else localStorage.removeItem(KID_NAME_KEY);
+  if (typeof onKidInfoSaved === 'function') onKidInfoSaved(); // home page hook
+}
+
+function saveKidAge(age, btn) {
+  localStorage.setItem(KID_AGE_KEY, String(age));
+  document.querySelectorAll('.abtn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  if (typeof onKidInfoSaved === 'function') onKidInfoSaved();
+}
+
+function loadKidInfo() {
+  var ni = document.getElementById('kidNameInp');
+  if (ni) ni.value = localStorage.getItem(KID_NAME_KEY) || '';
+  var ab = document.getElementById('ageBtns');
+  if (!ab) return;
+  var saved = localStorage.getItem(KID_AGE_KEY) || '';
+  ab.innerHTML = '';
+  for (var a = 2; a <= 12; a++) {
+    var b = document.createElement('button');
+    b.className = 'zbtn abtn';
+    b.textContent = a;
+    if (String(a) === saved) b.classList.add('active');
+    (function(age, btn) {
+      btn.onclick = function() { saveKidAge(age, btn); };
+    })(a, b);
+    ab.appendChild(b);
+  }
 }
 
 /* ── CARD BUILDERS (shared helpers) ── */

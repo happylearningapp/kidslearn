@@ -3,48 +3,214 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Reyan's Learning World &#127775;</title>
+<title>Happy Learning World &#127775;</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="shared.js"></script>
 <style>
-#page-home{background:linear-gradient(145deg,#FFFDE7,#FFF3E0,#FCE4EC);}
-.home-header{text-align:center;padding:50px 16px 16px;}
-.em-row{font-size:var(--xl);animation:bounce 2s ease-in-out infinite;display:block;margin-bottom:6px;}
-.home-header h1{font-size:var(--hero);font-weight:900;line-height:1.15;background:linear-gradient(135deg,#FF6B6B,#FF8E53,#FFC300,#4CAF50,#2196F3,#9C27B0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.home-header .sub{font-size:var(--md);color:#999;margin-top:4px;}
-.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;margin:0 auto;padding:10px 20px 40px;}
-.tile{border-radius:24px;padding:20px 12px 16px;text-align:center;cursor:pointer;transition:transform .22s,box-shadow .22s;position:relative;border:none;font-family:var(--f);text-decoration:none;display:block;}
-.tile:hover{transform:translateY(-6px) scale(1.04);}
-.tile:active{transform:scale(.97);}
-.tile-icon{font-size:3rem;display:block;margin-bottom:8px;}
-.tile-title{font-size:var(--md);font-weight:900;color:#fff;text-shadow:1px 1px 3px rgba(0,0,0,.2);}
-.tile-sub{font-size:var(--sm);color:rgba(255,255,255,.82);margin-top:3px;}
-.tile-badge{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.3);border-radius:10px;padding:2px 7px;font-size:.6rem;font-weight:900;color:#fff;}
-.t1{background:linear-gradient(135deg,#FF6B6B,#FF8E53);box-shadow:0 6px 20px rgba(255,107,107,.35);}
-.t2{background:linear-gradient(135deg,#1976D2,#29B6F6);box-shadow:0 6px 20px rgba(25,118,210,.35);}
-.t3{background:linear-gradient(135deg,#E91E63,#FF8E53);box-shadow:0 6px 20px rgba(233,30,99,.35);}
-.t4{background:linear-gradient(135deg,#43A047,#00C9A7);box-shadow:0 6px 20px rgba(67,160,71,.35);}
-.t5{background:linear-gradient(135deg,#7B1FA2,#1565C0);box-shadow:0 6px 20px rgba(123,31,162,.35);}
-.t6{background:linear-gradient(135deg,#6A1B9A,#E91E63);box-shadow:0 6px 20px rgba(106,27,154,.35);}
-.t7{background:linear-gradient(135deg,#FF6B00,#FFC300);box-shadow:0 6px 20px rgba(255,107,0,.35);}
-.t8{background:linear-gradient(135deg,#00897B,#26C6DA);box-shadow:0 6px 20px rgba(0,137,123,.35);}
-.home-footer{text-align:center;padding:0 16px 30px;font-size:var(--sm);color:#ccc;}
-.home-footer b{color:#FF6B6B;}
-@media(max-width:600px){
-  .app-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
-  .tile-icon{font-size:2.2rem;}
-  .home-header h1{font-size:var(--xl);}
+
+/* ── Show the shared gear button on the home page ── */
+#gearBtn {
+  display: flex !important;
+  align-items: center; justify-content: center;
+  position: fixed; top: 12px; right: 12px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  border: none; color: #666; font-size: 1.2rem;
+  cursor: pointer; z-index: 300;
+  box-shadow: 0 2px 14px rgba(0,0,0,.14);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
 }
+#gearBtn:active { transform: scale(.88); }
+#sdrawer { top: 64px !important; }
+
+/* ── Full-screen no-scroll layout ── */
+html { height: 100%; }
+#page-home {
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg,#FFFDE7,#FFF3E0,#FCE4EC);
+  font-family: var(--f);
+}
+
+/* ── Compact header ── */
+.home-header {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 20px 64px 8px;
+}
+.em-row {
+  font-size: 1.5rem; display: block; margin-bottom: 4px;
+  animation: bounce 2.5s ease-in-out infinite;
+}
+.home-header h1 {
+  font-size: 1.7rem; font-weight: 900; line-height: 1.15; margin-bottom: 3px;
+  background: linear-gradient(135deg,#FF6B6B,#FF8E53,#FFC300,#4CAF50,#2196F3,#9C27B0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.home-header .sub { font-size: .8rem; color: #999; }
+
+/* ── Tile grid – fills remaining height ── */
+.app-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 4px 18px 8px;
+  align-content: stretch;
+}
+.tile {
+  border-radius: 22px; padding: 18px 10px;
+  text-align: center; cursor: pointer;
+  transition: transform .22s, box-shadow .22s;
+  position: relative; border: none;
+  font-family: var(--f); text-decoration: none;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%;
+}
+.tile:hover  { transform: translateY(-5px) scale(1.03); }
+.tile:active { transform: scale(.96); }
+.tile-icon   { font-size: 2.6rem; display: block; margin-bottom: 7px; }
+.tile-title  { font-size: .9rem; font-weight: 900; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,.2); }
+.tile-sub    { font-size: .66rem; color: rgba(255,255,255,.82); margin-top: 3px; }
+.tile-badge  {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,.28); border-radius: 10px;
+  padding: 2px 6px; font-size: .55rem; font-weight: 900; color: #fff;
+}
+.t1 { background:linear-gradient(135deg,#FF6B6B,#FF8E53); box-shadow:0 5px 18px rgba(255,107,107,.35); }
+.t2 { background:linear-gradient(135deg,#1976D2,#29B6F6); box-shadow:0 5px 18px rgba(25,118,210,.35); }
+.t3 { background:linear-gradient(135deg,#E91E63,#FF8E53); box-shadow:0 5px 18px rgba(233,30,99,.35); }
+.t4 { background:linear-gradient(135deg,#43A047,#00C9A7); box-shadow:0 5px 18px rgba(67,160,71,.35); }
+.t5 { background:linear-gradient(135deg,#7B1FA2,#1565C0); box-shadow:0 5px 18px rgba(123,31,162,.35); }
+.t6 { background:linear-gradient(135deg,#6A1B9A,#E91E63); box-shadow:0 5px 18px rgba(106,27,154,.35); }
+.t7 { background:linear-gradient(135deg,#FF6B00,#FFC300); box-shadow:0 5px 18px rgba(255,107,0,.35); }
+.t8 { background:linear-gradient(135deg,#00897B,#26C6DA); box-shadow:0 5px 18px rgba(0,137,123,.35); }
+
+/* ── Footer ── */
+.home-footer {
+  flex-shrink: 0;
+  text-align: center; padding: 4px 16px 10px;
+  font-size: .7rem; color: #ccc;
+}
+.home-footer b { color: #FF6B6B; }
+
+/* ── Mobile adjustments ── */
+@media (max-width: 600px) {
+  #page-home { height: 100dvh; } /* dvh = dynamic, accounts for address bar */
+  .app-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 4px 14px 6px; }
+  .tile { border-radius: 18px; padding: 14px 7px; }
+  .tile-icon { font-size: 2.1rem; margin-bottom: 5px; }
+  .tile-title { font-size: .82rem; }
+  .tile-sub { font-size: .61rem; }
+  .home-header { padding: 10px 56px 6px; }
+  .home-header h1 { font-size: 1.32rem; }
+  .home-header .sub { font-size: .72rem; }
+  .em-row { font-size: 1.25rem; margin-bottom: 2px; }
+}
+
+/* ── Welcome Modal ── */
+.wm-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.48);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.wm-box {
+  background: #fff; border-radius: 28px; padding: 26px 22px 20px;
+  max-width: 360px; width: 100%;
+  box-shadow: 0 24px 70px rgba(0,0,0,.28);
+  text-align: center;
+  animation: popIn .38s cubic-bezier(.34,1.56,.64,1);
+}
+.wm-emojis  { font-size: 2.2rem; margin-bottom: 6px; }
+.wm-title   {
+  font-size: 1.5rem; font-weight: 900; margin-bottom: 6px;
+  background: linear-gradient(135deg,#FF6B6B,#FF8E53,#FFC300);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.wm-text    { font-size: .88rem; color: #555; margin-bottom: 8px; }
+.wm-privacy {
+  font-size: .72rem; color: #888;
+  background: #f7f7f7; border-radius: 12px;
+  padding: 8px 12px; margin-bottom: 14px; line-height: 1.6;
+}
+.wm-input {
+  width: 100%; padding: 12px 14px; border-radius: 14px;
+  border: 2.5px solid #eee; font-family: var(--f);
+  font-size: 1rem; font-weight: 700; text-align: center;
+  margin-bottom: 14px; outline: none; transition: border-color .2s;
+}
+.wm-input:focus { border-color: #FF6B6B; }
+.wm-agelbl {
+  font-size: .75rem; font-weight: 900; color: #888;
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px;
+}
+.wm-ages { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-bottom: 18px; }
+.wm-age-btn {
+  padding: 8px 13px; border-radius: 12px; border: 2px solid #eee;
+  background: #f9f9f9; color: #555; font-family: var(--f);
+  font-size: .94rem; font-weight: 800; cursor: pointer;
+  transition: all .2s cubic-bezier(.34,1.56,.64,1); min-width: 42px;
+  -webkit-tap-highlight-color: transparent;
+}
+.wm-age-btn.sel {
+  background: #FF8E53; color: #fff; border-color: #FF8E53;
+  transform: scale(1.1); box-shadow: 0 3px 10px rgba(255,142,83,.4);
+}
+.wm-go {
+  width: 100%; padding: 14px; border-radius: 18px; border: none;
+  background: linear-gradient(135deg,#FF6B6B,#FF8E53);
+  color: #fff; font-family: var(--f); font-size: 1.05rem; font-weight: 900;
+  cursor: pointer; margin-bottom: 10px;
+  box-shadow: 0 4px 18px rgba(255,107,107,.38);
+  transition: all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
+}
+.wm-go:active { transform: scale(.96); }
+.wm-skip {
+  background: none; border: none; color: #bbb; font-family: var(--f);
+  font-size: .82rem; cursor: pointer; padding: 4px;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.wm-skip:hover { color: #999; }
 </style>
 </head>
 <body id="page-home">
 
-<div class="home-header">
-  <span class="em-row">&#127775;&#10024;&#127775;</span>
-  <h1>Reyan's Learning World</h1>
-  <p class="sub">Tap a tile to start learning! &#128640;</p>
+<!-- ══ WELCOME MODAL (first visit only) ══ -->
+<div id="wm" class="wm-overlay" style="display:none" role="dialog" aria-modal="true">
+  <div class="wm-box">
+    <div class="wm-emojis">&#127775;&#10024;&#127752;</div>
+    <h2 class="wm-title">Welcome!</h2>
+    <p class="wm-text">Tell us your name &amp; age to personalise your app!</p>
+    <p class="wm-privacy">
+      &#128274; <b>Your info stays only on this device.</b><br>
+      We never collect or send anything to a server.
+    </p>
+    <input type="text" id="wmName" class="wm-input"
+      placeholder="&#129490; Your name&#8230;" maxlength="24" autocomplete="off"/>
+    <div class="wm-agelbl">&#127874; How old are you?</div>
+    <div class="wm-ages" id="wmAges"></div>
+    <button class="wm-go" onclick="wmSave()">Let&#8217;s Go! &#128640;</button>
+    <button class="wm-skip" onclick="wmSkip()">Skip for now</button>
+  </div>
 </div>
 
+<!-- ══ HEADER ══ -->
+<div class="home-header">
+  <span class="em-row">&#127775;&#10024;&#127775;</span>
+  <h1 id="homeTitle">Happy Learning World</h1>
+  <p class="sub" id="homeSub">Tap a tile to start learning! &#128640;</p>
+</div>
+
+<!-- ══ TILES ══ -->
 <div class="app-grid">
   <a class="tile t1" href="abc.html">
     <span class="tile-icon">&#128292;</span>
@@ -96,7 +262,84 @@
   </a>
 </div>
 
-<div class="home-footer">Made with &#10084; for <b>Reyan Dutta</b> &nbsp;|&nbsp; Keep learning, keep growing! &#127807;</div>
+<!-- ══ FOOTER ══ -->
+<div class="home-footer" id="homeFooter">
+  Made with &#10084; &nbsp;|&nbsp; Keep learning, keep growing! &#127807;
+</div>
 
+<script>
+/* ── Welcome modal ── */
+var wmSelectedAge = '';
+
+// Build age picker buttons (2–12)
+(function() {
+  var el = document.getElementById('wmAges');
+  for (var a = 2; a <= 12; a++) {
+    (function(age) {
+      var b = document.createElement('button');
+      b.className = 'wm-age-btn';
+      b.textContent = age;
+      b.onclick = function() {
+        wmSelectedAge = String(age);
+        document.querySelectorAll('.wm-age-btn').forEach(function(x) { x.classList.remove('sel'); });
+        b.classList.add('sel');
+      };
+      el.appendChild(b);
+    })(a);
+  }
+})();
+
+function wmSave() {
+  var name = document.getElementById('wmName').value.trim();
+  if (name) localStorage.setItem(KID_NAME_KEY, name);
+  if (wmSelectedAge) localStorage.setItem(KID_AGE_KEY, wmSelectedAge);
+  localStorage.setItem('rlw_welcomed', '1');
+  document.getElementById('wm').style.display = 'none';
+  applyKidName();
+}
+
+function wmSkip() {
+  localStorage.setItem('rlw_welcomed', '1');
+  document.getElementById('wm').style.display = 'none';
+}
+
+/* ── Apply kid's name to page ── */
+function applyKidName() {
+  var name = localStorage.getItem(KID_NAME_KEY);
+  var age  = localStorage.getItem(KID_AGE_KEY);
+  var h1   = document.getElementById('homeTitle');
+  var sub  = document.getElementById('homeSub');
+  var foot = document.getElementById('homeFooter');
+  if (name) {
+    h1.innerHTML   = name + '&#8217;s Learning World &#127775;';
+    sub.innerHTML  = age
+      ? 'Hi ' + name + '! Age ' + age + ' &mdash; Let&#8217;s learn! &#127775;'
+      : 'Hi ' + name + '! Tap a tile to start! &#128640;';
+    foot.innerHTML = 'Made with &#10084; for <b>' + name + '</b> &nbsp;|&nbsp; Keep learning! &#127807;';
+  } else {
+    h1.innerHTML   = 'Happy Learning World &#127775;';
+    sub.innerHTML  = 'Tap a tile to start learning! &#128640;';
+    foot.innerHTML = 'Made with &#10084; &nbsp;|&nbsp; Keep learning, keep growing! &#127807;';
+  }
+  // also update the document title
+  document.title = (name ? name + "'s Learning World" : 'Happy Learning World') + ' \u2728';
+}
+
+/* ── Hook: update title when name/age changes in settings ── */
+function onKidInfoSaved() { applyKidName(); }
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', function() {
+  applyKidName();
+  // Show welcome modal only on first visit
+  if (!localStorage.getItem('rlw_welcomed')) {
+    document.getElementById('wm').style.display = 'flex';
+    setTimeout(function() {
+      var ni = document.getElementById('wmName');
+      if (ni) ni.focus();
+    }, 350);
+  }
+});
+</script>
 </body>
 </html>
