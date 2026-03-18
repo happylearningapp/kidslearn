@@ -92,6 +92,17 @@ html { height: 100%; }
 .t7 { background:linear-gradient(135deg,#FF6B00,#FFC300); box-shadow:0 5px 18px rgba(255,107,0,.35); }
 .t8 { background:linear-gradient(135deg,#00897B,#26C6DA); box-shadow:0 5px 18px rgba(0,137,123,.35); }
 
+/* ── Coming Soon placeholder ── */
+.t-soon {
+  background: #f7f7f7;
+  border: 2.5px dashed #ddd;
+  box-shadow: none !important;
+  cursor: default;
+  pointer-events: none;
+}
+.t-soon .tile-icon  { opacity: .3; }
+.t-soon .tile-title { color: #ccc !important; text-shadow: none; -webkit-text-fill-color: #ccc; font-size: .75rem; }
+
 /* ── Footer ── */
 .home-footer {
   flex-shrink: 0;
@@ -100,7 +111,7 @@ html { height: 100%; }
 }
 .home-footer b { color: #FF6B6B; }
 
-/* ── Mobile: 3-column design ── */
+/* ── Mobile: 3-column square-tile design ── */
 @media (max-width: 600px) {
   #page-home {
     height: 100dvh;
@@ -108,34 +119,37 @@ html { height: 100%; }
     box-sizing: border-box;
   }
 
-  /* Header — breathing room restored */
-  .em-row { font-size: 1.1rem; margin-bottom: 3px; display: block; }
+  /* Header — proper breathing room */
+  .em-row { font-size: 1.05rem; margin-bottom: 2px; display: block; }
   .home-header { padding: 10px 52px 6px; }
   .home-header h1 { font-size: 1.18rem; margin-bottom: 2px; }
   .home-header .sub { display: block; font-size: .7rem; }
 
   /*
-   * 3-col layout using a 6-unit grid:
-   *  - Tiles 1–6: span 2 units each  →  3 tiles per row
-   *  - Tiles 7–8: span 3 units each  →  2 tiles, fills the last row evenly
+   * 3 equal columns, square tiles via aspect-ratio: 1
+   * Row 1: T1 T2 T3
+   * Row 2: T4 T5 T6
+   * Row 3: T7 T8 [Coming Soon]
    */
   .app-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    padding: 4px 12px 6px;
-    align-content: stretch;
+    padding: 4px 14px 8px;
+    align-content: start;   /* don't stretch — tiles are self-sized */
   }
-  .tile            { grid-column: span 2; border-radius: 16px; padding: 10px 6px; }
-  .tile:nth-child(7),
-  .tile:nth-child(8) { grid-column: span 3; }  /* balanced last row */
+  .tile {
+    aspect-ratio: 1;        /* force square */
+    border-radius: 16px;
+    padding: 8px 4px;
+  }
 
-  .tile-icon  { font-size: 1.55rem; margin-bottom: 3px; }
-  .tile-title { font-size: .7rem; }
+  .tile-icon  { font-size: 1.5rem; margin-bottom: 4px; }
+  .tile-title { font-size: .68rem; }
   .tile-sub   { display: none; }
-  .tile-badge { font-size: .44rem; padding: 1px 4px; top: 4px; right: 4px; }
+  .tile-badge { font-size: .42rem; padding: 1px 3px; top: 4px; right: 4px; }
 
   /* Footer */
-  .home-footer { padding: 2px 10px 4px; font-size: .6rem; }
+  .home-footer { padding: 3px 10px 5px; font-size: .6rem; }
 }
 
 /* ── Welcome Modal ── */
@@ -284,6 +298,10 @@ html { height: 100%; }
     <div class="tile-sub">Rhymes &amp; Tales</div>
     <span class="tile-badge">21 Stories</span>
   </a>
+  <div class="tile t-soon" aria-hidden="true">
+    <span class="tile-icon">&#10024;</span>
+    <div class="tile-title">Coming Soon!</div>
+  </div>
 </div>
 
 <!-- ══ FOOTER ══ -->
