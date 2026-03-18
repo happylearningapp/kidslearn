@@ -12,44 +12,69 @@
 .submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
 #sdrawer { top: 66px !important; }
 
-/* ── GK Questions ── */
-.gktoolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 10px;}
-.gkbtn{padding:7px 16px;border-radius:20px;border:none;font-family:var(--f);font-size:var(--sm);font-weight:700;cursor:pointer;}
-.gkbtn-exp{background:#4CAF50;color:#fff;}.gkbtn-col{background:#FF6B6B;color:#fff;}
-.gksec{margin-bottom:14px;border-radius:16px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.1);}
-.gkhd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;}
-.gkhd-l{display:flex;align-items:center;gap:11px;}
-.gkt{font-size:var(--lg);font-weight:900;color:#fff;}.gkc{font-size:var(--sm);opacity:.85;color:#fff;}
-.gkico{font-size:1.2rem;color:#fff;transition:transform .25s;font-weight:900;}
-.gkico.open{transform:rotate(180deg);}
-.gkbody{overflow:hidden;max-height:0;transition:max-height .35s ease;}
-.gkbody.open{max-height:9999px;}
-.gkinner{padding:10px 10px 12px;background:#fff;}
-.gkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-@media(max-width:600px){.gkgrid{grid-template-columns:1fr;}}
-.gkcrd{border-radius:15px;padding:12px 11px 10px;box-shadow:0 2px 8px rgba(0,0,0,.08);position:relative;}
-.gknum{position:absolute;top:8px;right:10px;font-size:var(--sm);font-weight:900;opacity:.35;}
-.gktop{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
-.gkq{font-size:var(--md);font-weight:700;color:#222;line-height:1.45;flex:1;}
-.gkacts{display:flex;gap:7px;}
-.gkabtn{flex:1;padding:6px 8px;border-radius:10px;border:none;font-family:var(--f);font-size:var(--sm);font-weight:700;cursor:pointer;}
-.gkabtn-r{background:#E3F2FD;color:#1565C0;}.gkabtn-r:hover{background:#1565C0;color:#fff;}
-.gkabtn-a{background:#E8F5E9;color:#2E7D32;}.gkabtn-a:hover{background:#2E7D32;color:#fff;}
-.gkans{margin-top:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:7px 10px;font-size:var(--md);font-weight:700;color:#333;display:none;}
-.gkans.show{display:block;animation:popIn .22s ease;}
+/* ── GK toolbar ── */
+.gktoolbar { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:0 0 12px; }
+.gkbtn { padding:7px 16px; border-radius:20px; border:none; font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer; }
+.gkbtn-exp  { background:#4CAF50; color:#fff; }
+.gkbtn-col  { background:#FF6B6B; color:#fff; }
+.gkbtn-shuf { background:linear-gradient(135deg,#6A1B9A,#E91E63); color:#fff; }
+.gkbtn-back { background:#78909C; color:#fff; }
+
+/* ── GK Accordion ── */
+.gksec  { margin-bottom:14px; border-radius:16px; overflow:hidden; box-shadow:0 3px 12px rgba(0,0,0,.1); }
+.gkhd   { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; cursor:pointer; }
+.gkhd-l { display:flex; align-items:center; gap:11px; }
+.gkt    { font-size:var(--lg); font-weight:900; color:#fff; }
+.gkc    { font-size:var(--sm); opacity:.85; color:#fff; }
+.gkico  { font-size:1.2rem; color:#fff; transition:transform .25s; font-weight:900; }
+.gkico.open { transform:rotate(180deg); }
+.gkbody { overflow:hidden; max-height:0; transition:max-height .35s ease; }
+.gkbody.open { max-height:9999px; }
+.gkinner { padding:10px 10px 12px; background:#fff; }
+.gkgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; }
+@media(max-width:600px) { .gkgrid { grid-template-columns:1fr; } }
+
+/* ── GK Card — clickable question, no Read Q button ── */
+.gkcrd { border-radius:15px; padding:12px 11px 10px; box-shadow:0 2px 8px rgba(0,0,0,.08); position:relative; }
+.gknum { position:absolute; top:8px; right:10px; font-size:var(--sm); font-weight:900; opacity:.35; }
+.gktop { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; cursor:pointer; }
+.gktop:hover .gkq { text-decoration:underline; text-decoration-style:dotted; }
+.gkq   { font-size:var(--md); font-weight:700; color:#222; line-height:1.45; flex:1; }
+.gkacts { display:flex; gap:7px; }
+.gkabtn { flex:1; padding:6px 8px; border-radius:10px; border:none; font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer; }
+.gkabtn-a { background:#E8F5E9; color:#2E7D32; }
+.gkabtn-a:hover { background:#2E7D32; color:#fff; }
+.gkans { margin-top:8px; background:rgba(255,255,255,.85); border-radius:10px; padding:7px 10px; font-size:var(--md); font-weight:700; color:#333; display:none; }
+.gkans.show { display:block; animation:popIn .22s ease; }
+
+/* ── GK Random quiz card ── */
+.rnd-card { border-radius:20px; padding:20px 18px; box-shadow:0 5px 20px rgba(0,0,0,.12); margin-bottom:16px; cursor:pointer; }
+.rnd-card:hover { transform:scale(1.01); }
+.rnd-q    { font-size:var(--xl); font-weight:900; color:#222; line-height:1.4; margin-bottom:14px; }
+.rnd-em   { font-size:3rem; display:block; margin-bottom:10px; }
+.rnd-meta { font-size:var(--sm); color:#999; margin-bottom:14px; }
+.rnd-ans  { margin-top:10px; border-radius:12px; padding:10px 14px; font-size:var(--lg); font-weight:900; display:none; }
+.rnd-ans.show { display:block; animation:popIn .22s ease; }
 
 /* ── MCQ ── */
-.mcqprog{background:#fff;border-radius:12px;padding:10px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:center;gap:12px;}
-.mcqbar{flex:1;height:10px;background:#eee;border-radius:5px;overflow:hidden;}
-.mcqfill{height:100%;background:linear-gradient(135deg,#6A1B9A,#E91E63);border-radius:5px;transition:width .4s;}
-.mcqcard{background:#fff;border-radius:20px;padding:22px;box-shadow:0 5px 20px rgba(0,0,0,.12);margin-bottom:14px;}
-.mcqopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.mcqopt{padding:12px 14px;border-radius:14px;border:3px solid #eee;background:#f9f9f9;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;}
-.mcqopt:hover{border-color:#6A1B9A;background:#F3E8FF;}
-.mcqopt.correct{background:#E8F5E9;border-color:#4CAF50;color:#1B5E20;}
-.mcqopt.wrong{background:#FFEBEE;border-color:#FF6B6B;color:#B71C1C;}
-.mcqopt.reveal{background:#E8F5E9;border-color:#4CAF50;}
-.mcqltr{width:24px;height:24px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.mcqprog { background:#fff; border-radius:12px; padding:10px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.08); display:flex; align-items:center; gap:12px; }
+.mcqbar  { flex:1; height:10px; background:#eee; border-radius:5px; overflow:hidden; }
+.mcqfill { height:100%; background:linear-gradient(135deg,#6A1B9A,#E91E63); border-radius:5px; transition:width .4s; }
+.mcqcard { background:#fff; border-radius:20px; padding:22px; box-shadow:0 5px 20px rgba(0,0,0,.12); margin-bottom:14px; }
+.mcqopts { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.mcqopt  { padding:12px 14px; border-radius:14px; border:3px solid #eee; background:#f9f9f9; font-family:var(--f); font-size:var(--md); font-weight:700; cursor:pointer; text-align:left; display:flex; align-items:center; gap:8px; }
+.mcqopt:hover { border-color:#6A1B9A; background:#F3E8FF; }
+.mcqopt.correct { background:#E8F5E9; border-color:#4CAF50; color:#1B5E20; }
+.mcqopt.wrong   { background:#FFEBEE; border-color:#FF6B6B; color:#B71C1C; }
+.mcqltr { width:24px; height:24px; border-radius:50%; background:#eee; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:900; flex-shrink:0; }
+/* mcq-nav = nav-row alias */
+.mcq-nav { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+
+/* MCQ start screen */
+.mcq-start { text-align:center; padding:20px; }
+.mcq-start-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
+.mcq-sbtn { padding:14px 28px; border-radius:20px; border:none; font-family:var(--f); font-size:var(--lg); font-weight:900; cursor:pointer; transition:all .2s; }
+.mcq-sbtn:hover { transform:scale(1.05); }
 
 /* ── Bottom dock ── */
 .quiz-dock {
@@ -73,7 +98,7 @@
 </head>
 <body id="page-gk"
       data-page-title="&#129504; Quiz Time"
-      data-page-sub="Read Question | Show Answer"
+      data-page-sub="Read &amp; Learn"
       data-page-gradient="linear-gradient(135deg,#6A1B9A,#1565C0)"
       data-page-back="home.html">
 
@@ -83,12 +108,12 @@
     <!-- ══ GK QUESTIONS ══ -->
     <div id="gk-gkqs" class="sec active">
       <div class="gktoolbar">
-        <div style="display:flex;gap:8px">
-          <button class="gkbtn gkbtn-exp" onclick="gkExp()">Expand All</button>
-          <button class="gkbtn gkbtn-col" onclick="gkCol()">Collapse All</button>
-        </div>
+        <button class="gkbtn gkbtn-exp"  onclick="gkExp()">Expand All</button>
+        <button class="gkbtn gkbtn-col"  onclick="gkCol()">Collapse All</button>
+        <button class="gkbtn gkbtn-shuf" onclick="enterGKRandom()">&#128256; Random Quiz</button>
       </div>
       <div id="gkWrap"></div>
+      <div id="gkRandom" style="display:none"></div>
     </div>
 
     <!-- ══ MCQ QUIZ ══ -->
@@ -96,6 +121,15 @@
       <div class="bigbox" style="background:linear-gradient(135deg,#6A1B9A,#E91E63)" onclick="spk('MCQ Quiz Challenge')">
         <div class="bigchar">&#127942;</div>
         <div class="bigsub">MCQ Quiz Challenge</div>
+      </div>
+      <div class="mcq-start">
+        <div style="font-size:.9rem;color:#888;margin-bottom:4px">Choose how to play:</div>
+        <div class="mcq-start-btns">
+          <button class="mcq-sbtn" style="background:linear-gradient(135deg,#6A1B9A,#1565C0);color:#fff"
+                  onclick="startMCQ(false)">&#9654; Start in Order</button>
+          <button class="mcq-sbtn" style="background:linear-gradient(135deg,#E91E63,#FF8E53);color:#fff"
+                  onclick="startMCQ(true)">&#128256; Shuffle &amp; Play</button>
+        </div>
       </div>
       <div id="mcqArea"></div>
     </div>
@@ -108,31 +142,232 @@
   <button class="quiz-dock-btn active" data-tab="gkqs" onclick="swQuiz('gkqs')">
     <span class="dock-ico">&#128203;</span>GK Questions
   </button>
-  <button class="quiz-dock-btn" data-tab="mcq" onclick="swQuiz('mcq');initMCQ()">
+  <button class="quiz-dock-btn" data-tab="mcq" onclick="swQuiz('mcq');startMCQ(false)">
     <span class="dock-ico">&#127942;</span>MCQ Quiz
   </button>
 </nav>
 
 <script>
-var GKCAT=[
-  {n:"Personal Life",i:"&#128102;",c:"#E91E63",bg:"#FCE4EC",br:"#F48FB1"},
-  {n:"Colors",       i:"&#127912;",c:"#F9A825",bg:"#FFFDE7",br:"#FFE082"},
-  {n:"Numbers",      i:"&#128290;",c:"#1976D2",bg:"#E3F2FD",br:"#90CAF9"},
-  {n:"Shapes",       i:"&#128311;",c:"#9C27B0",bg:"#F3E5F5",br:"#CE93D8"},
-  {n:"Animals",      i:"&#128062;",c:"#FF8E53",bg:"#FFF3E0",br:"#FFCC80"},
-  {n:"Birds",        i:"&#128038;",c:"#29B6F6",bg:"#E1F5FE",br:"#81D4FA"},
-  {n:"Fruits",       i:"&#127822;",c:"#FF6B6B",bg:"#FFEBEE",br:"#EF9A9A"},
-  {n:"Vegetables",   i:"&#129382;",c:"#43A047",bg:"#E8F5E9",br:"#A5D6A7"},
-  {n:"Transport",    i:"&#128663;",c:"#F57C00",bg:"#FFF3E0",br:"#FFCC80"},
-  {n:"Body Parts",   i:"&#129485;",c:"#E91E63",bg:"#FCE4EC",br:"#F48FB1"},
-  {n:"India GK",     i:"&#127470;&#127475;",c:"#FF6B00",bg:"#FFF3E0",br:"#FFCC80"},
-  {n:"Thinking",     i:"&#128161;",c:"#6A1B9A",bg:"#F3E5F5",br:"#CE93D8"}
+/* ═══════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════ */
+var GKCAT = [
+  {n:"About Me",      i:"&#128102;", c:"#E91E63", bg:"#FCE4EC", br:"#F48FB1"},
+  {n:"Colors",        i:"&#127912;", c:"#F9A825", bg:"#FFFDE7", br:"#FFE082"},
+  {n:"Numbers",       i:"&#128290;", c:"#1976D2", bg:"#E3F2FD", br:"#90CAF9"},
+  {n:"Shapes",        i:"&#128311;", c:"#9C27B0", bg:"#F3E5F5", br:"#CE93D8"},
+  {n:"Animals",       i:"&#128062;", c:"#FF8E53", bg:"#FFF3E0", br:"#FFCC80"},
+  {n:"Birds",         i:"&#128038;", c:"#29B6F6", bg:"#E1F5FE", br:"#81D4FA"},
+  {n:"Fruits",        i:"&#127822;", c:"#FF6B6B", bg:"#FFEBEE", br:"#EF9A9A"},
+  {n:"Vegetables",    i:"&#129382;", c:"#43A047", bg:"#E8F5E9", br:"#A5D6A7"},
+  {n:"Transport",     i:"&#128663;", c:"#F57C00", bg:"#FFF3E0", br:"#FFCC80"},
+  {n:"Body Parts",    i:"&#129485;", c:"#E91E63", bg:"#FCE4EC", br:"#F48FB1"},
+  {n:"India GK",      i:"&#127470;&#127475;", c:"#FF6B00", bg:"#FFF3E0", br:"#FFCC80"},
+  {n:"Brain Teasers", i:"&#128161;", c:"#6A1B9A", bg:"#F3E5F5", br:"#CE93D8"}
 ];
-var GKQ=[["&#128102;","What is your name?","Reyan Dutta"],["&#127880;","How old are you?","3 years old"],["&#127470;&#127475;","What country do you live in?","India"],["&#127750;","What city do you live in?","Hyderabad"],["&#128716;","Where do you sleep?","On my bed"],["&#128167;","What do you drink when thirsty?","Water"],["&#129447;","What do you use to brush teeth?","Toothbrush"],["&#128099;","What do you wear on your feet?","Shoes"],["&#127979;","Where do you go to study?","School"],["&#127890;","What carries your books?","A bag"],["&#9728;","What color is the sun?","Yellow"],["&#127807;","What color is grass?","Green"],["&#127780;","What color is the sky?","Blue"],["&#129379;","What color is milk?","White"],["&#10052;","What color is snow?","White"],["&#127820;","What color is a banana?","Yellow"],["&#127822;","What color is an apple?","Red"],["&#127818;","What color is an orange?","Orange"],["&#127851;","What color is chocolate?","Brown"],["&#127827;","What color is a strawberry?","Red"],["&#127815;","What color are grapes?","Green or Purple"],["&#129365;","What color is a carrot?","Orange"],["&#127813;","What color is a tomato?","Red"],["&#127819;","What color is a lemon?","Yellow"],["&#128293;","What color is fire?","Orange and Red"],["&#128290;","What comes after 1?","2"],["&#128290;","What comes after 5?","6"],["&#128290;","What comes before 10?","9"],["&#128400;","Fingers on one hand?","5 fingers"],["&#128064;","How many eyes?","2 eyes"],["&#128066;","How many ears?","2 ears"],["&#128053;","Legs on a dog?","4 legs"],["&#128690;","Wheels on a bicycle?","2 wheels"],["&#128663;","Wheels on a car?","4 wheels"],["&#128197;","Days in a week?","7 days"],["&#128197;","Months in a year?","12 months"],["&#128290;","What comes after 10?","11"],["&#128290;","What comes before 5?","4"],["&#128290;","Which is bigger: 8 or 3?","8 is bigger"],["&#128290;","Which is smaller: 2 or 7?","2 is smaller"],["&#11093;","Shape like a ball?","Circle"],["&#128314;","Shape with 3 sides?","Triangle"],["&#128998;","Shape with 4 equal sides?","Square"],["&#128682;","Shape of a door?","Rectangle"],["&#129370;","Shape like an egg?","Oval"],["&#11088;","Shape with 5 points?","Star"],["&#129689;","Shape of coins?","Circle"],["&#129695;","Shape of windows?","Square or Rectangle"],["&#127829;","Shape of pizza slice?","Triangle"],["&#128142;","Shape like a kite?","Diamond"],["&#128049;","Which animal says meow?","Cat"],["&#128053;","Which animal says woof?","Dog"],["&#128046;","Which animal says moo?","Cow"],["&#129409;","King of the jungle?","Lion"],["&#128024;","Animal with long trunk?","Elephant"],["&#129427;","Black and white stripes?","Zebra"],["&#128056;","Animal that jumps and croaks?","Frog"],["&#129379;","Animal that gives us milk?","Cow"],["&#129426;","Animal with very long neck?","Giraffe"],["&#128018;","Animal that likes bananas?","Monkey"],["&#129436;","Animal with humps?","Camel"],["&#128047;","Animal that roars?","Tiger and Lion"],["&#129432;","Carries babies in a pouch?","Kangaroo"],["&#128034;","Moves very slowly?","Turtle"],["&#128031;","Lives in water with fins?","Fish"],["&#128018;","Swings on trees?","Monkey"],["&#128051;","Very big in the ocean?","Whale"],["&#128055;","Pink animal that likes mud?","Pig"],["&#128052;","Animal that says neigh?","Horse"],["&#129434;","National bird of India?","Peacock"],["&#129414;","Which bird says quack?","Duck"],["&#129417;","Which bird hoots at night?","Owl"],["&#129412;","Green bird that can talk?","Parrot"],["&#128038;","Small bird that chirps?","Sparrow"],["&#128038;","Black bird that says caw?","Crow"],["&#129370;","Which bird lays eggs?","All birds lay eggs"],["&#129413;","Flies high in the sky?","Eagle"],["&#129442;","Beautiful white water bird?","Swan"],["&#129441;","Pink bird with long legs?","Flamingo"],["&#127820;","Fruit that is yellow and long?","Banana"],["&#127822;","Fruit that keeps doctor away?","Apple"],["&#129389;","National fruit of India?","Mango"],["&#127815;","Fruit that grows in bunches?","Grapes"],["&#127817;","Red inside green outside?","Watermelon"],["&#127821;","Fruit with crown on top?","Pineapple"],["&#129381;","Grows on coconut tree?","Coconut"],["&#127818;","Orange colored fruit?","Orange"],["&#127827;","Small red fruit?","Strawberry"],["&#127826;","Small red fruit like twins?","Cherry"],["&#129365;","Orange vegetable rabbits love?","Carrot"],["&#129485;","Makes you cry when cutting?","Onion"],["&#129364;","Used to make fries?","Potato"],["&#127813;","Round red vegetable?","Tomato"],["&#129382;","Green leafy vegetable?","Spinach"],["&#127814;","Purple vegetable?","Brinjal"],["&#129362;","Long green vegetable?","Cucumber"],["&#129364;","Grows underground?","Potato"],["&#129382;","Looks like a small tree?","Broccoli"],["&#127805;","Yellow vegetable in a row?","Corn"],["&#9992;","Vehicle that flies?","Airplane"],["&#128642;","Vehicle that runs on tracks?","Train"],["&#9973;","Vehicle that sails?","Boat"],["&#128690;","Vehicle with 2 wheels?","Bicycle"],["&#128652;","Takes children to school?","School Bus"],["&#128658;","Puts out fire?","Fire Truck"],["&#128657;","Takes sick people to hospital?","Ambulance"],["&#128641;","Flies with rotating blades?","Helicopter"],["&#128663;","Runs on roads?","Car"],["&#128674;","Travels under the sea?","Submarine"],["&#128064;","Helps you see?","Eyes"],["&#128066;","Helps you hear?","Ears"],["&#128067;","Helps you smell?","Nose"],["&#128069;","Helps you taste?","Tongue"],["&#129459;","Helps you walk?","Legs"],["&#128080;","Helps you hold things?","Hands"],["&#129504;","Helps you think?","Brain"],["&#10084;","Pumps blood?","Heart"],["&#129463;","We brush these every day?","Teeth"],["&#129401;","Helps us breathe?","Lungs"],["&#127757;","Name of our country?","India"],["&#128104;","Prime Minister of India?","Narendra Modi"],["&#128047;","National animal of India?","Tiger"],["&#129434;","National bird of India?","Peacock"],["&#129455;","National flower of India?","Lotus"],["&#129389;","National fruit of India?","Mango"],["&#127926;","National anthem of India?","Jana Gana Mana"],["&#127881;","15 August celebration?","Independence Day"],["&#127881;","26 January celebration?","Republic Day"],["&#127470;&#127475;","Colors of Indian flag?","Saffron, White and Green"],["&#9730;","Used when it rains?","Umbrella"],["&#129137;","Worn when it is cold?","Jacket"],["&#128716;","We sleep on?","Bed"],["&#9986;","Used to cut paper?","Scissors"],["&#9200;","Used to tell time?","Clock"],["&#128241;","Used to call someone far?","Phone"],["&#128294;","Used to see in the dark?","Torch"],["&#128394;","Used to write on board?","Chalk or Marker"],["&#129447;","Used to clean teeth?","Toothbrush"],["&#128273;","Used to open a lock?","Key"],["&#129490;","Used to cook food?","Stove"],["&#129379;","Drink in the morning?","Milk"],["&#128218;","Read to learn stories?","Book"],["&#129529;","Clean the floor?","Broom"],["&#128717;","Carry groceries?","Bag"],["&#127741;","Dry body after bath?","Towel"],["&#129516;","Used to wash hands?","Soap"],["&#128300;","See far away?","Binoculars"],["&#9999;","Draw pictures with?","Crayons"],["&#127925;","Listen to music with?","Speaker"]];
-var GKBN=[0,10,25,40,50,70,80,90,100,110,120,130,150];
-var MCQD=[{e:"&#128049;",q:"Which animal says Meow?",o:["Dog","Cat","Cow","Goat"],a:1},{e:"&#127780;",q:"What color is the sky?",o:["Red","Green","Blue","Yellow"],a:2},{e:"&#128053;",q:"How many legs does a dog have?",o:["2","4","6","8"],a:1},{e:"&#127820;",q:"Which fruit is yellow and long?",o:["Apple","Orange","Banana","Mango"],a:2},{e:"&#129447;",q:"What do we use to brush teeth?",o:["Comb","Toothbrush","Soap","Cloth"],a:1},{e:"&#128024;",q:"Which animal has a long trunk?",o:["Giraffe","Elephant","Hippo","Rhino"],a:1},{e:"&#11093;",q:"What shape is a ball?",o:["Square","Triangle","Circle","Star"],a:2},{e:"&#129434;",q:"National bird of India?",o:["Eagle","Crow","Peacock","Parrot"],a:2},{e:"&#9730;",q:"What do we use when it rains?",o:["Sunglasses","Umbrella","Hat","Jacket"],a:1},{e:"&#127769;",q:"When do we sleep?",o:["Morning","Afternoon","Night","Evening"],a:2},{e:"&#127822;",q:"Which fruit is red and round?",o:["Banana","Apple","Mango","Grapes"],a:1},{e:"&#128293;",q:"What should NOT be touched?",o:["Water","Toy","Fire","Book"],a:2},{e:"&#127979;",q:"Where do you go to study?",o:["Hospital","Zoo","School","Market"],a:2},{e:"&#128657;",q:"Which vehicle helps sick people?",o:["Fire Truck","Ambulance","Bus","Train"],a:1},{e:"&#127807;",q:"What color is grass?",o:["Red","Blue","Yellow","Green"],a:3},{e:"&#9728;",q:"Sun rises in the?",o:["West","North","East","South"],a:2},{e:"&#129379;",q:"What color is milk?",o:["Yellow","White","Blue","Brown"],a:1},{e:"&#128047;",q:"National animal of India?",o:["Elephant","Lion","Tiger","Leopard"],a:2},{e:"&#127765;",q:"What do we see at night?",o:["Sun","Moon","Rainbow","Cloud"],a:1},{e:"&#128064;",q:"How many eyes do we have?",o:["1","2","3","4"],a:1},{e:"&#128197;",q:"How many days in a week?",o:["5","6","7","8"],a:2},{e:"&#127818;",q:"What color is an orange?",o:["Red","Yellow","Orange","Green"],a:2},{e:"&#128056;",q:"Which animal jumps near water?",o:["Cat","Frog","Dog","Cow"],a:1},{e:"&#128642;",q:"Which vehicle runs on tracks?",o:["Car","Boat","Train","Airplane"],a:2},{e:"&#127855;",q:"What do bees make?",o:["Water","Honey","Milk","Juice"],a:1},{e:"&#10084;",q:"Which part pumps blood?",o:["Brain","Lungs","Heart","Tummy"],a:2},{e:"&#127874;",q:"What do we eat on birthdays?",o:["Pizza","Cake","Sandwich","Rice"],a:1},{e:"&#128290;",q:"What comes after 5?",o:["4","6","7","8"],a:1},{e:"&#128059;",q:"Where do bears sleep in winter?",o:["Tree","Cave","Sea","Sky"],a:1},{e:"&#127752;",q:"How many colors in a rainbow?",o:["5","6","7","8"],a:2}];
+/* Question format: [emoji, question, answer] */
+var GKQ = [
+  /* ── About Me (10) ── */
+  ["&#128102;","What is your name?","Reyan Dutta"],
+  ["&#127880;","How old are you?","3 years old"],
+  ["&#127470;&#127475;","Which country do you live in?","India"],
+  ["&#127750;","Which city do you live in?","Hyderabad"],
+  ["&#128716;","Where do you sleep at night?","On my bed"],
+  ["&#128167;","What do you drink when you are thirsty?","Water"],
+  ["&#129447;","What do you use to brush your teeth?","Toothbrush"],
+  ["&#128099;","What do you wear on your feet?","Shoes"],
+  ["&#127979;","Where do you go to study every day?","School"],
+  ["&#127890;","What carries your books to school?","A bag"],
+  /* ── Colors (15) ── */
+  ["&#9728;","What color is the sun?","Yellow"],
+  ["&#127807;","What color is grass?","Green"],
+  ["&#127780;","What color is the sky?","Blue"],
+  ["&#129379;","What color is milk?","White"],
+  ["&#10052;","What color is snow?","White"],
+  ["&#127820;","What color is a banana?","Yellow"],
+  ["&#127822;","What color is an apple?","Red"],
+  ["&#127818;","What color is an orange?","Orange"],
+  ["&#127851;","What color is chocolate?","Brown"],
+  ["&#127827;","What color is a strawberry?","Red"],
+  ["&#127815;","What color are grapes?","Green or Purple"],
+  ["&#129365;","What color is a carrot?","Orange"],
+  ["&#127813;","What color is a tomato?","Red"],
+  ["&#127819;","What color is a lemon?","Yellow"],
+  ["&#128293;","What color is fire?","Orange and Red"],
+  /* ── Numbers (15) ── */
+  ["&#128290;","What comes after 1?","2"],
+  ["&#128290;","What comes after 5?","6"],
+  ["&#128290;","What comes before 10?","9"],
+  ["&#128400;","How many fingers are on one hand?","5 fingers"],
+  ["&#128064;","How many eyes do we have?","2 eyes"],
+  ["&#128066;","How many ears do we have?","2 ears"],
+  ["&#128053;","How many legs does a dog have?","4 legs"],
+  ["&#128690;","How many wheels does a bicycle have?","2 wheels"],
+  ["&#128663;","How many wheels does a car have?","4 wheels"],
+  ["&#128197;","How many days are in a week?","7 days"],
+  ["&#128197;","How many months are in a year?","12 months"],
+  ["&#128290;","What comes after 10?","11"],
+  ["&#128290;","What comes before 5?","4"],
+  ["&#128290;","Which is bigger: 8 or 3?","8 is bigger"],
+  ["&#128290;","Which is smaller: 2 or 7?","2 is smaller"],
+  /* ── Shapes (10) ── */
+  ["&#11093;","Which shape looks like a ball?","Circle"],
+  ["&#128314;","Which shape has 3 sides?","Triangle"],
+  ["&#128998;","Which shape has 4 equal sides?","Square"],
+  ["&#128682;","What shape is a door?","Rectangle"],
+  ["&#129370;","Which shape looks like an egg?","Oval"],
+  ["&#11088;","Which shape has 5 points?","Star"],
+  ["&#129689;","What shape are coins?","Circle"],
+  ["&#129695;","What shape are windows?","Square or Rectangle"],
+  ["&#127829;","What shape is a pizza slice?","Triangle"],
+  ["&#128142;","Which shape looks like a kite?","Diamond"],
+  /* ── Animals (20) ── */
+  ["&#128049;","Which animal says meow?","Cat"],
+  ["&#128053;","Which animal says woof?","Dog"],
+  ["&#128046;","Which animal says moo?","Cow"],
+  ["&#129409;","Which animal is the king of the jungle?","Lion"],
+  ["&#128024;","Which animal has a long trunk?","Elephant"],
+  ["&#129427;","Which animal has black and white stripes?","Zebra"],
+  ["&#128056;","Which animal jumps and croaks?","Frog"],
+  ["&#129379;","Which animal gives us milk?","Cow"],
+  ["&#129426;","Which animal has a very long neck?","Giraffe"],
+  ["&#128018;","Which animal likes bananas?","Monkey"],
+  ["&#129436;","Which animal has humps on its back?","Camel"],
+  ["&#128047;","Which animal roars?","Tiger and Lion"],
+  ["&#129432;","Which animal carries its baby in a pouch?","Kangaroo"],
+  ["&#128034;","Which animal moves very slowly?","Turtle"],
+  ["&#128031;","Which animal lives in water and has fins?","Fish"],
+  ["&#128018;","Which animal swings on trees?","Monkey"],
+  ["&#128051;","Which is the biggest animal in the ocean?","Whale"],
+  ["&#128055;","Which pink animal likes to roll in mud?","Pig"],
+  ["&#128052;","Which animal says neigh?","Horse"],
+  ["&#129409;","Which animal is called the king of the jungle?","Lion"],
+  /* ── Birds (10) ── */
+  ["&#129434;","Which is the national bird of India?","Peacock"],
+  ["&#129414;","Which bird says quack?","Duck"],
+  ["&#129417;","Which bird hoots at night?","Owl"],
+  ["&#129412;","Which green bird can talk?","Parrot"],
+  ["&#128038;","Which small bird chirps in the morning?","Sparrow"],
+  ["&#128038;","Which black bird says caw?","Crow"],
+  ["&#129370;","Which birds lay eggs?","All birds lay eggs"],
+  ["&#129413;","Which bird flies very high in the sky?","Eagle"],
+  ["&#129442;","Which beautiful white bird swims on water?","Swan"],
+  ["&#129441;","Which pink bird has very long legs?","Flamingo"],
+  /* ── Fruits (10) ── */
+  ["&#127820;","Which fruit is yellow and long?","Banana"],
+  ["&#127822;","Which fruit a day keeps the doctor away?","Apple"],
+  ["&#129389;","Which is the national fruit of India?","Mango"],
+  ["&#127815;","Which fruit grows in bunches?","Grapes"],
+  ["&#127817;","Which fruit is red inside and green outside?","Watermelon"],
+  ["&#127821;","Which fruit has a crown on top?","Pineapple"],
+  ["&#129381;","What grows on a coconut tree?","Coconut"],
+  ["&#127818;","Which fruit is orange in color?","Orange"],
+  ["&#127827;","Which small red fruit grows on a plant?","Strawberry"],
+  ["&#127826;","Which small red fruit grows in pairs?","Cherry"],
+  /* ── Vegetables (10) ── */
+  ["&#129365;","Which orange vegetable do rabbits love?","Carrot"],
+  ["&#129485;","Which vegetable makes you cry when you cut it?","Onion"],
+  ["&#129364;","Which vegetable is used to make fries?","Potato"],
+  ["&#127813;","Which vegetable is round and red?","Tomato"],
+  ["&#129382;","Name a green leafy vegetable","Spinach"],
+  ["&#127814;","Which vegetable is purple in color?","Brinjal (Eggplant)"],
+  ["&#129362;","Which vegetable is long and green?","Cucumber"],
+  ["&#129364;","Which vegetable grows underground?","Potato"],
+  ["&#129382;","Which vegetable looks like a small tree?","Broccoli"],
+  ["&#127805;","Which yellow vegetable has kernels in a row?","Corn"],
+  /* ── Transport (10) ── */
+  ["&#9992;","Which vehicle flies in the sky?","Airplane"],
+  ["&#128642;","Which vehicle runs on tracks?","Train"],
+  ["&#9973;","Which vehicle sails on water?","Boat"],
+  ["&#128690;","Which vehicle has 2 wheels and you pedal?","Bicycle"],
+  ["&#128652;","Which vehicle takes children to school?","School Bus"],
+  ["&#128658;","Which vehicle puts out fire?","Fire Truck"],
+  ["&#128657;","Which vehicle takes sick people to hospital?","Ambulance"],
+  ["&#128641;","Which vehicle flies with rotating blades?","Helicopter"],
+  ["&#128663;","Which vehicle runs on roads with 4 wheels?","Car"],
+  ["&#128674;","Which vehicle travels under the sea?","Submarine"],
+  /* ── Body Parts (10) ── */
+  ["&#128064;","Which body part helps you see?","Eyes"],
+  ["&#128066;","Which body part helps you hear?","Ears"],
+  ["&#128067;","Which body part helps you smell?","Nose"],
+  ["&#128069;","Which body part helps you taste?","Tongue"],
+  ["&#129459;","Which body part helps you walk?","Legs"],
+  ["&#128080;","Which body part helps you hold things?","Hands"],
+  ["&#129504;","Which organ helps you think?","Brain"],
+  ["&#10084;","Which organ pumps our blood?","Heart"],
+  ["&#129463;","What do we brush every day?","Teeth"],
+  ["&#129401;","Which organ helps us breathe?","Lungs"],
+  /* ── India GK (10) ── */
+  ["&#127757;","What is the name of our country?","India"],
+  ["&#128104;","Who is the Prime Minister of India?","Narendra Modi"],
+  ["&#128047;","Which is the national animal of India?","Tiger"],
+  ["&#129434;","Which is the national bird of India?","Peacock"],
+  ["&#129455;","Which is the national flower of India?","Lotus"],
+  ["&#129389;","Which is the national fruit of India?","Mango"],
+  ["&#127926;","What is the national anthem of India?","Jana Gana Mana"],
+  ["&#127881;","What do we celebrate on 15th August?","Independence Day"],
+  ["&#127881;","What do we celebrate on 26th January?","Republic Day"],
+  ["&#127470;&#127475;","What are the three colors of the Indian flag?","Saffron, White and Green"],
+  /* ── Brain Teasers (20) ── */
+  ["&#9730;","What do we use when it rains?","Umbrella"],
+  ["&#129137;","What do we wear when it is cold?","Jacket"],
+  ["&#128716;","What do we sleep on?","Bed"],
+  ["&#9986;","What is used to cut paper?","Scissors"],
+  ["&#9200;","What is used to tell time?","Clock"],
+  ["&#128241;","What do we use to call someone far away?","Phone"],
+  ["&#128294;","What do we use to see in the dark?","Torch"],
+  ["&#128394;","What is used to write on a board?","Chalk or Marker"],
+  ["&#129447;","What is used to clean our teeth?","Toothbrush"],
+  ["&#128273;","What is used to open a lock?","Key"],
+  ["&#129490;","What is used to cook food?","Stove"],
+  ["&#129379;","What do we drink every morning?","Milk"],
+  ["&#128218;","What do we read to learn stories?","Book"],
+  ["&#129529;","What is used to clean the floor?","Broom"],
+  ["&#128717;","What do we use to carry groceries?","Bag"],
+  ["&#127741;","What do we use to dry our body after a bath?","Towel"],
+  ["&#129516;","What is used to wash our hands?","Soap"],
+  ["&#128300;","What is used to see things far away?","Binoculars"],
+  ["&#9999;","What do we use to draw pictures?","Crayons"],
+  ["&#127925;","What do we use to listen to music?","Speaker"]
+];
+var GKBN = [0, 10, 25, 40, 50, 70, 80, 90, 100, 110, 120, 130, 150];
 
-/* ── GK Build ── */
+var MCQD = [
+  {e:"&#128049;",q:"Which animal says Meow?",o:["Dog","Cat","Cow","Goat"],a:1},
+  {e:"&#127780;",q:"What color is the sky?",o:["Red","Green","Blue","Yellow"],a:2},
+  {e:"&#128053;",q:"How many legs does a dog have?",o:["2","4","6","8"],a:1},
+  {e:"&#127820;",q:"Which fruit is yellow and long?",o:["Apple","Orange","Banana","Mango"],a:2},
+  {e:"&#129447;",q:"What do we use to brush our teeth?",o:["Comb","Toothbrush","Soap","Cloth"],a:1},
+  {e:"&#128024;",q:"Which animal has a long trunk?",o:["Giraffe","Elephant","Hippo","Rhino"],a:1},
+  {e:"&#11093;",q:"What shape is a ball?",o:["Square","Triangle","Circle","Star"],a:2},
+  {e:"&#129434;",q:"What is the national bird of India?",o:["Eagle","Crow","Peacock","Parrot"],a:2},
+  {e:"&#9730;",q:"What do we use when it rains?",o:["Sunglasses","Umbrella","Hat","Jacket"],a:1},
+  {e:"&#127769;",q:"When do we sleep?",o:["Morning","Afternoon","Night","Evening"],a:2},
+  {e:"&#127822;",q:"Which fruit is red and round?",o:["Banana","Apple","Mango","Grapes"],a:1},
+  {e:"&#128293;",q:"What should NOT be touched?",o:["Water","Toy","Fire","Book"],a:2},
+  {e:"&#127979;",q:"Where do you go to study?",o:["Hospital","Zoo","School","Market"],a:2},
+  {e:"&#128657;",q:"Which vehicle helps sick people?",o:["Fire Truck","Ambulance","Bus","Train"],a:1},
+  {e:"&#127807;",q:"What color is grass?",o:["Red","Blue","Yellow","Green"],a:3},
+  {e:"&#9728;",q:"Where does the sun rise?",o:["West","North","East","South"],a:2},
+  {e:"&#129379;",q:"What color is milk?",o:["Yellow","White","Blue","Brown"],a:1},
+  {e:"&#128047;",q:"What is the national animal of India?",o:["Elephant","Lion","Tiger","Leopard"],a:2},
+  {e:"&#127765;",q:"What do we see in the sky at night?",o:["Sun","Moon","Rainbow","Cloud"],a:1},
+  {e:"&#128064;",q:"How many eyes do we have?",o:["1","2","3","4"],a:1},
+  {e:"&#128197;",q:"How many days are in a week?",o:["5","6","7","8"],a:2},
+  {e:"&#127818;",q:"What color is an orange?",o:["Red","Yellow","Orange","Green"],a:2},
+  {e:"&#128056;",q:"Which animal jumps near water and croaks?",o:["Cat","Frog","Dog","Cow"],a:1},
+  {e:"&#128642;",q:"Which vehicle runs on tracks?",o:["Car","Boat","Train","Airplane"],a:2},
+  {e:"&#127855;",q:"What do bees make?",o:["Water","Honey","Milk","Juice"],a:1},
+  {e:"&#10084;",q:"Which organ pumps blood in our body?",o:["Brain","Lungs","Heart","Tummy"],a:2},
+  {e:"&#127874;",q:"What do we eat on birthdays?",o:["Pizza","Cake","Sandwich","Rice"],a:1},
+  {e:"&#128290;",q:"What comes after 5?",o:["4","6","7","8"],a:1},
+  {e:"&#128059;",q:"Where do bears sleep in winter?",o:["Tree","Cave","Sea","Sky"],a:1},
+  {e:"&#127752;",q:"How many colors are in a rainbow?",o:["5","6","7","8"],a:2}
+];
+
+/* ═══════════════════════════════════════════════
+   GK ACCORDION
+═══════════════════════════════════════════════ */
 (function() {
   var h = '';
   GKCAT.forEach(function(cat, ci) {
@@ -145,14 +380,16 @@ var MCQD=[{e:"&#128049;",q:"Which animal says Meow?",o:["Dog","Cat","Cow","Goat"
       + '<span class="gkico' + (first ? ' open' : '') + '">&#9660;</span></div>'
       + '<div class="gkbody' + (first ? ' open' : '') + '"><div class="gkinner"><div class="gkgrid">';
     qs.forEach(function(q, i) {
-      var uid = 'gk_' + ci + '_' + i;
+      var uid  = 'gk_' + ci + '_' + i;
+      var abs  = GKBN[ci] + i;
+      /* clicking the top area reads the question aloud */
       h += '<div class="gkcrd" style="background:' + cat.bg + ';border:2px solid ' + cat.br + '">'
         + '<div class="gknum">' + (i + 1) + '</div>'
-        + '<div class="gktop"><span style="font-size:1.5rem;min-width:26px">' + q[0] + '</span>'
+        + '<div class="gktop" onclick="spk(GKQ[' + abs + '][1])" title="Tap to hear the question">'
+        + '<span style="font-size:1.5rem;min-width:26px">' + q[0] + '</span>'
         + '<div class="gkq">' + q[1] + '</div></div>'
         + '<div class="gkacts">'
-        + '<button class="gkabtn gkabtn-r" onclick="gkSpkQ(' + ci + ',' + i + ')">Read Q</button>'
-        + '<button class="gkabtn gkabtn-a" onclick="showAns(\'' + uid + '\',' + ci + ',' + i + ')">Answer</button>'
+        + '<button class="gkabtn gkabtn-a" onclick="showAns(\'' + uid + '\',' + ci + ',' + i + ')">&#128065; Answer</button>'
         + '</div><div class="gkans" id="' + uid + '"></div></div>';
     });
     h += '</div></div></div></div>';
@@ -160,56 +397,201 @@ var MCQD=[{e:"&#128049;",q:"Which animal says Meow?",o:["Dog","Cat","Cow","Goat"
   document.getElementById('gkWrap').innerHTML = h;
 })();
 
-function tgk(ci) { document.querySelector('#gs' + ci + ' .gkbody').classList.toggle('open'); document.querySelector('#gs' + ci + ' .gkico').classList.toggle('open'); }
-function gkExp() { document.querySelectorAll('.gkbody').forEach(function(b) { b.classList.add('open'); }); document.querySelectorAll('.gkico').forEach(function(i) { i.classList.add('open'); }); }
-function gkCol() { document.querySelectorAll('.gkbody').forEach(function(b) { b.classList.remove('open'); }); document.querySelectorAll('.gkico').forEach(function(i) { i.classList.remove('open'); }); }
-function gkSpkQ(ci, qi) { spk(GKQ[GKBN[ci] + qi][1]); }
-function showAns(uid, ci, qi) { var ans = GKQ[GKBN[ci] + qi][2]; var el = document.getElementById(uid); if (!el) return; el.textContent = 'Answer: ' + ans; el.classList.add('show'); spk(ans); }
+function tgk(ci)  { document.querySelector('#gs' + ci + ' .gkbody').classList.toggle('open'); document.querySelector('#gs' + ci + ' .gkico').classList.toggle('open'); }
+function gkExp()  { document.querySelectorAll('.gkbody').forEach(function(b) { b.classList.add('open'); }); document.querySelectorAll('.gkico').forEach(function(x) { x.classList.add('open'); }); }
+function gkCol()  { document.querySelectorAll('.gkbody').forEach(function(b) { b.classList.remove('open'); }); document.querySelectorAll('.gkico').forEach(function(x) { x.classList.remove('open'); }); }
+function showAns(uid, ci, qi) {
+  var ans = GKQ[GKBN[ci] + qi][2];
+  var el  = document.getElementById(uid);
+  if (!el) return;
+  el.textContent = 'Answer: ' + ans;
+  el.classList.add('show');
+  spk(ans);
+}
 
-/* ── Switch tab ── */
+/* ═══════════════════════════════════════════════
+   GK RANDOM QUIZ
+═══════════════════════════════════════════════ */
+var gkRndPool  = [];
+var gkRndOrder = [];
+var gkRndIdx   = 0;
+var gkRndAnsShown = false;
+
+function enterGKRandom() {
+  /* Build flat pool */
+  gkRndPool = [];
+  GKCAT.forEach(function(cat, ci) {
+    var qs = GKQ.slice(GKBN[ci], GKBN[ci + 1]);
+    qs.forEach(function(q) {
+      gkRndPool.push({ cat: cat, e: q[0], q: q[1], ans: q[2] });
+    });
+  });
+  gkRndOrder = gkRndPool.map(function(_, i) { return i; })
+                         .sort(function() { return Math.random() - 0.5; });
+  gkRndIdx = 0;
+  document.getElementById('gkWrap').style.display   = 'none';
+  document.querySelector('.gktoolbar').style.display = 'none';
+  buildGKRandom();
+}
+
+function exitGKRandom() {
+  document.getElementById('gkRandom').style.display   = 'none';
+  document.getElementById('gkWrap').style.display     = '';
+  document.querySelector('.gktoolbar').style.display  = '';
+}
+
+function buildGKRandom() {
+  var item  = gkRndPool[gkRndOrder[gkRndIdx]];
+  var total = gkRndOrder.length;
+  gkRndAnsShown = false;
+  var ansId = 'gkRndAns';
+
+  var h = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">'
+    + '<button class="gkbtn gkbtn-back" onclick="exitGKRandom()">&#8592; All Questions</button>'
+    + '<span style="font-size:var(--md);font-weight:900;color:#555">Q <b>' + (gkRndIdx + 1) + '</b> / ' + total + '</span>'
+    + '</div>'
+    + '<div class="rnd-card" style="background:' + item.cat.bg + ';border:2px solid ' + item.cat.br + '" onclick="readGKRnd()" title="Tap card to hear question">'
+    + '<span class="rnd-em">' + item.e + '</span>'
+    + '<div class="rnd-q">' + item.q + '</div>'
+    + '<div class="rnd-meta">&#128266; Tap card to hear &nbsp;&bull;&nbsp; ' + item.cat.n + '</div>'
+    + '<button class="gkabtn gkabtn-a" style="max-width:160px" onclick="event.stopPropagation();showGKRndAns()">&#128065; Show Answer</button>'
+    + '<div class="rnd-ans" id="' + ansId + '" style="background:' + item.cat.br + '33;border:2px solid ' + item.cat.br + '"></div>'
+    + '</div>'
+    + '<div class="nav-row">'
+    + (gkRndIdx > 0         ? '<button class="prvbtn" onclick="gkRndNav(-1)">&#8592; Prev</button>' : '')
+    + (gkRndIdx < total - 1 ? '<button class="nxtbtn" onclick="gkRndNav(1)">Next &#8594;</button>'  : '')
+    + '</div>';
+
+  var el = document.getElementById('gkRandom');
+  el.style.display = 'block';
+  el.innerHTML = h;
+  spk(item.q);
+}
+
+function readGKRnd() {
+  var item = gkRndPool[gkRndOrder[gkRndIdx]];
+  spk(item.q);
+}
+
+function showGKRndAns() {
+  if (gkRndAnsShown) return;
+  gkRndAnsShown = true;
+  var item = gkRndPool[gkRndOrder[gkRndIdx]];
+  var el   = document.getElementById('gkRndAns');
+  if (!el) return;
+  el.textContent = '✅ ' + item.ans;
+  el.classList.add('show');
+  spk(item.ans);
+}
+
+function gkRndNav(dir) {
+  gkRndIdx += dir;
+  buildGKRandom();
+}
+
+/* ═══════════════════════════════════════════════
+   SWITCH TAB
+═══════════════════════════════════════════════ */
 function swQuiz(tab) {
   document.querySelectorAll('.sec').forEach(function(s) { s.classList.remove('active'); });
   var sec = document.getElementById('gk-' + tab);
   if (sec) sec.classList.add('active');
-
   document.querySelectorAll('.quiz-dock-btn').forEach(function(b) { b.classList.remove('active'); });
   var btn = document.querySelector('.quiz-dock-btn[data-tab="' + tab + '"]');
   if (btn) btn.classList.add('active');
 }
 
-/* ── MCQ ── */
-var mcqIdx = 0, mcqSc = 0, mcqAns = false;
-function initMCQ() { mcqIdx = 0; mcqSc = 0; mcqAns = false; buildMCQ(); }
+/* ═══════════════════════════════════════════════
+   MCQ QUIZ
+═══════════════════════════════════════════════ */
+var mcqIdx    = 0;
+var mcqSc     = 0;
+var mcqAns    = false;   /* true once current question answered correctly */
+var mcqOrder  = [];      /* indices into MCQD — supports shuffle */
+
+function startMCQ(shuffle) {
+  mcqIdx = 0; mcqSc = 0; mcqAns = false;
+  mcqOrder = MCQD.map(function(_, i) { return i; });
+  if (shuffle) mcqOrder.sort(function() { return Math.random() - 0.5; });
+  buildMCQ();
+}
+
 function buildMCQ() {
-  if (mcqIdx >= MCQD.length) {
-    var pct = Math.round(mcqSc / MCQD.length * 100);
-    document.getElementById('mcqArea').innerHTML = '<div class="scorescreen">'
+  var area = document.getElementById('mcqArea');
+  if (!area) return;
+
+  if (mcqIdx >= mcqOrder.length) {
+    /* Score screen */
+    var pct = Math.round(mcqSc / mcqOrder.length * 100);
+    area.innerHTML = '<div class="scorescreen">'
       + '<div style="font-size:4rem">' + (pct >= 80 ? '&#127942;&#127942;&#127942;' : pct >= 60 ? '&#127942;&#127942;' : '&#127942;') + '</div>'
-      + '<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">' + mcqSc + ' / ' + MCQD.length + '</div>'
-      + '<div style="color:#777;margin-bottom:12px">' + (pct >= 80 ? 'Outstanding! You are a genius!' : pct >= 60 ? 'Great job! Keep learning!' : 'Keep practising!') + '</div>'
-      + '<button class="rbtn" onclick="initMCQ()">Try Again</button></div>';
-    spk(pct >= 80 ? 'Outstanding! You are a genius!' : 'Great job!'); return;
+      + '<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">' + mcqSc + ' / ' + mcqOrder.length + '</div>'
+      + '<div style="color:#777;margin-bottom:16px">' + (pct >= 80 ? 'Outstanding! You are a genius!' : pct >= 60 ? 'Great job! Keep learning!' : 'Keep practising!') + '</div>'
+      + '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
+      + '<button class="rbtn" onclick="startMCQ(false)">&#9654; Play Again</button>'
+      + '<button class="rbtn" style="background:linear-gradient(135deg,#E91E63,#FF8E53)" onclick="startMCQ(true)">&#128256; Shuffle Again</button>'
+      + '</div></div>';
+    spk(pct >= 80 ? 'Outstanding! You are a genius!' : pct >= 60 ? 'Great job!' : 'Keep practising!');
+    return;
   }
-  var p = MCQD[mcqIdx];
-  var L = ['A', 'B', 'C', 'D'];
-  var h = '<div class="mcqprog"><div class="mcqbar"><div class="mcqfill" style="width:' + Math.round(mcqIdx / MCQD.length * 100) + '%"></div></div>'
-    + '<span style="font-size:var(--sm);font-weight:700;color:#888">' + mcqIdx + '/' + MCQD.length + '</span></div>'
-    + '<div class="mcqcard"><div style="font-size:3rem;text-align:center;margin-bottom:10px">' + p.e + '</div>'
-    + '<div style="font-size:var(--lg);font-weight:900;color:#333;text-align:center;margin-bottom:16px">' + p.q + '</div>'
-    + '<div class="mcqopts">' + p.o.map(function(o, i) {
-      return '<button class="mcqopt" id="mO' + i + '" onclick="chkMCQ(this,' + i + ',' + p.a + ')">'
-        + '<span class="mcqltr">' + L[i] + '</span>' + o + '</button>';
-    }).join('') + '</div>'
-    + '<div class="rmsg" id="mcqR" style="margin:10px 0"></div>'
-    + '<button class="nxtbtn" id="mcqN" style="display:none" onclick="mcqIdx++;mcqAns=false;buildMCQ()">Next</button></div>';
-  document.getElementById('mcqArea').innerHTML = h;
+
+  mcqAns = false;
+  var p   = MCQD[mcqOrder[mcqIdx]];
+  var L   = ['A', 'B', 'C', 'D'];
+  var tot = mcqOrder.length;
+  var pct = Math.round(mcqIdx / tot * 100);
+
+  var h = '<div class="mcqprog">'
+    + '<div class="mcqbar"><div class="mcqfill" style="width:' + pct + '%"></div></div>'
+    + '<span style="font-size:var(--sm);font-weight:700;color:#888">' + (mcqIdx + 1) + ' / ' + tot + '</span>'
+    + '</div>'
+    + '<div class="mcqcard">'
+    + '<div style="font-size:3rem;text-align:center;margin-bottom:10px">' + p.e + '</div>'
+    + '<div style="font-size:var(--lg);font-weight:900;color:#333;text-align:center;margin-bottom:16px" onclick="spk(\'' + p.q.replace(/'/g,"\\'") + '\')" style="cursor:pointer">' + p.q + '</div>'
+    + '<div class="mcqopts">'
+    + p.o.map(function(o, i) {
+        return '<button class="mcqopt" id="mO' + i + '" onclick="chkMCQ(this,' + i + ',' + p.a + ')">'
+          + '<span class="mcqltr">' + L[i] + '</span>' + o + '</button>';
+      }).join('')
+    + '</div>'
+    + '<div class="rmsg" id="mcqR" style="margin:10px 0 4px"></div>'
+    /* ── Prev / Next always visible ── */
+    + '<div class="mcq-nav">'
+    + (mcqIdx > 0 ? '<button class="prvbtn" onclick="mcqNav(-1)">&#8592; Prev</button>' : '')
+    + '<button class="nxtbtn" onclick="mcqNav(1)">' + (mcqIdx < tot - 1 ? 'Next &#8594;' : 'Finish &#127937;') + '</button>'
+    + '</div>'
+    + '</div>';
+
+  area.innerHTML = h;
   spk(p.q);
 }
+
 function chkMCQ(b, c, cr) {
-  if (mcqAns) return; mcqAns = true;
-  if (c === cr) { b.classList.add('correct'); mcqSc++; document.getElementById('mcqR').innerHTML = 'Correct!'; spk('Correct! Well done!'); }
-  else { b.classList.add('wrong'); var el = document.getElementById('mO' + cr); if (el) el.classList.add('reveal'); document.getElementById('mcqR').innerHTML = 'Answer: ' + MCQD[mcqIdx].o[cr]; spk('The answer is ' + MCQD[mcqIdx].o[cr]); }
-  document.getElementById('mcqN').style.display = 'inline-block';
+  if (mcqAns) return;   /* already answered correctly — ignore tap */
+  if (c === cr) {
+    /* Correct! */
+    mcqAns = true;
+    b.classList.add('correct');
+    mcqSc++;
+    document.getElementById('mcqR').innerHTML = '&#127881; Correct!';
+    spk('Correct! Well done!');
+  } else {
+    /* Wrong — just say so, NO reveal */
+    b.classList.add('wrong');
+    document.getElementById('mcqR').innerHTML = '&#10060; Wrong! Try again!';
+    spk('Wrong! Try again!');
+    setTimeout(function() {
+      b.classList.remove('wrong');
+      var r = document.getElementById('mcqR');
+      if (r) r.innerHTML = '';
+    }, 900);
+  }
+}
+
+function mcqNav(dir) {
+  mcqIdx += dir;
+  mcqAns = false;
+  buildMCQ();
 }
 </script>
 </body>

@@ -12,7 +12,7 @@
 .mcard.flipped{background:#fff;border:3px solid #FF6B6B;}
 .mcard.matched{background:linear-gradient(135deg,#4CAF50,#00C9A7);}
 .ogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:380px;margin:0 auto 14px;}
-.ocrd{border-radius:16px;padding:14px 7px;text-align:center;cursor:pointer;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);border:3px solid transparent;}
+.ocrd{border-radius:16px;padding:8px 4px;text-align:center;cursor:pointer;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);border:3px solid transparent;}
 .ocrd:hover{transform:scale(1.05);}
 .ocrd.correct{background:#E8F5E9;border-color:#4CAF50;}
 .ocrd.wrong{background:#FFEBEE;border-color:#FF6B6B;}
@@ -41,8 +41,7 @@
 .cprow{display:flex;gap:16px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
 .cpitem{background:#f9f9f9;border-radius:16px;padding:14px 16px;text-align:center;cursor:pointer;border:3px solid #eee;flex:1;min-width:110px;}
 .cpitem:hover{border-color:#FF6B6B;}
-.prvbtn{display:inline-block;padding:10px 26px;border-radius:20px;border:2px solid #FF6B6B;background:#fff;color:#FF6B6B;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;}
-.prvbtn:hover{background:#FF6B6B;color:#fff;}
+/* .prvbtn / .nxtbtn defined in shared.js */
 /* SHADOW */
 .shadow-box{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:14px;text-align:center;}
 .shadow-em{font-size:6rem;display:block;filter:brightness(0);margin-bottom:12px;}
@@ -62,28 +61,26 @@
 .missing-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
 /* ── Override shared sidebar layout ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 14px 12px calc(110px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
 #sdrawer { top: 66px !important; }
 
-/* ── Bottom dock (scrollable for 11 games) ── */
+/* ── Bottom dock (2-row grid for 11 games) ── */
 .games-dock {
   position:fixed; bottom:0; left:0; right:0; z-index:200;
   background:#fff; box-shadow:0 -3px 20px rgba(0,0,0,.13);
-  display:flex; overflow-x:auto; overflow-y:hidden;
-  padding:6px 6px calc(6px + env(safe-area-inset-bottom)); gap:6px;
-  scrollbar-width:none; -ms-overflow-style:none;
+  display:grid; grid-template-columns: repeat(6, 1fr);
+  padding:5px 4px calc(5px + env(safe-area-inset-bottom)); gap:4px;
 }
-.games-dock::-webkit-scrollbar { display:none; }
 .games-dock-btn {
-  flex:0 0 auto; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:2px; padding:6px 10px 5px; border-radius:14px;
+  flex:1 1 0; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:2px; padding:5px 2px 4px; border-radius:12px;
   border:none; background:#f5f5f5; color:#888; font-family:var(--f);
-  font-size:.52rem; font-weight:800; cursor:pointer; line-height:1.2;
-  transition:all .2s cubic-bezier(.34,1.56,.64,1); min-width:54px;
+  font-size:.48rem; font-weight:800; cursor:pointer; line-height:1.2;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
   -webkit-tap-highlight-color:transparent;
 }
 .games-dock-btn.active { color:#fff; transform:scale(1.05); }
-.games-dock-btn .dock-ico { font-size:1.2rem; line-height:1; }
+.games-dock-btn .dock-ico { font-size:1rem; line-height:1; }
 
 /* SIMON */
 .simon-board{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:320px;margin:0 auto 16px;}
@@ -94,16 +91,23 @@
 .simon-dot{width:14px;height:14px;border-radius:50%;background:#ddd;display:inline-block;}
 .simon-dot.done{background:#4CAF50;}
 /* SORT */
-.sort-item-box{text-align:center;margin-bottom:18px;}
-.sort-item-em{font-size:5rem;display:block;margin-bottom:6px;animation:popIn .4s ease;}
-.sort-buckets{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px;}
-.sort-bucket{border-radius:18px;padding:16px 10px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all .2s;}
+.sort-item-box{text-align:center;margin-bottom:12px;}
+.sort-item-em{font-size:2.8rem;display:block;margin-bottom:4px;animation:popIn .4s ease;}
+.sort-buckets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:300px;margin:0 auto 14px;}
+.sort-bucket{border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all .2s;}
 .sort-bucket:hover{transform:scale(1.04);}
 .sort-bucket.correct{animation:popIn .3s ease;border-color:#fff!important;}
 .sort-bucket.wrong{animation:shake .4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.sort-bucket-em{font-size:2rem;display:block;margin-bottom:4px;}
-.sort-bucket-lbl{font-size:var(--md);font-weight:900;color:#fff;}
+.sort-bucket-em{font-size:1.4rem;display:block;margin-bottom:2px;}
+.sort-bucket-lbl{font-size:.75rem;font-weight:900;color:#fff;}
+/* COLOR TAP */
+.ctap-word{font-size:3.2rem;font-weight:900;text-align:center;padding:18px 12px;border-radius:20px;margin-bottom:18px;letter-spacing:2px;background:#fff;box-shadow:0 5px 20px rgba(0,0,0,.12);}
+.ctap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:320px;margin:0 auto 14px;}
+.ctap-circle{aspect-ratio:1;border-radius:50%;border:5px solid #fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;}
+.ctap-circle:active{transform:scale(0.92);}
+.ctap-circle.correct{border-color:#4CAF50;box-shadow:0 0 0 6px #4CAF5066,0 4px 14px rgba(0,0,0,.18);animation:popIn .3s ease;}
+.ctap-circle.wrong{border-color:#FF6B6B;animation:shake .4s ease;}
 /* TRUE/FALSE */
 .tf-card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 5px 20px rgba(0,0,0,.12);margin-bottom:14px;text-align:center;}
 .tf-em{font-size:4rem;display:block;margin-bottom:10px;}
@@ -127,52 +131,56 @@
 
 <!-- ══ BOTTOM DOCK ══ -->
 <nav class="games-dock" id="gamesDock">
-  <button class="games-dock-btn" data-game="odd"     onclick="showGame('odd')">    <span class="dock-ico">&#127919;</span>Odd One</button>
-  <button class="games-dock-btn" data-game="count"   onclick="showGame('count')">  <span class="dock-ico">&#128290;</span>Count</button>
-  <button class="games-dock-btn" data-game="quiz"    onclick="showGame('quiz')">   <span class="dock-ico">&#127942;</span>Quiz</button>
-  <button class="games-dock-btn" data-game="word"    onclick="showGame('word')">   <span class="dock-ico">&#128292;</span>Words</button>
-  <button class="games-dock-btn" data-game="balloon" onclick="showGame('balloon')"><span class="dock-ico">&#127880;</span>Balloons</button>
-  <button class="games-dock-btn" data-game="shadow"  onclick="showGame('shadow')"> <span class="dock-ico">&#128065;</span>Shadow</button>
-  <button class="games-dock-btn" data-game="missing" onclick="showGame('missing')"><span class="dock-ico">&#10067;</span>Missing</button>
-  <button class="games-dock-btn" data-game="simon"   onclick="showGame('simon')">  <span class="dock-ico">&#127912;</span>Simon</button>
-  <button class="games-dock-btn" data-game="sortit"  onclick="showGame('sortit')"> <span class="dock-ico">&#128230;</span>Sort It</button>
-  <button class="games-dock-btn" data-game="tf"      onclick="showGame('tf')">     <span class="dock-ico">&#9989;</span>True/False</button>
-  <button class="games-dock-btn" data-game="memory"  onclick="showGame('memory')"> <span class="dock-ico">&#129513;</span>Memory</button>
+  <!-- Row 1 -->
+  <button class="games-dock-btn" data-game="odd"      onclick="showGame('odd')">     <span class="dock-ico">&#127919;</span>Odd One</button>
+  <button class="games-dock-btn" data-game="count"    onclick="showGame('count')">   <span class="dock-ico">&#128290;</span>Count</button>
+  <button class="games-dock-btn" data-game="quiz"     onclick="showGame('quiz')">    <span class="dock-ico">&#127942;</span>Quiz</button>
+  <button class="games-dock-btn" data-game="word"     onclick="showGame('word')">    <span class="dock-ico">&#128292;</span>Words</button>
+  <button class="games-dock-btn" data-game="shadow"   onclick="showGame('shadow')">  <span class="dock-ico">&#128065;</span>Shadow</button>
+  <button class="games-dock-btn" data-game="missing"  onclick="showGame('missing')"> <span class="dock-ico">&#10067;</span>Missing</button>
+  <!-- Row 2 -->
+  <button class="games-dock-btn" data-game="balloon"  onclick="showGame('balloon')"> <span class="dock-ico">&#127880;</span>Balloons</button>
+  <button class="games-dock-btn" data-game="memory"   onclick="showGame('memory')">  <span class="dock-ico">&#129513;</span>Memory</button>
+  <button class="games-dock-btn" data-game="simon"    onclick="showGame('simon')">   <span class="dock-ico">&#127912;</span>Simon</button>
+  <button class="games-dock-btn" data-game="sortit"   onclick="showGame('sortit')">  <span class="dock-ico">&#128230;</span>Sort It</button>
+  <button class="games-dock-btn" data-game="tf"       onclick="showGame('tf')">      <span class="dock-ico">&#9989;</span>True/False</button>
+  <button class="games-dock-btn" data-game="colortap" onclick="showGame('colortap')"><span class="dock-ico">&#127752;</span>Colors</button>
 </nav>
 
 <script>
 /* ── GAME ROUTER ── */
 var currentGame = '';
 var GAME_HEADERS = {
-  odd:     {bg:'linear-gradient(135deg,#E91E63,#7B1FA2)', em:'&#127919;', title:'Odd One Out'},
-  count:   {bg:'linear-gradient(135deg,#1976D2,#00C9A7)', em:'&#128290;', title:'Count &amp; Tap'},
-  quiz:    {bg:'linear-gradient(135deg,#43A047,#FFC300)', em:'&#127942;', title:'Quick Quiz'},
-  word:    {bg:'linear-gradient(135deg,#7B1FA2,#E91E63)', em:'&#128292;', title:'Word Match'},
-  balloon: {bg:'linear-gradient(135deg,#FF6B6B,#29B6F6)', em:'&#127880;', title:'Balloon Pop!'},
-  shadow:  {bg:'linear-gradient(135deg,#37474F,#607D8B)', em:'&#128065;', title:'Shadow Match'},
-  missing: {bg:'linear-gradient(135deg,#6A1B9A,#29B6F6)', em:'&#10067;', title:"What's Missing?"},
-  simon:   {bg:'linear-gradient(135deg,#E91E63,#FF6B00)', em:'&#127912;', title:'Simon Says Colors'},
-  sortit:  {bg:'linear-gradient(135deg,#43A047,#1976D2)', em:'&#128230;', title:'Sort It!'},
-  tf:      {bg:'linear-gradient(135deg,#00897B,#6A1B9A)', em:'&#9989;',  title:'True or False?'},
-  memory:  {bg:'linear-gradient(135deg,#FF6B00,#FFC300)', em:'&#129513;', title:'Memory Match'}
+  odd:      {bg:'linear-gradient(135deg,#E91E63,#7B1FA2)', em:'&#127919;', title:'Odd One Out'},
+  count:    {bg:'linear-gradient(135deg,#1976D2,#00C9A7)', em:'&#128290;', title:'Count &amp; Tap'},
+  quiz:     {bg:'linear-gradient(135deg,#43A047,#FFC300)', em:'&#127942;', title:'Quick Quiz'},
+  word:     {bg:'linear-gradient(135deg,#7B1FA2,#E91E63)', em:'&#128292;', title:'Word Match'},
+  balloon:  {bg:'linear-gradient(135deg,#FF6B6B,#29B6F6)', em:'&#127880;', title:'Balloon Pop!'},
+  shadow:   {bg:'linear-gradient(135deg,#37474F,#607D8B)', em:'&#128065;', title:'Shadow Match'},
+  missing:  {bg:'linear-gradient(135deg,#6A1B9A,#29B6F6)', em:'&#10067;', title:"What's Missing?"},
+  simon:    {bg:'linear-gradient(135deg,#E91E63,#FF6B00)', em:'&#127912;', title:'Simon Says Colors'},
+  sortit:   {bg:'linear-gradient(135deg,#43A047,#1976D2)', em:'&#128230;', title:'Sort It!'},
+  tf:       {bg:'linear-gradient(135deg,#00897B,#6A1B9A)', em:'&#9989;',  title:'True or False?'},
+  memory:   {bg:'linear-gradient(135deg,#FF6B00,#FFC300)', em:'&#129513;', title:'Memory Match'},
+  colortap: {bg:'linear-gradient(135deg,#FF6B6B,#A855F7)', em:'&#127752;', title:'Tap the Color!'}
 };
 var GAME_INITS = {
   odd: buildOdd, count: buildCT, quiz: buildGQ, word: buildWM,
   balloon: nextBal, shadow: buildShadow, missing: buildMissing,
-  simon: buildSimonBoard, sortit: buildSort, tf: buildTF, memory: renderMem
+  simon: buildSimonBoard, sortit: buildSort, tf: buildTF, memory: renderMem,
+  colortap: buildCtap
 };
 
 function showGame(name) {
   window.speechSynthesis.cancel();
   currentGame = name;
 
-  /* highlight dock button & scroll it into view */
+  /* highlight dock button */
   document.querySelectorAll('.games-dock-btn').forEach(function(b) {
     var on = b.getAttribute('data-game') === name;
     b.classList.toggle('active', on);
     var h = GAME_HEADERS[name];
     b.style.background = on ? (h ? h.bg : '#FF6B00') : '';
-    if (on) b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   });
 
   /* inject header + container */
@@ -187,17 +195,18 @@ function showGame(name) {
 }
 
 function resetState(name) {
-  if(name==='odd')    { oddIdx=0; oddSc=0; }
-  if(name==='count')  { ctIdx=0; ctSc=0; ctAnswered=false; }
-  if(name==='quiz')   { gqIdx=0; gqSc=0; gqAnswered=false; }
-  if(name==='word')   { wmIdx=0; wmSc=0; wmAns=false; }
+  if(name==='odd')    { oddOrder=ODD.map(function(_,i){return i;}); oddIdx=0; oddSc=0; }
+  if(name==='count')  { ctOrder=CTD.map(function(_,i){return i;}); ctIdx=0; ctSc=0; ctAnswered=false; }
+  if(name==='quiz')   { gqOrder=GQD.map(function(_,i){return i;}); gqIdx=0; gqSc=0; gqAnswered=false; }
+  if(name==='word')   { wmOrder=WMD.map(function(_,i){return i;}); wmIdx=0; wmSc=0; wmAns=false; }
   if(name==='balloon'){ balSc=0; balRd=0; }
-  if(name==='shadow') { shIdx=0; shSc=0; shAnswered=false; }
-  if(name==='missing'){ msIdx=0; msSc=0; msAnswered=false; }
+  if(name==='shadow') { shOrder=SHDW.map(function(_,i){return i;}); shIdx=0; shSc=0; shAnswered=false; }
+  if(name==='missing'){ msOrder=MISS.map(function(_,i){return i;}); msIdx=0; msSc=0; msAnswered=false; }
   if(name==='simon')  { simonSeq=[]; simonStep=0; simonRound=0; simonSc=0; simonPlaying=false; }
-  if(name==='sortit') { sortPool=SORT_POOL.slice().sort(function(){return Math.random()-.5;}); sortIdx=0; sortSc=0; sortAnswered=false; }
-  if(name==='tf')     { tfIdx=0; tfSc=0; tfAnswered=false; }
-  if(name==='memory') { var p=memE.concat(memE); p.sort(function(){return Math.random()-.5;}); memSt={cards:p,fl:[],ma:[],lk:false,sc:0,mv:0}; }
+  if(name==='sortit') { sortPool=SORT_POOL.slice().sort(function(){return Math.random()-.5;}); sortOrder=sortPool.map(function(_,i){return i;}); sortIdx=0; sortSc=0; sortAnswered=false; }
+  if(name==='tf')       { tfOrder=TFD.map(function(_,i){return i;}); tfIdx=0; tfSc=0; tfAnswered=false; }
+  if(name==='memory')   { var p=memE.concat(memE); p.sort(function(){return Math.random()-.5;}); memSt={cards:p,fl:[],ma:[],lk:false,sc:0,mv:0}; }
+  if(name==='colortap') { ctapOrder=CTAP.map(function(_,i){return i;}); ctapIdx=0; ctapSc=0; ctapAnswered=false; }
 }
 
 function getArea() { return document.getElementById('gameArea'); }
@@ -216,24 +225,33 @@ SORT_CATS.forEach(function(cat,ci){cat.items.forEach(function(em){SORT_POOL.push
 var TFD=[{em:"&#128049;",stmt:"A cat can fly",ans:false},{em:"&#128056;",stmt:"A frog can jump",ans:true},{em:"&#9728;",stmt:"The sun is cold",ans:false},{em:"&#128024;",stmt:"An elephant is bigger than a mouse",ans:true},{em:"&#128038;",stmt:"Birds have wings",ans:true},{em:"&#127820;",stmt:"A banana is red",ans:false},{em:"&#128053;",stmt:"A dog says Meow",ans:false},{em:"&#127822;",stmt:"An apple is a fruit",ans:true},{em:"&#9992;",stmt:"Airplanes can fly",ans:true},{em:"&#128046;",stmt:"A cow gives us milk",ans:true},{em:"&#127813;",stmt:"A tomato is blue",ans:false},{em:"&#128039;",stmt:"Penguins can fly high in the sky",ans:false},{em:"&#127752;",stmt:"A rainbow has many colors",ans:true},{em:"&#128013;",stmt:"A snake has legs",ans:false},{em:"&#128034;",stmt:"A turtle moves very slowly",ans:true},{em:"&#127815;",stmt:"Grapes grow in bunches",ans:true},{em:"&#128642;",stmt:"A train runs on roads",ans:false},{em:"&#129434;",stmt:"Peacock is the national bird of India",ans:true},{em:"&#128047;",stmt:"Tiger is the national animal of India",ans:true},{em:"&#127769;",stmt:"We can see the moon at night",ans:true},{em:"&#128293;",stmt:"Fire is safe to touch",ans:false},{em:"&#129426;",stmt:"A giraffe has a very long neck",ans:true},{em:"&#128031;",stmt:"A fish can live on land",ans:false},{em:"&#129432;",stmt:"A kangaroo carries its baby in a pouch",ans:true},{em:"&#127817;",stmt:"A watermelon is green outside and red inside",ans:true},{em:"&#128640;",stmt:"Rockets go to space",ans:true},{em:"&#128046;",stmt:"A cow can fly",ans:false},{em:"&#128018;",stmt:"Monkeys like bananas",ans:true},{em:"&#9728;",stmt:"The sun rises in the West",ans:false},{em:"&#128167;",stmt:"We should drink water every day",ans:true}];
 
 /* ── GAME STATE ── */
-var oddIdx=0,oddSc=0;
-var ctIdx=0,ctSc=0,ctAnswered=false;
-var gqIdx=0,gqSc=0,gqAnswered=false;
-var wmIdx=0,wmSc=0,wmAns=false;
+var oddOrder=ODD.map(function(_,i){return i;}),oddIdx=0,oddSc=0;
+var ctOrder=CTD.map(function(_,i){return i;}),ctIdx=0,ctSc=0,ctAnswered=false;
+var gqOrder=GQD.map(function(_,i){return i;}),gqIdx=0,gqSc=0,gqAnswered=false;
+var wmOrder=WMD.map(function(_,i){return i;}),wmIdx=0,wmSc=0,wmAns=false;
 var balSc=0,balRd=0,balTgt=0;
-var shIdx=0,shSc=0,shAnswered=false;
-var msIdx=0,msSc=0,msAnswered=false,msMissIdx=0;
+var shOrder=SHDW.map(function(_,i){return i;}),shIdx=0,shSc=0,shAnswered=false;
+var msOrder=MISS.map(function(_,i){return i;}),msIdx=0,msSc=0,msAnswered=false,msMissIdx=0;
 var simonSeq=[],simonStep=0,simonRound=0,simonSc=0,simonPlaying=false;
-var sortPool=[],sortIdx=0,sortSc=0,sortAnswered=false;
-var tfIdx=0,tfSc=0,tfAnswered=false;
+var sortPool=[],sortOrder=[],sortIdx=0,sortSc=0,sortAnswered=false;
+var tfOrder=TFD.map(function(_,i){return i;}),tfIdx=0,tfSc=0,tfAnswered=false;
 var memE=["&#127822;","&#127820;","&#128049;","&#128053;","&#11088;","&#127752;","&#128663;","&#127880;"];
 var memSt={cards:[],fl:[],ma:[],lk:false,sc:0,mv:0};
 var balC=["&#128308;","&#128993;","&#128994;","&#128309;","&#128992;","&#128310;","&#128995;"];
+/* g = color-family group: ensures no two same-family colors appear in same question */
+var CTAP=[
+  {name:'RED',    bg:'#E53935', g:0},{name:'BLUE',   bg:'#1E88E5', g:1},{name:'GREEN',  bg:'#43A047', g:2},
+  {name:'YELLOW', bg:'#FDD835', g:3},{name:'ORANGE', bg:'#FB8C00', g:4},{name:'PINK',   bg:'#E91E63', g:5},
+  {name:'PURPLE', bg:'#8E24AA', g:6},{name:'WHITE',  bg:'#F5F5F5', g:7},{name:'BLACK',  bg:'#212121', g:8},
+  {name:'BROWN',  bg:'#795548', g:9},{name:'GREY',   bg:'#9E9E9E', g:8},{name:'SKY',    bg:'#29B6F6', g:1}
+];
+var ctapOrder=CTAP.map(function(_,i){return i;}),ctapIdx=0,ctapSc=0,ctapAnswered=false;
 
 /* ── HELPERS ── */
 function scoreH(cur,tot,sc){return '<div class="scorebar">Q <b>'+cur+'</b>/'+tot+' &nbsp; Score: <b>'+sc+'</b></div>';}
+function shufBar(fn){return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';}
 function navBtns(prevFn,showNext){
-  return '<div style="display:flex;gap:10px;justify-content:center;margin-top:12px">'
+  return '<div class="nav-row">'
     +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
     +(showNext?'<button class="nxtbtn" id="nxtBtn" onclick="nextGame()">Next &#8594;</button>':'<button class="nxtbtn" id="nxtBtn" style="display:none" onclick="nextGame()">Next &#8594;</button>')
     +'</div>';
@@ -258,20 +276,26 @@ function scoreScrn(sc,tot,great,ok,id,initFn){
 }
 
 /* ── ODD ONE OUT ── */
+function shuffleOdd(){
+  oddOrder=ODD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  oddIdx=0; oddSc=0; buildOdd();
+}
 function buildOdd(){
-  var p=ODD[oddIdx%ODD.length];
-  var prev=oddIdx>0?'buildOdd_prev()':'';
-  getArea().innerHTML=scoreH(oddIdx+1,ODD.length,oddSc)
+  if(oddIdx>=ODD.length){scoreScrn(oddSc,ODD.length,'Odd One expert!','Good thinking!','odd');return;}
+  var p=ODD[oddOrder[oddIdx]];
+  var tot=ODD.length;
+  _nextFn=function(){oddIdx++;buildOdd();};
+  getArea().innerHTML=scoreH(oddIdx+1,tot,oddSc)
+    +shufBar('shuffleOdd()')
     +'<div class="ibox"><div class="iq">'+p.q+'</div>'
-    +'<div class="ogrid">'+p.i.map(function(it,i){return '<div class="ocrd" id="oc'+i+'" onclick="chkOdd('+i+','+oddIdx+')">'+'<span style="font-size:2.2rem;display:block;margin-bottom:5px">'+it.e+'</span><div style="font-size:var(--sm);font-weight:700;color:#333">'+it.l+'</div></div>';}).join('')+'</div>'
+    +'<div class="ogrid">'+p.i.map(function(it,i){return '<div class="ocrd" id="oc'+i+'" onclick="chkOdd('+i+','+oddOrder[oddIdx]+')">'+'<span style="font-size:1.7rem;display:block;margin-bottom:3px">'+it.e+'</span><div style="font-size:.58rem;font-weight:700;color:#333">'+it.l+'</div></div>';}).join('')+'</div>'
     +'<div class="rmsg" id="oddR"></div>'
-    +navBtns(prev?'buildOdd_prev()':'',false)+'</div>';
+    +navBtns(oddIdx>0?'oddIdx--;buildOdd()':'',true)+'</div>';
   spk(p.q);
 }
-function buildOdd_prev(){oddIdx--;buildOdd();}
 function chkOdd(i,qi){
   var nb=document.getElementById('nxtBtn');if(nb&&nb.style.display==='inline-block')return;
-  var p=ODD[qi%ODD.length];
+  var p=ODD[qi];
   if(p.multi){
     var ok=p.correct.indexOf(i)>=0;
     if(ok){document.getElementById('oc'+i).classList.add('correct');p.correct.forEach(function(ci){document.getElementById('oc'+ci).classList.add('correct');});oddSc++;document.getElementById('oddR').innerHTML='&#127881; Correct!';spk('Correct!');_nextFn=function(){oddIdx++;buildOdd();};showNxt();}
@@ -284,20 +308,25 @@ function chkOdd(i,qi){
 }
 
 /* ── COUNT & TAP ── */
+function shuffleCT(){
+  ctOrder=CTD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  ctIdx=0; ctSc=0; buildCT();
+}
 function buildCT(){
-  if(ctIdx>=CTD.length){scoreScrn(ctSc,CTD.length,'Counting champion!','Good counting!','count');return;}
+  if(ctIdx>=ctOrder.length){scoreScrn(ctSc,CTD.length,'Counting champion!','Good counting!','count');return;}
   ctAnswered=false;
-  var p=CTD[ctIdx];
+  var p=CTD[ctOrder[ctIdx]];
   var ems=Array(p.n).fill(p.e).join(' ');
   var opts=[p.n];while(opts.length<4){var r=Math.floor(Math.random()*8)+1;if(opts.indexOf(r)<0)opts.push(r);}
   opts.sort(function(){return Math.random()-.5;});
   _nextFn=function(){ctIdx++;buildCT();};
   getArea().innerHTML=scoreH(ctIdx+1,CTD.length,ctSc)
+    +shufBar('shuffleCT()')
     +'<div class="ctarea"><div class="iq">'+p.q+'</div>'
     +'<div style="font-size:2.2rem;margin-bottom:16px;min-height:56px">'+ems+'</div>'
     +'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+opts.map(function(o){return '<button class="ctnbtn" onclick="chkCT(this,'+o+','+p.n+')">'+o+'</button>';}).join('')+'</div>'
     +'<div class="rmsg" id="ctR" style="margin-top:10px"></div>'
-    +navBtns(ctIdx>0?'ctIdx--;buildCT()':'',false)+'</div>';
+    +navBtns(ctIdx>0?'ctIdx--;buildCT()':'',true)+'</div>';
   spk(p.q);
 }
 function chkCT(b,c,cr){
@@ -307,17 +336,22 @@ function chkCT(b,c,cr){
 }
 
 /* ── GAME QUIZ ── */
+function shuffleGQ(){
+  gqOrder=GQD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  gqIdx=0; gqSc=0; buildGQ();
+}
 function buildGQ(){
-  if(gqIdx>=GQD.length){scoreScrn(gqSc,GQD.length,'Excellent! You are a star!','Good job! Keep practising!','quiz');return;}
+  if(gqIdx>=gqOrder.length){scoreScrn(gqSc,GQD.length,'Excellent! You are a star!','Good job! Keep practising!','quiz');return;}
   gqAnswered=false;
-  var p=GQD[gqIdx];
+  var p=GQD[gqOrder[gqIdx]];
   _nextFn=function(){gqIdx++;buildGQ();};
   getArea().innerHTML=scoreH(gqIdx+1,GQD.length,gqSc)
+    +shufBar('shuffleGQ()')
     +'<div class="ibox"><div style="font-size:3rem;text-align:center;margin-bottom:8px">'+p.e+'</div>'
     +'<div class="iq">'+p.q+'</div>'
     +'<div class="achc" style="flex-wrap:wrap;gap:8px">'+p.o.map(function(o,i){return '<button class="cbtn" style="font-size:var(--md);min-width:110px" id="gqo'+i+'" onclick="chkGQ(this,'+i+','+p.a+')">'+o+'</button>';}).join('')+'</div>'
     +'<div class="rmsg" id="gqR"></div>'
-    +navBtns(gqIdx>0?'gqIdx--;buildGQ()':'',false)+'</div>';
+    +navBtns(gqIdx>0?'gqIdx--;buildGQ()':'',true)+'</div>';
   spk(p.q);
 }
 function chkGQ(b,c,cr){
@@ -327,18 +361,23 @@ function chkGQ(b,c,cr){
 }
 
 /* ── WORD MATCH ── */
+function shuffleWM(){
+  wmOrder=WMD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  wmIdx=0; wmSc=0; buildWM();
+}
 function buildWM(){
-  if(wmIdx>=WMD.length){scoreScrn(wmSc,WMD.length,'Amazing spelling!','Good effort!','word');return;}
+  if(wmIdx>=wmOrder.length){scoreScrn(wmSc,WMD.length,'Amazing spelling!','Good effort!','word');return;}
   wmAns=false;
-  var p=WMD[wmIdx];
+  var p=WMD[wmOrder[wmIdx]];
   var sh=p.o.slice().sort(function(){return Math.random()-.5;});
   _nextFn=function(){wmIdx++;buildWM();};
   getArea().innerHTML=scoreH(wmIdx+1,WMD.length,wmSc)
+    +shufBar('shuffleWM()')
     +'<div class="wmbox"><div style="font-size:5rem;display:block;margin-bottom:8px">'+p.e+'</div>'
     +'<div style="font-size:var(--lg);font-weight:900;color:#333;margin-bottom:18px">Which word matches?</div>'
     +'<div class="wopts">'+sh.map(function(o){return '<button class="wopt" id="wo_'+o+'" onclick="chkWM(this,\''+o+'\',\''+p.w+'\')">'+o+'</button>';}).join('')+'</div>'
     +'<div class="rmsg" id="wmR"></div>'
-    +navBtns(wmIdx>0?'wmIdx--;buildWM()':'',false)+'</div>';
+    +navBtns(wmIdx>0?'wmIdx--;buildWM()':'',true)+'</div>';
   spk('Which word matches this picture?');
 }
 function chkWM(b,c,cr){
@@ -372,18 +411,23 @@ function popBal(n,t){
 }
 
 /* ── SHADOW MATCH ── */
+function shuffleShadow(){
+  shOrder=SHDW.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  shIdx=0; shSc=0; buildShadow();
+}
 function buildShadow(){
-  if(shIdx>=SHDW.length){scoreScrn(shSc,SHDW.length,'Amazing! Shadow expert!','Good job!','shadow');return;}
+  if(shIdx>=shOrder.length){scoreScrn(shSc,SHDW.length,'Amazing! Shadow expert!','Good job!','shadow');return;}
   shAnswered=false;
-  var p=SHDW[shIdx];
+  var p=SHDW[shOrder[shIdx]];
   var sh=p.opts.slice().sort(function(){return Math.random()-.5;});
   _nextFn=function(){shIdx++;buildShadow();};
   getArea().innerHTML=scoreH(shIdx+1,SHDW.length,shSc)
+    +shufBar('shuffleShadow()')
     +'<div class="shadow-box"><div class="iq">What animal or thing is this shadow?</div>'
     +'<span class="shadow-em">'+p.ans+'</span>'
     +'<div class="shadow-opts">'+sh.map(function(o){return '<div class="shadow-opt" id="sh_'+shIdx+'_'+o.replace(/[^a-z0-9]/gi,'x')+'" onclick="chkShadow(this,\''+o+'\',\''+p.ans+'\',\''+p.lbl+'\')">'+o+'</div>';}).join('')+'</div>'
     +'<div class="rmsg" id="shR"></div>'
-    +navBtns(shIdx>0?'shIdx--;buildShadow()':'',false)+'</div>';
+    +navBtns(shIdx>0?'shIdx--;buildShadow()':'',true)+'</div>';
   spk('What is this shadow?');
 }
 function chkShadow(el,chosen,ans,lbl){
@@ -393,18 +437,23 @@ function chkShadow(el,chosen,ans,lbl){
 }
 
 /* ── WHAT'S MISSING ── */
+function shuffleMissing(){
+  msOrder=MISS.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  msIdx=0; msSc=0; buildMissing();
+}
 function buildMissing(){
-  if(msIdx>=MISS.length){scoreScrn(msSc,MISS.length,'Great memory!','Keep practising!','missing');return;}
+  if(msIdx>=msOrder.length){scoreScrn(msSc,MISS.length,'Great memory!','Keep practising!','missing');return;}
   msAnswered=false;
-  var p=MISS[msIdx];
+  var p=MISS[msOrder[msIdx]];
   msMissIdx=Math.floor(Math.random()*p.items.length);
   var missingEm=p.items[msMissIdx];
   var wrongPool=[];
-  MISS.forEach(function(r,ri){if(ri!==msIdx)r.items.forEach(function(it){if(it!==missingEm&&wrongPool.indexOf(it)<0)wrongPool.push(it);});});
+  MISS.forEach(function(r,ri){if(ri!==msOrder[msIdx])r.items.forEach(function(it){if(it!==missingEm&&wrongPool.indexOf(it)<0)wrongPool.push(it);});});
   wrongPool.sort(function(){return Math.random()-.5;});
   var opts=[missingEm,wrongPool[0],wrongPool[1]].sort(function(){return Math.random()-.5;});
   _nextFn=function(){msIdx++;buildMissing();};
   getArea().innerHTML=scoreH(msIdx+1,MISS.length,msSc)
+    +shufBar('shuffleMissing()')
     +'<div class="ibox"><div class="iq">&#128064; Look carefully...</div>'
     +'<div class="missing-grid" id="msGrid">'+p.items.map(function(it){return '<div class="missing-item">'+it+'</div>';}).join('')+'</div>'
     +'<div class="rmsg" id="msR">Remember all items!</div></div>';
@@ -422,7 +471,7 @@ function buildMissing(){
     }).join('');
     ibox.appendChild(optDiv);
     var nav=document.createElement('div');
-    nav.innerHTML=navBtns(msIdx>0?'msIdx--;buildMissing()':'',false);
+    nav.innerHTML=navBtns(msIdx>0?'msIdx--;buildMissing()':'',true);
     ibox.appendChild(nav);
   },2200);
 }
@@ -481,6 +530,11 @@ function simonPress(id,lbl){
 }
 
 /* ── SORT IT ── */
+function shuffleSort(){
+  sortPool=SORT_POOL.slice().sort(function(){return Math.random()-.5;});
+  sortOrder=sortPool.map(function(_,i){return i;});
+  sortIdx=0; sortSc=0; buildSort();
+}
 function buildSort(){
   if(sortIdx>=sortPool.length){scoreScrn(sortSc,sortPool.length,'Perfect sorting!','Good effort!','sortit');return;}
   sortAnswered=false;
@@ -490,6 +544,7 @@ function buildSort(){
   var all=[correctCat].concat(wrong).sort(function(){return Math.random()-.5;});
   _nextFn=function(){sortIdx++;buildSort();};
   getArea().innerHTML=scoreH(sortIdx+1,sortPool.length,sortSc)
+    +shufBar('shuffleSort()')
     +'<div class="ibox"><div class="iq">Where does this belong?</div>'
     +'<div class="sort-item-box"><span class="sort-item-em">'+item.em+'</span></div>'
     +'<div class="sort-buckets">'+all.map(function(cat,i){
@@ -498,7 +553,7 @@ function buildSort(){
         +'<span class="sort-bucket-em">'+cat.em+'</span><span class="sort-bucket-lbl">'+cat.lbl+'</span></div>';
     }).join('')+'</div>'
     +'<div class="rmsg" id="sortR"></div>'
-    +navBtns(sortIdx>0?'sortIdx--;buildSort()':'',false)+'</div>';
+    +navBtns(sortIdx>0?'sortIdx--;buildSort()':'',true)+'</div>';
   spk('Where does this belong?');
 }
 function chkSort(sid,correct,lbl){
@@ -509,26 +564,91 @@ function chkSort(sid,correct,lbl){
 }
 
 /* ── TRUE OR FALSE ── */
+function shuffleTF(){
+  tfOrder=TFD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  tfIdx=0; tfSc=0; buildTF();
+}
 function buildTF(){
-  if(tfIdx>=TFD.length){scoreScrn(tfSc,TFD.length,'Brilliant! You know everything!','Good thinking!','tf');return;}
+  if(tfIdx>=tfOrder.length){scoreScrn(tfSc,TFD.length,'Brilliant! You know everything!','Good thinking!','tf');return;}
   tfAnswered=false;
-  var p=TFD[tfIdx];
+  var p=TFD[tfOrder[tfIdx]];
   _nextFn=function(){tfIdx++;buildTF();};
   getArea().innerHTML=scoreH(tfIdx+1,TFD.length,tfSc)
+    +shufBar('shuffleTF()')
     +'<div class="tf-card"><span class="tf-em">'+p.em+'</span>'
     +'<div class="tf-stmt">'+p.stmt+'</div>'
     +'<div class="tf-btns"><button class="tf-btn tf-true" id="tfT" onclick="chkTF(true,'+p.ans+')">&#9989; TRUE</button>'
     +'<button class="tf-btn tf-false" id="tfF" onclick="chkTF(false,'+p.ans+')">&#10060; FALSE</button></div>'
     +'<div class="rmsg" id="tfR" style="margin-top:14px"></div>'
-    +navBtns(tfIdx>0?'tfIdx--;buildTF()':'',false)+'</div>';
+    +navBtns(tfIdx>0?'tfIdx--;buildTF()':'',true)+'</div>';
   spk(p.stmt+'. True or False?');
 }
 function chkTF(chosen,ans){
-  if(tfAnswered)return;tfAnswered=true;
+  if(tfAnswered)return;
   var tB=document.getElementById('tfT'),fB=document.getElementById('tfF');
-  if(chosen===ans){(chosen?tB:fB).classList.add('correct');(chosen?fB:tB).classList.add('wrong');tfSc++;document.getElementById('tfR').innerHTML='&#127881; Correct!';spk('Correct! Well done Reyan!');}
-  else{(chosen?tB:fB).classList.add('wrong');(chosen?fB:tB).classList.add('correct');document.getElementById('tfR').innerHTML='The answer is '+(ans?'TRUE':'FALSE')+'!';spk('The answer is '+(ans?'True':'False')+'!');}
-  showNxt();
+  if(chosen===ans){
+    tfAnswered=true;
+    (chosen?tB:fB).classList.add('correct');
+    tfSc++;
+    document.getElementById('tfR').innerHTML='&#127881; Correct!';
+    spk('Correct! Well done!');
+    showNxt();
+  }else{
+    // Wrong — no reveal, just flash wrong button, allow retry
+    (chosen?tB:fB).classList.add('wrong');
+    document.getElementById('tfR').innerHTML='&#10060; Wrong! Try again!';
+    spk('Wrong! Try again!');
+    setTimeout(function(){
+      (chosen?tB:fB).classList.remove('wrong');
+      var r=document.getElementById('tfR');if(r)r.innerHTML='';
+    },900);
+  }
+}
+
+/* ── COLOR TAP ── */
+function shuffleCtap(){
+  ctapOrder=CTAP.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  ctapIdx=0; ctapSc=0; buildCtap();
+}
+function buildCtap(){
+  if(ctapIdx>=ctapOrder.length){scoreScrn(ctapSc,CTAP.length,'Amazing! You know all colors!','Good color spotting!','colortap');return;}
+  ctapAnswered=false;
+  var correct=CTAP[ctapOrder[ctapIdx]];
+  /* pick 3 wrong colors — one per color-family group, none matching correct's group */
+  var usedGroups=[correct.g];
+  var pool=[];
+  var shuffled=CTAP.filter(function(c){return c!==correct;}).sort(function(){return Math.random()-.5;});
+  for(var pi=0;pi<shuffled.length&&pool.length<3;pi++){
+    if(usedGroups.indexOf(shuffled[pi].g)<0){pool.push(shuffled[pi]);usedGroups.push(shuffled[pi].g);}
+  }
+  /* fallback if not enough distinct groups */
+  if(pool.length<3){
+    var extra=CTAP.filter(function(c){return c!==correct&&pool.indexOf(c)<0;}).sort(function(){return Math.random()-.5;});
+    while(pool.length<3&&extra.length)pool.push(extra.shift());
+  }
+  var all=[correct].concat(pool).sort(function(){return Math.random()-.5;});
+  _nextFn=function(){ctapIdx++;buildCtap();};
+  getArea().innerHTML=scoreH(ctapIdx+1,CTAP.length,ctapSc)
+    +shufBar('shuffleCtap()')
+    +'<div class="ctap-word" style="color:'+correct.bg+'">'+correct.name+'</div>'
+    +'<div class="ctap-grid">'+all.map(function(c,i){
+      var ok=(c===correct);
+      return '<div class="ctap-circle" id="ctap'+i+'" style="background:'+c.bg+';'+(c.bg==='#F5F5F5'?'border-color:#ccc;':'')+'" onclick="chkCtap(\'ctap'+i+'\','+ok+',\''+c.name+'\')"></div>';
+    }).join('')+'</div>'
+    +'<div class="rmsg" id="ctapR" style="text-align:center;font-size:var(--lg)"></div>'
+    +navBtns(ctapIdx>0?'ctapIdx--;buildCtap()':'',true);
+  spk('Tap the color '+correct.name);
+}
+function chkCtap(sid,correct,name){
+  if(ctapAnswered)return;
+  var el=document.getElementById(sid);if(!el)return;
+  if(correct){
+    ctapAnswered=true;el.classList.add('correct');ctapSc++;
+    document.getElementById('ctapR').innerHTML='&#127881; Yes! That is '+name+'!';
+    spk('Correct! That is '+name+'!');showNxt();
+  }else{
+    wrongFlash(el,'ctapR','&#10060; Wrong! Try again!');
+  }
 }
 
 /* ── MEMORY MATCH ── */

@@ -233,7 +233,12 @@ body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7
 .cbtn.correct{background:#4CAF50;color:#fff;border-color:#4CAF50;animation:popIn .3s ease;}
 .cbtn.wrong{background:#FF6B6B;color:#fff;border-color:#FF6B6B;}
 .rmsg{text-align:center;font-size:var(--lg);font-weight:900;color:#333;min-height:26px;}
-.nxtbtn{display:block;margin:12px auto 0;padding:10px 26px;border-radius:20px;border:none;background:linear-gradient(135deg,#FF6B6B,#FF8E53);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;}
+/* Shared nav buttons — use .nav-row as container */
+.nav-row{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.prvbtn,.nxtbtn{display:inline-block;min-width:100px;padding:10px 20px;border-radius:20px;border:none;background:linear-gradient(135deg,#FF6B6B,#FF8E53);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;text-align:center;transition:opacity .18s,transform .15s;-webkit-tap-highlight-color:transparent;}
+.prvbtn:hover,.nxtbtn:hover{opacity:.86;transform:scale(1.04);}
+.shufbtn{display:inline-block;min-width:100px;padding:10px 20px;border-radius:20px;border:none;background:linear-gradient(135deg,#6A1B9A,#1565C0);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;text-align:center;transition:opacity .18s,transform .15s;-webkit-tap-highlight-color:transparent;}
+.shufbtn:hover{opacity:.86;transform:scale(1.04);}
 .scorescreen{background:#fff;border-radius:20px;padding:30px 20px;box-shadow:0 5px 20px rgba(0,0,0,.12);text-align:center;}
 .rbtn{padding:12px 28px;border-radius:20px;border:none;background:linear-gradient(135deg,#6A1B9A,#E91E63);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;margin-top:12px;}
 @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
