@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Think Smart! &#129504;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<style>
+.subbody{display:block!important;}
+.submain{padding:14px 12px calc(110px + env(safe-area-inset-bottom))!important;overflow-y:auto;}
+#sdrawer{top:66px!important;}
+
+/* ── Bottom dock (7 tabs, single row) ── */
+.think-dock{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);
+  display:grid;grid-template-columns:repeat(7,1fr);
+  padding:5px 3px calc(5px + env(safe-area-inset-bottom));gap:3px;
+}
+.think-dock-btn{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:1px;padding:5px 2px 4px;border-radius:10px;
+  border:none;background:#f5f5f5;color:#999;font-family:var(--f);
+  font-size:.44rem;font-weight:800;cursor:pointer;line-height:1.2;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color:transparent;
+}
+.think-dock-btn.active{color:#fff;transform:scale(1.05);}
+.think-dock-btn .dock-ico{font-size:.95rem;line-height:1;}
+.think-dock-btn[data-tab="patterns"].active  {background:linear-gradient(135deg,#7B1FA2,#E91E63);}
+.think-dock-btn[data-tab="sequence"].active  {background:linear-gradient(135deg,#1976D2,#00C9A7);}
+.think-dock-btn[data-tab="feelings"].active  {background:linear-gradient(135deg,#FF6B6B,#FF8E53);}
+.think-dock-btn[data-tab="spotit"].active    {background:linear-gradient(135deg,#43A047,#FFC300);}
+.think-dock-btn[data-tab="sizeitup"].active  {background:linear-gradient(135deg,#00897B,#29B6F6);}
+.think-dock-btn[data-tab="whybecause"].active{background:linear-gradient(135deg,#E65100,#FF8E53);}
+.think-dock-btn[data-tab="whichmore"].active {background:linear-gradient(135deg,#6A1B9A,#1565C0);}
+
+/* ── Shared game UI ── */
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.ibox{background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:14px;}
+.iq{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:14px;text-align:center;line-height:1.4;}
+.rmsg{min-height:22px;text-align:center;font-size:.85rem;font-weight:900;color:#FF6B6B;margin-bottom:8px;}
+.scorebar{background:#f7f7f7;border-radius:12px;padding:7px 12px;font-size:.78rem;font-weight:700;color:#666;margin-bottom:10px;}
+.scorescreen{text-align:center;padding:30px 20px;}
+.rbtn{padding:13px 32px;border-radius:18px;border:none;background:linear-gradient(135deg,#7B1FA2,#E91E63);color:#fff;font-family:var(--f);font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(123,31,162,.35);transition:all .2s;}
+.rbtn:active{transform:scale(.96);}
+
+/* ── PATTERNS ── */
+.pat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;}
+.pat-item{font-size:2.2rem;background:#f5f5f5;border-radius:14px;padding:10px 12px;min-width:52px;text-align:center;}
+.pat-blank{font-size:2.2rem;background:#f0e8ff;border:3px dashed #9C27B0;border-radius:14px;padding:10px 12px;min-width:52px;text-align:center;animation:blink 1.2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.pat-opts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.pat-opt{font-size:2rem;background:#fff;border:3px solid #eee;border-radius:14px;padding:10px 14px;cursor:pointer;transition:all .18s;min-width:62px;text-align:center;-webkit-tap-highlight-color:transparent;}
+.pat-opt:hover{transform:scale(1.1);border-color:#9C27B0;}
+.pat-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.pat-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* ── SEQUENCE ── */
+.seq-row{display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.seq-item{font-size:2rem;background:#f5f5f5;border-radius:14px;padding:10px 12px;text-align:center;}
+.seq-arrow{font-size:1.2rem;color:#aaa;}
+.seq-blank{font-size:2rem;background:#e8f4ff;border:3px dashed #1976D2;border-radius:14px;padding:10px 12px;text-align:center;animation:blink 1.2s ease-in-out infinite;}
+.seq-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:320px;margin:0 auto 14px;}
+.seq-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:12px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;font-size:.8rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.seq-opt span{font-size:1.8rem;display:block;margin-bottom:4px;}
+.seq-opt:hover{transform:scale(1.04);border-color:#1976D2;}
+.seq-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.seq-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* ── FEELINGS ── */
+.feel-scene{background:linear-gradient(135deg,#fff7e6,#fff);border-radius:20px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);margin-bottom:14px;text-align:center;}
+.feel-em{font-size:3.5rem;display:block;margin-bottom:8px;}
+.feel-txt{font-size:var(--lg);font-weight:900;color:#333;line-height:1.4;}
+.feel-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:340px;margin:0 auto 14px;}
+.feel-opt{background:#fff;border:3px solid #eee;border-radius:18px;padding:14px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;font-size:.78rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.feel-opt span{font-size:2rem;display:block;margin-bottom:5px;}
+.feel-opt:hover{transform:scale(1.06);border-color:#FF8E53;}
+.feel-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.feel-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* ── SPOT IT ── */
+.spot-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.spot-item{font-size:2.2rem;background:#f5f5f5;border-radius:14px;padding:10px 12px;cursor:pointer;min-width:52px;text-align:center;border:3px solid transparent;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.spot-item:hover{transform:scale(1.1);border-color:#43A047;}
+.spot-item.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.spot-item.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* ── SIZE IT UP ── */
+.size-hint{text-align:center;font-size:.82rem;font-weight:900;color:#00897B;background:#E0F2F1;border-radius:12px;padding:8px 14px;margin-bottom:14px;}
+.size-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.size-item{background:#fff;border:3px solid #eee;border-radius:18px;padding:14px 10px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;flex:1;min-width:80px;max-width:100px;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.size-item .size-em{font-size:2rem;display:block;margin-bottom:6px;}
+.size-item .size-lbl{font-size:.6rem;color:#666;}
+.size-item:hover{transform:scale(1.06);border-color:#00897B;}
+.size-item.done{background:#E8F5E9;border-color:#4CAF50;pointer-events:none;}
+.size-item.wrong{animation:shake .4s ease;}
+.size-dots{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
+.size-dot{width:16px;height:16px;border-radius:50%;background:#ddd;transition:background .3s;}
+.size-dot.done{background:#4CAF50;}
+
+/* ── WHY? BECAUSE! ── */
+.why-cause{background:linear-gradient(135deg,#fff8f0,#fff);border-radius:20px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);margin-bottom:14px;text-align:center;}
+.why-em{font-size:3rem;display:block;margin-bottom:8px;}
+.why-txt{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:6px;}
+.why-q{font-size:.76rem;color:#888;font-weight:700;}
+.why-opts{display:grid;grid-template-columns:1fr;gap:8px;max-width:360px;margin:0 auto 14px;}
+.why-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:11px 14px;cursor:pointer;text-align:left;font-family:var(--f);font-weight:700;font-size:.82rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.why-opt:hover{transform:translateX(4px);border-color:#E65100;}
+.why-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.why-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* ── WHICH IS MORE? ── */
+.more-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:360px;margin:0 auto 18px;}
+.more-box{background:#fff;border:3px solid #eee;border-radius:18px;padding:14px 8px;cursor:pointer;text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.more-box:hover{transform:scale(1.04);border-color:#6A1B9A;}
+.more-box.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.more-box.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+.more-dots{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-bottom:8px;max-width:130px;}
+.more-dot{font-size:1.5rem;line-height:1;}
+.more-count{font-size:1.4rem;font-weight:900;color:#555;}
+</style>
+</head>
+<body data-page-title="&#129504; Think Smart!" data-page-sub="Patterns, Logic &amp; Feelings" data-page-gradient="linear-gradient(135deg,#7B1FA2,#E91E63)" data-page-back="home.html">
+
+<div class="subbody">
+  <div class="submain" id="thinkMain">
+    <!-- injected by showThink() -->
+  </div>
+</div>
+
+<!-- ══ BOTTOM DOCK ══ -->
+<nav class="think-dock">
+  <button class="think-dock-btn" data-tab="patterns"   onclick="showThink('patterns')">  <span class="dock-ico">&#128257;</span>Patterns</button>
+  <button class="think-dock-btn" data-tab="sequence"   onclick="showThink('sequence')">  <span class="dock-ico">&#10145;</span>What Next</button>
+  <button class="think-dock-btn" data-tab="feelings"   onclick="showThink('feelings')">  <span class="dock-ico">&#128578;</span>Feelings</button>
+  <button class="think-dock-btn" data-tab="spotit"     onclick="showThink('spotit')">    <span class="dock-ico">&#128065;</span>Spot It!</button>
+  <button class="think-dock-btn" data-tab="sizeitup"   onclick="showThink('sizeitup')">  <span class="dock-ico">&#128207;</span>Size It!</button>
+  <button class="think-dock-btn" data-tab="whybecause" onclick="showThink('whybecause')"><span class="dock-ico">&#129300;</span>Why?</button>
+  <button class="think-dock-btn" data-tab="whichmore"  onclick="showThink('whichmore')"> <span class="dock-ico">&#128290;</span>More!</button>
+</nav>
+
+<script>
+/* ══════════════════════════════════════
+   DATA
+══════════════════════════════════════ */
+
+var PAT_DATA=[
+  {seq:['🐱','🐶','🐱','🐶'],ans:'🐱',opts:['🐱','🦊','🐸']},
+  {seq:['⭐','❤️','⭐','❤️'],ans:'⭐',opts:['🌙','⭐','❤️']},
+  {seq:['🔴','🔵','🔴','🔵'],ans:'🔴',opts:['🔴','🟡','🟢']},
+  {seq:['🌙','⭐','🌙','⭐'],ans:'🌙',opts:['☀️','🌙','⭐']},
+  {seq:['🍎','🍊','🍎','🍊'],ans:'🍎',opts:['🍎','🍋','🍇']},
+  {seq:['🐘','🐱','🐱','🐘'],ans:'🐱',opts:['🐱','🐶','🐘']},
+  {seq:['🌻','🌸','🌸','🌻'],ans:'🌸',opts:['🌷','🌸','🌻']},
+  {seq:['🍕','🍕','🍔','🍕'],ans:'🍕',opts:['🍕','🍣','🍔']},
+  {seq:['🚗','🚂','🚗','🚂'],ans:'🚗',opts:['✈️','🚗','🚂']},
+  {seq:['🔴','🟡','🔵','🔴'],ans:'🟡',opts:['🔵','🟡','🔴']},
+  {seq:['🐶','🐱','🐸','🐶'],ans:'🐱',opts:['🐸','🐱','🐶']},
+  {seq:['🌞','🌧️','🌈','🌞'],ans:'🌧️',opts:['🌈','🌧️','🌞']}
+];
+
+var SEQ_DATA=[
+  {steps:['🥚','🐣'],ans:'🐔',opts:[{e:'🐔',l:'Hen'},{e:'🦋',l:'Butterfly'},{e:'🌱',l:'Plant'},{e:'🐟',l:'Fish'}],q:'Egg ➜ Chick ➜ ?'},
+  {steps:['🌱','🌿'],ans:'🌳',opts:[{e:'🌳',l:'Tree'},{e:'🍎',l:'Apple'},{e:'🌸',l:'Flower'},{e:'🌊',l:'Wave'}],q:'Seed ➜ Plant ➜ ?'},
+  {steps:['🐛','🫘'],ans:'🦋',opts:[{e:'🦋',l:'Butterfly'},{e:'🐝',l:'Bee'},{e:'🐢',l:'Turtle'},{e:'🐟',l:'Fish'}],q:'Caterpillar ➜ Cocoon ➜ ?'},
+  {steps:['👶','🧒'],ans:'🧑',opts:[{e:'🧑',l:'Adult'},{e:'👴',l:'Old man'},{e:'🍼',l:'Bottle'},{e:'🐣',l:'Chick'}],q:'Baby ➜ Child ➜ ?'},
+  {steps:['☁️','🌧️'],ans:'🌈',opts:[{e:'🌈',l:'Rainbow'},{e:'❄️',l:'Snow'},{e:'☀️',l:'Sun'},{e:'🌪️',l:'Storm'}],q:'Cloud ➜ Rain ➜ ?'},
+  {steps:['🌑','🌓'],ans:'🌕',opts:[{e:'🌕',l:'Full Moon'},{e:'🌑',l:'New Moon'},{e:'⭐',l:'Star'},{e:'☀️',l:'Sun'}],q:'New Moon ➜ Half Moon ➜ ?'},
+  {steps:['❄️','💧'],ans:'☁️',opts:[{e:'☁️',l:'Steam/Cloud'},{e:'❄️',l:'Ice'},{e:'🌊',l:'Sea'},{e:'🌧️',l:'Rain'}],q:'Ice ➜ Water ➜ ?'},
+  {steps:['🌸','🍃'],ans:'🍁',opts:[{e:'🍁',l:'Autumn leaf'},{e:'🌸',l:'Blossom'},{e:'❄️',l:'Snow'},{e:'🌱',l:'Sprout'}],q:'Spring ➜ Summer ➜ ?'},
+  {steps:['🥣','🍽️'],ans:'😊',opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😴',l:'Sleepy'},{e:'😡',l:'Angry'}],q:'Empty bowl ➜ Eating ➜ ?'},
+  {steps:['🌱','🌷'],ans:'🌹',opts:[{e:'🌹',l:'Rose'},{e:'🌲',l:'Pine'},{e:'🍎',l:'Apple'},{e:'🌿',l:'Leaf'}],q:'Bud ➜ Opening ➜ ?'}
+];
+
+var FEEL_DATA=[
+  {em:'🎂🎉',text:'It is your birthday today!',ans:0,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😨',l:'Scared'}]},
+  {em:'🤕',text:'You fell down and hurt your knee.',ans:1,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😴',l:'Sleepy'},{e:'😮',l:'Surprised'}]},
+  {em:'👻🌑',text:'You are alone in a very dark room at night.',ans:3,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😨',l:'Scared'}]},
+  {em:'🍦🎈',text:'You got your favourite ice cream!',ans:0,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'}]},
+  {em:'🧸💔',text:'Your favourite toy broke.',ans:1,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😎',l:'Cool'},{e:'😮',l:'Surprised'}]},
+  {em:'😤🧒',text:'Someone took your toy without asking.',ans:2,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'}]},
+  {em:'🎁✨',text:'You got a big surprise gift!',ans:3,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😮',l:'Surprised'}]},
+  {em:'🌙⏰',text:'You played all day and now it is late night.',ans:2,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😴',l:'Sleepy'},{e:'😡',l:'Angry'}]},
+  {em:'🐕🤝',text:'You made a new friend today!',ans:0,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'}]},
+  {em:'🏥💉',text:'The doctor gives you a small shot.',ans:3,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😮',l:'Surprised'},{e:'😨',l:'Scared'}]},
+  {em:'🍪🚫',text:'Mum says no more cookies today.',ans:2,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Upset'},{e:'😴',l:'Sleepy'}]},
+  {em:'🌈✨',text:'You see a beautiful rainbow after the rain!',ans:3,opts:[{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'},{e:'😮',l:'Amazed'}]}
+];
+
+var SPOT_DATA=[
+  {row:['🍎','🍎','🍊','🍎','🍎'],odd:2},
+  {row:['🐶','🐶','🐶','🐱','🐶'],odd:3},
+  {row:['⭐','⭐','🌙','⭐','⭐'],odd:2},
+  {row:['🔴','🔴','🔴','🔴','🔵'],odd:4},
+  {row:['🚗','🚗','✈️','🚗','🚗'],odd:2},
+  {row:['🍌','🍌','🍌','🍇','🍌'],odd:3},
+  {row:['🌸','🌻','🌸','🌸','🌸'],odd:1},
+  {row:['🐱','🐱','🐱','🐱','🐶'],odd:4},
+  {row:['❤️','❤️','⭐','❤️','❤️'],odd:2},
+  {row:['🌙','🌙','🌙','☀️','🌙'],odd:3},
+  {row:['🎈','🎈','🎈','🎁','🎈'],odd:3},
+  {row:['🍕','🍔','🍕','🍕','🍕'],odd:1},
+  {row:['🦁','🦁','🐯','🦁','🦁'],odd:2},
+  {row:['🌊','🌊','🌊','🌊','🔥'],odd:4}
+];
+
+var SIZE_DATA=[
+  {items:[{e:'🐜',l:'Ant'},{e:'🐈',l:'Cat'},{e:'🐘',l:'Elephant'}]},
+  {items:[{e:'🌱',l:'Sprout'},{e:'🌿',l:'Plant'},{e:'🌳',l:'Tree'}]},
+  {items:[{e:'🍇',l:'Grape'},{e:'🍊',l:'Orange'},{e:'🍉',l:'Watermelon'}]},
+  {items:[{e:'🐁',l:'Mouse'},{e:'🐇',l:'Rabbit'},{e:'🐄',l:'Cow'}]},
+  {items:[{e:'🏠',l:'House'},{e:'🏢',l:'Building'},{e:'🗼',l:'Tower'}]},
+  {items:[{e:'🧒',l:'Child'},{e:'👨',l:'Adult'},{e:'👴',l:'Grandpa'}]},
+  {items:[{e:'🐠',l:'Fish'},{e:'🐬',l:'Dolphin'},{e:'🐋',l:'Whale'}]},
+  {items:[{e:'🫐',l:'Berry'},{e:'🍊',l:'Orange'},{e:'🍉',l:'Melon'}]},
+  {items:[{e:'🌰',l:'Nut'},{e:'🌷',l:'Flower'},{e:'🌲',l:'Pine'}]},
+  {items:[{e:'🦟',l:'Mosquito'},{e:'🐓',l:'Chicken'},{e:'🦒',l:'Giraffe'}]}
+];
+
+var WHY_DATA=[
+  {em:'🌧️',cause:'It is raining heavily outside',ans:'The ground gets wet',wrong:['The sky turns green','Fish start flying','We get very hungry']},
+  {em:'🍦☀️',cause:'Ice cream is left in the hot sun',ans:'It melts and becomes liquid',wrong:['It gets bigger and bigger','It starts to sing','It turns into a ball']},
+  {em:'🌱💧',cause:'You water the plant every single day',ans:'The plant grows tall and healthy',wrong:['The plant turns into an animal','The plant flies away','The plant makes music']},
+  {em:'😴',cause:'You stayed up very, very late at night',ans:'You feel tired and sleepy',wrong:['You feel very hungry','You can run faster','You feel super cold']},
+  {em:'🏃',cause:'You run very fast for a long time',ans:'You breathe fast and feel tired',wrong:['You feel very cold','You stop growing','You feel hungry right away']},
+  {em:'🎁🎂',cause:'Today is your birthday!',ans:'You feel excited and happy',wrong:['You feel bored','You want to sleep all day','You feel worried']},
+  {em:'🤧',cause:'You played in cold rain without your jacket',ans:'You might catch a cold and sneeze',wrong:['You become very fast','You grow wings','You get stronger immediately']},
+  {em:'🌙⭐',cause:'The sun sets and it becomes night time',ans:'We can see the moon and stars',wrong:['We can see the rainbow','The birds start singing louder','It gets very hot and sunny']},
+  {em:'🚿🧼',cause:'You wash your hands with soap and water',ans:'Your hands become clean and germ-free',wrong:['Your hands turn blue','Your hands become bigger','Your hands start to itch']},
+  {em:'😢🧸',cause:'You dropped your favourite toy and it broke',ans:'You feel sad',wrong:['You feel happy and laugh','You fall asleep immediately','You jump with joy']},
+  {em:'📚✏️',cause:'You study and practice reading every day',ans:'You become smarter and learn more',wrong:['You grow taller overnight','You stop feeling hungry','You start flying in dreams']},
+  {em:'🌱☀️',cause:'Plants get sunlight and water every day',ans:'They grow, make food and give oxygen',wrong:['They walk to the market','They turn into animals','They start dancing at night']}
+];
+
+var MORE_DATA=[
+  {left:2,right:5,ans:'right',em:'⭐'},
+  {left:7,right:3,ans:'left',em:'🍎'},
+  {left:4,right:8,ans:'right',em:'🐟'},
+  {left:6,right:2,ans:'left',em:'❤️'},
+  {left:3,right:9,ans:'right',em:'🌸'},
+  {left:8,right:4,ans:'left',em:'🎈'},
+  {left:1,right:6,ans:'right',em:'🐱'},
+  {left:5,right:2,ans:'left',em:'🌙'},
+  {left:3,right:7,ans:'right',em:'🍭'},
+  {left:9,right:4,ans:'left',em:'🌟'},
+  {left:2,right:8,ans:'right',em:'🦋'},
+  {left:6,right:3,ans:'left',em:'🚗'}
+];
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+var patOrder=PAT_DATA.map(function(_,i){return i;}),patIdx=0,patSc=0,patAns=false;
+var seqOrder=SEQ_DATA.map(function(_,i){return i;}),seqIdx=0,seqSc=0,seqAns=false;
+var feelOrder=FEEL_DATA.map(function(_,i){return i;}),feelIdx=0,feelSc=0,feelAns=false;
+var spotOrder=SPOT_DATA.map(function(_,i){return i;}),spotIdx=0,spotSc=0,spotAns=false;
+var sizeOrder=SIZE_DATA.map(function(_,i){return i;}),sizeIdx=0,sizeSc=0,sizeTapNext=0,sizeShuf=[];
+var whyOrder=WHY_DATA.map(function(_,i){return i;}),whyIdx=0,whySc=0,whyAns=false;
+var moreOrder=MORE_DATA.map(function(_,i){return i;}),moreIdx=0,moreSc=0,moreAns=false;
+
+var _nextFn=null;
+function nextThink(){if(_nextFn)_nextFn();}
+
+/* ══════════════════════════════════════
+   ROUTER
+══════════════════════════════════════ */
+var THINK_HEADERS={
+  patterns:  {bg:'linear-gradient(135deg,#7B1FA2,#E91E63)',em:'&#128257;',title:'Patterns'},
+  sequence:  {bg:'linear-gradient(135deg,#1976D2,#00C9A7)',em:'&#10145;',title:'What Comes Next?'},
+  feelings:  {bg:'linear-gradient(135deg,#FF6B6B,#FF8E53)',em:'&#128578;',title:'Feelings'},
+  spotit:    {bg:'linear-gradient(135deg,#43A047,#FFC300)',em:'&#128065;',title:'Spot It!'},
+  sizeitup:  {bg:'linear-gradient(135deg,#00897B,#29B6F6)',em:'&#128207;',title:'Size It Up!'},
+  whybecause:{bg:'linear-gradient(135deg,#E65100,#FF8E53)',em:'&#129300;',title:'Why? Because!'},
+  whichmore: {bg:'linear-gradient(135deg,#6A1B9A,#1565C0)',em:'&#128290;',title:'Which is More?'}
+};
+
+var THINK_INITS={
+  patterns:buildPat,sequence:buildSeq,feelings:buildFeel,
+  spotit:buildSpot,sizeitup:buildSize,whybecause:buildWhy,whichmore:buildMore
+};
+
+function showThink(name){
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.think-dock-btn').forEach(function(b){
+    b.classList.remove('active');b.style.background='';
+  });
+  var btn=document.querySelector('.think-dock-btn[data-tab="'+name+'"]');
+  if(btn)btn.classList.add('active');
+
+  var h=THINK_HEADERS[name];
+  document.getElementById('thinkMain').innerHTML=
+    '<div class="bigbox" style="background:'+h.bg+'"><div class="bigchar">'+h.em+'</div><div class="bigsub">'+h.title+'</div></div>'
+    +'<div id="thinkArea"></div>';
+
+  resetThink(name);
+  THINK_INITS[name]();
+}
+
+function resetThink(name){
+  if(name==='patterns')  {patOrder=PAT_DATA.map(function(_,i){return i;});patIdx=0;patSc=0;patAns=false;}
+  if(name==='sequence')  {seqOrder=SEQ_DATA.map(function(_,i){return i;});seqIdx=0;seqSc=0;seqAns=false;}
+  if(name==='feelings')  {feelOrder=FEEL_DATA.map(function(_,i){return i;});feelIdx=0;feelSc=0;feelAns=false;}
+  if(name==='spotit')    {spotOrder=SPOT_DATA.map(function(_,i){return i;});spotIdx=0;spotSc=0;spotAns=false;}
+  if(name==='sizeitup')  {sizeOrder=SIZE_DATA.map(function(_,i){return i;});sizeIdx=0;sizeSc=0;sizeTapNext=0;}
+  if(name==='whybecause'){whyOrder=WHY_DATA.map(function(_,i){return i;});whyIdx=0;whySc=0;whyAns=false;}
+  if(name==='whichmore') {moreOrder=MORE_DATA.map(function(_,i){return i;});moreIdx=0;moreSc=0;moreAns=false;}
+}
+
+function getThinkArea(){return document.getElementById('thinkArea');}
+
+/* ── Helpers ── */
+function scoreH(cur,tot,sc){
+  return '<div class="scorebar">Q <b>'+cur+'</b>/'+tot+' &nbsp; Score: <b>'+sc+'</b></div>';
+}
+function navBtns(prevFn,showNext){
+  return '<div class="nav-row">'
+    +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
+    +(showNext
+      ?'<button class="nxtbtn" id="nxtBtn" onclick="nextThink()">Next &#8594;</button>'
+      :'<button class="nxtbtn" id="nxtBtn" style="display:none" onclick="nextThink()">Next &#8594;</button>')
+    +'</div>';
+}
+function showNxt(){var b=document.getElementById('nxtBtn');if(b)b.style.display='inline-block';}
+function wrongFlash(el,msgId,msg){
+  el.classList.add('wrong');
+  if(msgId)document.getElementById(msgId).innerHTML=msg;
+  spk('Try again!');
+  setTimeout(function(){el.classList.remove('wrong');if(msgId)document.getElementById(msgId).innerHTML='';},900);
+}
+function scoreScrn(sc,tot,great,ok,gameId){
+  var pct=Math.round(sc/tot*100);
+  getThinkArea().innerHTML='<div class="scorescreen">'
+    +'<div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div>'
+    +'<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+sc+' / '+tot+'</div>'
+    +'<div style="color:#777;margin-bottom:16px">'+(pct>=80?great:pct>=50?ok:'Keep trying!')+'</div>'
+    +'<button class="rbtn" onclick="showThink(\''+gameId+'\')">Play Again &#128257;</button></div>';
+  spk(pct>=80?great:ok);
+}
+function shufBar(fn){
+  return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';
+}
+
+/* ══════════════════════════════════════
+   GAME 1 – PATTERNS
+══════════════════════════════════════ */
+function shufflePat(){
+  patOrder=PAT_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  patIdx=0;patSc=0;buildPat();
+}
+function buildPat(){
+  if(patIdx>=PAT_DATA.length){scoreScrn(patSc,PAT_DATA.length,'Pattern Master!','Good spotting!','patterns');return;}
+  var p=PAT_DATA[patOrder[patIdx]];
+  _nextFn=function(){patIdx++;buildPat();};
+  patAns=false;
+
+  var seqHTML=p.seq.map(function(em){return '<div class="pat-item">'+em+'</div>';}).join('')
+    +'<div class="pat-blank">&#10067;</div>';
+
+  var optsHTML=p.opts.map(function(em,i){
+    return '<div class="pat-opt" id="popt'+i+'" onclick="chkPat('+i+')">'+em+'</div>';
+  }).join('');
+
+  getThinkArea().innerHTML=scoreH(patIdx+1,PAT_DATA.length,patSc)
+    +shufBar('shufflePat()')
+    +'<div class="ibox">'
+    +'<div class="iq">&#128257; What comes next in the pattern?</div>'
+    +'<div class="pat-row">'+seqHTML+'</div>'
+    +'<div class="pat-opts">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="patR"></div>'
+    +navBtns(patIdx>0?'patIdx--;buildPat()':'',false)
+    +'</div>';
+  spk('What comes next in the pattern?');
+}
+function chkPat(i){
+  if(patAns)return;
+  var p=PAT_DATA[patOrder[patIdx]];
+  var el=document.getElementById('popt'+i);
+  if(p.opts[i]===p.ans){
+    patAns=true;patSc++;
+    el.classList.add('correct');
+    document.getElementById('patR').innerHTML='&#11088; Yes! '+p.ans+' comes next!';
+    spk('Correct! Great job!');showNxt();
+  }else{wrongFlash(el,'patR','');}
+}
+
+/* ══════════════════════════════════════
+   GAME 2 – WHAT COMES NEXT? (SEQUENCE)
+══════════════════════════════════════ */
+function shuffleSeq(){
+  seqOrder=SEQ_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  seqIdx=0;seqSc=0;buildSeq();
+}
+function buildSeq(){
+  if(seqIdx>=SEQ_DATA.length){scoreScrn(seqSc,SEQ_DATA.length,'Sequence Star!','Good thinking!','sequence');return;}
+  var p=SEQ_DATA[seqOrder[seqIdx]];
+  _nextFn=function(){seqIdx++;buildSeq();};
+  seqAns=false;
+
+  var stepsHTML=p.steps.map(function(em,i){
+    return (i>0?'<span class="seq-arrow">&#8594;</span>':'')+'<div class="seq-item">'+em+'</div>';
+  }).join('')+'<span class="seq-arrow">&#8594;</span><div class="seq-blank">&#10067;</div>';
+
+  var optsHTML=p.opts.map(function(opt,i){
+    return '<div class="seq-opt" id="sopt'+i+'" onclick="chkSeq('+i+')">'
+      +'<span>'+opt.e+'</span>'+opt.l+'</div>';
+  }).join('');
+
+  getThinkArea().innerHTML=scoreH(seqIdx+1,SEQ_DATA.length,seqSc)
+    +shufBar('shuffleSeq()')
+    +'<div class="ibox">'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="seq-row">'+stepsHTML+'</div>'
+    +'<div class="seq-opts">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="seqR"></div>'
+    +navBtns(seqIdx>0?'seqIdx--;buildSeq()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkSeq(i){
+  if(seqAns)return;
+  var p=SEQ_DATA[seqOrder[seqIdx]];
+  var el=document.getElementById('sopt'+i);
+  if(p.opts[i].e===p.ans){
+    seqAns=true;seqSc++;
+    el.classList.add('correct');
+    document.getElementById('seqR').innerHTML='&#11088; '+p.opts[i].e+' '+p.opts[i].l+'! Correct!';
+    spk('Correct! Well done!');showNxt();
+  }else{wrongFlash(el,'seqR','');}
+}
+
+/* ══════════════════════════════════════
+   GAME 3 – FEELINGS
+══════════════════════════════════════ */
+function shuffleFeel(){
+  feelOrder=FEEL_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  feelIdx=0;feelSc=0;buildFeel();
+}
+function buildFeel(){
+  if(feelIdx>=FEEL_DATA.length){scoreScrn(feelSc,FEEL_DATA.length,'Feelings Expert!','Good empathy!','feelings');return;}
+  var p=FEEL_DATA[feelOrder[feelIdx]];
+  _nextFn=function(){feelIdx++;buildFeel();};
+  feelAns=false;
+
+  var optsHTML=p.opts.map(function(opt,i){
+    return '<div class="feel-opt" id="fopt'+i+'" onclick="chkFeel('+i+')">'
+      +'<span>'+opt.e+'</span>'+opt.l+'</div>';
+  }).join('');
+
+  getThinkArea().innerHTML=scoreH(feelIdx+1,FEEL_DATA.length,feelSc)
+    +shufBar('shuffleFeel()')
+    +'<div class="ibox">'
+    +'<div class="feel-scene"><span class="feel-em">'+p.em+'</span><div class="feel-txt">'+p.text+'</div></div>'
+    +'<div class="iq" style="font-size:.88rem;margin-bottom:10px">How would you feel? &#128578;</div>'
+    +'<div class="feel-opts">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="feelR"></div>'
+    +navBtns(feelIdx>0?'feelIdx--;buildFeel()':'',false)
+    +'</div>';
+  spk(p.text+' How do you feel?');
+}
+function chkFeel(i){
+  if(feelAns)return;
+  var p=FEEL_DATA[feelOrder[feelIdx]];
+  var el=document.getElementById('fopt'+i);
+  if(i===p.ans){
+    feelAns=true;feelSc++;
+    el.classList.add('correct');
+    document.getElementById('feelR').innerHTML='&#11088; '+p.opts[p.ans].e+' '+p.opts[p.ans].l+'!';
+    spk('Correct! '+p.opts[p.ans].l+'!');showNxt();
+  }else{wrongFlash(el,'feelR','');}
+}
+
+/* ══════════════════════════════════════
+   GAME 4 – SPOT IT!
+══════════════════════════════════════ */
+function shuffleSpot(){
+  spotOrder=SPOT_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  spotIdx=0;spotSc=0;buildSpot();
+}
+function buildSpot(){
+  if(spotIdx>=SPOT_DATA.length){scoreScrn(spotSc,SPOT_DATA.length,'Eagle Eyes!','Sharp vision!','spotit');return;}
+  var p=SPOT_DATA[spotOrder[spotIdx]];
+  _nextFn=function(){spotIdx++;buildSpot();};
+  spotAns=false;
+
+  var rowHTML=p.row.map(function(em,i){
+    return '<div class="spot-item" id="spitem'+i+'" onclick="chkSpot('+i+')">'+em+'</div>';
+  }).join('');
+
+  getThinkArea().innerHTML=scoreH(spotIdx+1,SPOT_DATA.length,spotSc)
+    +shufBar('shuffleSpot()')
+    +'<div class="ibox">'
+    +'<div class="iq">&#128065; Tap the one that is DIFFERENT!</div>'
+    +'<div class="spot-row">'+rowHTML+'</div>'
+    +'<div class="rmsg" id="spotR"></div>'
+    +navBtns(spotIdx>0?'spotIdx--;buildSpot()':'',false)
+    +'</div>';
+  spk('Find the one that is different! Tap it!');
+}
+function chkSpot(i){
+  if(spotAns)return;
+  var p=SPOT_DATA[spotOrder[spotIdx]];
+  var el=document.getElementById('spitem'+i);
+  if(i===p.odd){
+    spotAns=true;spotSc++;
+    el.classList.add('correct');
+    document.getElementById('spotR').innerHTML='&#11088; You found it!';
+    spk('You found the different one! Great eyes!');showNxt();
+  }else{wrongFlash(el,'spotR','');}
+}
+
+/* ══════════════════════════════════════
+   GAME 5 – SIZE IT UP!
+══════════════════════════════════════ */
+function buildSize(){
+  if(sizeIdx>=SIZE_DATA.length){scoreScrn(sizeSc,SIZE_DATA.length,'Size Expert!','Good ordering!','sizeitup');return;}
+  var p=SIZE_DATA[sizeOrder[sizeIdx]];
+  _nextFn=function(){sizeIdx++;buildSize();};
+  sizeTapNext=0;
+
+  /* Shuffle display order */
+  sizeShuf=[0,1,2].sort(function(){return Math.random()-.5;});
+
+  var dotsHTML='<div class="size-dots">'
+    +'<div class="size-dot" id="sdot0"></div>'
+    +'<div class="size-dot" id="sdot1"></div>'
+    +'<div class="size-dot" id="sdot2"></div>'
+    +'</div>';
+
+  var hints=['Tap the SMALLEST first!','Now tap the MIDDLE one!','Now tap the BIGGEST!'];
+
+  var itemsHTML='<div class="size-row">'+sizeShuf.map(function(origIdx,dispIdx){
+    var it=p.items[origIdx];
+    return '<div class="size-item" id="sitem'+dispIdx+'" onclick="chkSize('+dispIdx+','+origIdx+')">'
+      +'<span class="size-em">'+it.e+'</span>'
+      +'<div class="size-lbl">'+it.l+'</div>'
+      +'</div>';
+  }).join('')+'</div>';
+
+  getThinkArea().innerHTML=scoreH(sizeIdx+1,SIZE_DATA.length,sizeSc)
+    +'<div class="ibox">'
+    +'<div class="iq">&#128207; Tap SMALLEST &#8594; BIGGEST!</div>'
+    +'<div class="size-hint" id="sizeHint">'+hints[0]+'</div>'
+    +dotsHTML
+    +itemsHTML
+    +'<div class="rmsg" id="sizeR"></div>'
+    +navBtns(sizeIdx>0?'sizeIdx--;buildSize()':'',false)
+    +'</div>';
+  spk('Tap from smallest to biggest!');
+}
+function chkSize(dispIdx,origIdx){
+  if(sizeTapNext>2)return;
+  var el=document.getElementById('sitem'+dispIdx);
+  if(el.classList.contains('done'))return;
+  if(origIdx===sizeTapNext){
+    el.classList.add('done');
+    document.getElementById('sdot'+sizeTapNext).classList.add('done');
+    sizeTapNext++;
+    var hints=['Tap the SMALLEST first!','Now tap the MIDDLE one!','Now tap the BIGGEST!','Perfect order! &#127942;'];
+    var hEl=document.getElementById('sizeHint');
+    if(hEl)hEl.innerHTML=hints[sizeTapNext];
+    if(sizeTapNext===3){
+      sizeSc++;
+      document.getElementById('sizeR').innerHTML='&#11088; Perfect order!';
+      spk('Amazing! You sorted them all correctly!');
+      showNxt();
+    }else{
+      spk(hints[sizeTapNext].replace(/&#\d+;/g,''));
+    }
+  }else{
+    el.classList.add('wrong');
+    spk('Try again! Find the smaller one first!');
+    setTimeout(function(){el.classList.remove('wrong');},900);
+  }
+}
+
+/* ══════════════════════════════════════
+   GAME 6 – WHY? BECAUSE!
+══════════════════════════════════════ */
+function shuffleWhy(){
+  whyOrder=WHY_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  whyIdx=0;whySc=0;buildWhy();
+}
+function buildWhy(){
+  if(whyIdx>=WHY_DATA.length){scoreScrn(whySc,WHY_DATA.length,'Logic Champion!','Good reasoning!','whybecause');return;}
+  var p=WHY_DATA[whyOrder[whyIdx]];
+  _nextFn=function(){whyIdx++;buildWhy();};
+  whyAns=false;
+
+  /* Shuffle options, keep track of correct index */
+  var allOpts=[p.ans].concat(p.wrong);
+  allOpts.sort(function(){return Math.random()-.5;});
+  var correctIdx=allOpts.indexOf(p.ans);
+
+  var optsHTML=allOpts.map(function(opt,i){
+    return '<div class="why-opt" id="wopt'+i+'" onclick="chkWhy('+i+','+correctIdx+')">'+opt+'</div>';
+  }).join('');
+
+  getThinkArea().innerHTML=scoreH(whyIdx+1,WHY_DATA.length,whySc)
+    +shufBar('shuffleWhy()')
+    +'<div class="ibox">'
+    +'<div class="why-cause">'
+    +'<span class="why-em">'+p.em+'</span>'
+    +'<div class="why-txt">'+p.cause+'</div>'
+    +'<div class="why-q">What happens because of this? &#129300;</div>'
+    +'</div>'
+    +'<div class="why-opts">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="whyR"></div>'
+    +navBtns(whyIdx>0?'whyIdx--;buildWhy()':'',false)
+    +'</div>';
+  spk(p.cause+'. What happens because of this?');
+}
+function chkWhy(i,correctIdx){
+  if(whyAns)return;
+  var el=document.getElementById('wopt'+i);
+  if(i===correctIdx){
+    whyAns=true;whySc++;
+    el.classList.add('correct');
+    document.getElementById('whyR').innerHTML='&#11088; That\'s right!';
+    spk('Correct! Good thinking!');showNxt();
+  }else{wrongFlash(el,'whyR','');}
+}
+
+/* ══════════════════════════════════════
+   GAME 7 – WHICH IS MORE?
+══════════════════════════════════════ */
+function shuffleMore(){
+  moreOrder=MORE_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  moreIdx=0;moreSc=0;buildMore();
+}
+function buildMore(){
+  if(moreIdx>=MORE_DATA.length){scoreScrn(moreSc,MORE_DATA.length,'Counting Champion!','Good counting!','whichmore');return;}
+  var p=MORE_DATA[moreOrder[moreIdx]];
+  _nextFn=function(){moreIdx++;buildMore();};
+  moreAns=false;
+
+  function makeGroup(count,em){
+    var dots='<div class="more-dots">';
+    for(var i=0;i<count;i++)dots+='<span class="more-dot">'+em+'</span>';
+    return dots+'</div><div class="more-count">'+count+'</div>';
+  }
+
+  getThinkArea().innerHTML=scoreH(moreIdx+1,MORE_DATA.length,moreSc)
+    +shufBar('shuffleMore()')
+    +'<div class="ibox">'
+    +'<div class="iq">&#128290; Tap the group with MORE!</div>'
+    +'<div class="more-row">'
+    +'<div class="more-box" id="mboxL" onclick="chkMore(\'left\')">'+makeGroup(p.left,p.em)+'</div>'
+    +'<div class="more-box" id="mboxR" onclick="chkMore(\'right\')">'+makeGroup(p.right,p.em)+'</div>'
+    +'</div>'
+    +'<div class="rmsg" id="moreR"></div>'
+    +navBtns(moreIdx>0?'moreIdx--;buildMore()':'',false)
+    +'</div>';
+  spk('Which group has more? Tap it!');
+}
+function chkMore(side){
+  if(moreAns)return;
+  moreAns=true;
+  var p=MORE_DATA[moreOrder[moreIdx]];
+  var isCorrect=(side===p.ans);
+  var el=document.getElementById(side==='left'?'mboxL':'mboxR');
+  var otherEl=document.getElementById(side==='left'?'mboxR':'mboxL');
+  if(isCorrect){
+    moreSc++;
+    el.classList.add('correct');
+    document.getElementById('moreR').innerHTML='&#11088; That group has more!';
+    spk('Correct! That group has more!');
+  }else{
+    el.classList.add('wrong');
+    otherEl.classList.add('correct');
+    var p2=MORE_DATA[moreOrder[moreIdx]];
+    document.getElementById('moreR').innerHTML='The other group had '+(p2.ans==='left'?p2.left:p2.right)+' — more!';
+    spk('Not quite! The other side has more!');
+  }
+  showNxt();
+}
+
+/* ══════════════════════════════════════
+   INIT – show first tab on load
+══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',function(){
+  showThink('patterns');
+});
+</script>
+</body>
+</html>
