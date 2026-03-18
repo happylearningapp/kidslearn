@@ -7,95 +7,268 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="shared.js"></script>
 <style>
-.dgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:14px;}
-.dcrd{border-radius:12px;padding:9px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:900;}
-.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
-.mcrd{border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer;}
-.dsec-title{font-size:var(--md);font-weight:900;color:#555;margin:10px 0 6px;}
+/* ── Override shared sidebar layout ── */
+.subbody { display: block !important; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+#sdrawer { top: 66px !important; }
+
+/* ── Days / Months grids ── */
+.dgrid { display:grid; grid-template-columns:repeat(7,1fr); gap:7px; margin-bottom:14px; }
+@media (max-width:480px) { .dgrid { grid-template-columns:repeat(4,1fr); } }
+.dcrd  { border-radius:12px; padding:9px 4px; text-align:center; cursor:pointer;
+         font-size:.68rem; font-weight:900; }
+.mgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+.mcrd  { border-radius:12px; padding:9px 6px; text-align:center; cursor:pointer; }
+.dsec-title { font-size:var(--md); font-weight:900; color:#555; margin:10px 0 6px; }
+
+/* ── Bottom dock ── */
+.around-dock {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:#fff; box-shadow:0 -3px 20px rgba(0,0,0,.13);
+  display:flex; padding:6px 3px calc(6px + env(safe-area-inset-bottom)); gap:2px;
+}
+.around-dock-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:2px; padding:6px 2px 5px; border-radius:14px;
+  border:none; background:transparent; color:#999; font-family:var(--f);
+  font-size:.5rem; font-weight:800; cursor:pointer; line-height:1.2;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color:transparent;
+}
+.around-dock-btn.active { color:#fff; transform:scale(1.05); }
+.around-dock-btn .dock-ico { font-size:1.2rem; line-height:1; }
+
+/* Tab colours */
+.around-dock-btn[data-tab="transport"].active  { background:#F57C00; }
+.around-dock-btn[data-tab="places"].active     { background:#5C6BC0; }
+.around-dock-btn[data-tab="helpers"].active    { background:#00897B; }
+.around-dock-btn[data-tab="national"].active   { background:#FF6B00; }
+.around-dock-btn[data-tab="festivals"].active  { background:#E91E63; }
+.around-dock-btn[data-tab="days"].active       { background:#1565C0; }
+.around-dock-btn[data-tab="flags"].active      { background:#7B1FA2; }
 </style>
 </head>
-<body data-page-title="&#127757; Around Me" data-page-sub="Places, Culture &amp; The World" data-page-gradient="linear-gradient(135deg,#7B1FA2,#1565C0)" data-page-back="home.html">
+<body data-page-title="&#127757; Around Me"
+      data-page-sub="Places, Culture &amp; The World"
+      data-page-gradient="linear-gradient(135deg,#7B1FA2,#1565C0)"
+      data-page-back="home.html">
 
 <div class="subbody">
-  <div class="stabs">
-    <button class="stab" onclick="sw('around','transport','#7B1FA2')"><span class="stabico">&#128663;</span>Transport</button>
-    <button class="stab" onclick="sw('around','places','#7B1FA2')"><span class="stabico">&#127979;</span>Places</button>
-    <button class="stab" onclick="sw('around','helpers','#7B1FA2')"><span class="stabico">&#129309;</span>Helpers</button>
-    <button class="stab" onclick="sw('around','national','#7B1FA2')"><span class="stabico">&#127470;&#127475;</span>National</button>
-    <button class="stab" onclick="sw('around','festivals','#7B1FA2')"><span class="stabico">&#127881;</span>Festivals</button>
-    <button class="stab" onclick="sw('around','days','#7B1FA2')"><span class="stabico">&#128197;</span>Days</button>
-    <button class="stab" onclick="sw('around','flags','#7B1FA2')"><span class="stabico">&#127757;</span>Flags</button>
-  </div>
   <div class="submain">
 
+    <!-- ══ TRANSPORT ══ -->
     <div id="around-transport" class="sec active">
-      <div class="bigbox" style="background:#F57C00"><div class="bigchar">&#128663;</div><div class="bigsub">Transport</div></div>
+      <div class="bigbox" style="background:#F57C00" onclick="spk('Transport')">
+        <div class="bigchar">&#128663;</div>
+        <div class="bigsub">Transport</div>
+      </div>
       <div class="cgrid" id="trCards"></div>
     </div>
 
+    <!-- ══ PLACES ══ -->
     <div id="around-places" class="sec">
-      <div class="bigbox" style="background:#5C6BC0"><div class="bigchar">&#127979;</div><div class="bigsub">Places Around Us</div></div>
+      <div class="bigbox" style="background:#5C6BC0" onclick="spk('Places Around Us')">
+        <div class="bigchar">&#127979;</div>
+        <div class="bigsub">Places Around Us</div>
+      </div>
       <div class="cgrid" id="plCards"></div>
     </div>
 
+    <!-- ══ HELPERS ══ -->
     <div id="around-helpers" class="sec">
-      <div class="bigbox" style="background:#00897B"><div class="bigchar">&#129309;</div><div class="bigsub">Community Helpers</div></div>
+      <div class="bigbox" style="background:#00897B" onclick="spk('Community Helpers')">
+        <div class="bigchar">&#129309;</div>
+        <div class="bigsub">Community Helpers</div>
+      </div>
       <div class="cgrid" id="heCards"></div>
     </div>
 
+    <!-- ══ NATIONAL ══ -->
     <div id="around-national" class="sec">
-      <div class="bigbox" style="background:#FF6B00"><div class="bigchar">&#127470;&#127475;</div><div class="bigsub">National Knowledge</div></div>
+      <div class="bigbox" style="background:#FF6B00" onclick="spk('National Knowledge')">
+        <div class="bigchar">&#127470;&#127475;</div>
+        <div class="bigsub">National Knowledge</div>
+      </div>
       <div class="infogrid" id="naCards"></div>
     </div>
 
+    <!-- ══ FESTIVALS ══ -->
     <div id="around-festivals" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FFC300)"><div class="bigchar">&#127881;</div><div class="bigsub">Festivals of India</div></div>
+      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FFC300)" onclick="spk('Festivals of India')">
+        <div class="bigchar">&#127881;</div>
+        <div class="bigsub">Festivals of India</div>
+      </div>
       <div class="wgrd2" id="festCards"></div>
     </div>
 
+    <!-- ══ DAYS & MONTHS ══ -->
     <div id="around-days" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#5C6BC0,#29B6F6)"><div class="bigchar">&#128197;</div><div class="bigsub">Days &amp; Months</div></div>
+      <div class="bigbox" style="background:linear-gradient(135deg,#5C6BC0,#29B6F6)" onclick="spk('Days and Months')">
+        <div class="bigchar">&#128197;</div>
+        <div class="bigsub">Days &amp; Months</div>
+      </div>
       <div id="daysArea"></div>
     </div>
 
+    <!-- ══ FLAGS ══ -->
     <div id="around-flags" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#1565C0,#00C9A7)"><div class="bigchar">&#127757;</div><div class="bigsub">Countries &amp; Flags</div></div>
+      <div class="bigbox" style="background:linear-gradient(135deg,#1565C0,#00C9A7)" onclick="spk('Countries and Flags')">
+        <div class="bigchar">&#127757;</div>
+        <div class="bigsub">Countries &amp; Flags</div>
+      </div>
       <div class="cgrid" id="flagCards"></div>
     </div>
 
   </div>
 </div>
 
+<!-- ══ BOTTOM DOCK ══ -->
+<nav class="around-dock">
+  <button class="around-dock-btn active" data-tab="transport" onclick="swAround('transport')">
+    <span class="dock-ico">&#128663;</span>Transport
+  </button>
+  <button class="around-dock-btn" data-tab="places" onclick="swAround('places')">
+    <span class="dock-ico">&#127979;</span>Places
+  </button>
+  <button class="around-dock-btn" data-tab="helpers" onclick="swAround('helpers')">
+    <span class="dock-ico">&#129309;</span>Helpers
+  </button>
+  <button class="around-dock-btn" data-tab="national" onclick="swAround('national')">
+    <span class="dock-ico">&#127470;&#127475;</span>National
+  </button>
+  <button class="around-dock-btn" data-tab="festivals" onclick="swAround('festivals')">
+    <span class="dock-ico">&#127881;</span>Festivals
+  </button>
+  <button class="around-dock-btn" data-tab="days" onclick="swAround('days')">
+    <span class="dock-ico">&#128197;</span>Days
+  </button>
+  <button class="around-dock-btn" data-tab="flags" onclick="swAround('flags')">
+    <span class="dock-ico">&#127757;</span>Flags
+  </button>
+</nav>
+
 <script>
+/* ── Data ── */
 var TRP=[["Car","&#128663;"],["Bus","&#128652;"],["Train","&#128642;"],["Bicycle","&#128690;"],["Motorcycle","&#129469;"],["Airplane","&#9992;"],["Helicopter","&#128641;"],["Boat","&#9973;"],["Ship","&#128674;"],["Rocket","&#128640;"],["Truck","&#128667;"],["Ambulance","&#128657;"],["Fire Truck","&#128658;"],["Tractor","&#128668;"],["Scooter","&#128675;"]];
 var PLC=[["Home","&#127968;"],["School","&#127979;"],["Park","&#127795;"],["Hospital","&#127973;"],["Zoo","&#129409;"],["Market","&#128717;"],["Airport","&#9992;"],["Station","&#128649;"],["Temple","&#128719;"],["Library","&#128218;"],["Restaurant","&#127869;"],["Beach","&#127958;"],["Farm","&#127806;"],["Playground","&#128759;"],["Museum","&#127963;"]];
 var HLP=[["Doctor","&#128104;"],["Teacher","&#128105;"],["Police","&#128110;"],["Firefighter","&#129713;"],["Farmer","&#128104;"],["Chef","&#128104;"],["Nurse","&#128105;"],["Engineer","&#128119;"],["Postman","&#128204;"],["Soldier","&#129686;"],["Dentist","&#129463;"],["Pilot","&#128104;"],["Scientist","&#128300;"],["Artist","&#127912;"],["Driver","&#128663;"]];
-var NAT=[{k:"Prime Minister",v:"Narendra Modi",e:"&#128104;"},{k:"National Flag",v:"Saffron, White, Green",e:"&#127470;&#127475;"},{k:"National Song",v:"Vande Mataram",e:"&#127925;"},{k:"National Anthem",v:"Jana Gana Mana",e:"&#127926;"},{k:"National Animal",v:"Tiger",e:"&#128047;"},{k:"National Bird",v:"Peacock",e:"&#129434;"},{k:"National Flower",v:"Lotus",e:"&#129455;"},{k:"National Fruit",v:"Mango",e:"&#129389;"},{k:"National Tree",v:"Banyan Tree",e:"&#127795;"},{k:"National River",v:"Ganga",e:"&#127754;"},{k:"Capital City",v:"New Delhi",e:"&#127963;"},{k:"Our Country",v:"India",e:"&#127757;"}];
-var FES=[{e:"&#129582;",n:"Diwali",d:"Festival of Lights",c:"#FF8E53"},{e:"&#127912;",n:"Holi",d:"Festival of Colours - March",c:"#E91E63"},{e:"&#127769;",n:"Eid",d:"Festival of Gratitude",c:"#1565C0"},{e:"&#127876;",n:"Christmas",d:"Birthday of Jesus - Dec 25",c:"#43A047"},{e:"&#127806;",n:"Pongal",d:"Harvest Festival - January",c:"#FDD835"},{e:"&#128131;",n:"Navratri",d:"Nine Nights of Dance",c:"#9C27B0"},{e:"&#127802;",n:"Onam",d:"Kerala Harvest Festival",c:"#43A047"},{e:"&#127807;",n:"Baisakhi",d:"Punjab Harvest Festival",c:"#FF6B00"},{e:"&#128013;",n:"Nag Panchami",d:"July/August",c:"#00897B"},{e:"&#127878;",n:"Independence Day",d:"India - 15 August",c:"#FF6B6B"}];
-var DYS=[{n:"Sunday",e:"&#9728;",c:"#FF6B6B"},{n:"Monday",e:"&#128218;",c:"#1E88E5"},{n:"Tuesday",e:"&#9999;",c:"#43A047"},{n:"Wednesday",e:"&#127912;",c:"#9C27B0"},{n:"Thursday",e:"&#127939;",c:"#FF8E53"},{n:"Friday",e:"&#127925;",c:"#E91E63"},{n:"Saturday",e:"&#127918;",c:"#FDD835"}];
-var MON=[{m:"1",n:"January",s:"Winter",c:"#90CAF9"},{m:"2",n:"February",s:"Winter",c:"#80DEEA"},{m:"3",n:"March",s:"Spring",c:"#A5D6A7"},{m:"4",n:"April",s:"Spring",c:"#C5E1A5"},{m:"5",n:"May",s:"Summer",c:"#FFF59D"},{m:"6",n:"June",s:"Monsoon",c:"#B3E5FC"},{m:"7",n:"July",s:"Monsoon",c:"#81D4FA"},{m:"8",n:"August",s:"Monsoon",c:"#80CBC4"},{m:"9",n:"September",s:"Post-Monsoon",c:"#A5D6A7"},{m:"10",n:"October",s:"Autumn",c:"#FFCC80"},{m:"11",n:"November",s:"Autumn",c:"#FFAB91"},{m:"12",n:"December",s:"Winter",c:"#B39DDB"}];
-var FLG=[["&#127470;&#127475;","India","New Delhi"],["&#127482;&#127480;","USA","Washington DC"],["&#127468;&#127463;","UK","London"],["&#127471;&#127477;","Japan","Tokyo"],["&#127464;&#127475;","China","Beijing"],["&#127463;&#127479;","Brazil","Brasilia"],["&#127462;&#127482;","Australia","Canberra"],["&#127467;&#127479;","France","Paris"],["&#127465;&#127466;","Germany","Berlin"],["&#127464;&#127462;","Canada","Ottawa"],["&#127479;&#127482;","Russia","Moscow"],["&#127470;&#127481;","Italy","Rome"],["&#127480;&#127462;","Saudi Arabia","Riyadh"],["&#127487;&#127462;","South Africa","Pretoria"],["&#127474;&#127485;","Mexico","Mexico City"]];
+var NAT=[
+  {k:"Prime Minister",  v:"Narendra Modi",                         e:"&#128104;"},
+  {k:"National Flag",   v:"Saffron, White, Green",                  e:"&#127470;&#127475;"},
+  {k:"National Song",   v:"Vande Mataram",                          e:"&#127925;"},
+  {k:"National Anthem", v:"Jana Gana Mana",                         e:"&#127926;"},
+  {k:"National Animal", v:"Tiger",                                   e:"&#128047;"},
+  {k:"National Bird",   v:"Peacock",                                 e:"&#129434;"},
+  {k:"National Flower", v:"Lotus",                                   e:"&#129455;"},
+  {k:"National Fruit",  v:"Mango",                                   e:"&#129389;"},
+  {k:"National Tree",   v:"Banyan Tree",                             e:"&#127795;"},
+  {k:"National River",  v:"Ganga",                                   e:"&#127754;"},
+  {k:"Capital City",    v:"New Delhi",                               e:"&#127963;"},
+  {k:"Our Country",     v:"India",                                   e:"&#127757;"}
+];
+var FES=[
+  {e:"&#129582;",n:"Diwali",        d:"Festival of Lights",                c:"#FF8E53"},
+  {e:"&#127912;",n:"Holi",          d:"Festival of Colours - March",        c:"#E91E63"},
+  {e:"&#127769;",n:"Eid",           d:"Festival of Gratitude",              c:"#1565C0"},
+  {e:"&#127876;",n:"Christmas",     d:"Birthday of Jesus - Dec 25",         c:"#43A047"},
+  {e:"&#127806;",n:"Pongal",        d:"Harvest Festival - January",         c:"#FDD835"},
+  {e:"&#128131;",n:"Navratri",      d:"Nine Nights of Dance",               c:"#9C27B0"},
+  {e:"&#127802;",n:"Onam",          d:"Kerala Harvest Festival",            c:"#43A047"},
+  {e:"&#127807;",n:"Baisakhi",      d:"Punjab Harvest Festival",            c:"#FF6B00"},
+  {e:"&#128013;",n:"Nag Panchami",  d:"July / August",                      c:"#00897B"},
+  {e:"&#127878;",n:"Independence Day",d:"India - 15 August",                c:"#FF6B6B"}
+];
+var DYS=[
+  {n:"Sunday",   e:"&#9728;",  c:"#FF6B6B"},
+  {n:"Monday",   e:"&#128218;",c:"#1E88E5"},
+  {n:"Tuesday",  e:"&#9999;",  c:"#43A047"},
+  {n:"Wednesday",e:"&#127912;",c:"#9C27B0"},
+  {n:"Thursday", e:"&#127939;",c:"#FF8E53"},
+  {n:"Friday",   e:"&#127925;",c:"#E91E63"},
+  {n:"Saturday", e:"&#127918;",c:"#FDD835"}
+];
+var MON=[
+  {m:"1", n:"January",    s:"Winter",       c:"#90CAF9"},
+  {m:"2", n:"February",   s:"Winter",       c:"#80DEEA"},
+  {m:"3", n:"March",      s:"Spring",       c:"#A5D6A7"},
+  {m:"4", n:"April",      s:"Spring",       c:"#C5E1A5"},
+  {m:"5", n:"May",        s:"Summer",       c:"#FFF59D"},
+  {m:"6", n:"June",       s:"Monsoon",      c:"#B3E5FC"},
+  {m:"7", n:"July",       s:"Monsoon",      c:"#81D4FA"},
+  {m:"8", n:"August",     s:"Monsoon",      c:"#80CBC4"},
+  {m:"9", n:"September",  s:"Post-Monsoon", c:"#A5D6A7"},
+  {m:"10",n:"October",    s:"Autumn",       c:"#FFCC80"},
+  {m:"11",n:"November",   s:"Autumn",       c:"#FFAB91"},
+  {m:"12",n:"December",   s:"Winter",       c:"#B39DDB"}
+];
+var FLG=[
+  ["&#127470;&#127475;","India","New Delhi"],
+  ["&#127482;&#127480;","USA","Washington DC"],
+  ["&#127468;&#127463;","UK","London"],
+  ["&#127471;&#127477;","Japan","Tokyo"],
+  ["&#127464;&#127475;","China","Beijing"],
+  ["&#127463;&#127479;","Brazil","Brasilia"],
+  ["&#127462;&#127482;","Australia","Canberra"],
+  ["&#127467;&#127479;","France","Paris"],
+  ["&#127465;&#127466;","Germany","Berlin"],
+  ["&#127464;&#127462;","Canada","Ottawa"],
+  ["&#127479;&#127482;","Russia","Moscow"],
+  ["&#127470;&#127481;","Italy","Rome"],
+  ["&#127480;&#127462;","Saudi Arabia","Riyadh"],
+  ["&#127487;&#127462;","South Africa","Pretoria"],
+  ["&#127474;&#127485;","Mexico","Mexico City"]
+];
 
-document.addEventListener('DOMContentLoaded',function(){
-  sg(TRP,'#F57C00','trCards');
-  sg(PLC,'#5C6BC0','plCards');
-  sg(HLP,'#00897B','heCards');
-  bInf(NAT,'naCards','#FF6B00');
-  bWide(FES,'festCards');
-  document.getElementById('flagCards').innerHTML=FLG.map(function(f){
-    return '<div class="crd" style="border:3px solid #1565C033" onclick="spk(\''+f[1]+'. Capital: '+f[2]+'\')">'
-      +'<span class="crdem">'+f[0]+'</span>'
-      +'<div class="crdlbl" style="font-weight:900;color:#1565C0">'+f[1]+'</div>'
-      +'<div class="crdlbl" style="color:#888;font-size:.6rem">'+f[2]+'</div></div>';
+/* ── Tab names ── */
+var TAB_NAMES = {
+  transport:'Transport', places:'Places Around Us', helpers:'Community Helpers',
+  national:'National Knowledge', festivals:'Festivals of India',
+  days:'Days and Months', flags:'Countries and Flags'
+};
+
+/* ── Switch tab ── */
+function swAround(tab) {
+  document.querySelectorAll('.sec').forEach(function(s) { s.classList.remove('active'); });
+  var sec = document.getElementById('around-' + tab);
+  if (sec) sec.classList.add('active');
+
+  document.querySelectorAll('.around-dock-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.querySelector('.around-dock-btn[data-tab="' + tab + '"]');
+  if (btn) btn.classList.add('active');
+
+  spk(TAB_NAMES[tab] || tab);
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', function() {
+  sg(TRP, '#F57C00', 'trCards');
+  sg(PLC, '#5C6BC0', 'plCards');
+  sg(HLP, '#00897B', 'heCards');
+  bInf(NAT, 'naCards', '#FF6B00');
+  bWide(FES, 'festCards');
+
+  document.getElementById('flagCards').innerHTML = FLG.map(function(f) {
+    return '<div class="crd" style="border:3px solid #1565C033" onclick="spk(\'' + f[1] + '. Capital: ' + f[2] + '\')">'
+      + '<span class="crdem">' + f[0] + '</span>'
+      + '<div class="crdlbl" style="font-weight:900;color:#1565C0">' + f[1] + '</div>'
+      + '<div class="crdlbl" style="color:#888;font-size:.6rem">' + f[2] + '</div></div>';
   }).join('');
-  var h='<div class="dsec-title">Days of the Week</div><div class="dgrid">';
-  DYS.forEach(function(d){h+='<div class="dcrd" style="background:'+d.c+';color:#fff" onclick="spk(\''+d.n+'\')">'+'<span style="font-size:1.4rem;display:block;margin-bottom:2px">'+d.e+'</span>'+d.n.slice(0,3)+'</div>';});
-  h+='</div><div class="dsec-title">Months of the Year</div><div class="mgrid">';
-  MON.forEach(function(m){h+='<div class="mcrd" style="background:'+m.c+'" onclick="spk(\''+m.n+'\')">'+'<span style="font-size:1.2rem;font-weight:900;color:#333;display:block">'+m.m+'</span>'+'<div style="font-size:.7rem;font-weight:700;color:#333">'+m.n+'</div>'+'<div style="font-size:.58rem;color:#777">'+m.s+'</div></div>';});
-  h+='</div>';
-  document.getElementById('daysArea').innerHTML=h;
-  var f=document.querySelector('.stab');
-  if(f){f.classList.add('active');f.style.background='#7B1FA2';f.style.color='#fff';}
+
+  var h = '<div class="dsec-title">Days of the Week</div><div class="dgrid">';
+  DYS.forEach(function(d) {
+    h += '<div class="dcrd" style="background:' + d.c + ';color:#fff" onclick="spk(\'' + d.n + '\')">'
+      + '<span style="font-size:1.4rem;display:block;margin-bottom:2px">' + d.e + '</span>'
+      + d.n.slice(0, 3) + '</div>';
+  });
+  h += '</div><div class="dsec-title">Months of the Year</div><div class="mgrid">';
+  MON.forEach(function(m) {
+    h += '<div class="mcrd" style="background:' + m.c + '" onclick="spk(\'' + m.n + '\')">'
+      + '<span style="font-size:1.2rem;font-weight:900;color:#333;display:block">' + m.m + '</span>'
+      + '<div style="font-size:.7rem;font-weight:700;color:#333">' + m.n + '</div>'
+      + '<div style="font-size:.58rem;color:#777">' + m.s + '</div></div>';
+  });
+  h += '</div>';
+  document.getElementById('daysArea').innerHTML = h;
 });
 </script>
 </body>

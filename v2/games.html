@@ -60,6 +60,31 @@
 .missing-opt:hover{border-color:#6A1B9A;transform:scale(1.08);}
 .missing-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .missing-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
+/* ── Override shared sidebar layout ── */
+.subbody { display: block !important; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+#sdrawer { top: 66px !important; }
+
+/* ── Bottom dock (scrollable for 11 games) ── */
+.games-dock {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:#fff; box-shadow:0 -3px 20px rgba(0,0,0,.13);
+  display:flex; overflow-x:auto; overflow-y:hidden;
+  padding:6px 6px calc(6px + env(safe-area-inset-bottom)); gap:6px;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.games-dock::-webkit-scrollbar { display:none; }
+.games-dock-btn {
+  flex:0 0 auto; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:2px; padding:6px 10px 5px; border-radius:14px;
+  border:none; background:#f5f5f5; color:#888; font-family:var(--f);
+  font-size:.52rem; font-weight:800; cursor:pointer; line-height:1.2;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1); min-width:54px;
+  -webkit-tap-highlight-color:transparent;
+}
+.games-dock-btn.active { color:#fff; transform:scale(1.05); }
+.games-dock-btn .dock-ico { font-size:1.2rem; line-height:1; }
+
 /* SIMON */
 .simon-board{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:320px;margin:0 auto 16px;}
 .simon-btn{height:110px;border-radius:20px;border:none;cursor:pointer;font-size:1rem;font-weight:900;color:#fff;opacity:.5;text-shadow:1px 1px 3px rgba(0,0,0,.3);transition:opacity .15s;}
@@ -95,23 +120,25 @@
 <body data-page-title="&#127918; Fun Games" data-page-sub="Play, Learn &amp; Win!" data-page-gradient="linear-gradient(135deg,#FF6B00,#FFC300)" data-page-back="home.html">
 
 <div class="subbody">
-  <div class="stabs" id="gameTabs">
-    <button class="stab active" style="background:#FF6B00;color:#fff" onclick="showGame('odd')"><span class="stabico">&#127919;</span>Odd One</button>
-    <button class="stab" onclick="showGame('count')"><span class="stabico">&#128290;</span>Count</button>
-    <button class="stab" onclick="showGame('quiz')"><span class="stabico">&#127942;</span>Quiz</button>
-    <button class="stab" onclick="showGame('word')"><span class="stabico">&#128292;</span>Words</button>
-    <button class="stab" onclick="showGame('balloon')"><span class="stabico">&#127880;</span>Balloons</button>
-    <button class="stab" onclick="showGame('shadow')"><span class="stabico">&#128065;</span>Shadow</button>
-    <button class="stab" onclick="showGame('missing')"><span class="stabico">&#10067;</span>Missing</button>
-    <button class="stab" onclick="showGame('simon')"><span class="stabico">&#127912;</span>Simon</button>
-    <button class="stab" onclick="showGame('sortit')"><span class="stabico">&#128230;</span>Sort It</button>
-    <button class="stab" onclick="showGame('tf')"><span class="stabico">&#9989;</span>True/False</button>
-    <button class="stab" onclick="showGame('memory')"><span class="stabico">&#129513;</span>Memory</button>
-  </div>
   <div class="submain" id="gameMain">
     <!-- content injected here by showGame() -->
   </div>
 </div>
+
+<!-- ══ BOTTOM DOCK ══ -->
+<nav class="games-dock" id="gamesDock">
+  <button class="games-dock-btn" data-game="odd"     onclick="showGame('odd')">    <span class="dock-ico">&#127919;</span>Odd One</button>
+  <button class="games-dock-btn" data-game="count"   onclick="showGame('count')">  <span class="dock-ico">&#128290;</span>Count</button>
+  <button class="games-dock-btn" data-game="quiz"    onclick="showGame('quiz')">   <span class="dock-ico">&#127942;</span>Quiz</button>
+  <button class="games-dock-btn" data-game="word"    onclick="showGame('word')">   <span class="dock-ico">&#128292;</span>Words</button>
+  <button class="games-dock-btn" data-game="balloon" onclick="showGame('balloon')"><span class="dock-ico">&#127880;</span>Balloons</button>
+  <button class="games-dock-btn" data-game="shadow"  onclick="showGame('shadow')"> <span class="dock-ico">&#128065;</span>Shadow</button>
+  <button class="games-dock-btn" data-game="missing" onclick="showGame('missing')"><span class="dock-ico">&#10067;</span>Missing</button>
+  <button class="games-dock-btn" data-game="simon"   onclick="showGame('simon')">  <span class="dock-ico">&#127912;</span>Simon</button>
+  <button class="games-dock-btn" data-game="sortit"  onclick="showGame('sortit')"> <span class="dock-ico">&#128230;</span>Sort It</button>
+  <button class="games-dock-btn" data-game="tf"      onclick="showGame('tf')">     <span class="dock-ico">&#9989;</span>True/False</button>
+  <button class="games-dock-btn" data-game="memory"  onclick="showGame('memory')"> <span class="dock-ico">&#129513;</span>Memory</button>
+</nav>
 
 <script>
 /* ── GAME ROUTER ── */
@@ -138,19 +165,22 @@ var GAME_INITS = {
 function showGame(name) {
   window.speechSynthesis.cancel();
   currentGame = name;
-  /* highlight tab */
-  document.querySelectorAll('#gameTabs .stab').forEach(function(b) {
-    var fn = b.getAttribute('onclick') || '';
-    var on = fn.indexOf("'"+name+"'") > -1;
+
+  /* highlight dock button & scroll it into view */
+  document.querySelectorAll('.games-dock-btn').forEach(function(b) {
+    var on = b.getAttribute('data-game') === name;
     b.classList.toggle('active', on);
-    b.style.background = on ? '#FF6B00' : '';
-    b.style.color = on ? '#fff' : '';
+    var h = GAME_HEADERS[name];
+    b.style.background = on ? (h ? h.bg : '#FF6B00') : '';
+    if (on) b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   });
+
   /* inject header + container */
   var h = GAME_HEADERS[name];
   document.getElementById('gameMain').innerHTML =
     '<div class="bigbox" style="background:'+h.bg+'"><div class="bigchar">'+h.em+'</div><div class="bigsub">'+h.title+'</div></div>'
     + '<div id="gameArea"></div>';
+
   /* reset state & build */
   resetState(name);
   GAME_INITS[name]();
