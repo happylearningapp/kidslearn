@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My World &#127752;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="../shared.js"></script>
+<style>
+/* ── Override shared sidebar layout ── */
+.subbody { display: block !important; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+#sdrawer { top: 66px !important; }
+
+/* ── Time cards ── */
+.tgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; }
+.tcrd  { border-radius:18px; padding:16px 11px; text-align:center;
+         box-shadow:0 4px 13px rgba(0,0,0,.11); cursor:pointer; transition:transform .17s; }
+.tcrd:hover { transform:scale(1.04); }
+.ttag  { background:rgba(255,255,255,.5); border-radius:9px; padding:2px 7px;
+         font-size:var(--sm); font-weight:700; display:inline-block; margin:2px; }
+
+/* ── Bottom dock ── */
+.my-dock {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:#fff; box-shadow:0 -3px 20px rgba(0,0,0,.13);
+  display:flex; padding:6px 3px calc(6px + env(safe-area-inset-bottom)); gap:2px;
+}
+.my-dock-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:2px; padding:6px 2px 5px; border-radius:14px;
+  border:none; background:transparent; color:#999; font-family:var(--f);
+  font-size:.5rem; font-weight:800; cursor:pointer; line-height:1.2;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color:transparent;
+}
+.my-dock-btn.active { color:#fff; transform:scale(1.05); }
+.my-dock-btn .dock-ico { font-size:1.25rem; line-height:1; }
+
+/* Tab colours */
+.my-dock-btn[data-tab="personal"].active  { background:#E91E63; }
+.my-dock-btn[data-tab="body"].active      { background:#F44336; }
+.my-dock-btn[data-tab="emotions"].active  { background:#FF8E53; }
+.my-dock-btn[data-tab="habits"].active    { background:#43A047; }
+.my-dock-btn[data-tab="safety"].active    { background:#D32F2F; }
+.my-dock-btn[data-tab="daily"].active     { background:#7B1FA2; }
+.my-dock-btn[data-tab="time"].active      { background:#5C6BC0; }
+</style>
+</head>
+<body data-page-title="&#127752; My World"
+      data-page-sub="About Me &amp; My Daily Life"
+      data-page-gradient="linear-gradient(135deg,#E91E63,#FF8E53)"
+      data-page-back="../home.html">
+
+<div class="subbody">
+  <div class="submain">
+
+    <!-- ══ ABOUT ME ══ -->
+    <div id="my-personal" class="sec active">
+      <div class="bigbox" style="background:#E91E63" onclick="spk(kidName())">
+        <div class="bigchar">&#128102;</div>
+        <div class="bigsub" id="aboutMeSub">About Me!</div>
+      </div>
+      <div class="infogrid" id="peCards"></div>
+    </div>
+
+    <!-- ══ BODY ══ -->
+    <div id="my-body" class="sec">
+      <div class="bigbox" style="background:#F44336" onclick="spk('Body Parts')">
+        <div class="bigchar">&#129485;</div>
+        <div class="bigsub">Body Parts</div>
+      </div>
+      <div class="cgrid" id="boCards"></div>
+    </div>
+
+    <!-- ══ EMOTIONS ══ -->
+    <div id="my-emotions" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#FF8E53,#E91E63)" onclick="spk('Emotions and Feelings')">
+        <div class="bigchar">&#128522;</div>
+        <div class="bigsub">Emotions &amp; Feelings</div>
+      </div>
+      <div class="wgrd2" id="emotionCards"></div>
+    </div>
+
+    <!-- ══ HABITS ══ -->
+    <div id="my-habits" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#43A047,#00C9A7)" onclick="spk('Good Habits')">
+        <div class="bigchar">&#9989;</div>
+        <div class="bigsub">Good Habits</div>
+      </div>
+      <div class="wgrd2" id="habitCards"></div>
+    </div>
+
+    <!-- ══ SAFETY ══ -->
+    <div id="my-safety" class="sec">
+      <div class="bigbox" style="background:linear-gradient(135deg,#D32F2F,#FF6B6B)" onclick="spk('Safety Rules')">
+        <div class="bigchar">&#128721;</div>
+        <div class="bigsub">Safety Rules</div>
+      </div>
+      <div class="wgrd2" id="safetyCards"></div>
+    </div>
+
+    <!-- ══ DAILY ══ -->
+    <div id="my-daily" class="sec">
+      <div class="bigbox" style="background:#7B1FA2" onclick="spk('Daily Things')">
+        <div class="bigchar">&#127968;</div>
+        <div class="bigsub">Daily Things</div>
+      </div>
+      <div class="cgrid" id="daCards"></div>
+    </div>
+
+    <!-- ══ TIME ══ -->
+    <div id="my-time" class="sec">
+      <div class="bigbox" style="background:#5C6BC0" onclick="spk('Time and Routines')">
+        <div class="bigchar">&#128336;</div>
+        <div class="bigsub">Time &amp; Routines</div>
+      </div>
+      <div class="tgrid" id="tmCards"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ BOTTOM DOCK ══ -->
+<nav class="my-dock">
+  <button class="my-dock-btn active" data-tab="personal" onclick="swMy('personal')">
+    <span class="dock-ico">&#128102;</span>About Me
+  </button>
+  <button class="my-dock-btn" data-tab="body" onclick="swMy('body')">
+    <span class="dock-ico">&#129485;</span>Body
+  </button>
+  <button class="my-dock-btn" data-tab="emotions" onclick="swMy('emotions')">
+    <span class="dock-ico">&#128522;</span>Feelings
+  </button>
+  <button class="my-dock-btn" data-tab="habits" onclick="swMy('habits')">
+    <span class="dock-ico">&#9989;</span>Habits
+  </button>
+  <button class="my-dock-btn" data-tab="safety" onclick="swMy('safety')">
+    <span class="dock-ico">&#128721;</span>Safety
+  </button>
+  <button class="my-dock-btn" data-tab="daily" onclick="swMy('daily')">
+    <span class="dock-ico">&#127968;</span>Daily
+  </button>
+  <button class="my-dock-btn" data-tab="time" onclick="swMy('time')">
+    <span class="dock-ico">&#128336;</span>Time
+  </button>
+</nav>
+
+<script>
+/* ── Data ── */
+var PER=[
+  {k:"My Name",   v:"Reyan Dutta",                       e:"&#128102;"},
+  {k:"My Age",    v:"3 Years Old",                        e:"&#127880;"},
+  {k:"Father",    v:"Sekhar Dutta",                       e:"&#128104;"},
+  {k:"Mother",    v:"Sangita Sinha Dutta",                e:"&#128105;"},
+  {k:"Grand Father", v:"Pulin Chandra Dutta",             e:"&#128116;"},
+  {k:"Grand Mother", v:"Jaya Dutta",                      e:"&#128117;"},
+  {k:"My City",   v:"Hyderabad",                          e:"&#127750;"},
+  {k:"My Country",v:"India",                              e:"&#127757;"},
+  {k:"My Address",v:"Mangala Block 1, Kondapur, Hyderabad",e:"&#127968;"},
+  {k:"My School", v:"Little Millennium",                  e:"&#127979;"}
+];
+
+var BDY=[
+  ["Head","&#128483;"],["Eyes","&#128064;"],["Nose","&#128067;"],["Mouth","&#128068;"],
+  ["Ears","&#128066;"],["Hair","&#128135;"],["Hands","&#128080;"],["Fingers","&#128400;"],
+  ["Feet","&#128694;"],["Legs","&#129459;"],["Arms","&#128170;"],["Teeth","&#129463;"],
+  ["Tongue","&#128069;"],["Heart","&#10084;"],["Tummy","&#128100;"]
+];
+
+var DLY=[
+  ["Toothbrush","&#129701;"],["Soap","&#129516;"],["Towel","&#127741;"],["Bed","&#128716;"],
+  ["Cup","&#129380;"],["Spoon","&#129380;"],["Plate","&#127869;"],["Bag","&#127890;"],
+  ["Shoes","&#128099;"],["Umbrella","&#9730;"],["Book","&#128218;"],["Pencil","&#9999;"],
+  ["Clock","&#9200;"],["Bicycle","&#128690;"],["Phone","&#128241;"]
+];
+
+var EMO=[
+  {e:"&#128522;",n:"Happy",    d:"When you smile and laugh",   c:"#FDD835"},
+  {e:"&#128546;",n:"Sad",      d:"When you cry",               c:"#1E88E5"},
+  {e:"&#128544;",n:"Angry",    d:"When something upsets you",  c:"#E53935"},
+  {e:"&#128561;",n:"Scared",   d:"When something frightens you",c:"#7B1FA2"},
+  {e:"&#128562;",n:"Surprised",d:"When something is unexpected",c:"#FF8E53"},
+  {e:"&#129392;",n:"Loved",    d:"When family hugs you",       c:"#E91E63"},
+  {e:"&#128564;",n:"Tired",    d:"When you need sleep",        c:"#78909C"},
+  {e:"&#129321;",n:"Excited",  d:"When it is really fun!",     c:"#43A047"},
+  {e:"&#128532;",n:"Lonely",   d:"When you miss someone",      c:"#5C6BC0"},
+  {e:"&#128524;",n:"Calm",     d:"When all is okay",           c:"#00897B"}
+];
+
+var HAB=[
+  {e:"&#129701;",n:"Brush Teeth",  d:"Every morning and night",       c:"#29B6F6"},
+  {e:"&#129516;",n:"Wash Hands",   d:"Before eating and after toilet", c:"#43A047"},
+  {e:"&#129382;",n:"Eat Veggies",  d:"Eat healthy every day",         c:"#8BC34A"},
+  {e:"&#128167;",n:"Drink Water",  d:"Stay hydrated all day",         c:"#1E88E5"},
+  {e:"&#128564;",n:"Sleep Early",  d:"Sleep by 9pm every night",      c:"#7B1FA2"},
+  {e:"&#127939;",n:"Exercise",     d:"Move your body daily",          c:"#FF8E53"},
+  {e:"&#128218;",n:"Read Books",   d:"Read a book every day",         c:"#FF6B6B"},
+  {e:"&#128591;",n:"Say Please",   d:"Always be polite",              c:"#FFC300"},
+  {e:"&#128704;",n:"Take a Bath",  d:"Stay clean every day",          c:"#26C6DA"},
+  {e:"&#129529;",n:"Keep Tidy",    d:"Put toys back after play",      c:"#795548"}
+];
+
+var SAF=[
+  {e:"&#128678;",n:"Zebra Crossing", d:"Always use the crossing",      c:"#43A047"},
+  {e:"&#128663;",n:"Wear Seatbelt",  d:"Always wear in a car",         c:"#1E88E5"},
+  {e:"&#128293;",n:"No Fire",        d:"Fire is very dangerous",       c:"#E53935"},
+  {e:"&#129347;",n:"Stay with Adults",d:"Never go anywhere alone",     c:"#FF8E53"},
+  {e:"&#128683;",n:"No Strangers",   d:"Only talk to people you know", c:"#7B1FA2"},
+  {e:"&#128241;",n:"Emergency 112",  d:"India emergency number is 112",c:"#E91E63"},
+  {e:"&#127946;",n:"No Solo Swim",   d:"Always swim with an adult",    c:"#29B6F6"},
+  {e:"&#128268;",n:"No Electric",    d:"Electricity is dangerous",     c:"#F57C00"},
+  {e:"&#127852;",n:"No Stranger Food",d:"Only eat food from family",   c:"#D32F2F"},
+  {e:"&#129303;",n:"Tell Adults",    d:"If unsafe, tell Mummy or Daddy",c:"#00897B"}
+];
+
+var TMD=[
+  {n:"Morning",   e:"&#127749;",bg:"#FF8F00",i:["Wake up","Brush teeth","Breakfast","Get dressed","School"]},
+  {n:"Afternoon", e:"&#9728;",  bg:"#F57F17",i:["Study","Lunch","Play","Rest","Art"]},
+  {n:"Evening",   e:"&#127746;",bg:"#7B1FA2",i:["Come home","Dinner","TV","Bath","Story"]},
+  {n:"Night",     e:"&#127769;",bg:"#1A237E",i:["Sleep","Stars","Moon","Dream","Bed"]},
+  {n:"Today",     e:"&#128197;",bg:"#00695C",i:["Now","This day","Plan","Do it","Enjoy"]},
+  {n:"Tomorrow",  e:"&#9197;",  bg:"#4527A0",i:["Next day","Morning","Plans","Chances","Happy"]}
+];
+
+/* ── Helpers ── */
+function kidName() {
+  return localStorage.getItem('rlw_kid_name') || 'Me';
+}
+
+/* Tab names for speech */
+var TAB_NAMES = {
+  personal:'About Me', body:'Body Parts', emotions:'Emotions and Feelings',
+  habits:'Good Habits', safety:'Safety Rules', daily:'Daily Things', time:'Time and Routines'
+};
+
+function swMy(tab) {
+  document.querySelectorAll('.sec').forEach(function(s) { s.classList.remove('active'); });
+  var sec = document.getElementById('my-' + tab);
+  if (sec) sec.classList.add('active');
+
+  document.querySelectorAll('.my-dock-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.querySelector('.my-dock-btn[data-tab="' + tab + '"]');
+  if (btn) btn.classList.add('active');
+
+  spk(TAB_NAMES[tab] || tab);
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', function() {
+  // Update About Me heading with saved kid name
+  var sub = document.getElementById('aboutMeSub');
+  if (sub) {
+    var n = localStorage.getItem('rlw_kid_name');
+    sub.textContent = n ? 'About ' + n + '!' : 'About Me!';
+  }
+
+  bInf(PER, 'peCards', '#E91E63');
+  sg(BDY, '#F44336', 'boCards');
+  bWide(EMO, 'emotionCards');
+  bWide(HAB, 'habitCards');
+  bWide(SAF, 'safetyCards');
+  sg(DLY, '#7B1FA2', 'daCards');
+
+  document.getElementById('tmCards').innerHTML = TMD.map(function(t) {
+    return '<div class="tcrd" style="background:' + t.bg + '" onclick="spk(\'' + t.n + '\')">'
+      + '<span style="font-size:2.4rem;display:block;margin-bottom:5px">' + t.e + '</span>'
+      + '<div style="font-size:var(--lg);font-weight:700;color:#fff">' + t.n + '</div>'
+      + '<div style="margin-top:7px">'
+      + t.i.map(function(x) { return '<span class="ttag">' + x + '</span>'; }).join('')
+      + '</div></div>';
+  }).join('');
+});
+</script>
+</body>
+</html>
