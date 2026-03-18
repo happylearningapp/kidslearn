@@ -84,8 +84,8 @@ function getBV() {
     var sv = vs.find(function(v) { return v.name === saved; });
     if (sv) { _bv = sv; return sv; }
   }
-  // 2. Built-in preference list
-  var pref = ['Google US English', 'Samantha', 'Karen', 'Moira'];
+  // 2. Built-in preference list (matches allowed voice list)
+  var pref = ['Samantha', 'Karen', 'Moira', 'Daniel', 'Tessa', 'Flo', 'Reed'];
   for (var i = 0; i < pref.length; i++) {
     var v = vs.find(function(x) { return x.name === pref[i]; });
     if (v) { _bv = v; return v; }
@@ -374,28 +374,38 @@ function setVoice(name) {
   spkForce('Hello! This is your new voice.');
 }
 
+/* Allowed voice names (exact match against v.name) */
+var ALLOWED_VOICES = ['Aman','Daniel','Eddy','Flo','Karen','Moira','Reed','Rishi','Samantha','Shelley','Tara','Tessa'];
+
 function populateVoices() {
   var sel = document.getElementById('voiceSel');
   if (!sel) return;
   var vs = window.speechSynthesis.getVoices();
-  // Only English voices
-  var eng = vs.filter(function(v) { return v.lang && v.lang.startsWith('en'); });
-  if (!eng.length) return; // voices not ready yet – voiceschanged will retry
+  if (!vs.length) return; // voices not ready yet – voiceschanged will retry
+
+  // Keep only voices whose name starts with one of the allowed names
+  var allowed = vs.filter(function(v) {
+    return ALLOWED_VOICES.some(function(a) {
+      return v.name === a || v.name.startsWith(a + ' ');
+    });
+  });
+
+  // Fallback: if none matched (e.g. Android), show all English voices
+  var list = allowed.length ? allowed : vs.filter(function(v) { return v.lang && v.lang.startsWith('en'); });
+  if (!list.length) return;
 
   var saved = localStorage.getItem(VOICE_KEY);
   if (!saved) { var bv = getBV(); if (bv) saved = bv.name; }
 
-  sel.innerHTML = eng.map(function(v) {
-    // Shorten noisy vendor prefixes for a cleaner list
+  sel.innerHTML = list.map(function(v) {
+    // Use just the base name (strip vendor suffixes) as the label
     var label = v.name
-      .replace('Microsoft ', '')
-      .replace('Google ', 'Google ')   // keep Google prefix – useful on Android
-      .replace(' Online (Natural)', ' ✨')
-      .replace(' Desktop', '');
-    var locale = v.lang;
+      .replace(' Online (Natural)', '')
+      .replace(' Desktop', '')
+      .trim();
     return '<option value="' + v.name.replace(/"/g, '&quot;') + '"'
       + (v.name === saved ? ' selected' : '') + '>'
-      + label + '  [' + locale + ']'
+      + label
       + '</option>';
   }).join('');
 }
