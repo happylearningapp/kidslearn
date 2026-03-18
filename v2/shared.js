@@ -383,29 +383,31 @@ function populateVoices() {
   var vs = window.speechSynthesis.getVoices();
   if (!vs.length) return; // voices not ready yet – voiceschanged will retry
 
-  // Keep only voices whose name starts with one of the allowed names
-  var allowed = vs.filter(function(v) {
-    return ALLOWED_VOICES.some(function(a) {
-      return v.name === a || v.name.startsWith(a + ' ');
-    });
+  // Strip parenthetical suffixes like "(Enhanced)", "(Premium)" to get base name
+  function baseName(n) { return n.replace(/\s*\(.*?\)\s*/g, '').trim(); }
+
+  // Keep ONLY voices whose base name is in the allowed list — no fallback
+  var list = vs.filter(function(v) {
+    return ALLOWED_VOICES.indexOf(baseName(v.name)) !== -1;
   });
 
-  // Fallback: if none matched (e.g. Android), show all English voices
-  var list = allowed.length ? allowed : vs.filter(function(v) { return v.lang && v.lang.startsWith('en'); });
-  if (!list.length) return;
+  if (!list.length) {
+    sel.innerHTML = '<option value="">— voices loading… —</option>';
+    return;
+  }
+
+  // Sort to match the order in ALLOWED_VOICES
+  list.sort(function(a, b) {
+    return ALLOWED_VOICES.indexOf(baseName(a.name)) - ALLOWED_VOICES.indexOf(baseName(b.name));
+  });
 
   var saved = localStorage.getItem(VOICE_KEY);
   if (!saved) { var bv = getBV(); if (bv) saved = bv.name; }
 
   sel.innerHTML = list.map(function(v) {
-    // Use just the base name (strip vendor suffixes) as the label
-    var label = v.name
-      .replace(' Online (Natural)', '')
-      .replace(' Desktop', '')
-      .trim();
     return '<option value="' + v.name.replace(/"/g, '&quot;') + '"'
       + (v.name === saved ? ' selected' : '') + '>'
-      + label
+      + baseName(v.name)
       + '</option>';
   }).join('');
 }
