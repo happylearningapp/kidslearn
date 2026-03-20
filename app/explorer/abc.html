@@ -92,23 +92,16 @@
 .submain {
   flex: 1;
   padding: 6px 10px calc(76px + env(safe-area-inset-bottom));
-  overflow-y: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 /* ── Tab sections — self-contained, no dependency on shared.js timing ── */
 .sec        { display: none; max-width: 800px; margin: 0 auto; }
 .sec.active { display: block; }
 
-/* ── Big letter box — compact, it IS the content not a header ── */
-#lb {
-  padding: 10px 14px !important;
-  margin-bottom: 8px !important;
-  border-radius: 18px !important;
-  cursor: pointer;
-  user-select: none;
-}
-#blc { font-size: calc(var(--b) * 4.5) !important; }
-#bls { font-size: calc(var(--b) * 2) !important; margin-top: 2px !important; }
+/* ── Big letter box — tappable ── */
+#lb { cursor: pointer; user-select: none; }
 
 /* ── Word / phonics cards grid ── */
 .cgrid  { gap: 7px; }
@@ -116,36 +109,24 @@
 .crdem  { font-size: calc(var(--b) * 2); }
 .crdlbl { font-size: calc(var(--b) * 0.72); }
 
-/* ── Padding-bottom on card grid = sticky nav height (~68px)
-   so sticky nav only ever floats over empty space, never over cards
-   Works at every font size (S / M / L) ── */
-#ac { padding-bottom: 72px; }
+/* card grid — no extra padding needed (nav is in normal flow) */
+#ac { padding-bottom: 0; }
 
-/* ── Sticky nav — always in thumb zone just above dock ── */
+/* ── Nav row — normal flow, no sticky ── */
 .alpha-nav {
-  position: sticky;
-  bottom: calc(74px + env(safe-area-inset-bottom));
-  z-index: 100;
-  background: rgba(255, 253, 231, 0.96);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255,253,231,.96);
   border-radius: 18px;
-  margin-top: 4px;
-  box-shadow: 0 -2px 12px rgba(0,0,0,.07);
+  margin-top: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
 }
 .alpha-nav-btn {
-  padding: 11px 8px;
-  min-height: 46px;
+  padding: 10px 8px;
+  min-height: 42px;
   font-size: var(--sm);
 }
 
-/* ── Toggle button ── */
-.alpha-ctrl   { margin-bottom: 8px; }
-.alpha-toggle { padding: 9px 14px; font-size: var(--sm); }
-
-/* ── Compact toggle button ── */
-.alpha-ctrl { margin-bottom: 8px !important; }
-.alpha-toggle { padding: 9px 14px !important; font-size: var(--sm) !important; }
+/* ── A-Z toggle button ── */
+.alpha-toggle { padding: 9px 14px; font-size: var(--sm); margin-bottom: 8px; }
 
 /* Dummy for stabico used elsewhere */
 .stabico { display: none; }
@@ -167,25 +148,25 @@
 
 /* ── Big letter display box ── */
 #lb {
-  border-radius: 26px;
-  padding: 20px 20px 18px;
-  margin-bottom: 16px;
+  border-radius: 22px;
+  padding: 10px 14px 8px;
+  margin-bottom: 8px;
   text-align: center;
 }
 #blc {
-  font-size: calc(var(--b) * 7);
+  font-size: 3.2rem;
   font-weight: 900;
   color: #fff;
   line-height: 1;
-  text-shadow: 0 6px 18px rgba(0,0,0,.18);
+  text-shadow: 0 4px 12px rgba(0,0,0,.18);
   display: block;
 }
 #bls {
-  font-size: calc(var(--b) * 4);
+  font-size: 1.7rem;
   color: rgba(255,255,255,.75);
   font-weight: 700;
   display: block;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 /* ── Word cards grid ── */
@@ -203,14 +184,14 @@
 
 /* Bigger cards for kids */
 .crd {
-  padding: 14px 6px 11px;
-  border-radius: 18px;
+  padding: 8px 4px 6px;
+  border-radius: 14px;
   cursor: pointer;
   transition: transform .17s;
 }
 .crd:active { transform: scale(.95); }
-.crdem  { font-size: calc(var(--b) * 2.6); }
-.crdlbl { font-size: calc(var(--b) * 0.84); font-weight: 700; }
+.crdem  { font-size: 1.8rem; }
+.crdlbl { font-size: var(--sm); font-weight: 700; }
 
 /* ── Phonics section header box ── */
 .bigbox {
@@ -266,22 +247,22 @@
 
 .trwrap {
   background: #fff;
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 5px 20px rgba(0,0,0,.12);
+  border-radius: 18px;
+  padding: 12px 12px 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10);
   text-align: center;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .trwrap h3 {
-  font-size: calc(var(--b) * 2);
+  font-size: 1.8rem;
   font-weight: 900;
   color: #FF6B6B;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .trwrap p {
-  font-size: var(--sm);
-  color: #aaa;
-  margin-bottom: 12px;
+  font-size: .68rem;
+  color: #bbb;
+  margin-bottom: 8px;
 }
 
 #trCanvas {
@@ -293,40 +274,40 @@
   display: block;
   margin: 0 auto;
   width: 100%;
-  max-width: 340px;
-  height: auto;
-  aspect-ratio: 300 / 260;
+  max-width: 300px;
+  height: 190px;
 }
 
 .trbtns {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
-  margin-top: 14px;
-  flex-wrap: wrap;
+  margin-top: 8px;
+  flex-wrap: nowrap;
 }
 .trb {
-  padding: 12px 26px;
-  border-radius: 18px;
+  flex: 1;
+  padding: 9px 8px;
+  border-radius: 14px;
   border: none;
   font-family: var(--f);
-  font-size: var(--md);
+  font-size: var(--sm);
   font-weight: 700;
   cursor: pointer;
-  min-height: 50px;
-  min-width: 120px;
+  min-height: 38px;
 }
 .trb-g { background: #1976D2; color: #fff; }
 .trb-c { background: #FF6B6B; color: #fff; }
 
 .trtip {
   background: #FFF3E0;
-  border-radius: 14px;
-  padding: 12px 16px;
-  font-size: var(--sm);
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: .68rem;
   font-weight: 700;
   color: #F57C00;
   text-align: center;
+  margin-bottom: 6px;
 }
 
 /* ── Color swatches ── */
@@ -364,42 +345,47 @@
   color: #fff;
   border-style: solid;
 }
-/* flex row: [toggle button] [shuffle icon] */
-.alpha-ctrl { display:flex; gap:8px; align-items:stretch; margin-bottom:12px; }
-.alpha-ctrl .alpha-toggle { flex:1; margin-bottom:0; }
-.alpha-shuf {
-  padding:12px 14px; border-radius:16px; border:2.5px solid #FF6B6B33;
-  background:#FFF5F5; color:#FF6B6B;
-  font-size:1.1rem; cursor:pointer; font-family:var(--f); font-weight:900;
-  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+/* ── Common shuffle toggle (matches games/think pages) ── */
+.shuf-row { text-align:center; margin-bottom:8px; }
+.shuf-toggle {
+  padding:7px 20px; border-radius:20px; border:2px solid #ddd;
+  background:#f5f5f5; font-family:var(--f); font-size:var(--sm);
+  font-weight:800; cursor:pointer; transition:all .22s; color:#888;
   -webkit-tap-highlight-color:transparent;
 }
-.alpha-shuf:active { transform:scale(.88); }
+.shuf-toggle.on { background:linear-gradient(135deg,#E91E63,#FF8E53); color:#fff; border-color:transparent; }
 
-/* ── Prev / Next letter navigation ── */
+/* A-Z selector — max height so it doesn't overflow when expanded */
+#lg, #trSel {
+  max-height: 108px;
+  overflow-y: auto;
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+/* ── Prev / Next letter nav buttons ── */
 .alpha-nav {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 6px;
-  border-radius: 22px;
-  background: rgba(255,253,231,.94);
-  box-shadow: 0 4px 18px rgba(0,0,0,.08);
+  gap: 8px;
+  padding: 5px;
 }
 .alpha-nav-btn {
   flex: 1;
-  padding: 14px 10px;
-  border-radius: 16px;
+  padding: 10px 8px;
+  border-radius: 14px;
   border: none;
   background: #fff;
   color: #FF6B6B;
   font-family: var(--f);
-  font-size: var(--md);
+  font-size: var(--sm);
   font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 3px 12px rgba(0,0,0,.1);
-  min-height: 54px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.1);
+  min-height: 40px;
   transition: all .2s cubic-bezier(.34,1.56,.64,1);
   -webkit-tap-highlight-color: transparent;
 }
@@ -434,8 +420,7 @@
   color: #E65100;
 }
 
-/* ── Big letter box is tappable ── */
-#lb { cursor: pointer; user-select: none; }
+
 
 </style>
 </head>
@@ -448,16 +433,17 @@
     <!-- A-Z -->
     <div id="abc-alpha" class="sec active">
 
-      <!-- Toggle + Shuffle row -->
-      <div class="alpha-ctrl">
-        <button class="alpha-toggle" id="alphaToggle" onclick="toggleAlpha()">
-          &#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;
-        </button>
-        <button class="alpha-shuf" onclick="shuffleAlpha()" title="Shuffle order">&#128256;</button>
+      <!-- Shuffle toggle row -->
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="alphaShufBtn" onclick="shuffleAlpha()">&#128256; Shuffle OFF</button>
       </div>
+      <!-- A-Z letter selector toggle -->
+      <button class="alpha-toggle" id="alphaToggle" onclick="toggleAlpha()">
+        &#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;
+      </button>
 
       <!-- Collapsible A-Z letter selector (hidden by default) -->
-      <div class="selgrid" id="lg" style="display:none"></div>
+      <div class="selgrid" id="lg" style="display:none!important"></div>
 
       <!-- Big letter display – tap to hear the letter -->
       <div class="bigbox" id="lb" onclick="spk(curL.toLowerCase())">
@@ -498,13 +484,13 @@
         &#9999; Show A&#8211;Z Letters &nbsp;&#9660;
       </button>
       <!-- Collapsible letter selector (hidden by default) -->
-      <div class="trsel" id="trSel" style="display:none"></div>
+      <div class="trsel" id="trSel" style="display:none!important"></div>
       <div class="trwrap">
         <h3 id="trLetter">A</h3>
         <p>Trace with finger or mouse!</p>
         <canvas id="trCanvas" width="300" height="260"></canvas>
         <div class="trbtns">
-          <button class="trb trb-g" id="trGuideBtn" onclick="toggleGuide()">Hide Guide</button>
+          <button class="trb trb-g" id="trGuideBtn" onclick="toggleGuide()">Guide</button>
           <button class="trb trb-c" onclick="clearTrOnly()">Clear</button>
         </div>
       </div>
@@ -561,10 +547,11 @@ function prevL(){var i=letters.indexOf(curL);if(i>0)rL(letters[i-1]);}
 function nextL(){var i=letters.indexOf(curL);if(i<letters.length-1)rL(letters[i+1]);}
 function toggleAlpha(){
   var g=document.getElementById('lg'),btn=document.getElementById('alphaToggle');
-  var shown=g.style.display!=='none';
-  g.style.display=shown?'none':'';
-  btn.classList.toggle('open',!shown);
-  btn.innerHTML=(!shown?'&#128292; Hide A&#8211;Z Alphabet &nbsp;&#9650;':'&#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;');
+  var shown=g.style.display!=='none!important'&&g.style.display!==''&&g.getAttribute('style')!=='display:none!important';
+  var nowShown=!shown;
+  g.setAttribute('style',nowShown?'':'display:none!important');
+  btn.classList.toggle('open',nowShown);
+  btn.innerHTML=(nowShown?'&#128292; Hide A&#8211;Z Alphabet &nbsp;&#9650;':'&#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;');
 }
 
 // Build A-Z selector grid (called on init and after shuffle)
@@ -580,11 +567,31 @@ function buildAlphaGrid(){
 }
 buildAlphaGrid();
 
+var alphaShuffled = false;
+var alphaOriginal = Object.keys(AD); // A–Z original order
+
+function fisherYates(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=arr[i];arr[i]=arr[j];arr[j]=t;
+  }
+}
+
 function shuffleAlpha(){
-  letters=Object.keys(AD).sort(function(){return Math.random()-.5;});
+  var btn = document.getElementById('alphaShufBtn');
+  alphaShuffled = !alphaShuffled;
+  btn.classList.toggle('on', alphaShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (alphaShuffled ? 'ON' : 'OFF');
+  if(alphaShuffled){
+    letters = alphaOriginal.slice();
+    fisherYates(letters);
+    spk('Shuffle on');
+  } else {
+    letters = alphaOriginal.slice();
+    spk('Shuffle off');
+  }
   buildAlphaGrid();
-  rL(letters[0]);     // navigate to first letter in new order
-  spk('shuffled!');
+  rL(letters[0]);
 }
 
 // Sight Words
@@ -656,10 +663,10 @@ function trPrevL(){var i=trABC.indexOf(trLetter);if(i>0)trActiveLetter(trABC[i-1
 function trNextL(){var i=trABC.indexOf(trLetter);if(i<25)trActiveLetter(trABC[i+1]);}
 function toggleTrAlpha(){
   var g=document.getElementById('trSel'),btn=document.getElementById('trAlphaToggle');
-  var shown=g.style.display!=='none';
-  g.style.display=shown?'none':'';
-  btn.classList.toggle('open',!shown);
-  btn.innerHTML=(!shown?'&#9999; Hide A&#8211;Z Letters &nbsp;&#9650;':'&#9999; Show A&#8211;Z Letters &nbsp;&#9660;');
+  var nowShown=g.getAttribute('style')==='display:none!important';
+  g.setAttribute('style',nowShown?'':'display:none!important');
+  btn.classList.toggle('open',nowShown);
+  btn.innerHTML=(nowShown?'&#9999; Hide A&#8211;Z Letters &nbsp;&#9650;':'&#9999; Show A&#8211;Z Letters &nbsp;&#9660;');
 }
 
 document.addEventListener('DOMContentLoaded',function(){
@@ -680,8 +687,8 @@ document.addEventListener('DOMContentLoaded',function(){
 function setupTr(){trCtx.fillStyle='#FFF9F9';trCtx.fillRect(0,0,trCanvas.width,trCanvas.height);trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';}
 function clearTr(){setupTr();}
 function clearTrOnly(){
-  clearTr();trGuideShown=false;
-  var btn=document.getElementById('trGuideBtn');if(btn)btn.textContent='Show Guide';
+  clearTr();                          // wipe canvas
+  if(trGuideShown) drawGuide(true);   // redraw guide silently if it was visible
 }
 function drawGuide(silent){
   clearTr();
@@ -689,11 +696,11 @@ function drawGuide(silent){
   trCtx.textAlign='center';trCtx.textBaseline='middle';trCtx.fillText(trLetter,150,140);
   trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';
   trGuideShown=true;
-  var btn=document.getElementById('trGuideBtn');if(btn)btn.textContent='Hide Guide';
+  var btn=document.getElementById('trGuideBtn');if(btn)btn.textContent='Hide';
   if(!silent)spk(trLetter+'! Trace the letter '+trLetter);
 }
 function toggleGuide(){
-  if(trGuideShown){clearTr();trGuideShown=false;document.getElementById('trGuideBtn').textContent='Show Guide';}
+  if(trGuideShown){clearTr();trGuideShown=false;document.getElementById('trGuideBtn').textContent='Guide';}
   else{drawGuide();}
 }
 function gPos(e){var r=trCanvas.getBoundingClientRect();var sx=trCanvas.width/r.width,sy=trCanvas.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};}

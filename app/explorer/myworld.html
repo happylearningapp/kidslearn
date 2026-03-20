@@ -9,16 +9,43 @@
 <style>
 /* ── Override shared sidebar layout ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; overflow-x: hidden; }
 #sdrawer { top: 66px !important; }
 
-/* ── Time cards ── */
-.tgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; }
-.tcrd  { border-radius:18px; padding:16px 11px; text-align:center;
-         box-shadow:0 4px 13px rgba(0,0,0,.11); cursor:pointer; transition:transform .17s; }
-.tcrd:hover { transform:scale(1.04); }
-.ttag  { background:rgba(255,255,255,.5); border-radius:9px; padding:2px 7px;
-         font-size:var(--sm); font-weight:700; display:inline-block; margin:2px; }
+/* ── Global: no section overflows horizontally ── */
+.sec { overflow-x: hidden; }
+
+/* ── About Me: wrap long values (address etc.) ── */
+#my-personal .infocrd { min-width: 0; overflow: hidden; }
+#my-personal .infoval { word-break: break-word; overflow-wrap: break-word; white-space: normal; }
+
+/* ── Body Parts + Daily: 3-column grid (shared.js defaults to 5) ── */
+#my-body .cgrid,
+#my-daily .cgrid { grid-template-columns: repeat(3, 1fr) !important; }
+
+/* ── Feelings / Habits / Safety: prevent card text overflow ── */
+.wcrd2 { min-width: 0; }
+.wcrd2 > div { min-width: 0; flex: 1; }
+.wem2  { flex-shrink: 0; }
+.wtitle, .wdesc { overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+
+/* ── Time cards: richer immersive feel ── */
+.tgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.tcrd  {
+  border-radius:22px; padding:20px 14px; text-align:center;
+  box-shadow:0 6px 22px rgba(0,0,0,.18);
+  cursor:pointer; transition:transform .17s, box-shadow .17s;
+  position: relative; overflow: hidden;
+}
+.tcrd:active { transform:scale(.97); }
+.tcrd-em   { font-size:2.8rem; display:block; margin-bottom:6px; }
+.tcrd-name { font-size:var(--lg); font-weight:900; color:#fff; letter-spacing:.3px; }
+.tcrd-tags { margin-top:10px; display:flex; flex-wrap:wrap; gap:4px; justify-content:center; }
+.ttag {
+  background:rgba(255,255,255,.28); border-radius:20px; padding:3px 9px;
+  font-size:var(--sm); font-weight:700; color:#fff;
+  display:inline-block; backdrop-filter:blur(4px);
+}
 
 /* ── Bottom dock ── */
 .my-dock {
@@ -57,64 +84,36 @@
 
     <!-- ══ ABOUT ME ══ -->
     <div id="my-personal" class="sec active">
-      <div class="bigbox" style="background:#E91E63" onclick="spk(kidName())">
-        <div class="bigchar">&#128102;</div>
-        <div class="bigsub" id="aboutMeSub">About Me!</div>
-      </div>
       <div class="infogrid" id="peCards"></div>
     </div>
 
     <!-- ══ BODY ══ -->
     <div id="my-body" class="sec">
-      <div class="bigbox" style="background:#F44336" onclick="spk('Body Parts')">
-        <div class="bigchar">&#129485;</div>
-        <div class="bigsub">Body Parts</div>
-      </div>
       <div class="cgrid" id="boCards"></div>
     </div>
 
     <!-- ══ EMOTIONS ══ -->
     <div id="my-emotions" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF8E53,#E91E63)" onclick="spk('Emotions and Feelings')">
-        <div class="bigchar">&#128522;</div>
-        <div class="bigsub">Emotions &amp; Feelings</div>
-      </div>
       <div class="wgrd2" id="emotionCards"></div>
     </div>
 
     <!-- ══ HABITS ══ -->
     <div id="my-habits" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#43A047,#00C9A7)" onclick="spk('Good Habits')">
-        <div class="bigchar">&#9989;</div>
-        <div class="bigsub">Good Habits</div>
-      </div>
       <div class="wgrd2" id="habitCards"></div>
     </div>
 
     <!-- ══ SAFETY ══ -->
     <div id="my-safety" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#D32F2F,#FF6B6B)" onclick="spk('Safety Rules')">
-        <div class="bigchar">&#128721;</div>
-        <div class="bigsub">Safety Rules</div>
-      </div>
       <div class="wgrd2" id="safetyCards"></div>
     </div>
 
     <!-- ══ DAILY ══ -->
     <div id="my-daily" class="sec">
-      <div class="bigbox" style="background:#7B1FA2" onclick="spk('Daily Things')">
-        <div class="bigchar">&#127968;</div>
-        <div class="bigsub">Daily Things</div>
-      </div>
       <div class="cgrid" id="daCards"></div>
     </div>
 
     <!-- ══ TIME ══ -->
     <div id="my-time" class="sec">
-      <div class="bigbox" style="background:#5C6BC0" onclick="spk('Time and Routines')">
-        <div class="bigchar">&#128336;</div>
-        <div class="bigsub">Time &amp; Routines</div>
-      </div>
       <div class="tgrid" id="tmCards"></div>
     </div>
 
@@ -263,10 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
   sg(DLY, '#7B1FA2', 'daCards');
 
   document.getElementById('tmCards').innerHTML = TMD.map(function(t) {
-    return '<div class="tcrd" style="background:' + t.bg + '" onclick="spk(\'' + t.n + '\')">'
-      + '<span style="font-size:2.4rem;display:block;margin-bottom:5px">' + t.e + '</span>'
-      + '<div style="font-size:var(--lg);font-weight:700;color:#fff">' + t.n + '</div>'
-      + '<div style="margin-top:7px">'
+    return '<div class="tcrd" style="background:' + t.bg + ';box-shadow:0 6px 22px ' + t.bg + '88" onclick="spk(\'' + t.n + '\')">'
+      + '<span class="tcrd-em">' + t.e + '</span>'
+      + '<div class="tcrd-name">' + t.n + '</div>'
+      + '<div class="tcrd-tags">'
       + t.i.map(function(x) { return '<span class="ttag">' + x + '</span>'; }).join('')
       + '</div></div>';
   }).join('');

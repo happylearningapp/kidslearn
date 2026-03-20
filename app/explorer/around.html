@@ -9,12 +9,34 @@
 <style>
 /* ── Override shared sidebar layout ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; overflow-x: hidden; }
 #sdrawer { top: 66px !important; }
 
+/* ── Tab sections ── */
+.sec { overflow-x: hidden; }
+
+/* ── Transport / Places / Helpers / Flags: 3-col grid, no overflow ── */
+#around-transport .cgrid,
+#around-places .cgrid,
+#around-helpers .cgrid,
+#around-flags .cgrid { grid-template-columns: repeat(3, 1fr) !important; overflow: hidden; max-width: 100%; }
+#around-transport .crd,
+#around-places .crd,
+#around-helpers .crd,
+#around-flags .crd { min-width: 0; overflow: hidden; word-break: break-word; }
+
+/* ── National: wrap long values ── */
+#around-national .infocrd { min-width: 0; overflow: hidden; }
+#around-national .infoval { word-break: break-word; overflow-wrap: break-word; white-space: normal; }
+
+/* ── Festivals: prevent card text overflow ── */
+#around-festivals .wcrd2 { min-width: 0; }
+#around-festivals .wcrd2 > div { min-width: 0; flex: 1; }
+#around-festivals .wtitle,
+#around-festivals .wdesc { overflow-wrap: break-word; word-break: break-word; white-space: normal; }
+
 /* ── Days / Months grids ── */
-.dgrid { display:grid; grid-template-columns:repeat(7,1fr); gap:7px; margin-bottom:14px; }
-@media (max-width:480px) { .dgrid { grid-template-columns:repeat(4,1fr); } }
+.dgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-bottom:14px; }
 .dcrd  { border-radius:12px; padding:9px 4px; text-align:center; cursor:pointer;
          font-size:.68rem; font-weight:900; }
 .mgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
@@ -58,64 +80,36 @@
 
     <!-- ══ TRANSPORT ══ -->
     <div id="around-transport" class="sec active">
-      <div class="bigbox" style="background:#F57C00" onclick="spk('Transport')">
-        <div class="bigchar">&#128663;</div>
-        <div class="bigsub">Transport</div>
-      </div>
       <div class="cgrid" id="trCards"></div>
     </div>
 
     <!-- ══ PLACES ══ -->
     <div id="around-places" class="sec">
-      <div class="bigbox" style="background:#5C6BC0" onclick="spk('Places Around Us')">
-        <div class="bigchar">&#127979;</div>
-        <div class="bigsub">Places Around Us</div>
-      </div>
       <div class="cgrid" id="plCards"></div>
     </div>
 
     <!-- ══ HELPERS ══ -->
     <div id="around-helpers" class="sec">
-      <div class="bigbox" style="background:#00897B" onclick="spk('Community Helpers')">
-        <div class="bigchar">&#129309;</div>
-        <div class="bigsub">Community Helpers</div>
-      </div>
       <div class="cgrid" id="heCards"></div>
     </div>
 
     <!-- ══ NATIONAL ══ -->
     <div id="around-national" class="sec">
-      <div class="bigbox" style="background:#FF6B00" onclick="spk('National Knowledge')">
-        <div class="bigchar">&#127470;&#127475;</div>
-        <div class="bigsub">National Knowledge</div>
-      </div>
       <div class="infogrid" id="naCards"></div>
     </div>
 
     <!-- ══ FESTIVALS ══ -->
     <div id="around-festivals" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FFC300)" onclick="spk('Festivals of India')">
-        <div class="bigchar">&#127881;</div>
-        <div class="bigsub">Festivals of India</div>
-      </div>
       <div class="wgrd2" id="festCards"></div>
     </div>
 
     <!-- ══ DAYS & MONTHS ══ -->
     <div id="around-days" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#5C6BC0,#29B6F6)" onclick="spk('Days and Months')">
-        <div class="bigchar">&#128197;</div>
-        <div class="bigsub">Days &amp; Months</div>
-      </div>
       <div id="daysArea"></div>
     </div>
 
     <!-- ══ FLAGS ══ -->
     <div id="around-flags" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#1565C0,#00C9A7)" onclick="spk('Countries and Flags')">
-        <div class="bigchar">&#127757;</div>
-        <div class="bigsub">Countries &amp; Flags</div>
-      </div>
       <div class="cgrid" id="flagCards"></div>
     </div>
 

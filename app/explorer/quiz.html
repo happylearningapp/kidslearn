@@ -12,69 +12,104 @@
 .submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
 #sdrawer { top: 66px !important; }
 
-/* ── GK toolbar ── */
-.gktoolbar { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:0 0 12px; }
-.gkbtn { padding:7px 16px; border-radius:20px; border:none; font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer; }
-.gkbtn-exp  { background:#4CAF50; color:#fff; }
-.gkbtn-col  { background:#FF6B6B; color:#fff; }
-.gkbtn-shuf { background:linear-gradient(135deg,#6A1B9A,#E91E63); color:#fff; }
-.gkbtn-back { background:#78909C; color:#fff; }
+/* ── GK header controls: toggle + shuffle ── */
+.gk-ctrl-row { display:flex; gap:8px; margin:0 0 12px; }
+.gkctrlbtn {
+  flex:1; padding:10px 8px; border-radius:14px; border:2px solid #ddd;
+  background:#f5f5f5; font-family:var(--f); font-size:var(--sm); font-weight:700;
+  cursor:pointer; transition:all .2s;
+}
+.gkctrlbtn.on      { background:linear-gradient(135deg,#6A1B9A,#1565C0); color:#fff; border-color:transparent; }
+.gkctrlbtn-shuf.on { background:linear-gradient(135deg,#E91E63,#FF8E53); color:#fff; border-color:transparent; }
 
-/* ── GK Accordion ── */
-.gksec  { margin-bottom:14px; border-radius:16px; overflow:hidden; box-shadow:0 3px 12px rgba(0,0,0,.1); }
-.gkhd   { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; cursor:pointer; }
-.gkhd-l { display:flex; align-items:center; gap:11px; }
-.gkt    { font-size:var(--lg); font-weight:900; color:#fff; }
-.gkc    { font-size:var(--sm); opacity:.85; color:#fff; }
-.gkico  { font-size:1.2rem; color:#fff; transition:transform .25s; font-weight:900; }
+/* ── GK Section (accordion — one open at a time) ── */
+.gksec   { margin-bottom:10px; border-radius:16px; overflow:hidden; box-shadow:0 3px 12px rgba(0,0,0,.1); }
+.gkhd    { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; cursor:pointer; user-select:none; }
+.gkhd-l  { display:flex; align-items:center; gap:10px; }
+.gkt     { font-size:var(--md); font-weight:900; color:#fff; }
+.gkprog  { font-size:var(--sm); font-weight:700; color:rgba(255,255,255,.85); }
+.gkico   { font-size:.9rem; color:rgba(255,255,255,.8); font-weight:900; transition:transform .22s; }
 .gkico.open { transform:rotate(180deg); }
-.gkbody { overflow:hidden; max-height:0; transition:max-height .35s ease; }
-.gkbody.open { max-height:9999px; }
-.gkinner { padding:10px 10px 12px; background:#fff; }
+.gkinner { padding:10px 10px 12px; background:#fff; display:none; }
+.gkinner.open { display:block; }
+
+/* ── Single-Q card (one question per section) ── */
+.gk-qcard { border-radius:15px; padding:16px 14px; margin-bottom:10px; cursor:pointer; }
+.gk-q     { font-size:var(--xl); font-weight:900; color:#222; line-height:1.4; margin-bottom:10px; }
+.gk-qmeta { font-size:var(--sm); color:#999; margin-bottom:10px; }
+.gk-ans   { margin-top:10px; border-radius:12px; padding:10px 14px; font-size:var(--lg);
+            font-weight:900; display:none; }
+.gk-ans.show { display:block; animation:popIn .22s ease; }
+
+/* ── List-view card (all questions) ── */
 .gkgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; }
 @media(max-width:600px) { .gkgrid { grid-template-columns:1fr; } }
-
-/* ── GK Card — clickable question, no Read Q button ── */
-.gkcrd { border-radius:15px; padding:12px 11px 10px; box-shadow:0 2px 8px rgba(0,0,0,.08); position:relative; }
-.gknum { position:absolute; top:8px; right:10px; font-size:var(--sm); font-weight:900; opacity:.35; }
-.gktop { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; cursor:pointer; }
-.gktop:hover .gkq { text-decoration:underline; text-decoration-style:dotted; }
-.gkq   { font-size:var(--md); font-weight:700; color:#222; line-height:1.45; flex:1; }
+.gkcrd  { border-radius:15px; padding:12px 11px 10px; box-shadow:0 2px 8px rgba(0,0,0,.08); position:relative; }
+.gknum  { position:absolute; top:8px; right:10px; font-size:var(--sm); font-weight:900; opacity:.35; }
+.gktop  { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; cursor:pointer; }
+.gkq    { font-size:var(--md); font-weight:700; color:#222; line-height:1.45; flex:1; }
 .gkacts { display:flex; gap:7px; }
 .gkabtn { flex:1; padding:6px 8px; border-radius:10px; border:none; font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer; }
 .gkabtn-a { background:#E8F5E9; color:#2E7D32; }
 .gkabtn-a:hover { background:#2E7D32; color:#fff; }
-.gkans { margin-top:8px; background:rgba(255,255,255,.85); border-radius:10px; padding:7px 10px; font-size:var(--md); font-weight:700; color:#333; display:none; }
+.gkans  { margin-top:8px; background:rgba(255,255,255,.85); border-radius:10px; padding:7px 10px; font-size:var(--md); font-weight:700; color:#333; display:none; }
 .gkans.show { display:block; animation:popIn .22s ease; }
 
-/* ── GK Random quiz card ── */
-.rnd-card { border-radius:20px; padding:20px 18px; box-shadow:0 5px 20px rgba(0,0,0,.12); margin-bottom:16px; cursor:pointer; }
-.rnd-card:hover { transform:scale(1.01); }
-.rnd-q    { font-size:var(--xl); font-weight:900; color:#222; line-height:1.4; margin-bottom:14px; }
-.rnd-em   { font-size:3rem; display:block; margin-bottom:10px; }
-.rnd-meta { font-size:var(--sm); color:#999; margin-bottom:14px; }
-.rnd-ans  { margin-top:10px; border-radius:12px; padding:10px 14px; font-size:var(--lg); font-weight:900; display:none; }
-.rnd-ans.show { display:block; animation:popIn .22s ease; }
+/* ── MCQ progress bar ── */
+.mcqprog { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.mcqbar  { flex:1; height:10px; background:#e9e0f5; border-radius:5px; overflow:hidden; }
+.mcqfill { height:100%; background:linear-gradient(90deg,#6A1B9A,#E91E63); border-radius:5px; transition:width .5s; }
+.mcqcnt  { font-size:var(--md); font-weight:900; color:#999; white-space:nowrap; }
 
-/* ── MCQ ── */
-.mcqprog { background:#fff; border-radius:12px; padding:10px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,.08); display:flex; align-items:center; gap:12px; }
-.mcqbar  { flex:1; height:10px; background:#eee; border-radius:5px; overflow:hidden; }
-.mcqfill { height:100%; background:linear-gradient(135deg,#6A1B9A,#E91E63); border-radius:5px; transition:width .4s; }
-.mcqcard { background:#fff; border-radius:20px; padding:22px; box-shadow:0 5px 20px rgba(0,0,0,.12); margin-bottom:14px; }
-.mcqopts { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.mcqopt  { padding:12px 14px; border-radius:14px; border:3px solid #eee; background:#f9f9f9; font-family:var(--f); font-size:var(--md); font-weight:700; cursor:pointer; text-align:left; display:flex; align-items:center; gap:8px; }
-.mcqopt:hover { border-color:#6A1B9A; background:#F3E8FF; }
-.mcqopt.correct { background:#E8F5E9; border-color:#4CAF50; color:#1B5E20; }
-.mcqopt.wrong   { background:#FFEBEE; border-color:#FF6B6B; color:#B71C1C; }
-.mcqltr { width:24px; height:24px; border-radius:50%; background:#eee; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:900; flex-shrink:0; }
-/* mcq-nav = nav-row alias */
-.mcq-nav { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+/* ── MCQ card ── */
+.mcqcard { background:#fff; border-radius:22px; padding:0 0 18px;
+           box-shadow:0 8px 28px rgba(106,27,162,.15); overflow:hidden; }
 
-/* MCQ start screen */
-.mcq-start { text-align:center; padding:20px; }
-.mcq-start-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
-.mcq-sbtn { padding:14px 28px; border-radius:20px; border:none; font-family:var(--f); font-size:var(--lg); font-weight:900; cursor:pointer; transition:all .2s; }
-.mcq-sbtn:hover { transform:scale(1.05); }
+/* Gradient header strip with Q number */
+.mcq-qhd { background:linear-gradient(135deg,#6A1B9A,#E91E63); padding:11px 16px;
+            display:flex; align-items:center; justify-content:center; }
+.mcq-qbadge { background:rgba(255,255,255,.22); border-radius:20px; padding:4px 16px;
+               font-size:var(--sm); font-weight:900; color:#fff; letter-spacing:.5px; }
+
+/* Question text */
+.mcq-q { font-size:var(--xl); font-weight:900; color:#333; text-align:center;
+          padding:18px 16px 14px; line-height:1.45; cursor:pointer; }
+
+/* Option grid */
+.mcqopts { display:grid; grid-template-columns:1fr 1fr; gap:10px;
+            padding:0 16px; margin-bottom:14px; }
+.mcqopt  { padding:13px 11px; border-radius:14px; border:2.5px solid #eee;
+            background:#fafafa; font-family:var(--f); font-size:var(--md);
+            font-weight:700; cursor:pointer; text-align:left;
+            display:flex; align-items:center; gap:8px;
+            transition:border-color .15s,background .15s;
+            -webkit-tap-highlight-color:transparent; }
+.mcqopt:active   { transform:scale(.97); }
+.mcqopt.correct  { background:#E8F5E9; border-color:#4CAF50; color:#1B5E20; animation:popIn .3s ease; }
+.mcqopt.wrong    { background:#FFEBEE; border-color:#FF6B6B; color:#B71C1C; animation:shake .4s ease; }
+
+/* Coloured letter badges A/B/C/D */
+.mcqltr   { width:28px; height:28px; border-radius:50%; display:flex; align-items:center;
+            justify-content:center; font-size:.72rem; font-weight:900; color:#fff; flex-shrink:0; }
+.mcqltr-a { background:#7B1FA2; }
+.mcqltr-b { background:#E91E63; }
+.mcqltr-c { background:#1565C0; }
+.mcqltr-d { background:#E65100; }
+
+/* Feedback inside card */
+.mcq-fb { min-height:36px; display:flex; align-items:center; justify-content:center;
+           font-size:var(--lg); font-weight:900; color:#555; padding:0 16px; }
+/* Nav buttons below card */
+.mcq-nav-btns { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+
+/* MCQ shuffle toggle */
+.mcq-ctrl-row { display:flex; margin:0 0 10px; }
+.mcqctrlbtn {
+  padding:9px 16px; border-radius:14px; border:2px solid #ddd;
+  background:#f5f5f5; font-family:var(--f); font-size:var(--sm); font-weight:700;
+  cursor:pointer; transition:all .2s;
+}
+.mcqctrlbtn.on { background:linear-gradient(135deg,#E91E63,#FF8E53); color:#fff; border-color:transparent; }
 
 /* ── Bottom dock ── */
 .quiz-dock {
@@ -107,29 +142,18 @@
 
     <!-- ══ GK QUESTIONS ══ -->
     <div id="gk-gkqs" class="sec active">
-      <div class="gktoolbar">
-        <button class="gkbtn gkbtn-exp"  onclick="gkExp()">Expand All</button>
-        <button class="gkbtn gkbtn-col"  onclick="gkCol()">Collapse All</button>
-        <button class="gkbtn gkbtn-shuf" onclick="enterGKRandom()">&#128256; Random Quiz</button>
+      <!-- Controls: Single-Q toggle + Shuffle -->
+      <div class="gk-ctrl-row">
+        <button id="gkViewBtn"  class="gkctrlbtn on" onclick="setGKView()">&#10067; Single Q</button>
+        <button id="gkShufBtn" class="gkctrlbtn gkctrlbtn-shuf" onclick="toggleGKShuffle()">&#128256; Shuffle</button>
       </div>
       <div id="gkWrap"></div>
-      <div id="gkRandom" style="display:none"></div>
     </div>
 
     <!-- ══ MCQ QUIZ ══ -->
     <div id="gk-mcq" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#6A1B9A,#E91E63)" onclick="spk('MCQ Quiz Challenge')">
-        <div class="bigchar">&#127942;</div>
-        <div class="bigsub">MCQ Quiz Challenge</div>
-      </div>
-      <div class="mcq-start">
-        <div style="font-size:.9rem;color:#888;margin-bottom:4px">Choose how to play:</div>
-        <div class="mcq-start-btns">
-          <button class="mcq-sbtn" style="background:linear-gradient(135deg,#6A1B9A,#1565C0);color:#fff"
-                  onclick="startMCQ(false)">&#9654; Start in Order</button>
-          <button class="mcq-sbtn" style="background:linear-gradient(135deg,#E91E63,#FF8E53);color:#fff"
-                  onclick="startMCQ(true)">&#128256; Shuffle &amp; Play</button>
-        </div>
+      <div class="mcq-ctrl-row">
+        <button id="mcqShufBtn" class="mcqctrlbtn" onclick="toggleMCQShuffle()">&#128256; Shuffle</button>
       </div>
       <div id="mcqArea"></div>
     </div>
@@ -142,7 +166,7 @@
   <button class="quiz-dock-btn active" data-tab="gkqs" onclick="swQuiz('gkqs')">
     <span class="dock-ico">&#128203;</span>GK Questions
   </button>
-  <button class="quiz-dock-btn" data-tab="mcq" onclick="swQuiz('mcq');startMCQ(false)">
+  <button class="quiz-dock-btn" data-tab="mcq" onclick="swQuiz('mcq');startMCQ()">
     <span class="dock-ico">&#127942;</span>MCQ Quiz
   </button>
 </nav>
@@ -366,128 +390,169 @@ var MCQD = [
 ];
 
 /* ═══════════════════════════════════════════════
-   GK ACCORDION
+   GK — PER-SECTION SINGLE-Q / LIST VIEW
 ═══════════════════════════════════════════════ */
-(function() {
+var gkView     = 'single';   /* 'single' | 'list' */
+var gkOpen     = 0;           /* index of currently expanded section */
+var gkCatIdx   = [];         /* current Q position (index into gkCatOrder) per section */
+var gkCatOrder = [];         /* question order per section — supports shuffle */
+
+/* Init orders */
+GKCAT.forEach(function(cat, ci) {
+  var n = GKBN[ci + 1] - GKBN[ci];
+  gkCatIdx[ci]   = 0;
+  gkCatOrder[ci] = [];
+  for (var j = 0; j < n; j++) gkCatOrder[ci].push(j);
+});
+
+/* ── Toggle view ── */
+function setGKView() {
+  gkView = (gkView === 'single') ? 'list' : 'single';
+  var btn = document.getElementById('gkViewBtn');
+  btn.classList.toggle('on', gkView === 'single');
+  btn.innerHTML = gkView === 'single' ? '&#10067; Single Q' : '&#128203; List All';
+  gkOpen = 0;
+  buildGKAll();
+}
+
+/* ── Shuffle toggle (on = random order, off = original order) ── */
+var gkShuffled = false;
+
+function toggleGKShuffle() {
+  gkShuffled = !gkShuffled;
+  document.getElementById('gkShufBtn').classList.toggle('on', gkShuffled);
+  GKCAT.forEach(function(cat, ci) {
+    var n = GKBN[ci + 1] - GKBN[ci];
+    gkCatOrder[ci] = [];
+    for (var j = 0; j < n; j++) gkCatOrder[ci].push(j);
+    if (gkShuffled) fisherYates(gkCatOrder[ci]);
+    gkCatIdx[ci] = 0;
+  });
+  gkOpen = 0;
+  buildGKAll();
+  spk(gkShuffled ? 'Shuffle on' : 'Shuffle off');
+}
+
+/* ── Accordion toggle — collapse current, expand clicked ── */
+function gkToggle(ci) {
+  if (gkOpen === ci) return; /* already open, do nothing */
+  /* collapse current */
+  var curBody = document.getElementById('gsBody' + gkOpen);
+  var curIco  = document.getElementById('gsIco'  + gkOpen);
+  if (curBody) curBody.classList.remove('open');
+  if (curIco)  curIco.classList.remove('open');
+  /* expand new */
+  gkOpen = ci;
+  var newBody = document.getElementById('gsBody' + ci);
+  var newIco  = document.getElementById('gsIco'  + ci);
+  if (newBody) newBody.classList.add('open');
+  if (newIco)  newIco.classList.add('open');
+  /* speak first question if single view */
+  if (gkView === 'single') {
+    var q = GKQ[GKBN[ci] + gkCatOrder[ci][gkCatIdx[ci]]];
+    spk(q[1]);
+  }
+}
+
+/* ── Build all section cards ── */
+function buildGKAll() {
   var h = '';
   GKCAT.forEach(function(cat, ci) {
-    var qs = GKQ.slice(GKBN[ci], GKBN[ci + 1]);
-    var first = ci === 0;
+    var n    = GKBN[ci + 1] - GKBN[ci];
+    var prog = gkView === 'single'
+      ? 'Q ' + (gkCatIdx[ci] + 1) + '/' + n
+      : n + ' Q';
+    var isOpen = ci === gkOpen;
     h += '<div class="gksec" id="gs' + ci + '">'
-      + '<div class="gkhd" style="background:' + cat.c + '" onclick="tgk(' + ci + ')">'
-      + '<div class="gkhd-l"><span style="font-size:1.6rem">' + cat.i + '</span>'
-      + '<div><div class="gkt">' + cat.n + '</div><div class="gkc">' + qs.length + ' questions</div></div></div>'
-      + '<span class="gkico' + (first ? ' open' : '') + '">&#9660;</span></div>'
-      + '<div class="gkbody' + (first ? ' open' : '') + '"><div class="gkinner"><div class="gkgrid">';
-    qs.forEach(function(q, i) {
-      var uid  = 'gk_' + ci + '_' + i;
-      var abs  = GKBN[ci] + i;
-      /* clicking the top area reads the question aloud */
-      h += '<div class="gkcrd" style="background:' + cat.bg + ';border:2px solid ' + cat.br + '">'
-        + '<div class="gknum">' + (i + 1) + '</div>'
-        + '<div class="gktop" onclick="spk(GKQ[' + abs + '][1])" title="Tap to hear the question">'
-        + '<span style="font-size:1.5rem;min-width:26px">' + q[0] + '</span>'
-        + '<div class="gkq">' + q[1] + '</div></div>'
-        + '<div class="gkacts">'
-        + '<button class="gkabtn gkabtn-a" onclick="showAns(\'' + uid + '\',' + ci + ',' + i + ')">&#128065; Answer</button>'
-        + '</div><div class="gkans" id="' + uid + '"></div></div>';
-    });
-    h += '</div></div></div></div>';
+      + '<div class="gkhd" style="background:' + cat.c + '" onclick="gkToggle(' + ci + ')">'
+      + '<div class="gkhd-l"><span style="font-size:1.4rem">' + cat.i + '</span>'
+      + '<div class="gkt">' + cat.n + '</div></div>'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + '<span class="gkprog" id="gkProg' + ci + '">' + prog + '</span>'
+      + '<span class="gkico' + (isOpen ? ' open' : '') + '" id="gsIco' + ci + '">&#9660;</span>'
+      + '</div></div>'
+      + '<div class="gkinner' + (isOpen ? ' open' : '') + '" id="gsBody' + ci + '">'
+      + buildGKSecHTML(ci)
+      + '</div></div>';
   });
   document.getElementById('gkWrap').innerHTML = h;
-})();
+}
 
-function tgk(ci)  { document.querySelector('#gs' + ci + ' .gkbody').classList.toggle('open'); document.querySelector('#gs' + ci + ' .gkico').classList.toggle('open'); }
-function gkExp()  { document.querySelectorAll('.gkbody').forEach(function(b) { b.classList.add('open'); }); document.querySelectorAll('.gkico').forEach(function(x) { x.classList.add('open'); }); }
-function gkCol()  { document.querySelectorAll('.gkbody').forEach(function(b) { b.classList.remove('open'); }); document.querySelectorAll('.gkico').forEach(function(x) { x.classList.remove('open'); }); }
+/* ── HTML for one section body ── */
+function buildGKSecHTML(ci) {
+  var cat = GKCAT[ci];
+  var n   = GKBN[ci + 1] - GKBN[ci];
+
+  if (gkView === 'single') {
+    var qi  = gkCatOrder[ci][gkCatIdx[ci]];
+    var q   = GKQ[GKBN[ci] + qi];
+    var abs = GKBN[ci] + qi;
+    return '<div class="gk-qcard" style="background:' + cat.bg + ';border:2px solid ' + cat.br + '"'
+      + ' onclick="spk(GKQ[' + abs + '][1])">'
+      + '<div class="gk-q">' + q[1] + '</div>'
+      + '<div class="gk-qmeta">&#128266; Tap to hear</div>'
+      + '<button class="gkabtn gkabtn-a" style="max-width:160px"'
+      + ' onclick="event.stopPropagation();showGKSecAns(' + ci + ')">&#128065; Show Answer</button>'
+      + '<div class="gk-ans" id="gkA' + ci + '"'
+      + ' style="background:' + cat.br + '33;border:2px solid ' + cat.br + '"></div>'
+      + '</div>'
+      + '<div class="nav-row">'
+      + (gkCatIdx[ci] > 0     ? '<button class="prvbtn" onclick="gkSecNav(' + ci + ',-1)">&#8592; Prev</button>' : '')
+      + (gkCatIdx[ci] < n - 1 ? '<button class="nxtbtn" onclick="gkSecNav(' + ci + ',1)">Next &#8594;</button>'  : '')
+      + '</div>';
+  }
+
+  /* list view — all questions */
+  var out = '<div class="gkgrid">';
+  for (var i = 0; i < n; i++) {
+    var abs2 = GKBN[ci] + i;
+    var qL   = GKQ[abs2];
+    var uid  = 'gk_' + ci + '_' + i;
+    out += '<div class="gkcrd" style="background:' + cat.bg + ';border:2px solid ' + cat.br + '">'
+      + '<div class="gknum">' + (i + 1) + '</div>'
+      + '<div class="gktop" onclick="spk(GKQ[' + abs2 + '][1])">'
+      + '<div class="gkq">' + qL[1] + '</div></div>'
+      + '<div class="gkacts">'
+      + '<button class="gkabtn gkabtn-a" onclick="showAns(\'' + uid + '\',' + ci + ',' + i + ')">&#128065; Answer</button>'
+      + '</div><div class="gkans" id="' + uid + '"></div></div>';
+  }
+  return out + '</div>';
+}
+
+/* ── Navigate prev/next within a section ── */
+function gkSecNav(ci, dir) {
+  gkCatIdx[ci] += dir;
+  var bodyEl = document.getElementById('gsBody' + ci);
+  if (bodyEl) bodyEl.innerHTML = buildGKSecHTML(ci);
+  var progEl = document.getElementById('gkProg' + ci);
+  if (progEl) progEl.textContent = 'Q ' + (gkCatIdx[ci] + 1) + '/' + (GKBN[ci + 1] - GKBN[ci]);
+  var q = GKQ[GKBN[ci] + gkCatOrder[ci][gkCatIdx[ci]]];
+  spk(q[1]);
+}
+
+/* ── Show answer for current single-Q ── */
+function showGKSecAns(ci) {
+  var qi  = gkCatOrder[ci][gkCatIdx[ci]];
+  var q   = GKQ[GKBN[ci] + qi];
+  var el  = document.getElementById('gkA' + ci);
+  if (!el) return;
+  el.innerHTML = q[0] + ' <b>' + q[2] + '</b>';
+  el.classList.add('show');
+  spk(q[2]);
+}
+
+/* ── Show answer for list-view card ── */
 function showAns(uid, ci, qi) {
-  var ans = GKQ[GKBN[ci] + qi][2];
-  var el  = document.getElementById(uid);
+  var q  = GKQ[GKBN[ci] + qi];
+  var el = document.getElementById(uid);
   if (!el) return;
-  el.textContent = 'Answer: ' + ans;
+  el.innerHTML = q[0] + ' <b>' + q[2] + '</b>';
   el.classList.add('show');
-  spk(ans);
+  spk(q[2]);
 }
 
-/* ═══════════════════════════════════════════════
-   GK RANDOM QUIZ
-═══════════════════════════════════════════════ */
-var gkRndPool  = [];
-var gkRndOrder = [];
-var gkRndIdx   = 0;
-var gkRndAnsShown = false;
-
-function enterGKRandom() {
-  /* Build flat pool */
-  gkRndPool = [];
-  GKCAT.forEach(function(cat, ci) {
-    var qs = GKQ.slice(GKBN[ci], GKBN[ci + 1]);
-    qs.forEach(function(q) {
-      gkRndPool.push({ cat: cat, e: q[0], q: q[1], ans: q[2] });
-    });
-  });
-  gkRndOrder = gkRndPool.map(function(_, i) { return i; })
-                         .sort(function() { return Math.random() - 0.5; });
-  gkRndIdx = 0;
-  document.getElementById('gkWrap').style.display   = 'none';
-  document.querySelector('.gktoolbar').style.display = 'none';
-  buildGKRandom();
-}
-
-function exitGKRandom() {
-  document.getElementById('gkRandom').style.display   = 'none';
-  document.getElementById('gkWrap').style.display     = '';
-  document.querySelector('.gktoolbar').style.display  = '';
-}
-
-function buildGKRandom() {
-  var item  = gkRndPool[gkRndOrder[gkRndIdx]];
-  var total = gkRndOrder.length;
-  gkRndAnsShown = false;
-  var ansId = 'gkRndAns';
-
-  var h = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">'
-    + '<button class="gkbtn gkbtn-back" onclick="exitGKRandom()">&#8592; All Questions</button>'
-    + '<span style="font-size:var(--md);font-weight:900;color:#555">Q <b>' + (gkRndIdx + 1) + '</b> / ' + total + '</span>'
-    + '</div>'
-    + '<div class="rnd-card" style="background:' + item.cat.bg + ';border:2px solid ' + item.cat.br + '" onclick="readGKRnd()" title="Tap card to hear question">'
-    + '<span class="rnd-em">' + item.e + '</span>'
-    + '<div class="rnd-q">' + item.q + '</div>'
-    + '<div class="rnd-meta">&#128266; Tap card to hear &nbsp;&bull;&nbsp; ' + item.cat.n + '</div>'
-    + '<button class="gkabtn gkabtn-a" style="max-width:160px" onclick="event.stopPropagation();showGKRndAns()">&#128065; Show Answer</button>'
-    + '<div class="rnd-ans" id="' + ansId + '" style="background:' + item.cat.br + '33;border:2px solid ' + item.cat.br + '"></div>'
-    + '</div>'
-    + '<div class="nav-row">'
-    + (gkRndIdx > 0         ? '<button class="prvbtn" onclick="gkRndNav(-1)">&#8592; Prev</button>' : '')
-    + (gkRndIdx < total - 1 ? '<button class="nxtbtn" onclick="gkRndNav(1)">Next &#8594;</button>'  : '')
-    + '</div>';
-
-  var el = document.getElementById('gkRandom');
-  el.style.display = 'block';
-  el.innerHTML = h;
-  spk(item.q);
-}
-
-function readGKRnd() {
-  var item = gkRndPool[gkRndOrder[gkRndIdx]];
-  spk(item.q);
-}
-
-function showGKRndAns() {
-  if (gkRndAnsShown) return;
-  gkRndAnsShown = true;
-  var item = gkRndPool[gkRndOrder[gkRndIdx]];
-  var el   = document.getElementById('gkRndAns');
-  if (!el) return;
-  el.textContent = '✅ ' + item.ans;
-  el.classList.add('show');
-  spk(item.ans);
-}
-
-function gkRndNav(dir) {
-  gkRndIdx += dir;
-  buildGKRandom();
-}
+/* Initial render */
+buildGKAll();
 
 /* ═══════════════════════════════════════════════
    SWITCH TAB
@@ -502,17 +567,34 @@ function swQuiz(tab) {
 }
 
 /* ═══════════════════════════════════════════════
+   FISHER-YATES SHUFFLE  (truly random each time)
+═══════════════════════════════════════════════ */
+function fisherYates(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+}
+
+/* ═══════════════════════════════════════════════
    MCQ QUIZ
 ═══════════════════════════════════════════════ */
-var mcqIdx    = 0;
-var mcqSc     = 0;
-var mcqAns    = false;   /* true once current question answered correctly */
-var mcqOrder  = [];      /* indices into MCQD — supports shuffle */
+var mcqIdx      = 0;
+var mcqSc       = 0;
+var mcqAns      = false;
+var mcqOrder    = [];
+var mcqShuffled = false;   /* shuffle toggle state */
 
-function startMCQ(shuffle) {
+function toggleMCQShuffle() {
+  mcqShuffled = !mcqShuffled;
+  document.getElementById('mcqShufBtn').classList.toggle('on', mcqShuffled);
+  startMCQ();
+}
+
+function startMCQ() {
   mcqIdx = 0; mcqSc = 0; mcqAns = false;
   mcqOrder = MCQD.map(function(_, i) { return i; });
-  if (shuffle) mcqOrder.sort(function() { return Math.random() - 0.5; });
+  if (mcqShuffled) fisherYates(mcqOrder);
   buildMCQ();
 }
 
@@ -528,8 +610,7 @@ function buildMCQ() {
       + '<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">' + mcqSc + ' / ' + mcqOrder.length + '</div>'
       + '<div style="color:#777;margin-bottom:16px">' + (pct >= 80 ? 'Outstanding! You are a genius!' : pct >= 60 ? 'Great job! Keep learning!' : 'Keep practising!') + '</div>'
       + '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'
-      + '<button class="rbtn" onclick="startMCQ(false)">&#9654; Play Again</button>'
-      + '<button class="rbtn" style="background:linear-gradient(135deg,#E91E63,#FF8E53)" onclick="startMCQ(true)">&#128256; Shuffle Again</button>'
+      + '<button class="rbtn" onclick="startMCQ()">&#9654; Play Again</button>'
       + '</div></div>';
     spk(pct >= 80 ? 'Outstanding! You are a genius!' : pct >= 60 ? 'Great job!' : 'Keep practising!');
     return;
@@ -541,25 +622,31 @@ function buildMCQ() {
   var tot = mcqOrder.length;
   var pct = Math.round(mcqIdx / tot * 100);
 
+  var LTRCLS = ['mcqltr-a','mcqltr-b','mcqltr-c','mcqltr-d'];
+
   var h = '<div class="mcqprog">'
     + '<div class="mcqbar"><div class="mcqfill" style="width:' + pct + '%"></div></div>'
-    + '<span style="font-size:var(--sm);font-weight:700;color:#888">' + (mcqIdx + 1) + ' / ' + tot + '</span>'
+    + '<span class="mcqcnt">' + (mcqIdx + 1) + '/' + tot + '</span>'
     + '</div>'
     + '<div class="mcqcard">'
-    + '<div style="font-size:3rem;text-align:center;margin-bottom:10px">' + p.e + '</div>'
-    + '<div style="font-size:var(--lg);font-weight:900;color:#333;text-align:center;margin-bottom:16px" onclick="spk(\'' + p.q.replace(/'/g,"\\'") + '\')" style="cursor:pointer">' + p.q + '</div>'
+    /* gradient header strip */
+    + '<div class="mcq-qhd"><span class="mcq-qbadge">Question ' + (mcqIdx + 1) + '</span></div>'
+    /* question text */
+    + '<div class="mcq-q" onclick="spk(\'' + p.q.replace(/'/g,"\\'") + '\')">' + p.q + '</div>'
+    /* options */
     + '<div class="mcqopts">'
     + p.o.map(function(o, i) {
         return '<button class="mcqopt" id="mO' + i + '" onclick="chkMCQ(this,' + i + ',' + p.a + ')">'
-          + '<span class="mcqltr">' + L[i] + '</span>' + o + '</button>';
+          + '<span class="mcqltr ' + LTRCLS[i] + '">' + L[i] + '</span>' + o + '</button>';
       }).join('')
     + '</div>'
-    + '<div class="rmsg" id="mcqR" style="margin:10px 0 4px"></div>'
-    /* ── Prev / Next always visible ── */
-    + '<div class="mcq-nav">'
+    /* feedback */
+    + '<div class="mcq-fb" id="mcqR"></div>'
+    + '</div>'
+    /* nav buttons */
+    + '<div class="mcq-nav-btns">'
     + (mcqIdx > 0 ? '<button class="prvbtn" onclick="mcqNav(-1)">&#8592; Prev</button>' : '')
     + '<button class="nxtbtn" onclick="mcqNav(1)">' + (mcqIdx < tot - 1 ? 'Next &#8594;' : 'Finish &#127937;') + '</button>'
-    + '</div>'
     + '</div>';
 
   area.innerHTML = h;
@@ -573,7 +660,8 @@ function chkMCQ(b, c, cr) {
     mcqAns = true;
     b.classList.add('correct');
     mcqSc++;
-    document.getElementById('mcqR').innerHTML = '&#127881; Correct!';
+    var _p = MCQD[mcqOrder[mcqIdx]];
+    document.getElementById('mcqR').innerHTML = _p.e + ' &#127881; Correct!';
     spk('Correct! Well done!');
   } else {
     /* Wrong — just say so, NO reveal */

@@ -9,57 +9,75 @@
 <style>
 /* ── Override shared layout to full-width (no sidebar) ── */
 .subbody { display: block !important; }
-.submain { padding: 8px 10px calc(80px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 8px 10px calc(80px + env(safe-area-inset-bottom)) !important; overflow-y: hidden; overflow-x: hidden; }
 #sdrawer { top: 66px !important; }
 
 /* ── Tab sections: self-contained visibility — no shared.js timing dependency ── */
 .sec        { display: none;  max-width: 700px; margin: 0 auto; }
 .sec.active { display: block; }
 
-/* ── Compact bigbox for Android fit-to-screen ── */
-.bigbox { padding: 10px 12px !important; margin-bottom: 10px !important; border-radius: 20px; }
-.bigchar { font-size: calc(var(--b) * 3.2) !important; }
-.bigsub  { font-size: var(--md) !important; margin-top: 2px !important; }
+/* ── Bigbox base ── */
+.bigbox { padding: 10px 14px !important; margin-bottom: 8px !important; border-radius: 18px; }
 
-/* ── Emoji count grid: smaller + wrapping ── */
+/* ── Numbers tab: compact display ── */
+#nb .bigchar { font-size: 3.2rem !important; line-height: 1.1 !important; }
+#nb .bigsub  { font-size: 1.1rem !important; font-weight: 900 !important; margin-top: 4px !important; }
+
+/* ── Emoji count: compact, wrap, no scroll ── */
 .cntbox {
   display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 4px; padding: 8px; border-radius: 16px;
+  gap: 5px; padding: 8px 6px; border-radius: 14px;
   margin-bottom: 8px; min-height: 36px;
+  width: 100%; box-sizing: border-box; overflow-x: hidden;
 }
-.cntem { font-size: calc(var(--b) * 1.6) !important; animation: popIn .3s ease forwards; opacity: 0; }
+.cntem { font-size: 1.9rem !important; animation: popIn .3s ease forwards; opacity: 0; }
 
-/* ── Compact nav buttons ── */
-.num-nav { margin-top: 8px !important; padding: 4px !important; }
-.num-nav-btn { padding: 10px 8px !important; min-height: 44px !important; font-size: var(--sm) !important; }
-.quiz-nav { margin-top: 8px !important; padding: 4px !important; }
-.quiz-nav-btn { padding: 10px 8px !important; min-height: 44px !important; font-size: var(--sm) !important; }
+/* ── Nav: normal flow (no sticky) ── */
+.num-nav-btn  { padding: 11px 10px !important; min-height: 44px !important; font-size: var(--sm) !important; }
+.quiz-nav-btn { padding: 10px 8px  !important; min-height: 42px !important; font-size: var(--sm) !important; }
+#num-numbers { overflow-x: hidden; }
 
-/* ── Compact grid toggle ── */
-.grid-ctrl { margin-bottom: 8px !important; }
-.num-toggle { padding: 9px 14px !important; font-size: var(--sm) !important; }
-.num-shuf { padding: 9px 12px !important; }
+/* ── Grid toggle button (standalone, no side-by-side shuffle) ── */
+.num-toggle { padding: 9px 14px !important; font-size: var(--sm) !important; margin-bottom: 8px; }
+
+/* ── Common shuffle toggle (matches games / think / abc pages) ── */
+.shuf-row { text-align: center; margin-bottom: 8px; }
+.shuf-toggle {
+  padding: 7px 20px; border-radius: 20px; border: 2px solid #ddd;
+  background: #f5f5f5; font-family: var(--f); font-size: var(--sm);
+  font-weight: 800; cursor: pointer; transition: all .22s; color: #888;
+  -webkit-tap-highlight-color: transparent;
+}
+.shuf-toggle.on { background: linear-gradient(135deg,#E91E63,#FF8E53); color: #fff; border-color: transparent; }
+
+/* ── Selector grids: hidden by default, scrollable when open ── */
+.hidden { display: none !important; }
+#ng, #cog, #shg {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+  max-height: 108px; overflow-y: auto; margin-bottom: 8px;
+}
 
 /* ── Compact color/shape cards ── */
-.cgrid { gap: 7px !important; }
-.crd { padding: 10px 4px 8px !important; border-radius: 14px !important; }
+.cgrid { gap: 7px !important; width: 100%; box-sizing: border-box; overflow: hidden; }
+.crd { padding: 10px 4px 8px !important; border-radius: 14px !important; min-width: 0; overflow: hidden; }
 .crdem { font-size: calc(var(--b) * 2) !important; }
-.crdlbl { font-size: calc(var(--b) * 0.72) !important; }
+.crdlbl { font-size: calc(var(--b) * 0.72) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cswatch { width: 60px !important; height: 60px !important; margin-bottom: 6px !important; }
 
 /* ── Color swatch & quiz elements ── */
 .cswatch  { width:80px;height:80px;border-radius:50%;margin:0 auto 9px;
             box-shadow:0 5px 15px rgba(0,0,0,.2);border:5px solid rgba(255,255,255,.6); }
-.ptrow    { display:flex;gap:10px;justify-content:center;align-items:center;
-            margin-bottom:18px;flex-wrap:wrap; }
-.pitem    { font-size:2.4rem;padding:7px;background:#f5f5f5;border-radius:12px;
-            min-width:52px;text-align:center; }
-.pblank   { font-size:2.4rem;padding:7px;background:#f0f0f0;border-radius:12px;
-            min-width:52px;text-align:center;border:3px dashed #ccc; }
-.cprow    { display:flex;gap:12px;justify-content:center;align-items:stretch;
-            margin-bottom:18px; }
-.cpitem   { background:#f9f9f9;border-radius:16px;padding:16px 12px;text-align:center;
-            cursor:pointer;border:3px solid #eee;flex:1; transition:all .18s; }
+.ptrow    { display:flex;gap:6px;justify-content:center;align-items:center;
+            margin-bottom:10px;flex-wrap:wrap; }
+.pitem    { font-size:1.7rem;padding:5px;background:#f5f5f5;border-radius:12px;
+            min-width:40px;text-align:center; }
+.pblank   { font-size:1.7rem;padding:5px;background:#f0f0f0;border-radius:12px;
+            min-width:40px;text-align:center;border:3px dashed #ccc; }
+.cprow    { display:flex;flex-direction:column;gap:8px;
+            margin-bottom:12px; }
+.cpitem   { background:#f9f9f9;border-radius:16px;padding:12px 16px;text-align:center;
+            cursor:pointer;border:3px solid #eee;width:100%;box-sizing:border-box;
+            transition:all .18s; }
 .cpitem:active { transform:scale(.96); border-color:#FF8E53; }
 
 /* ── Bottom dock ── */
@@ -80,17 +98,8 @@
 .num-dock-btn[data-tab="patterns"].active { background:#E91E63; }
 .num-dock-btn[data-tab="compare"].active  { background:#FF8E53; }
 
-/* ── Grid control row: [toggle] [shuffle] ── */
-.grid-ctrl { display:flex; gap:8px; align-items:stretch; margin-bottom:12px; }
-.grid-ctrl .num-toggle { flex:1; margin-bottom:0; }
-.num-shuf {
-  padding:12px 14px; border-radius:16px; border:2px solid rgba(25,118,210,.2);
-  background:#E3F2FD; color:#1565C0; font-size:1.1rem;
-  cursor:pointer; font-family:var(--f); font-weight:900;
-  transition:all .2s cubic-bezier(.34,1.56,.64,1);
-  -webkit-tap-highlight-color:transparent;
-}
-.num-shuf:active { transform:scale(.88); }
+/* ── Grid control row: toggle only ── */
+.grid-ctrl { margin-bottom: 0; }
 
 /* ── Grid toggle button ── */
 .num-toggle { display:flex;align-items:center;justify-content:center;gap:8px;
@@ -102,29 +111,23 @@
 .num-toggle.open   { background:linear-gradient(135deg,#1976D2,#29B6F6);color:#fff; }
 
 /* ── Prev / Next nav (Numbers, Colors, Shapes) ── */
-.num-nav { display:flex;align-items:center;gap:10px;margin-top:14px;
-  padding:6px;border-radius:22px;background:rgba(227,242,253,.94);
-  box-shadow:0 4px 18px rgba(0,0,0,.08); }
-.num-nav-btn { flex:1;padding:14px 10px;border-radius:16px;border:none;
-  background:#fff;color:#1565C0;font-weight:900;font-size:var(--md);
-  min-height:54px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1); }
+.num-nav { display:flex;align-items:center;gap:8px;margin-top:8px;
+  padding:5px;border-radius:18px;background:rgba(227,242,253,.94);
+  box-shadow:0 2px 12px rgba(0,0,0,.07); }
+.num-nav-btn { flex:1;padding:10px 8px;border-radius:13px;border:none;
+  background:#fff;color:#1565C0;font-weight:900;font-size:var(--sm);
+  min-height:40px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1); }
 .num-nav-btn:active { transform:scale(.95); }
 
-/* ── Quiz: shuffle + nav row ── */
-.quiz-top { display:flex;gap:8px;align-items:center;margin-bottom:10px; }
-.quiz-shuffle { padding:10px 16px;border-radius:14px;border:none;
-  background:linear-gradient(135deg,#E8F5E9,#C8E6C9);color:#2E7D32;
-  font-family:var(--f);font-size:var(--sm);font-weight:900;cursor:pointer;
-  transition:all .2s; }
-.quiz-shuffle:active { transform:scale(.95); }
+/* .quiz-top removed — replaced by .shuf-row */
 
-/* ── Quiz: bottom prev/next (same visual as num-nav) ── */
-.quiz-nav { display:flex;align-items:center;gap:10px;margin-top:14px;
-  padding:6px;border-radius:22px;background:rgba(232,245,233,.94);
-  box-shadow:0 4px 18px rgba(0,0,0,.08); }
-.quiz-nav-btn { flex:1;padding:14px 10px;border-radius:16px;border:none;
-  background:#fff;color:#2E7D32;font-weight:900;font-size:var(--md);
-  min-height:54px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1); }
+/* ── Quiz: bottom prev/next ── */
+.quiz-nav { display:flex;align-items:center;gap:8px;margin-top:8px;
+  padding:5px;border-radius:18px;background:rgba(232,245,233,.94);
+  box-shadow:0 2px 12px rgba(0,0,0,.07); }
+.quiz-nav-btn { flex:1;padding:10px 8px;border-radius:13px;border:none;
+  background:#fff;color:#2E7D32;font-weight:900;font-size:var(--sm);
+  min-height:40px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1); }
 .quiz-nav-btn:active { transform:scale(.95); }
 /* color overrides per tab */
 #num-compare .quiz-nav { background:rgba(255,243,224,.94); }
@@ -148,13 +151,15 @@
 
     <!-- ══ NUMBERS ══ -->
     <div id="num-numbers" class="sec active">
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="numShufBtn" onclick="shuffleNums()">&#128256; Shuffle OFF</button>
+      </div>
       <div class="grid-ctrl">
         <button class="num-toggle" id="numToggle" onclick="toggleNumGrid()">
           &#128290; Show All Numbers &#9660;
         </button>
-        <button class="num-shuf" onclick="shuffleNums()" title="Shuffle">&#128256;</button>
       </div>
-      <div class="selgrid" id="ng" style="display:none"></div>
+      <div class="selgrid hidden" id="ng"></div>
       <div class="bigbox" id="nb" style="cursor:pointer" onclick="spk(String(curN))">
         <div class="bigchar" id="bnc"></div>
         <div class="bigsub" id="bns"></div>
@@ -168,13 +173,15 @@
 
     <!-- ══ COLORS ══ -->
     <div id="num-colors" class="sec">
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="colShufBtn" onclick="shuffleColors()">&#128256; Shuffle OFF</button>
+      </div>
       <div class="grid-ctrl">
         <button class="num-toggle" id="colToggle" onclick="toggleColGrid()">
           &#127912; Show All Colors &#9660;
         </button>
-        <button class="num-shuf" onclick="shuffleColors()" title="Shuffle">&#128256;</button>
       </div>
-      <div class="selgrid" id="cog" style="display:none"></div>
+      <div class="selgrid hidden" id="cog"></div>
       <div class="bigbox" id="cob" style="cursor:pointer" onclick="spk(CD[colOrder[curCPos]].n)">
         <div class="cswatch" id="csw"></div>
         <div class="bigchar" id="cnb" style="font-size:var(--xxl)"></div>
@@ -188,13 +195,15 @@
 
     <!-- ══ SHAPES ══ -->
     <div id="num-shapes" class="sec">
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="shShufBtn" onclick="shuffleShapes()">&#128256; Shuffle OFF</button>
+      </div>
       <div class="grid-ctrl">
         <button class="num-toggle" id="shToggle" onclick="toggleShGrid()">
           &#128311; Show All Shapes &#9660;
         </button>
-        <button class="num-shuf" onclick="shuffleShapes()" title="Shuffle">&#128256;</button>
       </div>
-      <div class="selgrid" id="shg" style="display:none"></div>
+      <div class="selgrid hidden" id="shg"></div>
       <div class="bigbox" id="shb" style="cursor:pointer" onclick="spk(SHD[shOrder[curShPos]].n)">
         <div class="bigchar" id="shE"></div>
         <div class="bigsub" id="shN"></div>
@@ -208,11 +217,8 @@
 
     <!-- ══ ADDITION QUIZ ══ -->
     <div id="num-addition" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#00897B,#26C6A6)">
-        <div class="bigchar">&#10133;</div><div class="bigsub">Addition Quiz</div>
-      </div>
-      <div class="quiz-top">
-        <button class="quiz-shuffle" onclick="shuffleAdd()">&#128256; Shuffle</button>
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="addShufBtn" onclick="shuffleAdd()">&#128256; Shuffle OFF</button>
       </div>
       <div id="addArea"></div>
       <div class="quiz-nav">
@@ -223,11 +229,8 @@
 
     <!-- ══ PATTERNS QUIZ ══ -->
     <div id="num-patterns" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#9C27B0,#E91E63)">
-        <div class="bigchar">&#128308;</div><div class="bigsub">Complete the Pattern!</div>
-      </div>
-      <div class="quiz-top">
-        <button class="quiz-shuffle" onclick="shufflePat()">&#128256; Shuffle</button>
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="patShufBtn" onclick="shufflePat()">&#128256; Shuffle OFF</button>
       </div>
       <div id="patArea"></div>
       <div class="quiz-nav">
@@ -238,8 +241,8 @@
 
     <!-- ══ BIG / SMALL ══ -->
     <div id="num-compare" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF8E53,#FFC300)">
-        <div class="bigchar">&#9878;</div><div class="bigsub">Big &amp; Small</div>
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="cmpShufBtn" onclick="shuffleCmp()">&#128256; Shuffle OFF</button>
       </div>
       <div id="cmpArea"></div>
       <div class="quiz-nav">
@@ -336,12 +339,21 @@ var PATP=[
   {seq:["&#128024;","&#128045;","&#128024;","&#128045;"],missing:3,ans:"&#128045;",opts:["&#128024;","&#128047;","&#128045;"]}
 ];
 var CMPP=[
-  {q:"Which is BIGGER?",      a:{e:"&#128024;",n:1,l:"Elephant"},b:{e:"&#128045;",n:1,l:"Mouse"},   ans:"a",msg:"Elephant is BIGGER!"},
-  {q:"Which group has MORE?", a:{e:"&#127822;",n:4,l:"4 Apples"},b:{e:"&#127822;",n:2,l:"2 Apples"},ans:"a",msg:"4 is MORE than 2!"},
-  {q:"Which is SMALLER?",     a:{e:"&#128049;",n:1,l:"Cat"},     b:{e:"&#129409;",n:1,l:"Lion"},    ans:"a",msg:"Cat is SMALLER!"},
-  {q:"Which group has LESS?", a:{e:"&#11088;", n:2,l:"2 Stars"}, b:{e:"&#11088;", n:5,l:"5 Stars"}, ans:"a",msg:"2 is LESS than 5!"},
-  {q:"Which is TALLER?",      a:{e:"&#129426;",n:1,l:"Giraffe"}, b:{e:"&#128034;",n:1,l:"Turtle"},  ans:"a",msg:"Giraffe is TALLER!"},
-  {q:"Which is SHORTER?",     a:{e:"&#128027;",n:1,l:"Worm"},    b:{e:"&#128013;",n:1,l:"Snake"},   ans:"a",msg:"Worm is SHORTER!"}
+  {q:"Which is BIGGER?",       a:{e:"&#128024;",n:1,l:"Elephant"},  b:{e:"&#128045;",n:1,l:"Mouse"},    ans:"a",msg:"Elephant is BIGGER!"},
+  {q:"Which group has MORE?",  a:{e:"&#127822;",n:4,l:"4 Apples"},  b:{e:"&#127822;",n:2,l:"2 Apples"}, ans:"a",msg:"4 is MORE than 2!"},
+  {q:"Which is SMALLER?",      a:{e:"&#128049;",n:1,l:"Cat"},        b:{e:"&#129409;",n:1,l:"Lion"},     ans:"a",msg:"Cat is SMALLER!"},
+  {q:"Which group has LESS?",  a:{e:"&#11088;", n:2,l:"2 Stars"},   b:{e:"&#11088;", n:5,l:"5 Stars"},  ans:"a",msg:"2 is LESS than 5!"},
+  {q:"Which is TALLER?",       a:{e:"&#129426;",n:1,l:"Giraffe"},   b:{e:"&#128034;",n:1,l:"Turtle"},   ans:"a",msg:"Giraffe is TALLER!"},
+  {q:"Which is SHORTER?",      a:{e:"&#128027;",n:1,l:"Worm"},      b:{e:"&#128013;",n:1,l:"Snake"},    ans:"a",msg:"Worm is SHORTER!"},
+  {q:"Which is FASTER?",       a:{e:"&#128008;",n:1,l:"Cheetah"},   b:{e:"&#128012;",n:1,l:"Snail"},    ans:"a",msg:"Cheetah is FASTER!"},
+  {q:"Which is HEAVIER?",      a:{e:"&#128663;",n:1,l:"Car"},        b:{e:"&#127880;",n:1,l:"Balloon"},  ans:"a",msg:"Car is HEAVIER!"},
+  {q:"Which group has MORE?",  a:{e:"&#11088;", n:6,l:"6 Stars"},   b:{e:"&#11088;", n:3,l:"3 Stars"},  ans:"a",msg:"6 is MORE than 3!"},
+  {q:"Which is LONGER?",       a:{e:"&#128013;",n:1,l:"Snake"},      b:{e:"&#128027;",n:1,l:"Worm"},     ans:"a",msg:"Snake is LONGER!"},
+  {q:"Which is SMALLER?",      a:{e:"&#128028;",n:1,l:"Ant"},        b:{e:"&#128054;",n:1,l:"Dog"},      ans:"a",msg:"Ant is SMALLER!"},
+  {q:"Which group has LESS?",  a:{e:"&#127850;",n:1,l:"1 Candy"},   b:{e:"&#127850;",n:4,l:"4 Candies"},ans:"a",msg:"1 is LESS than 4!"},
+  {q:"Which is BIGGER?",       a:{e:"&#127757;",n:1,l:"Earth"},      b:{e:"&#128138;",n:1,l:"Ball"},     ans:"a",msg:"Earth is BIGGER!"},
+  {q:"Which is TALLER?",       a:{e:"&#127795;",n:1,l:"Tree"},       b:{e:"&#127804;",n:1,l:"Flower"},   ans:"a",msg:"Tree is TALLER!"},
+  {q:"Which group has MORE?",  a:{e:"&#128153;",n:5,l:"5 Hearts"},  b:{e:"&#128153;",n:2,l:"2 Hearts"},  ans:"a",msg:"5 is MORE than 2!"}
 ];
 
 /* ════════════════════════════════
@@ -363,6 +375,12 @@ function swDock(tab) {
   if (tab === 'patterns' && !document.getElementById('patArea').innerHTML) buildPat();
   if (tab === 'compare'  && !document.getElementById('cmpArea').innerHTML) buildCmp();
 }
+
+/* ════════════════════════════════
+   FISHER-YATES + SHUFFLE STATE
+════════════════════════════════ */
+function fisherYates(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}}
+var numShuffled=false, colShuffled=false, shShuffled=false, addShuffled=false, patShuffled=false, cmpShuffled=false;
 
 /* ════════════════════════════════
    NUMBERS  (0–9)
@@ -409,11 +427,11 @@ function nextN() { if (numPos < numOrder.length - 1) rN(numOrder[numPos + 1]); }
 function toggleNumGrid() {
   var g   = document.getElementById('ng');
   var btn = document.getElementById('numToggle');
-  var vis = g.style.display !== 'none';
-  g.style.display = vis ? 'none' : '';
-  btn.classList.toggle('open', !vis);
-  btn.innerHTML   = !vis ? '&#128290; Hide All Numbers &#9650;'
-                         : '&#128290; Show All Numbers &#9660;';
+  var nowShow = g.classList.contains('hidden');
+  g.classList.toggle('hidden', !nowShow);
+  btn.classList.toggle('open', nowShow);
+  btn.innerHTML = nowShow ? '&#128290; Hide All Numbers &#9650;'
+                          : '&#128290; Show All Numbers &#9660;';
 }
 
 // Build number grid in numOrder sequence
@@ -433,10 +451,16 @@ function buildNumGrid() {
 buildNumGrid();
 
 function shuffleNums() {
-  numOrder = [0,1,2,3,4,5,6,7,8,9].sort(function() { return Math.random() - .5; });
+  numShuffled = !numShuffled;
+  var btn = document.getElementById('numShufBtn');
+  btn.classList.toggle('on', numShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (numShuffled ? 'ON' : 'OFF');
+  numOrder = [0,1,2,3,4,5,6,7,8,9];
+  if (numShuffled) fisherYates(numOrder);
+  numPos = 0;
   buildNumGrid();
   rN(numOrder[0]);
-  spk('Shuffled!');
+  spk(numShuffled ? 'Shuffle on' : 'Shuffle off');
 }
 
 /* ════════════════════════════════
@@ -479,11 +503,11 @@ function nextC() { if (curCPos < colOrder.length - 1) rC(colOrder[curCPos + 1]);
 function toggleColGrid() {
   var g   = document.getElementById('cog');
   var btn = document.getElementById('colToggle');
-  var vis = g.style.display !== 'none';
-  g.style.display = vis ? 'none' : '';
-  btn.classList.toggle('open', !vis);
-  btn.innerHTML   = !vis ? '&#127912; Hide All Colors &#9650;'
-                         : '&#127912; Show All Colors &#9660;';
+  var nowShow = g.classList.contains('hidden');
+  g.classList.toggle('hidden', !nowShow);
+  btn.classList.toggle('open', nowShow);
+  btn.innerHTML = nowShow ? '&#127912; Hide All Colors &#9650;'
+                          : '&#127912; Show All Colors &#9660;';
 }
 
 // Build color grid in colOrder sequence
@@ -504,11 +528,16 @@ function buildColGrid() {
 buildColGrid();
 
 function shuffleColors() {
-  colOrder = CD.map(function(_, i) { return i; }).sort(function() { return Math.random() - .5; });
+  colShuffled = !colShuffled;
+  var btn = document.getElementById('colShufBtn');
+  btn.classList.toggle('on', colShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (colShuffled ? 'ON' : 'OFF');
+  colOrder = CD.map(function(_, i) { return i; });
+  if (colShuffled) fisherYates(colOrder);
   curCPos = 0;
   buildColGrid();
   rC(colOrder[0]);
-  spk('Shuffled!');
+  spk(colShuffled ? 'Shuffle on' : 'Shuffle off');
 }
 
 /* ════════════════════════════════
@@ -549,11 +578,11 @@ function nextSh() { if (curShPos < shOrder.length - 1) rSh(shOrder[curShPos + 1]
 function toggleShGrid() {
   var g   = document.getElementById('shg');
   var btn = document.getElementById('shToggle');
-  var vis = g.style.display !== 'none';
-  g.style.display = vis ? 'none' : '';
-  btn.classList.toggle('open', !vis);
-  btn.innerHTML   = !vis ? '&#128311; Hide All Shapes &#9650;'
-                         : '&#128311; Show All Shapes &#9660;';
+  var nowShow = g.classList.contains('hidden');
+  g.classList.toggle('hidden', !nowShow);
+  btn.classList.toggle('open', nowShow);
+  btn.innerHTML = nowShow ? '&#128311; Hide All Shapes &#9650;'
+                          : '&#128311; Show All Shapes &#9660;';
 }
 
 // Build shapes grid in shOrder sequence
@@ -572,11 +601,16 @@ function buildShGrid() {
 buildShGrid();
 
 function shuffleShapes() {
-  shOrder = SHD.map(function(_, i) { return i; }).sort(function() { return Math.random() - .5; });
+  shShuffled = !shShuffled;
+  var btn = document.getElementById('shShufBtn');
+  btn.classList.toggle('on', shShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (shShuffled ? 'ON' : 'OFF');
+  shOrder = SHD.map(function(_, i) { return i; });
+  if (shShuffled) fisherYates(shOrder);
   curShPos = 0;
   buildShGrid();
   rSh(shOrder[0]);
-  spk('Shuffled!');
+  spk(shShuffled ? 'Shuffle on' : 'Shuffle off');
 }
 
 /* ════════════════════════════════
@@ -601,8 +635,8 @@ function buildAdd() {
     '&emsp;&#183;&emsp;Score: <b>' + addSc + '</b></div>' +
     '<div class="ibox">' +
       '<div class="iq">How many altogether?</div>' +
-      '<div style="font-size:1.9rem;text-align:center;margin-bottom:16px;line-height:1.7">' +
-        aE + '&nbsp;<b style="color:#00897B">+</b>&nbsp;' + bE + '&nbsp;<b>=</b>&nbsp;?' +
+      '<div style="font-size:1.2rem;text-align:center;margin-bottom:12px;line-height:1.9;word-break:break-word;overflow-wrap:anywhere">' +
+        aE + ' <b style="color:#00897B">+</b> ' + bE + ' <b>=</b> ?' +
       '</div>' +
       '<div class="achc">' +
         opts.map(function(o) {
@@ -644,10 +678,15 @@ function addPrev() { if (addIdx > 0) { addIdx--; buildAdd(); } }
 function addNext() { if (addIdx < addList.length - 1) { addIdx++; buildAdd(); } }
 
 function shuffleAdd() {
-  addList = ADDP.slice().sort(function() { return Math.random() - .5; });
+  addShuffled = !addShuffled;
+  var btn = document.getElementById('addShufBtn');
+  btn.classList.toggle('on', addShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (addShuffled ? 'ON' : 'OFF');
+  addList = ADDP.slice();
+  if (addShuffled) fisherYates(addList);
   addIdx = 0; addSc = 0;
   buildAdd();
-  spk('Questions shuffled!');
+  spk(addShuffled ? 'Shuffle on' : 'Shuffle off');
 }
 
 /* ════════════════════════════════
@@ -670,9 +709,10 @@ function buildPat() {
     '<div class="ibox">' +
       '<div class="iq">What comes next?</div>' +
       '<div class="ptrow">' + sH + '</div>' +
-      '<div class="achc">' +
+      '<div style="font-size:var(--sm);font-weight:900;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin:10px 0 6px">Options</div>' +
+      '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:nowrap">' +
         p.opts.map(function(o) {
-          return '<button class="cbtn" onclick="chkPat(this,\'' + o + '\',\'' + p.ans + '\')">' + o + '</button>';
+          return '<button class="cbtn pat-opt" onclick="chkPat(this,\'' + o + '\',\'' + p.ans + '\')" style="flex:1;font-size:1.6rem;padding:10px 4px;min-width:0">' + o + '</button>';
         }).join('') +
       '</div>' +
       '<div class="rmsg" id="patR"></div>' +
@@ -712,35 +752,41 @@ function patPrev() { if (patIdx > 0) { patIdx--; buildPat(); } }
 function patNext() { if (patIdx < patList.length - 1) { patIdx++; buildPat(); } }
 
 function shufflePat() {
-  patList = PATP.slice().sort(function() { return Math.random() - .5; });
+  patShuffled = !patShuffled;
+  var btn = document.getElementById('patShufBtn');
+  btn.classList.toggle('on', patShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (patShuffled ? 'ON' : 'OFF');
+  patList = PATP.slice();
+  if (patShuffled) fisherYates(patList);
   patIdx = 0; patSc = 0;
   buildPat();
-  spk('Questions shuffled!');
+  spk(patShuffled ? 'Shuffle on' : 'Shuffle off');
 }
 
 /* ════════════════════════════════
    BIG / SMALL (Compare)
 ════════════════════════════════ */
 var cmpIdx = 0, cmpSc = 0, cmpAnswered = false;
+var cmpList = CMPP.slice();
 
 function buildCmp() {
-  var p = CMPP[cmpIdx];
+  var p = cmpList[cmpIdx];
   cmpAnswered = false;
   var aE = Array(p.a.n).fill(p.a.e).join('&nbsp;');
   var bE = Array(p.b.n).fill(p.b.e).join('&nbsp;');
   document.getElementById('cmpArea').innerHTML =
-    '<div class="scorebar">&#9878; Question ' + (cmpIdx + 1) + '&nbsp;/&nbsp;' + CMPP.length +
+    '<div class="scorebar">&#9878; Question ' + (cmpIdx + 1) + '&nbsp;/&nbsp;' + cmpList.length +
     '&emsp;&#183;&emsp;Score: <b>' + cmpSc + '</b></div>' +
     '<div class="ibox">' +
       '<div class="iq">' + p.q + '</div>' +
       '<div class="cprow">' +
         '<div class="cpitem" onclick="chkCmp(\'a\',\'' + p.ans + '\')">' +
-          '<span style="font-size:1.9rem;display:block;margin-bottom:8px">' + aE + '</span>' +
+          '<span style="font-size:1.4rem;display:block;margin-bottom:6px;word-break:break-word;overflow-wrap:anywhere">' + aE + '</span>' +
           '<div style="font-weight:700">' + p.a.l + '</div>' +
         '</div>' +
-        '<div style="font-size:var(--xl);font-weight:900;color:#ccc;align-self:center">VS</div>' +
+        '<div style="font-size:var(--md);font-weight:900;color:#ccc;text-align:center">VS</div>' +
         '<div class="cpitem" onclick="chkCmp(\'b\',\'' + p.ans + '\')">' +
-          '<span style="font-size:1.9rem;display:block;margin-bottom:8px">' + bE + '</span>' +
+          '<span style="font-size:1.4rem;display:block;margin-bottom:6px;word-break:break-word;overflow-wrap:anywhere">' + bE + '</span>' +
           '<div style="font-weight:700">' + p.b.l + '</div>' +
         '</div>' +
       '</div>' +
@@ -752,7 +798,7 @@ function buildCmp() {
 function chkCmp(c, cr) {
   if (cmpAnswered) return;
   if (c === cr) {
-    var p = CMPP[cmpIdx];
+    var p = cmpList[cmpIdx];
     cmpSc++;
     cmpAnswered = true;
     document.getElementById('cmpR').innerHTML = '&#127881; Correct! ' + p.msg;
@@ -770,12 +816,24 @@ function updateCmpNav() {
   // First: only Next  |  Last: only Prev  |  Middle: both
   p.style.visibility = cmpIdx === 0 ? 'hidden' : 'visible';
   if (cmpIdx > 0) p.innerHTML = '&#8592; Q' + cmpIdx;
-  x.style.visibility = cmpIdx === CMPP.length - 1 ? 'hidden' : 'visible';
-  if (cmpIdx < CMPP.length - 1) x.innerHTML = 'Q' + (cmpIdx + 2) + ' &#8594;';
+  x.style.visibility = cmpIdx === cmpList.length - 1 ? 'hidden' : 'visible';
+  if (cmpIdx < cmpList.length - 1) x.innerHTML = 'Q' + (cmpIdx + 2) + ' &#8594;';
 }
 
 function cmpPrev() { if (cmpIdx > 0) { cmpIdx--; buildCmp(); } }
-function cmpNext() { if (cmpIdx < CMPP.length - 1) { cmpIdx++; buildCmp(); } }
+function cmpNext() { if (cmpIdx < cmpList.length - 1) { cmpIdx++; buildCmp(); } }
+
+function shuffleCmp() {
+  cmpShuffled = !cmpShuffled;
+  var btn = document.getElementById('cmpShufBtn');
+  btn.classList.toggle('on', cmpShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (cmpShuffled ? 'ON' : 'OFF');
+  cmpList = CMPP.slice();
+  if (cmpShuffled) fisherYates(cmpList);
+  cmpIdx = 0; cmpSc = 0;
+  buildCmp();
+  spk(cmpShuffled ? 'Shuffle on' : 'Shuffle off');
+}
 
 /* ════════════════════════════════
    INIT

@@ -211,17 +211,38 @@ class MainActivity : AppCompatActivity() {
 
                 // ════════════════════════════════════════
                 // FIX 4: TTS — prefer native AndroidTTS
+                // Respects mute state via isSoundOn()
+                // Also patches toggleSoundBtn to stop TTS
                 // ════════════════════════════════════════
-                if (window.AndroidTTS && typeof window.spk === 'function') {
-                    window._webSpk = window.spk;
-                    window.spk = function(text) {
-                        try {
-                            AndroidTTS.stop();
-                            AndroidTTS.speak(String(text));
-                        } catch(e) {
-                            window._webSpk(text);
-                        }
-                    };
+                if (window.AndroidTTS) {
+                    // Override spk — check mute before speaking
+                    if (typeof window.spk === 'function') {
+                        window._webSpk = window.spk;
+                        window.spk = function(text) {
+                            if (typeof window.isSoundOn === 'function' && !window.isSoundOn()) return;
+                            try { AndroidTTS.stop(); AndroidTTS.speak(String(text)); }
+                            catch(e) { window._webSpk(text); }
+                        };
+                    }
+                    // Override spkSeq — check mute before speaking
+                    if (typeof window.spkSeq === 'function') {
+                        window._webSpkSeq = window.spkSeq;
+                        window.spkSeq = function(arr) {
+                            if (typeof window.isSoundOn === 'function' && !window.isSoundOn()) return;
+                            try { AndroidTTS.stop(); if (arr && arr.length) AndroidTTS.speak(arr.join(', ')); }
+                            catch(e) { window._webSpkSeq(arr); }
+                        };
+                    }
+                    // Patch toggleSoundBtn to also stop Android TTS when muting
+                    if (typeof window.toggleSoundBtn === 'function') {
+                        var _origToggle = window.toggleSoundBtn;
+                        window.toggleSoundBtn = function() {
+                            _origToggle();
+                            if (typeof window.isSoundOn === 'function' && !window.isSoundOn()) {
+                                try { AndroidTTS.stop(); } catch(e) {}
+                            }
+                        };
+                    }
                 }
 
                 // ════════════════════════════════════════

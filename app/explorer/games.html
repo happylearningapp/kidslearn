@@ -7,64 +7,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="../shared.js"></script>
 <style>
-.mgame-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:380px;margin:0 auto 14px;}
-.mcard{aspect-ratio:1;border-radius:14px;border:none;background:linear-gradient(135deg,#FF6B6B,#FF8E53);cursor:pointer;font-size:2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);}
-.mcard.flipped{background:#fff;border:3px solid #FF6B6B;}
-.mcard.matched{background:linear-gradient(135deg,#4CAF50,#00C9A7);}
-.ogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:380px;margin:0 auto 14px;}
-.ocrd{border-radius:16px;padding:8px 4px;text-align:center;cursor:pointer;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);border:3px solid transparent;}
-.ocrd:hover{transform:scale(1.05);}
-.ocrd.correct{background:#E8F5E9;border-color:#4CAF50;}
-.ocrd.wrong{background:#FFEBEE;border-color:#FF6B6B;}
-.ctarea{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:14px;text-align:center;}
-.ctnbtn{padding:10px 16px;border-radius:14px;border:3px solid #eee;background:#f9f9f9;font-family:var(--f);font-size:var(--lg);font-weight:900;cursor:pointer;transition:all .2s;min-width:50px;}
-.ctnbtn:hover{border-color:#1976D2;transform:scale(1.08);}
-.ctnbtn.correct{background:#4CAF50;color:#fff;border-color:#4CAF50;}
-.ctnbtn.wrong{background:#FF6B6B;color:#fff;border-color:#FF6B6B;}
-.wmbox{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:14px;text-align:center;}
-.wopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px;margin:0 auto 14px;}
-.wopt{padding:13px 10px;border-radius:14px;border:3px solid #eee;background:#f9f9f9;font-family:var(--f);font-size:var(--md);font-weight:900;cursor:pointer;letter-spacing:.5px;}
-.wopt:hover{border-color:#7B1FA2;background:#F3E8FF;}
-.wopt.correct{background:#E8F5E9;border-color:#4CAF50;color:#1B5E20;}
-.wopt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
-.wopt.reveal{background:#E8F5E9;border-color:#4CAF50;}
-.balarea{position:relative;background:linear-gradient(180deg,#87CEEB,#B0E0FF 60%,#E8F5FF);border-radius:20px;height:380px;overflow:hidden;margin-bottom:14px;box-shadow:0 5px 20px rgba(0,0,0,.1);}
-.balq{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);border-radius:16px;padding:8px 18px;font-size:var(--lg);font-weight:900;color:#333;z-index:10;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.1);}
-.bal{position:absolute;cursor:pointer;text-align:center;width:64px;}
-.balbody{font-size:2.8rem;display:block;line-height:1;}
-.balnum{display:block;font-size:1rem;font-weight:900;color:#333;margin-top:-4px;}
-.balstr{width:2px;height:28px;background:rgba(0,0,0,.2);margin:0 auto;}
-@keyframes bpop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(0);opacity:0}}
-.ptrow{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
-.pitem{font-size:2.4rem;padding:7px;background:#f5f5f5;border-radius:12px;min-width:52px;text-align:center;}
-.pblank{font-size:2.4rem;padding:7px;background:#f0f0f0;border-radius:12px;min-width:52px;text-align:center;border:3px dashed #ccc;}
-.cprow{display:flex;gap:16px;justify-content:center;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
-.cpitem{background:#f9f9f9;border-radius:16px;padding:14px 16px;text-align:center;cursor:pointer;border:3px solid #eee;flex:1;min-width:110px;}
-.cpitem:hover{border-color:#FF6B6B;}
-/* .prvbtn / .nxtbtn defined in shared.js */
-/* SHADOW */
-.shadow-box{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:14px;text-align:center;}
-.shadow-em{font-size:6rem;display:block;filter:brightness(0);margin-bottom:12px;}
-.shadow-opts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
-.shadow-opt{background:#fff;border:3px solid #eee;border-radius:16px;padding:14px 10px;cursor:pointer;font-size:2.8rem;min-width:80px;text-align:center;transition:all .2s;}
-.shadow-opt:hover{border-color:#37474F;transform:scale(1.08);}
-.shadow-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
-.shadow-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
-/* MISSING */
-.missing-grid{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
-.missing-item{font-size:2.8rem;background:#f5f5f5;border-radius:14px;padding:12px;min-width:64px;text-align:center;}
-.missing-item.hidden{background:#ddd;color:transparent;}
-.missing-opts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
-.missing-opt{background:#fff;border:3px solid #eee;border-radius:16px;padding:12px 10px;cursor:pointer;font-size:2.5rem;min-width:72px;text-align:center;transition:all .2s;}
-.missing-opt:hover{border-color:#6A1B9A;transform:scale(1.08);}
-.missing-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
-.missing-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
 /* ── Override shared sidebar layout ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(110px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 14px 12px calc(110px + env(safe-area-inset-bottom)) !important; overflow-y: hidden; overflow-x: hidden; }
 #sdrawer { top: 66px !important; }
 
-/* ── Bottom dock (2-row grid for 11 games) ── */
+/* ── Bottom dock (2-row grid for 12 games) ── */
 .games-dock {
   position:fixed; bottom:0; left:0; right:0; z-index:200;
   background:#fff; box-shadow:0 -3px 20px rgba(0,0,0,.13);
@@ -82,43 +30,131 @@
 .games-dock-btn.active { color:#fff; transform:scale(1.05); }
 .games-dock-btn .dock-ico { font-size:1rem; line-height:1; }
 
-/* SIMON */
-.simon-board{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:320px;margin:0 auto 16px;}
-.simon-btn{height:110px;border-radius:20px;border:none;cursor:pointer;font-size:1rem;font-weight:900;color:#fff;opacity:.5;text-shadow:1px 1px 3px rgba(0,0,0,.3);transition:opacity .15s;}
-.simon-btn.lit{opacity:1;transform:scale(1.06);}
-.simon-status{text-align:center;font-size:var(--lg);font-weight:900;color:#333;margin-bottom:12px;min-height:28px;}
-.simon-seq{display:flex;gap:6px;justify-content:center;margin-bottom:10px;flex-wrap:wrap;}
-.simon-dot{width:14px;height:14px;border-radius:50%;background:#ddd;display:inline-block;}
-.simon-dot.done{background:#4CAF50;}
-/* SORT */
-.sort-item-box{text-align:center;margin-bottom:12px;}
-.sort-item-em{font-size:2.8rem;display:block;margin-bottom:4px;animation:popIn .4s ease;}
-.sort-buckets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:300px;margin:0 auto 14px;}
-.sort-bucket{border-radius:14px;padding:8px 4px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all .2s;}
-.sort-bucket:hover{transform:scale(1.04);}
+/* ── Common Shuffle Toggle ── */
+.shuf-row { text-align:center; margin-bottom:8px; }
+.shuf-toggle {
+  padding:7px 20px; border-radius:20px; border:2px solid #ddd;
+  background:#f5f5f5; font-family:var(--f); font-size:var(--sm);
+  font-weight:800; cursor:pointer; transition:all .22s; color:#888;
+  -webkit-tap-highlight-color:transparent;
+}
+.shuf-toggle.on {
+  background:linear-gradient(135deg,#E91E63,#FF8E53);
+  color:#fff; border-color:transparent;
+}
+
+/* ── Memory ── */
+.mgame-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:340px;margin:0 auto 12px;}
+.mcard{aspect-ratio:1;border-radius:14px;border:none;background:linear-gradient(135deg,#FF6B6B,#FF8E53);cursor:pointer;font-size:1.8rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.mcard.flipped{background:#fff;border:3px solid #FF6B6B;}
+.mcard.matched{background:linear-gradient(135deg,#4CAF50,#00C9A7);}
+
+/* ── Odd One Out ── */
+.ogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:360px;margin:0 auto 10px;}
+.ocrd{border-radius:14px;padding:7px 4px;text-align:center;cursor:pointer;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);border:3px solid transparent;}
+.ocrd.correct{background:#E8F5E9;border-color:#4CAF50;}
+.ocrd.wrong{background:#FFEBEE;border-color:#FF6B6B;}
+
+/* ── Count & Tap ── */
+.ctarea{background:#fff;border-radius:18px;padding:14px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:10px;text-align:center;}
+.ctnbtn{padding:9px 14px;border-radius:14px;border:3px solid #eee;background:#f9f9f9;font-family:var(--f);font-size:var(--lg);font-weight:900;cursor:pointer;transition:all .2s;min-width:46px;}
+.ctnbtn.correct{background:#4CAF50;color:#fff;border-color:#4CAF50;}
+.ctnbtn.wrong{background:#FF6B6B;color:#fff;border-color:#FF6B6B;}
+
+/* ── Word Match ── */
+.wmbox{background:#fff;border-radius:18px;padding:14px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:10px;text-align:center;}
+.wopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:360px;margin:0 auto 8px;}
+.wopt{padding:11px 8px;border-radius:14px;border:3px solid #eee;background:#f9f9f9;font-family:var(--f);font-size:var(--md);font-weight:900;cursor:pointer;letter-spacing:.4px;}
+.wopt.correct{background:#E8F5E9;border-color:#4CAF50;color:#1B5E20;}
+.wopt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
+.wopt.reveal{background:#E8F5E9;border-color:#4CAF50;}
+
+/* ── Balloon Pop ── */
+.balarea{position:relative;background:linear-gradient(180deg,#87CEEB,#B0E0FF 60%,#E8F5FF);border-radius:20px;height:340px;overflow:hidden;margin-bottom:10px;box-shadow:0 5px 20px rgba(0,0,0,.1);}
+.balq{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);border-radius:16px;padding:8px 18px;font-size:var(--lg);font-weight:900;color:#333;z-index:10;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.1);}
+.bal{position:absolute;cursor:pointer;text-align:center;width:60px;}
+.balbody{font-size:2.6rem;display:block;line-height:1;}
+.balnum{display:block;font-size:.9rem;font-weight:900;color:#333;margin-top:-4px;}
+.balstr{width:2px;height:24px;background:rgba(0,0,0,.2);margin:0 auto;}
+@keyframes bpop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(0);opacity:0}}
+
+/* ── Quiz (GQ) — 2×2 card layout ── */
+.gq-card{background:#fff;border-radius:18px;padding:0 0 12px;box-shadow:0 6px 22px rgba(0,0,0,.12);overflow:hidden;margin-bottom:10px;}
+.gq-qhd{background:linear-gradient(135deg,#43A047,#FFC300);padding:10px 14px;text-align:center;}
+.gq-qbadge{background:rgba(255,255,255,.25);border-radius:18px;padding:3px 14px;font-size:var(--sm);font-weight:900;color:#fff;display:inline-block;}
+.gq-q{font-size:var(--lg);font-weight:900;color:#333;text-align:center;padding:12px 14px 10px;line-height:1.4;cursor:pointer;}
+.gq-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 12px;}
+.gq-opt{padding:10px 8px;border-radius:13px;border:2.5px solid #eee;background:#fafafa;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:6px;}
+.gq-ltr{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:900;color:#fff;flex-shrink:0;}
+.gq-ltr-a{background:#7B1FA2;}.gq-ltr-b{background:#E91E63;}
+.gq-ltr-c{background:#1565C0;}.gq-ltr-d{background:#E65100;}
+.gq-opt.correct{background:#E8F5E9;border-color:#4CAF50;}
+.gq-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
+.gq-fb{min-height:28px;display:flex;align-items:center;justify-content:center;font-size:var(--md);font-weight:900;color:#555;padding:6px 12px 0;}
+
+/* ── Shadow Match ── */
+.shadow-box{background:#fff;border-radius:18px;padding:14px 12px;box-shadow:0 5px 20px rgba(0,0,0,.1);margin-bottom:10px;text-align:center;}
+.shadow-em{font-size:4.5rem;display:block;filter:brightness(0);margin-bottom:8px;}
+.shadow-opts-lbl{font-size:var(--sm);font-weight:900;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.shadow-opts{display:flex;gap:8px;justify-content:center;flex-wrap:nowrap;overflow:hidden;margin-bottom:8px;}
+.shadow-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:10px 6px;cursor:pointer;font-size:2.2rem;flex:1;min-width:0;text-align:center;transition:all .2s;}
+.shadow-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.shadow-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
+
+/* ── What's Missing ── */
+.missing-grid{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.missing-item{font-size:2.4rem;background:#f5f5f5;border-radius:12px;padding:9px;min-width:56px;text-align:center;}
+.missing-item.hidden{background:#ddd;color:transparent;}
+.missing-opts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.missing-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:10px 8px;cursor:pointer;font-size:2.2rem;min-width:64px;text-align:center;transition:all .2s;}
+.missing-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.missing-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;}
+
+/* ── Sort It ── */
+.sort-item-box{text-align:center;margin-bottom:10px;}
+.sort-item-em{font-size:2.4rem;display:block;margin-bottom:3px;animation:popIn .4s ease;}
+.sort-buckets{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;max-width:300px;margin:0 auto 10px;}
+.sort-bucket{border-radius:13px;padding:7px 4px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all .2s;}
 .sort-bucket.correct{animation:popIn .3s ease;border-color:#fff!important;}
 .sort-bucket.wrong{animation:shake .4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.sort-bucket-em{font-size:1.4rem;display:block;margin-bottom:2px;}
-.sort-bucket-lbl{font-size:.75rem;font-weight:900;color:#fff;}
-/* COLOR TAP */
-.ctap-word{font-size:3.2rem;font-weight:900;text-align:center;padding:18px 12px;border-radius:20px;margin-bottom:18px;letter-spacing:2px;background:#fff;box-shadow:0 5px 20px rgba(0,0,0,.12);}
-.ctap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:320px;margin:0 auto 14px;}
-.ctap-circle{aspect-ratio:1;border-radius:50%;border:5px solid #fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;}
-.ctap-circle:active{transform:scale(0.92);}
-.ctap-circle.correct{border-color:#4CAF50;box-shadow:0 0 0 6px #4CAF5066,0 4px 14px rgba(0,0,0,.18);animation:popIn .3s ease;}
-.ctap-circle.wrong{border-color:#FF6B6B;animation:shake .4s ease;}
-/* TRUE/FALSE */
-.tf-card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 5px 20px rgba(0,0,0,.12);margin-bottom:14px;text-align:center;}
-.tf-em{font-size:4rem;display:block;margin-bottom:10px;}
-.tf-stmt{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:20px;line-height:1.4;}
-.tf-btns{display:flex;gap:16px;justify-content:center;}
-.tf-btn{padding:14px 36px;border-radius:18px;border:none;font-family:var(--f);font-size:var(--xl);font-weight:900;cursor:pointer;transition:all .2s;}
-.tf-btn:hover{transform:scale(1.06);}
+.sort-bucket-em{font-size:1.3rem;display:block;margin-bottom:2px;}
+.sort-bucket-lbl{font-size:.72rem;font-weight:900;color:#fff;}
+
+/* ── Simon ── */
+.simon-board{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:290px;margin:0 auto 12px;}
+.simon-btn{height:100px;border-radius:18px;border:none;cursor:pointer;font-size:.9rem;font-weight:900;color:#fff;opacity:.5;text-shadow:1px 1px 3px rgba(0,0,0,.3);transition:opacity .15s;}
+.simon-btn.lit{opacity:1;transform:scale(1.06);}
+.simon-status{text-align:center;font-size:var(--lg);font-weight:900;color:#333;margin-bottom:10px;min-height:26px;}
+.simon-seq{display:flex;gap:6px;justify-content:center;margin-bottom:8px;flex-wrap:wrap;}
+.simon-dot{width:13px;height:13px;border-radius:50%;background:#ddd;display:inline-block;}
+.simon-dot.done{background:#4CAF50;}
+
+/* ── True / False ── */
+.tf-card{background:#fff;border-radius:18px;padding:14px;box-shadow:0 5px 20px rgba(0,0,0,.12);margin-bottom:10px;text-align:center;}
+.tf-em{font-size:3rem;display:block;margin-bottom:8px;}
+.tf-stmt{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:14px;line-height:1.4;}
+.tf-btns{display:flex;gap:10px;justify-content:center;}
+.tf-btn{padding:10px 24px;border-radius:14px;border:none;font-family:var(--f);font-size:var(--md);font-weight:900;cursor:pointer;transition:all .2s;}
 .tf-true{background:#4CAF50;color:#fff;}
 .tf-false{background:#FF6B6B;color:#fff;}
-.tf-btn.correct{box-shadow:0 0 0 5px #FFC300;animation:popIn .3s ease;}
+.tf-btn.correct{box-shadow:0 0 0 4px #FFC300;animation:popIn .3s ease;}
 .tf-btn.wrong{opacity:.4;}
+
+/* ── Color Tap ── */
+.ctap-word{font-size:2.2rem;font-weight:900;text-align:center;padding:10px;border-radius:16px;margin-bottom:10px;letter-spacing:1px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.ctap-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:190px;margin:0 auto 8px;}
+.ctap-circle{width:100%;aspect-ratio:1;max-height:84px;border-radius:50%;border:4px solid #fff;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;}
+.ctap-circle:active{transform:scale(0.92);}
+.ctap-circle.correct{border-color:#4CAF50;box-shadow:0 0 0 5px #4CAF5066,0 4px 12px rgba(0,0,0,.18);animation:popIn .3s ease;}
+.ctap-circle.wrong{border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* ── Patterns row (Odd One Out / Missing) ── */
+.ptrow{display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.pitem{font-size:2.2rem;padding:6px;background:#f5f5f5;border-radius:12px;min-width:48px;text-align:center;}
+.pblank{font-size:2.2rem;padding:6px;background:#f0f0f0;border-radius:12px;min-width:48px;text-align:center;border:3px dashed #ccc;}
+.cprow{display:flex;gap:12px;justify-content:center;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.cpitem{background:#f9f9f9;border-radius:14px;padding:12px 14px;text-align:center;cursor:pointer;border:3px solid #eee;flex:1;min-width:100px;}
 </style>
 </head>
 <body data-page-title="&#127918; Fun Games" data-page-sub="Play, Learn &amp; Win!" data-page-gradient="linear-gradient(135deg,#FF6B00,#FFC300)" data-page-back="../home.html">
@@ -174,27 +210,19 @@ var GAME_INITS = {
 function showGame(name) {
   window.speechSynthesis.cancel();
   currentGame = name;
-
-  /* highlight dock button */
   document.querySelectorAll('.games-dock-btn').forEach(function(b) {
     var on = b.getAttribute('data-game') === name;
     b.classList.toggle('active', on);
     var h = GAME_HEADERS[name];
     b.style.background = on ? (h ? h.bg : '#FF6B00') : '';
   });
-
-  /* inject header + container */
-  var h = GAME_HEADERS[name];
-  document.getElementById('gameMain').innerHTML =
-    '<div class="bigbox" style="background:'+h.bg+'"><div class="bigchar">'+h.em+'</div><div class="bigsub">'+h.title+'</div></div>'
-    + '<div id="gameArea"></div>';
-
-  /* reset state & build */
+  document.getElementById('gameMain').innerHTML = '<div id="gameArea"></div>';
   resetState(name);
   GAME_INITS[name]();
 }
 
 function resetState(name) {
+  shufState[name] = false; // always reset shuffle to OFF on game switch
   if(name==='odd')    { oddOrder=ODD.map(function(_,i){return i;}); oddIdx=0; oddSc=0; }
   if(name==='count')  { ctOrder=CTD.map(function(_,i){return i;}); ctIdx=0; ctSc=0; ctAnswered=false; }
   if(name==='quiz')   { gqOrder=GQD.map(function(_,i){return i;}); gqIdx=0; gqSc=0; gqAnswered=false; }
@@ -203,7 +231,7 @@ function resetState(name) {
   if(name==='shadow') { shOrder=SHDW.map(function(_,i){return i;}); shIdx=0; shSc=0; shAnswered=false; }
   if(name==='missing'){ msOrder=MISS.map(function(_,i){return i;}); msIdx=0; msSc=0; msAnswered=false; }
   if(name==='simon')  { simonSeq=[]; simonStep=0; simonRound=0; simonSc=0; simonPlaying=false; }
-  if(name==='sortit') { sortPool=SORT_POOL.slice().sort(function(){return Math.random()-.5;}); sortOrder=sortPool.map(function(_,i){return i;}); sortIdx=0; sortSc=0; sortAnswered=false; }
+  if(name==='sortit') { sortPool=SORT_POOL.slice(); sortOrder=sortPool.map(function(_,i){return i;}); sortIdx=0; sortSc=0; sortAnswered=false; }
   if(name==='tf')       { tfOrder=TFD.map(function(_,i){return i;}); tfIdx=0; tfSc=0; tfAnswered=false; }
   if(name==='memory')   { var p=memE.concat(memE); p.sort(function(){return Math.random()-.5;}); memSt={cards:p,fl:[],ma:[],lk:false,sc:0,mv:0}; }
   if(name==='colortap') { ctapOrder=CTAP.map(function(_,i){return i;}); ctapIdx=0; ctapSc=0; ctapAnswered=false; }
@@ -214,7 +242,7 @@ function getArea() { return document.getElementById('gameArea'); }
 /* ── DATA ── */
 var ODD=[{q:"Which one does NOT live in water?",i:[{e:"&#128031;",l:"Fish",o:false},{e:"&#128044;",l:"Dolphin",o:false},{e:"&#128024;",l:"Elephant",o:true},{e:"&#129416;",l:"Shark",o:false},{e:"&#129585;",l:"Octopus",o:false},{e:"&#128056;",l:"Frog",o:false}]},{q:"Which one is NOT a fruit?",i:[{e:"&#127822;",l:"Apple",o:false},{e:"&#127820;",l:"Banana",o:false},{e:"&#129365;",l:"Carrot",o:true},{e:"&#127815;",l:"Grapes",o:false},{e:"&#127818;",l:"Orange",o:false},{e:"&#127827;",l:"Strawberry",o:false}]},{q:"Which ones can FLY?",i:[{e:"&#128053;",l:"Dog",o:true},{e:"&#129413;",l:"Eagle",o:false},{e:"&#128049;",l:"Cat",o:true},{e:"&#129419;",l:"Butterfly",o:false},{e:"&#128046;",l:"Cow",o:true},{e:"&#9992;",l:"Airplane",o:false}],multi:true,correct:[1,3,5]},{q:"Which one is NOT a color?",i:[{e:"&#128308;",l:"Red",o:false},{e:"&#127795;",l:"Tree",o:true},{e:"&#128309;",l:"Blue",o:false},{e:"&#128993;",l:"Yellow",o:false},{e:"&#127769;",l:"Moon",o:true},{e:"&#128994;",l:"Green",o:false}]},{q:"Which ones are vehicles?",i:[{e:"&#128047;",l:"Tiger",o:true},{e:"&#128663;",l:"Car",o:false},{e:"&#127800;",l:"Flower",o:true},{e:"&#128652;",l:"Bus",o:false},{e:"&#127829;",l:"Pizza",o:true},{e:"&#9992;",l:"Airplane",o:false}],multi:true,correct:[1,3,5]},{q:"Which one is NOT an animal?",i:[{e:"&#129409;",l:"Lion",o:false},{e:"&#127846;",l:"Ice Cream",o:true},{e:"&#128024;",l:"Elephant",o:false},{e:"&#11088;",l:"Star",o:true},{e:"&#128047;",l:"Tiger",o:false},{e:"&#128038;",l:"Bird",o:false}]}];
 var CTD=[{q:"How many apples?",e:"&#127822;",n:3},{q:"How many stars?",e:"&#11088;",n:5},{q:"How many frogs?",e:"&#128056;",n:2},{q:"How many flowers?",e:"&#127800;",n:4},{q:"How many balls?",e:"&#9917;",n:6},{q:"How many hearts?",e:"&#10084;",n:1},{q:"How many fish?",e:"&#128031;",n:7},{q:"How many clouds?",e:"&#9729;",n:3},{q:"How many suns?",e:"&#9728;",n:2},{q:"How many butterflies?",e:"&#129419;",n:4}];
-var GQD=[{q:"Which animal says Meow?",o:["Dog","Cat","Cow","Duck"],a:1,e:"&#128049;"},{q:"What color is the sky?",o:["Red","Green","Blue","Yellow"],a:2,e:"&#127780;"},{q:"How many legs does a dog have?",o:["2","4","6","8"],a:1,e:"&#128053;"},{q:"Which fruit is yellow and long?",o:["Apple","Orange","Banana","Mango"],a:2,e:"&#127820;"},{q:"What do we use to brush teeth?",o:["Comb","Toothbrush","Soap","Cloth"],a:1,e:"&#129463;"},{q:"Which animal has a long trunk?",o:["Giraffe","Elephant","Hippo","Rhino"],a:1,e:"&#128024;"},{q:"What shape is a ball?",o:["Square","Triangle","Circle","Star"],a:2,e:"&#9917;"},{q:"National bird of India?",o:["Eagle","Crow","Peacock","Parrot"],a:2,e:"&#129434;"},{q:"What do we use when it rains?",o:["Sunglasses","Umbrella","Hat","Jacket"],a:1,e:"&#9730;"},{q:"When do we sleep?",o:["Morning","Afternoon","Night","Evening"],a:2,e:"&#127769;"},{q:"Which fruit is red and round?",o:["Banana","Apple","Mango","Grapes"],a:1,e:"&#127822;"},{q:"What should NOT be touched?",o:["Water","Toy","Fire","Book"],a:2,e:"&#128293;"},{q:"Where do you go to study?",o:["Hospital","Zoo","School","Market"],a:2,e:"&#127979;"},{q:"Which helps sick people?",o:["Fire Truck","Ambulance","Bus","Train"],a:1,e:"&#128657;"},{q:"What color is grass?",o:["Red","Blue","Yellow","Green"],a:3,e:"&#127807;"},{q:"How many fingers on one hand?",o:["3","4","5","6"],a:2,e:"&#128400;"},{q:"What color is milk?",o:["Yellow","White","Blue","Brown"],a:1,e:"&#129379;"},{q:"National animal of India?",o:["Elephant","Lion","Tiger","Leopard"],a:2,e:"&#128047;"},{q:"What do we see at night?",o:["Sun","Moon","Rainbow","Cloud"],a:1,e:"&#127765;"},{q:"How many eyes do we have?",o:["1","2","3","4"],a:1,e:"&#128064;"},{q:"How many days in a week?",o:["5","6","7","8"],a:2,e:"&#128197;"},{q:"What color is an orange?",o:["Red","Yellow","Orange","Green"],a:2,e:"&#127818;"},{q:"Which animal jumps near water?",o:["Cat","Frog","Dog","Cow"],a:1,e:"&#128056;"},{q:"Which vehicle runs on tracks?",o:["Car","Boat","Train","Airplane"],a:2,e:"&#128642;"},{q:"What do bees make?",o:["Water","Honey","Milk","Juice"],a:1,e:"&#127855;"},{q:"Which shape has 3 sides?",o:["Circle","Square","Triangle","Rectangle"],a:2,e:"&#128314;"},{q:"Which bird can talk?",o:["Eagle","Crow","Parrot","Penguin"],a:2,e:"&#129412;"},{q:"What comes after 4?",o:["3","5","6","7"],a:1,e:"&#128290;"},{q:"Where do fish live?",o:["Trees","Sky","Water","Desert"],a:2,e:"&#128031;"},{q:"What do we wear on feet?",o:["Hat","Gloves","Shoes","Scarf"],a:2,e:"&#128099;"},{q:"Biggest planet?",o:["Earth","Mars","Jupiter","Saturn"],a:2,e:"&#129680;"},{q:"How many months in a year?",o:["10","11","12","13"],a:2,e:"&#128197;"},{q:"Which animal says Moo?",o:["Sheep","Cow","Horse","Pig"],a:1,e:"&#128046;"},{q:"What color is a carrot?",o:["Purple","Green","Orange","Red"],a:2,e:"&#129365;"},{q:"Which vehicle flies?",o:["Car","Boat","Train","Airplane"],a:3,e:"&#9992;"},{q:"What do plants need?",o:["Sand","Water and Sun","Stones","Ice"],a:1,e:"&#127807;"},{q:"Fastest animal on land?",o:["Lion","Elephant","Cheetah","Horse"],a:2,e:"&#128006;"},{q:"Baby cat is called?",o:["Cub","Puppy","Kitten","Foal"],a:2,e:"&#128049;"},{q:"Capital of India?",o:["Mumbai","New Delhi","Kolkata","Chennai"],a:1,e:"&#127963;"},{q:"Which part helps you smell?",o:["Eyes","Ears","Nose","Mouth"],a:2,e:"&#128067;"},{q:"Shape of a pizza slice?",o:["Circle","Triangle","Square","Oval"],a:1,e:"&#127829;"},{q:"Season with snow?",o:["Summer","Spring","Winter","Autumn"],a:2,e:"&#10052;"},{q:"What comes before 10?",o:["8","9","11","12"],a:1,e:"&#128290;"},{q:"Fruit on coconut tree?",o:["Mango","Banana","Coconut","Orange"],a:2,e:"&#129381;"},{q:"What cuts paper?",o:["Spoon","Scissors","Pencil","Ruler"],a:1,e:"&#9986;"},{q:"Animal with black-white stripes?",o:["Tiger","Giraffe","Zebra","Leopard"],a:2,e:"&#129427;"},{q:"What is 3+2?",o:["4","5","6","7"],a:1,e:"&#10133;"},{q:"Which part pumps blood?",o:["Brain","Lungs","Heart","Tummy"],a:2,e:"&#10084;"},{q:"15 August in India?",o:["Diwali","Holi","Independence Day","Republic Day"],a:2,e:"&#127470;&#127475;"},{q:"King of the jungle?",o:["Tiger","Elephant","Lion","Bear"],a:2,e:"&#129409;"}];
+var GQD=[{q:"Which animal says Meow?",o:["Dog","Cat","Cow","Duck"],a:1},{q:"What color is the sky?",o:["Red","Green","Blue","Yellow"],a:2},{q:"How many legs does a dog have?",o:["2","4","6","8"],a:1},{q:"Which fruit is yellow and long?",o:["Apple","Orange","Banana","Mango"],a:2},{q:"What do we use to brush teeth?",o:["Comb","Toothbrush","Soap","Cloth"],a:1},{q:"Which animal has a long trunk?",o:["Giraffe","Elephant","Hippo","Rhino"],a:1},{q:"What shape is a ball?",o:["Square","Triangle","Circle","Star"],a:2},{q:"National bird of India?",o:["Eagle","Crow","Peacock","Parrot"],a:2},{q:"What do we use when it rains?",o:["Sunglasses","Umbrella","Hat","Jacket"],a:1},{q:"When do we sleep?",o:["Morning","Afternoon","Night","Evening"],a:2},{q:"Which fruit is red and round?",o:["Banana","Apple","Mango","Grapes"],a:1},{q:"What should NOT be touched?",o:["Water","Toy","Fire","Book"],a:2},{q:"Where do you go to study?",o:["Hospital","Zoo","School","Market"],a:2},{q:"Which helps sick people?",o:["Fire Truck","Ambulance","Bus","Train"],a:1},{q:"What color is grass?",o:["Red","Blue","Yellow","Green"],a:3},{q:"How many fingers on one hand?",o:["3","4","5","6"],a:2},{q:"What color is milk?",o:["Yellow","White","Blue","Brown"],a:1},{q:"National animal of India?",o:["Elephant","Lion","Tiger","Leopard"],a:2},{q:"What do we see at night?",o:["Sun","Moon","Rainbow","Cloud"],a:1},{q:"How many eyes do we have?",o:["1","2","3","4"],a:1},{q:"How many days in a week?",o:["5","6","7","8"],a:2},{q:"What color is an orange?",o:["Red","Yellow","Orange","Green"],a:2},{q:"Which animal jumps near water?",o:["Cat","Frog","Dog","Cow"],a:1},{q:"Which vehicle runs on tracks?",o:["Car","Boat","Train","Airplane"],a:2},{q:"What do bees make?",o:["Water","Honey","Milk","Juice"],a:1},{q:"Which shape has 3 sides?",o:["Circle","Square","Triangle","Rectangle"],a:2},{q:"Which bird can talk?",o:["Eagle","Crow","Parrot","Penguin"],a:2},{q:"What comes after 4?",o:["3","5","6","7"],a:1},{q:"Where do fish live?",o:["Trees","Sky","Water","Desert"],a:2},{q:"What do we wear on feet?",o:["Hat","Gloves","Shoes","Scarf"],a:2},{q:"Biggest planet?",o:["Earth","Mars","Jupiter","Saturn"],a:2},{q:"How many months in a year?",o:["10","11","12","13"],a:2},{q:"Which animal says Moo?",o:["Sheep","Cow","Horse","Pig"],a:1},{q:"What color is a carrot?",o:["Purple","Green","Orange","Red"],a:2},{q:"Which vehicle flies?",o:["Car","Boat","Train","Airplane"],a:3},{q:"What do plants need?",o:["Sand","Water and Sun","Stones","Ice"],a:1},{q:"Fastest animal on land?",o:["Lion","Elephant","Cheetah","Horse"],a:2},{q:"Baby cat is called?",o:["Cub","Puppy","Kitten","Foal"],a:2},{q:"Capital of India?",o:["Mumbai","New Delhi","Kolkata","Chennai"],a:1},{q:"Which part helps you smell?",o:["Eyes","Ears","Nose","Mouth"],a:2},{q:"Shape of a pizza slice?",o:["Circle","Triangle","Square","Oval"],a:1},{q:"Season with snow?",o:["Summer","Spring","Winter","Autumn"],a:2},{q:"What comes before 10?",o:["8","9","11","12"],a:1},{q:"Fruit on coconut tree?",o:["Mango","Banana","Coconut","Orange"],a:2},{q:"What cuts paper?",o:["Spoon","Scissors","Pencil","Ruler"],a:1},{q:"Animal with black and white stripes?",o:["Tiger","Giraffe","Zebra","Leopard"],a:2},{q:"What is 3 plus 2?",o:["4","5","6","7"],a:1},{q:"Which part pumps blood?",o:["Brain","Lungs","Heart","Tummy"],a:2},{q:"15 August in India is?",o:["Diwali","Holi","Independence Day","Republic Day"],a:2},{q:"King of the jungle?",o:["Tiger","Elephant","Lion","Bear"],a:2}];
 var WMD=[{e:"&#127822;",w:"APPLE",o:["APPLE","MANGO","GRAPE","LEMON"]},{e:"&#128024;",w:"ELEPHANT",o:["TIGER","ELEPHANT","GIRAFFE","MONKEY"]},{e:"&#127769;",w:"MOON",o:["STAR","SUN","MOON","CLOUD"]},{e:"&#128663;",w:"CAR",o:["BUS","CAR","TRAIN","BOAT"]},{e:"&#127820;",w:"BANANA",o:["BANANA","ORANGE","MANGO","PEACH"]},{e:"&#128049;",w:"CAT",o:["DOG","COW","CAT","PIG"]},{e:"&#127800;",w:"FLOWER",o:["TREE","LEAF","GRASS","FLOWER"]},{e:"&#11088;",w:"STAR",o:["MOON","STAR","SUN","CLOUD"]},{e:"&#128031;",w:"FISH",o:["FISH","BIRD","FROG","CRAB"]},{e:"&#127968;",w:"HOUSE",o:["SCHOOL","HOUSE","MARKET","PARK"]},{e:"&#127818;",w:"ORANGE",o:["ORANGE","LEMON","MANGO","PEACH"]},{e:"&#129409;",w:"LION",o:["BEAR","WOLF","TIGER","LION"]},{e:"&#9728;",w:"SUN",o:["MOON","RAIN","SUN","WIND"]},{e:"&#127880;",w:"BALLOON",o:["KITE","BALL","BALLOON","BUBBLE"]},{e:"&#127752;",w:"RAINBOW",o:["RAIN","CLOUD","STORM","RAINBOW"]},{e:"&#128053;",w:"DOG",o:["CAT","COW","DOG","GOAT"]},{e:"&#9999;",w:"PENCIL",o:["PEN","PENCIL","CHALK","BOOK"]},{e:"&#127829;",w:"PIZZA",o:["CAKE","BREAD","PIZZA","RICE"]},{e:"&#129419;",w:"BUTTERFLY",o:["DRAGONFLY","BEE","ANT","BUTTERFLY"]},{e:"&#127874;",w:"CAKE",o:["CAKE","BREAD","COOKIE","MUFFIN"]}];
 var SHDW=[{ans:"&#129409;",opts:["&#129409;","&#128056;","&#128049;"],lbl:"Lion"},{ans:"&#128024;",opts:["&#128024;","&#129426;","&#128018;"],lbl:"Elephant"},{ans:"&#127822;",opts:["&#127822;","&#127820;","&#127818;"],lbl:"Apple"},{ans:"&#128663;",opts:["&#128663;","&#128652;","&#128642;"],lbl:"Car"},{ans:"&#128049;",opts:["&#128049;","&#128053;","&#128046;"],lbl:"Cat"},{ans:"&#127820;",opts:["&#127820;","&#127819;","&#129389;"],lbl:"Banana"},{ans:"&#128056;",opts:["&#128056;","&#128034;","&#128013;"],lbl:"Frog"},{ans:"&#9992;",opts:["&#9992;","&#128641;","&#9973;"],lbl:"Airplane"},{ans:"&#129413;",opts:["&#129413;","&#129417;","&#129412;"],lbl:"Eagle"},{ans:"&#127815;",opts:["&#127815;","&#127827;","&#127817;"],lbl:"Grapes"},{ans:"&#128047;",opts:["&#128047;","&#129409;","&#128058;"],lbl:"Tiger"},{ans:"&#128640;",opts:["&#128640;","&#9992;","&#128641;"],lbl:"Rocket"},{ans:"&#129427;",opts:["&#129427;","&#128059;","&#129426;"],lbl:"Zebra"},{ans:"&#127817;",opts:["&#127817;","&#127815;","&#127822;"],lbl:"Watermelon"},{ans:"&#128018;",opts:["&#128018;","&#128060;","&#128040;"],lbl:"Monkey"},{ans:"&#128652;",opts:["&#128652;","&#128663;","&#128667;"],lbl:"Bus"},{ans:"&#129434;",opts:["&#129434;","&#129441;","&#129442;"],lbl:"Peacock"},{ans:"&#127829;",opts:["&#127829;","&#127874;","&#127869;"],lbl:"Pizza"},{ans:"&#128059;",opts:["&#128059;","&#128060;","&#128040;"],lbl:"Bear"},{ans:"&#127813;",opts:["&#127813;","&#127822;","&#127818;"],lbl:"Tomato"}];
 var MISS=[{items:["&#127822;","&#127820;","&#128049;","&#11088;"]},{items:["&#128053;","&#128056;","&#9728;","&#127800;"]},{items:["&#128663;","&#129409;","&#127817;","&#128038;"]},{items:["&#127752;","&#128024;","&#127829;","&#129432;"]},{items:["&#128640;","&#127813;","&#129417;","&#128652;"]},{items:["&#129426;","&#127815;","&#128641;","&#128046;"]},{items:["&#128047;","&#127819;","&#129442;","&#128663;"]},{items:["&#9917;","&#128018;","&#127874;","&#128057;"]},{items:["&#129427;","&#127827;","&#128652;","&#128064;"]},{items:["&#129413;","&#127821;","&#129364;","&#128059;"]},{items:["&#128056;","&#127805;","&#128642;","&#129441;"]},{items:["&#127795;","&#128031;","&#127878;","&#128661;"]},{items:["&#129382;","&#128034;","&#127880;","&#128053;"]},{items:["&#9728;","&#128039;","&#127826;","&#128663;"]},{items:["&#127769;","&#128055;","&#129389;","&#128641;"]},{items:["&#128013;","&#127822;","&#129413;","&#128652;"]},{items:["&#128040;","&#127825;","&#9992;","&#128056;"]},{items:["&#128060;","&#127817;","&#128038;","&#128663;"]},{items:["&#128016;","&#127820;","&#128641;","&#11088;"]},{items:["&#129432;","&#127827;","&#128640;","&#128049;"]}];
@@ -225,6 +253,7 @@ SORT_CATS.forEach(function(cat,ci){cat.items.forEach(function(em){SORT_POOL.push
 var TFD=[{em:"&#128049;",stmt:"A cat can fly",ans:false},{em:"&#128056;",stmt:"A frog can jump",ans:true},{em:"&#9728;",stmt:"The sun is cold",ans:false},{em:"&#128024;",stmt:"An elephant is bigger than a mouse",ans:true},{em:"&#128038;",stmt:"Birds have wings",ans:true},{em:"&#127820;",stmt:"A banana is red",ans:false},{em:"&#128053;",stmt:"A dog says Meow",ans:false},{em:"&#127822;",stmt:"An apple is a fruit",ans:true},{em:"&#9992;",stmt:"Airplanes can fly",ans:true},{em:"&#128046;",stmt:"A cow gives us milk",ans:true},{em:"&#127813;",stmt:"A tomato is blue",ans:false},{em:"&#128039;",stmt:"Penguins can fly high in the sky",ans:false},{em:"&#127752;",stmt:"A rainbow has many colors",ans:true},{em:"&#128013;",stmt:"A snake has legs",ans:false},{em:"&#128034;",stmt:"A turtle moves very slowly",ans:true},{em:"&#127815;",stmt:"Grapes grow in bunches",ans:true},{em:"&#128642;",stmt:"A train runs on roads",ans:false},{em:"&#129434;",stmt:"Peacock is the national bird of India",ans:true},{em:"&#128047;",stmt:"Tiger is the national animal of India",ans:true},{em:"&#127769;",stmt:"We can see the moon at night",ans:true},{em:"&#128293;",stmt:"Fire is safe to touch",ans:false},{em:"&#129426;",stmt:"A giraffe has a very long neck",ans:true},{em:"&#128031;",stmt:"A fish can live on land",ans:false},{em:"&#129432;",stmt:"A kangaroo carries its baby in a pouch",ans:true},{em:"&#127817;",stmt:"A watermelon is green outside and red inside",ans:true},{em:"&#128640;",stmt:"Rockets go to space",ans:true},{em:"&#128046;",stmt:"A cow can fly",ans:false},{em:"&#128018;",stmt:"Monkeys like bananas",ans:true},{em:"&#9728;",stmt:"The sun rises in the West",ans:false},{em:"&#128167;",stmt:"We should drink water every day",ans:true}];
 
 /* ── GAME STATE ── */
+var shufState = {}; // shuffle toggle state per game (true = on)
 var oddOrder=ODD.map(function(_,i){return i;}),oddIdx=0,oddSc=0;
 var ctOrder=CTD.map(function(_,i){return i;}),ctIdx=0,ctSc=0,ctAnswered=false;
 var gqOrder=GQD.map(function(_,i){return i;}),gqIdx=0,gqSc=0,gqAnswered=false;
@@ -248,8 +277,32 @@ var CTAP=[
 var ctapOrder=CTAP.map(function(_,i){return i;}),ctapIdx=0,ctapSc=0,ctapAnswered=false;
 
 /* ── HELPERS ── */
+function fisherYates(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}}
+
+/* Shuffle toggle bar — common across all games */
+function shufBar(name){
+  var on=shufState[name]||false;
+  return '<div class="shuf-row"><button class="shuf-toggle'+(on?' on':'')+'" onclick="doToggleShuf(\''+name+'\')">'
+    +'&#128256; Shuffle '+(on?'ON':'OFF')+'</button></div>';
+}
+
+/* Toggle shuffle on/off for a game, restart from Q1 */
+function doToggleShuf(name){
+  shufState[name]=!shufState[name];
+  var on=shufState[name];
+  spk(on?'Shuffle on':'Shuffle off');
+  if(name==='odd')    { oddIdx=0;oddSc=0;oddOrder=ODD.map(function(_,i){return i;});if(on)fisherYates(oddOrder);buildOdd(); }
+  if(name==='count')  { ctIdx=0;ctSc=0;ctOrder=CTD.map(function(_,i){return i;});if(on)fisherYates(ctOrder);buildCT(); }
+  if(name==='quiz')   { gqIdx=0;gqSc=0;gqOrder=GQD.map(function(_,i){return i;});if(on)fisherYates(gqOrder);buildGQ(); }
+  if(name==='word')   { wmIdx=0;wmSc=0;wmOrder=WMD.map(function(_,i){return i;});if(on)fisherYates(wmOrder);buildWM(); }
+  if(name==='shadow') { shIdx=0;shSc=0;shOrder=SHDW.map(function(_,i){return i;});if(on)fisherYates(shOrder);buildShadow(); }
+  if(name==='missing'){ msIdx=0;msSc=0;msOrder=MISS.map(function(_,i){return i;});if(on)fisherYates(msOrder);buildMissing(); }
+  if(name==='sortit') { sortIdx=0;sortSc=0;sortPool=SORT_POOL.slice();if(on)fisherYates(sortPool);sortOrder=sortPool.map(function(_,i){return i;});buildSort(); }
+  if(name==='tf')     { tfIdx=0;tfSc=0;tfOrder=TFD.map(function(_,i){return i;});if(on)fisherYates(tfOrder);buildTF(); }
+  if(name==='colortap'){ ctapIdx=0;ctapSc=0;ctapOrder=CTAP.map(function(_,i){return i;});if(on)fisherYates(ctapOrder);buildCtap(); }
+}
+
 function scoreH(cur,tot,sc){return '<div class="scorebar">Q <b>'+cur+'</b>/'+tot+' &nbsp; Score: <b>'+sc+'</b></div>';}
-function shufBar(fn){return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';}
 function navBtns(prevFn,showNext){
   return '<div class="nav-row">'
     +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
@@ -276,19 +329,14 @@ function scoreScrn(sc,tot,great,ok,id,initFn){
 }
 
 /* ── ODD ONE OUT ── */
-function shuffleOdd(){
-  oddOrder=ODD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  oddIdx=0; oddSc=0; buildOdd();
-}
 function buildOdd(){
   if(oddIdx>=ODD.length){scoreScrn(oddSc,ODD.length,'Odd One expert!','Good thinking!','odd');return;}
   var p=ODD[oddOrder[oddIdx]];
-  var tot=ODD.length;
   _nextFn=function(){oddIdx++;buildOdd();};
-  getArea().innerHTML=scoreH(oddIdx+1,tot,oddSc)
-    +shufBar('shuffleOdd()')
+  getArea().innerHTML=scoreH(oddIdx+1,ODD.length,oddSc)
+    +shufBar('odd')
     +'<div class="ibox"><div class="iq">'+p.q+'</div>'
-    +'<div class="ogrid">'+p.i.map(function(it,i){return '<div class="ocrd" id="oc'+i+'" onclick="chkOdd('+i+','+oddOrder[oddIdx]+')">'+'<span style="font-size:1.7rem;display:block;margin-bottom:3px">'+it.e+'</span><div style="font-size:.58rem;font-weight:700;color:#333">'+it.l+'</div></div>';}).join('')+'</div>'
+    +'<div class="ogrid">'+p.i.map(function(it,i){return '<div class="ocrd" id="oc'+i+'" onclick="chkOdd('+i+','+oddOrder[oddIdx]+')">'+'<span style="font-size:1.6rem;display:block;margin-bottom:2px">'+it.e+'</span><div style="font-size:.56rem;font-weight:700;color:#333">'+it.l+'</div></div>';}).join('')+'</div>'
     +'<div class="rmsg" id="oddR"></div>'
     +navBtns(oddIdx>0?'oddIdx--;buildOdd()':'',true)+'</div>';
   spk(p.q);
@@ -308,10 +356,6 @@ function chkOdd(i,qi){
 }
 
 /* ── COUNT & TAP ── */
-function shuffleCT(){
-  ctOrder=CTD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  ctIdx=0; ctSc=0; buildCT();
-}
 function buildCT(){
   if(ctIdx>=ctOrder.length){scoreScrn(ctSc,CTD.length,'Counting champion!','Good counting!','count');return;}
   ctAnswered=false;
@@ -321,11 +365,11 @@ function buildCT(){
   opts.sort(function(){return Math.random()-.5;});
   _nextFn=function(){ctIdx++;buildCT();};
   getArea().innerHTML=scoreH(ctIdx+1,CTD.length,ctSc)
-    +shufBar('shuffleCT()')
+    +shufBar('count')
     +'<div class="ctarea"><div class="iq">'+p.q+'</div>'
-    +'<div style="font-size:2.2rem;margin-bottom:16px;min-height:56px">'+ems+'</div>'
+    +'<div style="font-size:2rem;margin-bottom:12px;min-height:48px">'+ems+'</div>'
     +'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+opts.map(function(o){return '<button class="ctnbtn" onclick="chkCT(this,'+o+','+p.n+')">'+o+'</button>';}).join('')+'</div>'
-    +'<div class="rmsg" id="ctR" style="margin-top:10px"></div>'
+    +'<div class="rmsg" id="ctR" style="margin-top:8px"></div>'
     +navBtns(ctIdx>0?'ctIdx--;buildCT()':'',true)+'</div>';
   spk(p.q);
 }
@@ -336,22 +380,24 @@ function chkCT(b,c,cr){
 }
 
 /* ── GAME QUIZ ── */
-function shuffleGQ(){
-  gqOrder=GQD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  gqIdx=0; gqSc=0; buildGQ();
-}
 function buildGQ(){
   if(gqIdx>=gqOrder.length){scoreScrn(gqSc,GQD.length,'Excellent! You are a star!','Good job! Keep practising!','quiz');return;}
   gqAnswered=false;
   var p=GQD[gqOrder[gqIdx]];
+  var L=['A','B','C','D'],LC=['gq-ltr-a','gq-ltr-b','gq-ltr-c','gq-ltr-d'];
   _nextFn=function(){gqIdx++;buildGQ();};
   getArea().innerHTML=scoreH(gqIdx+1,GQD.length,gqSc)
-    +shufBar('shuffleGQ()')
-    +'<div class="ibox"><div style="font-size:3rem;text-align:center;margin-bottom:8px">'+p.e+'</div>'
-    +'<div class="iq">'+p.q+'</div>'
-    +'<div class="achc" style="flex-wrap:wrap;gap:8px">'+p.o.map(function(o,i){return '<button class="cbtn" style="font-size:var(--md);min-width:110px" id="gqo'+i+'" onclick="chkGQ(this,'+i+','+p.a+')">'+o+'</button>';}).join('')+'</div>'
-    +'<div class="rmsg" id="gqR"></div>'
-    +navBtns(gqIdx>0?'gqIdx--;buildGQ()':'',true)+'</div>';
+    +shufBar('quiz')
+    +'<div class="gq-card">'
+    +'<div class="gq-qhd"><span class="gq-qbadge">Question '+(gqIdx+1)+'</span></div>'
+    +'<div class="gq-q" onclick="spk(\''+p.q.replace(/'/g,"\\'")+'\')">' +p.q+'</div>'
+    +'<div class="gq-opts">'+p.o.map(function(o,i){
+      return '<button class="gq-opt" id="gqo'+i+'" onclick="chkGQ(this,'+i+','+p.a+')">'
+        +'<span class="gq-ltr '+LC[i]+'">'+L[i]+'</span>'+o+'</button>';
+    }).join('')+'</div>'
+    +'<div class="gq-fb" id="gqR"></div>'
+    +'</div>'
+    +navBtns(gqIdx>0?'gqIdx--;buildGQ()':'',true);
   spk(p.q);
 }
 function chkGQ(b,c,cr){
@@ -361,10 +407,6 @@ function chkGQ(b,c,cr){
 }
 
 /* ── WORD MATCH ── */
-function shuffleWM(){
-  wmOrder=WMD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  wmIdx=0; wmSc=0; buildWM();
-}
 function buildWM(){
   if(wmIdx>=wmOrder.length){scoreScrn(wmSc,WMD.length,'Amazing spelling!','Good effort!','word');return;}
   wmAns=false;
@@ -372,9 +414,9 @@ function buildWM(){
   var sh=p.o.slice().sort(function(){return Math.random()-.5;});
   _nextFn=function(){wmIdx++;buildWM();};
   getArea().innerHTML=scoreH(wmIdx+1,WMD.length,wmSc)
-    +shufBar('shuffleWM()')
-    +'<div class="wmbox"><div style="font-size:5rem;display:block;margin-bottom:8px">'+p.e+'</div>'
-    +'<div style="font-size:var(--lg);font-weight:900;color:#333;margin-bottom:18px">Which word matches?</div>'
+    +shufBar('word')
+    +'<div class="wmbox"><div style="font-size:4rem;display:block;margin-bottom:6px">'+p.e+'</div>'
+    +'<div style="font-size:var(--md);font-weight:900;color:#555;margin-bottom:12px">Which word matches?</div>'
     +'<div class="wopts">'+sh.map(function(o){return '<button class="wopt" id="wo_'+o+'" onclick="chkWM(this,\''+o+'\',\''+p.w+'\')">'+o+'</button>';}).join('')+'</div>'
     +'<div class="rmsg" id="wmR"></div>'
     +navBtns(wmIdx>0?'wmIdx--;buildWM()':'',true)+'</div>';
@@ -411,10 +453,6 @@ function popBal(n,t){
 }
 
 /* ── SHADOW MATCH ── */
-function shuffleShadow(){
-  shOrder=SHDW.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  shIdx=0; shSc=0; buildShadow();
-}
 function buildShadow(){
   if(shIdx>=shOrder.length){scoreScrn(shSc,SHDW.length,'Amazing! Shadow expert!','Good job!','shadow');return;}
   shAnswered=false;
@@ -422,9 +460,10 @@ function buildShadow(){
   var sh=p.opts.slice().sort(function(){return Math.random()-.5;});
   _nextFn=function(){shIdx++;buildShadow();};
   getArea().innerHTML=scoreH(shIdx+1,SHDW.length,shSc)
-    +shufBar('shuffleShadow()')
-    +'<div class="shadow-box"><div class="iq">What animal or thing is this shadow?</div>'
+    +shufBar('shadow')
+    +'<div class="shadow-box"><div class="iq" style="margin-bottom:6px">What is this shadow?</div>'
     +'<span class="shadow-em">'+p.ans+'</span>'
+    +'<div class="shadow-opts-lbl">Options</div>'
     +'<div class="shadow-opts">'+sh.map(function(o){return '<div class="shadow-opt" id="sh_'+shIdx+'_'+o.replace(/[^a-z0-9]/gi,'x')+'" onclick="chkShadow(this,\''+o+'\',\''+p.ans+'\',\''+p.lbl+'\')">'+o+'</div>';}).join('')+'</div>'
     +'<div class="rmsg" id="shR"></div>'
     +navBtns(shIdx>0?'shIdx--;buildShadow()':'',true)+'</div>';
@@ -437,10 +476,6 @@ function chkShadow(el,chosen,ans,lbl){
 }
 
 /* ── WHAT'S MISSING ── */
-function shuffleMissing(){
-  msOrder=MISS.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  msIdx=0; msSc=0; buildMissing();
-}
 function buildMissing(){
   if(msIdx>=msOrder.length){scoreScrn(msSc,MISS.length,'Great memory!','Keep practising!','missing');return;}
   msAnswered=false;
@@ -453,8 +488,8 @@ function buildMissing(){
   var opts=[missingEm,wrongPool[0],wrongPool[1]].sort(function(){return Math.random()-.5;});
   _nextFn=function(){msIdx++;buildMissing();};
   getArea().innerHTML=scoreH(msIdx+1,MISS.length,msSc)
-    +shufBar('shuffleMissing()')
-    +'<div class="ibox"><div class="iq">&#128064; Look carefully...</div>'
+    +shufBar('missing')
+    +'<div class="ibox"><div class="iq" style="margin-bottom:8px">&#128064; Look carefully...</div>'
     +'<div class="missing-grid" id="msGrid">'+p.items.map(function(it){return '<div class="missing-item">'+it+'</div>';}).join('')+'</div>'
     +'<div class="rmsg" id="msR">Remember all items!</div></div>';
   spk('Look carefully! Remember all the items!');
@@ -530,11 +565,6 @@ function simonPress(id,lbl){
 }
 
 /* ── SORT IT ── */
-function shuffleSort(){
-  sortPool=SORT_POOL.slice().sort(function(){return Math.random()-.5;});
-  sortOrder=sortPool.map(function(_,i){return i;});
-  sortIdx=0; sortSc=0; buildSort();
-}
 function buildSort(){
   if(sortIdx>=sortPool.length){scoreScrn(sortSc,sortPool.length,'Perfect sorting!','Good effort!','sortit');return;}
   sortAnswered=false;
@@ -544,8 +574,8 @@ function buildSort(){
   var all=[correctCat].concat(wrong).sort(function(){return Math.random()-.5;});
   _nextFn=function(){sortIdx++;buildSort();};
   getArea().innerHTML=scoreH(sortIdx+1,sortPool.length,sortSc)
-    +shufBar('shuffleSort()')
-    +'<div class="ibox"><div class="iq">Where does this belong?</div>'
+    +shufBar('sortit')
+    +'<div class="ibox"><div class="iq" style="margin-bottom:6px">Where does this belong?</div>'
     +'<div class="sort-item-box"><span class="sort-item-em">'+item.em+'</span></div>'
     +'<div class="sort-buckets">'+all.map(function(cat,i){
       var ok=cat===correctCat;
@@ -564,22 +594,18 @@ function chkSort(sid,correct,lbl){
 }
 
 /* ── TRUE OR FALSE ── */
-function shuffleTF(){
-  tfOrder=TFD.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  tfIdx=0; tfSc=0; buildTF();
-}
 function buildTF(){
   if(tfIdx>=tfOrder.length){scoreScrn(tfSc,TFD.length,'Brilliant! You know everything!','Good thinking!','tf');return;}
   tfAnswered=false;
   var p=TFD[tfOrder[tfIdx]];
   _nextFn=function(){tfIdx++;buildTF();};
   getArea().innerHTML=scoreH(tfIdx+1,TFD.length,tfSc)
-    +shufBar('shuffleTF()')
+    +shufBar('tf')
     +'<div class="tf-card"><span class="tf-em">'+p.em+'</span>'
     +'<div class="tf-stmt">'+p.stmt+'</div>'
     +'<div class="tf-btns"><button class="tf-btn tf-true" id="tfT" onclick="chkTF(true,'+p.ans+')">&#9989; TRUE</button>'
     +'<button class="tf-btn tf-false" id="tfF" onclick="chkTF(false,'+p.ans+')">&#10060; FALSE</button></div>'
-    +'<div class="rmsg" id="tfR" style="margin-top:14px"></div>'
+    +'<div class="rmsg" id="tfR" style="margin-top:10px"></div>'
     +navBtns(tfIdx>0?'tfIdx--;buildTF()':'',true)+'</div>';
   spk(p.stmt+'. True or False?');
 }
@@ -594,7 +620,6 @@ function chkTF(chosen,ans){
     spk('Correct! Well done!');
     showNxt();
   }else{
-    // Wrong — no reveal, just flash wrong button, allow retry
     (chosen?tB:fB).classList.add('wrong');
     document.getElementById('tfR').innerHTML='&#10060; Wrong! Try again!';
     spk('Wrong! Try again!');
@@ -606,22 +631,16 @@ function chkTF(chosen,ans){
 }
 
 /* ── COLOR TAP ── */
-function shuffleCtap(){
-  ctapOrder=CTAP.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  ctapIdx=0; ctapSc=0; buildCtap();
-}
 function buildCtap(){
   if(ctapIdx>=ctapOrder.length){scoreScrn(ctapSc,CTAP.length,'Amazing! You know all colors!','Good color spotting!','colortap');return;}
   ctapAnswered=false;
   var correct=CTAP[ctapOrder[ctapIdx]];
-  /* pick 3 wrong colors — one per color-family group, none matching correct's group */
   var usedGroups=[correct.g];
   var pool=[];
   var shuffled=CTAP.filter(function(c){return c!==correct;}).sort(function(){return Math.random()-.5;});
   for(var pi=0;pi<shuffled.length&&pool.length<3;pi++){
     if(usedGroups.indexOf(shuffled[pi].g)<0){pool.push(shuffled[pi]);usedGroups.push(shuffled[pi].g);}
   }
-  /* fallback if not enough distinct groups */
   if(pool.length<3){
     var extra=CTAP.filter(function(c){return c!==correct&&pool.indexOf(c)<0;}).sort(function(){return Math.random()-.5;});
     while(pool.length<3&&extra.length)pool.push(extra.shift());
@@ -629,13 +648,13 @@ function buildCtap(){
   var all=[correct].concat(pool).sort(function(){return Math.random()-.5;});
   _nextFn=function(){ctapIdx++;buildCtap();};
   getArea().innerHTML=scoreH(ctapIdx+1,CTAP.length,ctapSc)
-    +shufBar('shuffleCtap()')
+    +shufBar('colortap')
     +'<div class="ctap-word" style="color:'+correct.bg+'">'+correct.name+'</div>'
     +'<div class="ctap-grid">'+all.map(function(c,i){
       var ok=(c===correct);
       return '<div class="ctap-circle" id="ctap'+i+'" style="background:'+c.bg+';'+(c.bg==='#F5F5F5'?'border-color:#ccc;':'')+'" onclick="chkCtap(\'ctap'+i+'\','+ok+',\''+c.name+'\')"></div>';
     }).join('')+'</div>'
-    +'<div class="rmsg" id="ctapR" style="text-align:center;font-size:var(--lg)"></div>'
+    +'<div class="rmsg" id="ctapR" style="text-align:center;font-size:var(--md);min-height:22px"></div>'
     +navBtns(ctapIdx>0?'ctapIdx--;buildCtap()':'',true);
   spk('Tap the color '+correct.name);
 }

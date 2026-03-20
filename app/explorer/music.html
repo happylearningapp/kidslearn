@@ -3,66 +3,92 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Music &amp; Stories &#127925;</title>
+<title>Rhymes &amp; Stories &#127925;</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="../shared.js"></script>
 <style>
 /* ── Override shared sidebar layout ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; overflow-x: hidden; }
 #sdrawer { top: 66px !important; }
 
-/* ── Lists ── */
-.rlist,.slist { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
-.ritem,.sitem { background:#fff; border-radius:16px; padding:14px 16px;
-  box-shadow:0 3px 10px rgba(0,0,0,.08); display:flex; align-items:center; gap:12px; cursor:pointer; }
-.ritem:hover,.sitem:hover { transform:scale(1.02); }
-.rem,.sem { font-size:1.9rem; min-width:38px; text-align:center; }
-.rtitle,.stitle { font-size:var(--md); font-weight:900; color:#333; }
-.rsub,.ssub { font-size:var(--sm); color:#888; margin-top:2px; }
-.rpbtn { margin-left:auto; padding:6px 12px; border-radius:12px; border:none;
-  font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer;
-  white-space:nowrap; background:#00897B; color:#fff; }
-.srbtn { margin-left:auto; padding:6px 12px; border-radius:12px; border:none;
-  font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer;
-  white-space:nowrap; background:#6A1B9A; color:#fff; }
+/* ── Tab sections ── */
+.sec        { display: none; max-width: 700px; margin: 0 auto; }
+.sec.active { display: block; }
 
-/* ── Reader ── */
-.reader { background:#fff; border-radius:20px; padding:20px;
-  box-shadow:0 5px 20px rgba(0,0,0,.12); margin-bottom:14px; }
-.rdrhdr { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-.rdrbody { font-size:var(--md); line-height:1.9; color:#444; white-space:pre-line; }
-.rdracts { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
-.rdrb { padding:8px 16px; border-radius:14px; border:none;
-  font-family:var(--f); font-size:var(--sm); font-weight:700; cursor:pointer; }
-.rdrb-play { background:#00897B; color:#fff; }
-.rdrb-stop { background:#FF6B6B; color:#fff; }
-.rdrcls { margin-left:auto; padding:6px 12px; border-radius:12px; border:2px solid #ccc;
-  background:#fff; font-family:var(--f); font-size:var(--sm); font-weight:700;
-  cursor:pointer; color:#888; }
+/* ── Item wrapper (item + inline reader together) ── */
+.rhy-wrap, .story-wrap {
+  margin-bottom: 10px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
 
-/* ── Bottom dock ── */
+/* ── List item row ── */
+.ritem, .sitem {
+  background: #fff;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.rem, .sem { font-size: 1.9rem; min-width: 36px; text-align: center; flex-shrink: 0; }
+.rinfo, .sinfo { min-width: 0; flex: 1; }
+.rtitle, .stitle { font-size: var(--md); font-weight: 900; color: #333; }
+.rsub, .ssub { font-size: var(--sm); color: #888; margin-top: 2px; }
+
+/* ── Tap hint on item row ── */
+.ritem:hover, .sitem:hover { background: #f9f9f9; }
+
+/* ── Inline reader panel ── */
+.rreader, .sreader {
+  display: none;
+  background: #fafafa;
+  border-top: 2px solid #f0f0f0;
+  padding: 14px 16px 16px;
+}
+.rreader.open, .sreader.open { display: block; }
+.rdrbody {
+  font-size: var(--md); line-height: 1.85; color: #444;
+  white-space: pre-line; margin-bottom: 14px;
+}
+
+/* ── Reader action buttons row ── */
+.rdracts {
+  display: flex; gap: 8px; flex-wrap: nowrap; align-items: center;
+}
+.rdrb {
+  flex: 1; text-align: center;
+  padding: 8px 6px; border-radius: 12px; border: none;
+  font-family: var(--f); font-size: var(--sm); font-weight: 700;
+  cursor: pointer; transition: all .18s; white-space: nowrap;
+}
+.rdrb-play { background: #00897B; color: #fff; }
+.rdrb-stop { background: #FF6B6B; color: #fff; }
+.rdrb-cls  { background: #6A1B9A; color: #fff; }
+
+/* ── Bottom dock (2 tabs) ── */
 .music-dock {
-  position:fixed; bottom:0; left:0; right:0; z-index:200;
-  background:#fff; box-shadow:0 -3px 20px rgba(0,0,0,.13);
-  display:flex; padding:6px 3px calc(6px + env(safe-area-inset-bottom)); gap:4px;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: #fff; box-shadow: 0 -3px 20px rgba(0,0,0,.13);
+  display: flex; padding: 6px 3px calc(6px + env(safe-area-inset-bottom)); gap: 4px;
 }
 .music-dock-btn {
-  flex:1; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:2px; padding:8px 4px 7px; border-radius:14px;
-  border:none; background:transparent; color:#999; font-family:var(--f);
-  font-size:.6rem; font-weight:800; cursor:pointer; line-height:1.2;
-  transition:all .2s cubic-bezier(.34,1.56,.64,1);
-  -webkit-tap-highlight-color:transparent;
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 2px; padding: 8px 4px 7px; border-radius: 14px;
+  border: none; background: transparent; color: #999; font-family: var(--f);
+  font-size: .65rem; font-weight: 800; cursor: pointer; line-height: 1.2;
+  transition: all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
 }
-.music-dock-btn.active { color:#fff; transform:scale(1.05); }
-.music-dock-btn .dock-ico { font-size:1.5rem; line-height:1; }
-.music-dock-btn[data-tab="rhymes"].active  { background:#00897B; }
-.music-dock-btn[data-tab="inst"].active    { background:#7B1FA2; }
-.music-dock-btn[data-tab="stories"].active { background:#6A1B9A; }
+.music-dock-btn.active { color: #fff; transform: scale(1.05); }
+.music-dock-btn .dock-ico { font-size: 1.6rem; line-height: 1; }
+.music-dock-btn[data-tab="rhymes"].active  { background: linear-gradient(135deg,#00897B,#26C6DA); }
+.music-dock-btn[data-tab="stories"].active { background: linear-gradient(135deg,#6A1B9A,#E91E63); }
 </style>
 </head>
-<body data-page-title="&#127925; Music, Rhymes &amp; Stories"
+<body data-page-title="&#127925; Rhymes &amp; Stories"
       data-page-sub="Songs, Rhymes &amp; Tales"
       data-page-gradient="linear-gradient(135deg,#00897B,#26C6DA)"
       data-page-back="../home.html">
@@ -72,30 +98,11 @@
 
     <!-- ══ RHYMES ══ -->
     <div id="music-rhymes" class="sec active">
-      <div class="bigbox" style="background:linear-gradient(135deg,#00897B,#26C6DA)" onclick="spk('Nursery Rhymes')">
-        <div class="bigchar">&#127926;</div>
-        <div class="bigsub">Nursery Rhymes</div>
-      </div>
-      <div id="rhymeReader" style="display:none"></div>
       <div class="rlist" id="rhymeList"></div>
-    </div>
-
-    <!-- ══ INSTRUMENTS ══ -->
-    <div id="music-inst" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#7B1FA2,#26C6DA)" onclick="spk('Musical Instruments')">
-        <div class="bigchar">&#127928;</div>
-        <div class="bigsub">Musical Instruments</div>
-      </div>
-      <div class="cgrid" id="instCards"></div>
     </div>
 
     <!-- ══ STORIES ══ -->
     <div id="music-stories" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#6A1B9A,#E91E63)" onclick="spk('Short Stories')">
-        <div class="bigchar">&#128214;</div>
-        <div class="bigsub">Short Stories</div>
-      </div>
-      <div id="storyReader" style="display:none"></div>
       <div class="slist" id="storyList"></div>
     </div>
 
@@ -107,17 +114,12 @@
   <button class="music-dock-btn active" data-tab="rhymes" onclick="swMusic('rhymes')">
     <span class="dock-ico">&#127926;</span>Rhymes
   </button>
-  <button class="music-dock-btn" data-tab="inst" onclick="swMusic('inst')">
-    <span class="dock-ico">&#127928;</span>Instruments
-  </button>
   <button class="music-dock-btn" data-tab="stories" onclick="swMusic('stories')">
     <span class="dock-ico">&#128214;</span>Stories
   </button>
 </nav>
 
 <script>
-var INST=[["Piano","&#127929;"],["Guitar","&#127928;"],["Drums","&#129345;"],["Violin","&#127931;"],["Flute","&#129544;"],["Trumpet","&#127930;"],["Saxophone","&#127927;"],["Harp","&#127931;"],["Xylophone","&#127925;"],["Bell","&#128276;"],["Sitar","&#127928;"],["Tabla","&#129345;"],["Veena","&#127931;"],["Ukulele","&#127928;"],["Harmonica","&#127925;"]];
-
 var RHY=[
   {e:"&#127775;",t:"Twinkle Twinkle Little Star",s:"Classic nursery rhyme",l:"Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.\nTwinkle, twinkle, little star,\nHow I wonder what you are!"},
   {e:"&#128017;",t:"Mary Had a Little Lamb",s:"Classic nursery rhyme",l:"Mary had a little lamb,\nLittle lamb, little lamb.\nMary had a little lamb,\nWhose fleece was white as snow.\nEverywhere that Mary went,\nThe lamb was sure to go!"},
@@ -154,78 +156,114 @@ var STR=[
 
 /* ── Switch tab ── */
 function swMusic(tab) {
+  window.speechSynthesis.cancel();
   document.querySelectorAll('.sec').forEach(function(s) { s.classList.remove('active'); });
   var sec = document.getElementById('music-' + tab);
   if (sec) sec.classList.add('active');
-
   document.querySelectorAll('.music-dock-btn').forEach(function(b) { b.classList.remove('active'); });
   var btn = document.querySelector('.music-dock-btn[data-tab="' + tab + '"]');
   if (btn) btn.classList.add('active');
-
-  var names = { rhymes:'Nursery Rhymes', inst:'Musical Instruments', stories:'Short Stories' };
-  spk(names[tab] || tab);
+  spk(tab === 'rhymes' ? 'Nursery Rhymes' : 'Short Stories');
 }
 
-/* ── Init ── */
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('instCards').innerHTML = INST.map(function(x) {
-    return '<div class="crd" style="border:3px solid #7B1FA233" onclick="spk(\'' + x[0] + '\')">'
-      + '<span class="crdem">' + x[1] + '</span>'
-      + '<div class="crdlbl" style="color:#7B1FA2;font-weight:900">' + x[0] + '</div></div>';
-  }).join('');
+/* ── Accordion state ── */
+var openRhymeIdx = -1;
+var openStoryIdx = -1;
 
-  document.getElementById('rhymeList').innerHTML = RHY.map(function(r, i) {
-    return '<div class="ritem"><span class="rem">' + r.e + '</span>'
-      + '<div><div class="rtitle">' + r.t + '</div><div class="rsub">' + r.s + '</div></div>'
-      + '<button class="rpbtn" onclick="openRhyme(' + i + ')">Read</button></div>';
-  }).join('');
-
-  document.getElementById('storyList').innerHTML = STR.map(function(s, i) {
-    return '<div class="sitem"><span class="sem">' + s.e + '</span>'
-      + '<div><div class="stitle">' + s.t + '</div><div class="ssub">' + s.s + '</div></div>'
-      + '<button class="srbtn" onclick="openStory(' + i + ')">Read</button></div>';
-  }).join('');
-});
-
-function openRhyme(i) {
-  var r = RHY[i];
-  var rd = document.getElementById('rhymeReader');
-  rd.style.display = 'block';
-  rd.innerHTML = '<div class="reader"><div class="rdrhdr">'
-    + '<span style="font-size:2.2rem">' + r.e + '</span>'
-    + '<div style="font-size:var(--xl);font-weight:900;color:#333">' + r.t + '</div>'
-    + '<button class="rdrcls" onclick="closeRhyme()">Close</button></div>'
-    + '<div class="rdrbody">' + r.l + '</div>'
-    + '<div class="rdracts">'
-    + '<button class="rdrb rdrb-play" onclick="readAloud(' + i + ',1)">&#128266; Read Aloud</button>'
-    + '<button class="rdrb rdrb-stop" onclick="window.speechSynthesis.cancel()">&#9209; Stop</button>'
-    + '</div></div>';
-  rd.scrollIntoView({ behavior: 'smooth' });
+/* ── Toggle Rhyme ── */
+function toggleRhyme(i) {
+  window.speechSynthesis.cancel();
+  if (openRhymeIdx === i) {
+    /* close */
+    document.getElementById('rreader-' + i).classList.remove('open');
+    openRhymeIdx = -1;
+  } else {
+    /* collapse previous */
+    if (openRhymeIdx >= 0) {
+      document.getElementById('rreader-' + openRhymeIdx).classList.remove('open');
+    }
+    /* open this */
+    openRhymeIdx = i;
+    document.getElementById('rreader-' + i).classList.add('open');
+    spk(RHY[i].t);
+    setTimeout(function() {
+      document.getElementById('rhy-wrap-' + i).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
 }
-function closeRhyme() { document.getElementById('rhymeReader').style.display = 'none'; }
 
-function openStory(i) {
-  var s = STR[i];
-  var rd = document.getElementById('storyReader');
-  rd.style.display = 'block';
-  rd.innerHTML = '<div class="reader"><div class="rdrhdr">'
-    + '<span style="font-size:2.2rem">' + s.e + '</span>'
-    + '<div style="font-size:var(--xl);font-weight:900;color:#333">' + s.t + '</div>'
-    + '<button class="rdrcls" onclick="closeStory()">Close</button></div>'
-    + '<div class="rdrbody">' + s.y + '</div>'
-    + '<div class="rdracts">'
-    + '<button class="rdrb rdrb-play" onclick="readAloud(' + i + ',0)">&#128266; Read Aloud</button>'
-    + '<button class="rdrb rdrb-stop" onclick="window.speechSynthesis.cancel()">&#9209; Stop</button>'
-    + '</div></div>';
-  rd.scrollIntoView({ behavior: 'smooth' });
+/* ── Toggle Story ── */
+function toggleStory(i) {
+  window.speechSynthesis.cancel();
+  if (openStoryIdx === i) {
+    /* close */
+    document.getElementById('sreader-' + i).classList.remove('open');
+    openStoryIdx = -1;
+  } else {
+    /* collapse previous */
+    if (openStoryIdx >= 0) {
+      document.getElementById('sreader-' + openStoryIdx).classList.remove('open');
+    }
+    /* open this */
+    openStoryIdx = i;
+    document.getElementById('sreader-' + i).classList.add('open');
+    spk(STR[i].t);
+    setTimeout(function() {
+      document.getElementById('story-wrap-' + i).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
 }
-function closeStory() { document.getElementById('storyReader').style.display = 'none'; }
 
+/* ── Read Aloud ── */
 function readAloud(i, isRhyme) {
   window.speechSynthesis.cancel();
   var txt = isRhyme ? RHY[i].l : STR[i].y;
   spkForce(txt.replace(/\n/g, ' '), 0.75, 1.15);
 }
+
+/* ── Build lists ── */
+document.addEventListener('DOMContentLoaded', function() {
+
+  /* Rhymes */
+  document.getElementById('rhymeList').innerHTML = RHY.map(function(r, i) {
+    return '<div class="rhy-wrap" id="rhy-wrap-' + i + '">'
+      + '<div class="ritem" onclick="toggleRhyme(' + i + ')">'
+      +   '<span class="rem">' + r.e + '</span>'
+      +   '<div class="rinfo"><div class="rtitle">' + r.t + '</div><div class="rsub">' + r.s + '</div></div>'
+      +   '<span style="font-size:var(--sm);color:#aaa;flex-shrink:0">&#9654;</span>'
+      + '</div>'
+      + '<div class="rreader" id="rreader-' + i + '">'
+      +   '<div class="rdrbody">' + r.l + '</div>'
+      +   '<div class="rdracts">'
+      +     '<button class="rdrb rdrb-play" onclick="readAloud(' + i + ',1)">&#128266; Read Aloud</button>'
+      +     '<button class="rdrb rdrb-stop" onclick="window.speechSynthesis.cancel()">&#9209; Stop</button>'
+      +     '<button class="rdrb rdrb-cls" onclick="toggleRhyme(' + i + ')">&#10005; Close</button>'
+      +   '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  /* Stories */
+  document.getElementById('storyList').innerHTML = STR.map(function(s, i) {
+    return '<div class="story-wrap" id="story-wrap-' + i + '">'
+      + '<div class="sitem" onclick="toggleStory(' + i + ')">'
+      +   '<span class="sem">' + s.e + '</span>'
+      +   '<div class="sinfo"><div class="stitle">' + s.t + '</div><div class="ssub">' + s.s + '</div></div>'
+      +   '<span style="font-size:var(--sm);color:#aaa;flex-shrink:0">&#9654;</span>'
+      + '</div>'
+      + '<div class="sreader" id="sreader-' + i + '">'
+      +   '<div class="rdrbody">' + s.y + '</div>'
+      +   '<div class="rdracts">'
+      +     '<button class="rdrb rdrb-play" onclick="readAloud(' + i + ',0)">&#128266; Read Aloud</button>'
+      +     '<button class="rdrb rdrb-stop" onclick="window.speechSynthesis.cancel()">&#9209; Stop</button>'
+      +     '<button class="rdrb rdrb-cls" onclick="toggleStory(' + i + ')">&#10005; Close</button>'
+      +   '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  swMusic('rhymes');
+});
 </script>
 </body>
 </html>

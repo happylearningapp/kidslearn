@@ -8,7 +8,7 @@
 <script src="../shared.js"></script>
 <style>
 .subbody{display:block!important;}
-.submain{padding:14px 12px calc(110px + env(safe-area-inset-bottom))!important;overflow-y:auto;}
+.submain{padding:14px 12px calc(90px + env(safe-area-inset-bottom))!important;overflow-y:hidden;overflow-x:hidden;}
 #sdrawer{top:66px!important;}
 
 /* ── Bottom dock (7 tabs, single row) ── */
@@ -38,88 +38,101 @@
 
 /* ── Shared game UI ── */
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.ibox{background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:14px;}
-.iq{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:14px;text-align:center;line-height:1.4;}
-.rmsg{min-height:22px;text-align:center;font-size:.85rem;font-weight:900;color:#FF6B6B;margin-bottom:8px;}
-.scorebar{background:#f7f7f7;border-radius:12px;padding:7px 12px;font-size:.78rem;font-weight:700;color:#666;margin-bottom:10px;}
+.ibox{background:#fff;border-radius:18px;padding:14px;box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:10px;}
+.iq{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:10px;text-align:center;line-height:1.4;}
+.rmsg{min-height:20px;text-align:center;font-size:var(--sm);font-weight:900;color:#FF6B6B;margin-bottom:6px;}
+.scorebar{background:#f7f7f7;border-radius:12px;padding:7px 12px;font-size:.78rem;font-weight:700;color:#666;margin-bottom:8px;}
 .scorescreen{text-align:center;padding:30px 20px;}
 .rbtn{padding:13px 32px;border-radius:18px;border:none;background:linear-gradient(135deg,#7B1FA2,#E91E63);color:#fff;font-family:var(--f);font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(123,31,162,.35);transition:all .2s;}
 .rbtn:active{transform:scale(.96);}
 
+/* ── Common Shuffle Toggle (matches games.html) ── */
+.shuf-row{text-align:center;margin-bottom:8px;}
+.shuf-toggle{
+  padding:7px 20px;border-radius:20px;border:2px solid #ddd;
+  background:#f5f5f5;font-family:var(--f);font-size:var(--sm);
+  font-weight:800;cursor:pointer;transition:all .22s;color:#888;
+  -webkit-tap-highlight-color:transparent;
+}
+.shuf-toggle.on{background:linear-gradient(135deg,#E91E63,#FF8E53);color:#fff;border-color:transparent;}
+
+/* ── Options label ── */
+.opts-lbl{font-size:var(--sm);font-weight:900;color:#888;text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-bottom:6px;}
+
 /* ── PATTERNS ── */
-.pat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;}
-.pat-item{font-size:2.2rem;background:#f5f5f5;border-radius:14px;padding:10px 12px;min-width:52px;text-align:center;}
-.pat-blank{font-size:2.2rem;background:#f0e8ff;border:3px dashed #9C27B0;border-radius:14px;padding:10px 12px;min-width:52px;text-align:center;animation:blink 1.2s ease-in-out infinite;}
+.pat-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.pat-item{font-size:2rem;background:#f5f5f5;border-radius:12px;padding:8px 10px;min-width:46px;text-align:center;}
+.pat-blank{font-size:2rem;background:#f0e8ff;border:3px dashed #9C27B0;border-radius:12px;padding:8px 10px;min-width:46px;text-align:center;animation:blink 1.2s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
-.pat-opts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
-.pat-opt{font-size:2rem;background:#fff;border:3px solid #eee;border-radius:14px;padding:10px 14px;cursor:pointer;transition:all .18s;min-width:62px;text-align:center;-webkit-tap-highlight-color:transparent;}
+.pat-opts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+.pat-opt{font-size:1.9rem;background:#fff;border:3px solid #eee;border-radius:12px;padding:9px 12px;cursor:pointer;transition:all .18s;min-width:56px;text-align:center;-webkit-tap-highlight-color:transparent;}
 .pat-opt:hover{transform:scale(1.1);border-color:#9C27B0;}
 .pat-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .pat-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
 
 /* ── SEQUENCE ── */
-.seq-row{display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
-.seq-item{font-size:2rem;background:#f5f5f5;border-radius:14px;padding:10px 12px;text-align:center;}
-.seq-arrow{font-size:1.2rem;color:#aaa;}
-.seq-blank{font-size:2rem;background:#e8f4ff;border:3px dashed #1976D2;border-radius:14px;padding:10px 12px;text-align:center;animation:blink 1.2s ease-in-out infinite;}
-.seq-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:320px;margin:0 auto 14px;}
-.seq-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:12px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;font-size:.8rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
-.seq-opt span{font-size:1.8rem;display:block;margin-bottom:4px;}
+.seq-row{display:flex;align-items:center;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.seq-item{font-size:1.9rem;background:#f5f5f5;border-radius:12px;padding:8px 10px;text-align:center;}
+.seq-arrow{font-size:1rem;color:#aaa;}
+.seq-blank{font-size:1.9rem;background:#e8f4ff;border:3px dashed #1976D2;border-radius:12px;padding:8px 10px;text-align:center;animation:blink 1.2s ease-in-out infinite;}
+.seq-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:300px;margin:0 auto 8px;}
+.seq-opt{background:#fff;border:3px solid #eee;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;font-size:.75rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.seq-opt span{font-size:1.6rem;display:block;margin-bottom:3px;}
 .seq-opt:hover{transform:scale(1.04);border-color:#1976D2;}
 .seq-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .seq-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
 
 /* ── FEELINGS ── */
-.feel-scene{background:linear-gradient(135deg,#fff7e6,#fff);border-radius:20px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.08);margin-bottom:14px;text-align:center;}
-.feel-em{font-size:3.5rem;display:block;margin-bottom:8px;}
-.feel-txt{font-size:var(--lg);font-weight:900;color:#333;line-height:1.4;}
-.feel-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:340px;margin:0 auto 14px;}
-.feel-opt{background:#fff;border:3px solid #eee;border-radius:18px;padding:14px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;font-size:.78rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
-.feel-opt span{font-size:2rem;display:block;margin-bottom:5px;}
+.feel-scene{background:linear-gradient(135deg,#fff7e6,#fff);border-radius:16px;padding:8px 12px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:8px;text-align:center;}
+.feel-em{font-size:2.2rem;display:block;margin-bottom:4px;}
+.feel-txt{font-size:var(--md);font-weight:900;color:#333;line-height:1.35;}
+.feel-opts{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;max-width:320px;margin:0 auto 6px;}
+.feel-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:7px 6px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;font-size:.74rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.feel-opt span{font-size:1.5rem;display:block;margin-bottom:2px;}
 .feel-opt:hover{transform:scale(1.06);border-color:#FF8E53;}
 .feel-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .feel-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
 
 /* ── SPOT IT ── */
-.spot-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
-.spot-item{font-size:2.2rem;background:#f5f5f5;border-radius:14px;padding:10px 12px;cursor:pointer;min-width:52px;text-align:center;border:3px solid transparent;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.spot-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.spot-item{font-size:2rem;background:#f5f5f5;border-radius:12px;padding:9px 10px;cursor:pointer;min-width:48px;text-align:center;border:3px solid transparent;transition:all .18s;-webkit-tap-highlight-color:transparent;}
 .spot-item:hover{transform:scale(1.1);border-color:#43A047;}
 .spot-item.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .spot-item.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
 
 /* ── SIZE IT UP ── */
-.size-hint{text-align:center;font-size:.82rem;font-weight:900;color:#00897B;background:#E0F2F1;border-radius:12px;padding:8px 14px;margin-bottom:14px;}
-.size-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
-.size-item{background:#fff;border:3px solid #eee;border-radius:18px;padding:14px 10px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;flex:1;min-width:80px;max-width:100px;transition:all .18s;-webkit-tap-highlight-color:transparent;}
-.size-item .size-em{font-size:2rem;display:block;margin-bottom:6px;}
-.size-item .size-lbl{font-size:.6rem;color:#666;}
+.size-hint{text-align:center;font-size:.78rem;font-weight:900;color:#00897B;background:#E0F2F1;border-radius:10px;padding:7px 12px;margin-bottom:10px;}
+.size-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.size-item{background:#fff;border:3px solid #eee;border-radius:16px;padding:12px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:900;flex:1;min-width:76px;max-width:96px;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.size-item .size-em{font-size:1.9rem;display:block;margin-bottom:5px;}
+.size-item .size-lbl{font-size:.58rem;color:#666;}
 .size-item:hover{transform:scale(1.06);border-color:#00897B;}
 .size-item.done{background:#E8F5E9;border-color:#4CAF50;pointer-events:none;}
 .size-item.wrong{animation:shake .4s ease;}
-.size-dots{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
-.size-dot{width:16px;height:16px;border-radius:50%;background:#ddd;transition:background .3s;}
+.size-dots{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
+.size-dot{width:14px;height:14px;border-radius:50%;background:#ddd;transition:background .3s;}
 .size-dot.done{background:#4CAF50;}
 
 /* ── WHY? BECAUSE! ── */
-.why-cause{background:linear-gradient(135deg,#fff8f0,#fff);border-radius:20px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);margin-bottom:14px;text-align:center;}
-.why-em{font-size:3rem;display:block;margin-bottom:8px;}
-.why-txt{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:6px;}
-.why-q{font-size:.76rem;color:#888;font-weight:700;}
-.why-opts{display:grid;grid-template-columns:1fr;gap:8px;max-width:360px;margin:0 auto 14px;}
-.why-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:11px 14px;cursor:pointer;text-align:left;font-family:var(--f);font-weight:700;font-size:.82rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.why-cause{background:linear-gradient(135deg,#fff8f0,#fff);border-radius:16px;padding:8px 12px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:8px;text-align:center;}
+.why-em{font-size:2rem;display:block;margin-bottom:4px;}
+.why-txt{font-size:var(--md);font-weight:900;color:#333;margin-bottom:3px;}
+.why-q{font-size:.72rem;color:#888;font-weight:700;}
+.why-opts{display:grid;grid-template-columns:1fr;gap:5px;max-width:360px;margin:0 auto 6px;}
+.why-opt{background:#fff;border:3px solid #eee;border-radius:12px;padding:6px 10px;cursor:pointer;text-align:left;font-family:var(--f);font-weight:700;font-size:.78rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;}
 .why-opt:hover{transform:translateX(4px);border-color:#E65100;}
 .why-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .why-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
 
 /* ── WHICH IS MORE? ── */
-.more-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:360px;margin:0 auto 18px;}
-.more-box{background:#fff;border:3px solid #eee;border-radius:18px;padding:14px 8px;cursor:pointer;text-align:center;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.more-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:340px;margin:0 auto 12px;}
+.more-box{background:#fff;border:3px solid #eee;border-radius:16px;padding:12px 6px;cursor:pointer;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .18s;-webkit-tap-highlight-color:transparent;}
 .more-box:hover{transform:scale(1.04);border-color:#6A1B9A;}
 .more-box.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
 .more-box.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
-.more-dots{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-bottom:8px;max-width:130px;}
-.more-dot{font-size:1.5rem;line-height:1;}
-.more-count{font-size:1.4rem;font-weight:900;color:#555;}
+.more-dots{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin-bottom:6px;max-width:120px;}
+.more-dot{font-size:1.3rem;line-height:1;}
+.more-count{font-size:1.2rem;font-weight:900;color:#555;}
 </style>
 </head>
 <body data-page-title="&#129504; Think Smart!" data-page-sub="Patterns, Logic &amp; Feelings" data-page-gradient="linear-gradient(135deg,#7B1FA2,#E91E63)" data-page-back="../home.html">
@@ -145,7 +158,6 @@
 /* ══════════════════════════════════════
    DATA
 ══════════════════════════════════════ */
-
 var PAT_DATA=[
   {seq:['🐱','🐶','🐱','🐶'],ans:'🐱',opts:['🐱','🦊','🐸']},
   {seq:['⭐','❤️','⭐','❤️'],ans:'⭐',opts:['🌙','⭐','❤️']},
@@ -252,6 +264,7 @@ var MORE_DATA=[
 /* ══════════════════════════════════════
    STATE
 ══════════════════════════════════════ */
+var shufState={};  /* per-game shuffle toggle: true = ON */
 var patOrder=PAT_DATA.map(function(_,i){return i;}),patIdx=0,patSc=0,patAns=false;
 var seqOrder=SEQ_DATA.map(function(_,i){return i;}),seqIdx=0,seqSc=0,seqAns=false;
 var feelOrder=FEEL_DATA.map(function(_,i){return i;}),feelIdx=0,feelSc=0,feelAns=false;
@@ -267,13 +280,13 @@ function nextThink(){if(_nextFn)_nextFn();}
    ROUTER
 ══════════════════════════════════════ */
 var THINK_HEADERS={
-  patterns:  {bg:'linear-gradient(135deg,#7B1FA2,#E91E63)',em:'&#128257;',title:'Patterns'},
-  sequence:  {bg:'linear-gradient(135deg,#1976D2,#00C9A7)',em:'&#10145;',title:'What Comes Next?'},
-  feelings:  {bg:'linear-gradient(135deg,#FF6B6B,#FF8E53)',em:'&#128578;',title:'Feelings'},
-  spotit:    {bg:'linear-gradient(135deg,#43A047,#FFC300)',em:'&#128065;',title:'Spot It!'},
-  sizeitup:  {bg:'linear-gradient(135deg,#00897B,#29B6F6)',em:'&#128207;',title:'Size It Up!'},
-  whybecause:{bg:'linear-gradient(135deg,#E65100,#FF8E53)',em:'&#129300;',title:'Why? Because!'},
-  whichmore: {bg:'linear-gradient(135deg,#6A1B9A,#1565C0)',em:'&#128290;',title:'Which is More?'}
+  patterns:  {bg:'linear-gradient(135deg,#7B1FA2,#E91E63)'},
+  sequence:  {bg:'linear-gradient(135deg,#1976D2,#00C9A7)'},
+  feelings:  {bg:'linear-gradient(135deg,#FF6B6B,#FF8E53)'},
+  spotit:    {bg:'linear-gradient(135deg,#43A047,#FFC300)'},
+  sizeitup:  {bg:'linear-gradient(135deg,#00897B,#29B6F6)'},
+  whybecause:{bg:'linear-gradient(135deg,#E65100,#FF8E53)'},
+  whichmore: {bg:'linear-gradient(135deg,#6A1B9A,#1565C0)'}
 };
 
 var THINK_INITS={
@@ -287,18 +300,18 @@ function showThink(name){
     b.classList.remove('active');b.style.background='';
   });
   var btn=document.querySelector('.think-dock-btn[data-tab="'+name+'"]');
-  if(btn)btn.classList.add('active');
-
-  var h=THINK_HEADERS[name];
-  document.getElementById('thinkMain').innerHTML=
-    '<div class="bigbox" style="background:'+h.bg+'"><div class="bigchar">'+h.em+'</div><div class="bigsub">'+h.title+'</div></div>'
-    +'<div id="thinkArea"></div>';
-
+  if(btn){
+    btn.classList.add('active');
+    var h=THINK_HEADERS[name];
+    if(h)btn.style.background=''; /* handled by CSS active classes */
+  }
+  document.getElementById('thinkMain').innerHTML='<div id="thinkArea"></div>';
   resetThink(name);
   THINK_INITS[name]();
 }
 
 function resetThink(name){
+  shufState[name]=false; /* always reset shuffle to OFF on tab switch */
   if(name==='patterns')  {patOrder=PAT_DATA.map(function(_,i){return i;});patIdx=0;patSc=0;patAns=false;}
   if(name==='sequence')  {seqOrder=SEQ_DATA.map(function(_,i){return i;});seqIdx=0;seqSc=0;seqAns=false;}
   if(name==='feelings')  {feelOrder=FEEL_DATA.map(function(_,i){return i;});feelIdx=0;feelSc=0;feelAns=false;}
@@ -310,19 +323,41 @@ function resetThink(name){
 
 function getThinkArea(){return document.getElementById('thinkArea');}
 
+/* ── Fisher-Yates shuffle ── */
+function fisherYates(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}}
+
+/* ── Shuffle toggle bar — same style as games.html ── */
+function shufBar(name){
+  var on=shufState[name]||false;
+  return '<div class="shuf-row"><button class="shuf-toggle'+(on?' on':'')+'" onclick="doToggleShuf(\''+name+'\')">'
+    +'&#128256; Shuffle '+(on?'ON':'OFF')+'</button></div>';
+}
+
+/* ── Toggle shuffle on/off, restart from Q1 ── */
+function doToggleShuf(name){
+  shufState[name]=!shufState[name];
+  var on=shufState[name];
+  spk(on?'Shuffle on':'Shuffle off');
+  if(name==='patterns')  {patIdx=0;patSc=0;patOrder=PAT_DATA.map(function(_,i){return i;});if(on)fisherYates(patOrder);buildPat();}
+  if(name==='sequence')  {seqIdx=0;seqSc=0;seqOrder=SEQ_DATA.map(function(_,i){return i;});if(on)fisherYates(seqOrder);buildSeq();}
+  if(name==='feelings')  {feelIdx=0;feelSc=0;feelOrder=FEEL_DATA.map(function(_,i){return i;});if(on)fisherYates(feelOrder);buildFeel();}
+  if(name==='spotit')    {spotIdx=0;spotSc=0;spotOrder=SPOT_DATA.map(function(_,i){return i;});if(on)fisherYates(spotOrder);buildSpot();}
+  if(name==='sizeitup')  {sizeIdx=0;sizeSc=0;sizeOrder=SIZE_DATA.map(function(_,i){return i;});if(on)fisherYates(sizeOrder);buildSize();}
+  if(name==='whybecause'){whyIdx=0;whySc=0;whyOrder=WHY_DATA.map(function(_,i){return i;});if(on)fisherYates(whyOrder);buildWhy();}
+  if(name==='whichmore') {moreIdx=0;moreSc=0;moreOrder=MORE_DATA.map(function(_,i){return i;});if(on)fisherYates(moreOrder);buildMore();}
+}
+
 /* ── Helpers ── */
 function scoreH(cur,tot,sc){
   return '<div class="scorebar">Q <b>'+cur+'</b>/'+tot+' &nbsp; Score: <b>'+sc+'</b></div>';
 }
-function navBtns(prevFn,showNext){
+function navBtns(prevFn){
   return '<div class="nav-row">'
-    +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
-    +(showNext
-      ?'<button class="nxtbtn" id="nxtBtn" onclick="nextThink()">Next &#8594;</button>'
-      :'<button class="nxtbtn" id="nxtBtn" style="display:none" onclick="nextThink()">Next &#8594;</button>')
+    +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'<span></span>')
+    +'<button class="nxtbtn" id="nxtBtn" onclick="nextThink()">Next &#8594;</button>'
     +'</div>';
 }
-function showNxt(){var b=document.getElementById('nxtBtn');if(b)b.style.display='inline-block';}
+function showNxt(){/* Next always visible — no-op */}
 function wrongFlash(el,msgId,msg){
   el.classList.add('wrong');
   if(msgId)document.getElementById(msgId).innerHTML=msg;
@@ -338,21 +373,14 @@ function scoreScrn(sc,tot,great,ok,gameId){
     +'<button class="rbtn" onclick="showThink(\''+gameId+'\')">Play Again &#128257;</button></div>';
   spk(pct>=80?great:ok);
 }
-function shufBar(fn){
-  return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';
-}
 
 /* ══════════════════════════════════════
    GAME 1 – PATTERNS
 ══════════════════════════════════════ */
-function shufflePat(){
-  patOrder=PAT_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  patIdx=0;patSc=0;buildPat();
-}
 function buildPat(){
+  _nextFn=function(){patIdx++;buildPat();};
   if(patIdx>=PAT_DATA.length){scoreScrn(patSc,PAT_DATA.length,'Pattern Master!','Good spotting!','patterns');return;}
   var p=PAT_DATA[patOrder[patIdx]];
-  _nextFn=function(){patIdx++;buildPat();};
   patAns=false;
 
   var seqHTML=p.seq.map(function(em){return '<div class="pat-item">'+em+'</div>';}).join('')
@@ -363,13 +391,14 @@ function buildPat(){
   }).join('');
 
   getThinkArea().innerHTML=scoreH(patIdx+1,PAT_DATA.length,patSc)
-    +shufBar('shufflePat()')
+    +shufBar('patterns')
     +'<div class="ibox">'
     +'<div class="iq">&#128257; What comes next in the pattern?</div>'
     +'<div class="pat-row">'+seqHTML+'</div>'
+    +'<div class="opts-lbl">Options</div>'
     +'<div class="pat-opts">'+optsHTML+'</div>'
     +'<div class="rmsg" id="patR"></div>'
-    +navBtns(patIdx>0?'patIdx--;buildPat()':'',false)
+    +navBtns(patIdx>0?'patIdx--;buildPat()':'')
     +'</div>';
   spk('What comes next in the pattern?');
 }
@@ -388,14 +417,10 @@ function chkPat(i){
 /* ══════════════════════════════════════
    GAME 2 – WHAT COMES NEXT? (SEQUENCE)
 ══════════════════════════════════════ */
-function shuffleSeq(){
-  seqOrder=SEQ_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  seqIdx=0;seqSc=0;buildSeq();
-}
 function buildSeq(){
+  _nextFn=function(){seqIdx++;buildSeq();};
   if(seqIdx>=SEQ_DATA.length){scoreScrn(seqSc,SEQ_DATA.length,'Sequence Star!','Good thinking!','sequence');return;}
   var p=SEQ_DATA[seqOrder[seqIdx]];
-  _nextFn=function(){seqIdx++;buildSeq();};
   seqAns=false;
 
   var stepsHTML=p.steps.map(function(em,i){
@@ -408,13 +433,14 @@ function buildSeq(){
   }).join('');
 
   getThinkArea().innerHTML=scoreH(seqIdx+1,SEQ_DATA.length,seqSc)
-    +shufBar('shuffleSeq()')
+    +shufBar('sequence')
     +'<div class="ibox">'
     +'<div class="iq">'+p.q+'</div>'
     +'<div class="seq-row">'+stepsHTML+'</div>'
+    +'<div class="opts-lbl">Options</div>'
     +'<div class="seq-opts">'+optsHTML+'</div>'
     +'<div class="rmsg" id="seqR"></div>'
-    +navBtns(seqIdx>0?'seqIdx--;buildSeq()':'',false)
+    +navBtns(seqIdx>0?'seqIdx--;buildSeq()':'')
     +'</div>';
   spk(p.q);
 }
@@ -433,14 +459,10 @@ function chkSeq(i){
 /* ══════════════════════════════════════
    GAME 3 – FEELINGS
 ══════════════════════════════════════ */
-function shuffleFeel(){
-  feelOrder=FEEL_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  feelIdx=0;feelSc=0;buildFeel();
-}
 function buildFeel(){
+  _nextFn=function(){feelIdx++;buildFeel();};
   if(feelIdx>=FEEL_DATA.length){scoreScrn(feelSc,FEEL_DATA.length,'Feelings Expert!','Good empathy!','feelings');return;}
   var p=FEEL_DATA[feelOrder[feelIdx]];
-  _nextFn=function(){feelIdx++;buildFeel();};
   feelAns=false;
 
   var optsHTML=p.opts.map(function(opt,i){
@@ -449,13 +471,13 @@ function buildFeel(){
   }).join('');
 
   getThinkArea().innerHTML=scoreH(feelIdx+1,FEEL_DATA.length,feelSc)
-    +shufBar('shuffleFeel()')
+    +shufBar('feelings')
     +'<div class="ibox">'
     +'<div class="feel-scene"><span class="feel-em">'+p.em+'</span><div class="feel-txt">'+p.text+'</div></div>'
-    +'<div class="iq" style="font-size:.88rem;margin-bottom:10px">How would you feel? &#128578;</div>'
+    +'<div class="iq" style="font-size:var(--sm);margin-bottom:8px">How would you feel? &#128578;</div>'
     +'<div class="feel-opts">'+optsHTML+'</div>'
     +'<div class="rmsg" id="feelR"></div>'
-    +navBtns(feelIdx>0?'feelIdx--;buildFeel()':'',false)
+    +navBtns(feelIdx>0?'feelIdx--;buildFeel()':'')
     +'</div>';
   spk(p.text+' How do you feel?');
 }
@@ -474,14 +496,10 @@ function chkFeel(i){
 /* ══════════════════════════════════════
    GAME 4 – SPOT IT!
 ══════════════════════════════════════ */
-function shuffleSpot(){
-  spotOrder=SPOT_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  spotIdx=0;spotSc=0;buildSpot();
-}
 function buildSpot(){
+  _nextFn=function(){spotIdx++;buildSpot();};
   if(spotIdx>=SPOT_DATA.length){scoreScrn(spotSc,SPOT_DATA.length,'Eagle Eyes!','Sharp vision!','spotit');return;}
   var p=SPOT_DATA[spotOrder[spotIdx]];
-  _nextFn=function(){spotIdx++;buildSpot();};
   spotAns=false;
 
   var rowHTML=p.row.map(function(em,i){
@@ -489,12 +507,12 @@ function buildSpot(){
   }).join('');
 
   getThinkArea().innerHTML=scoreH(spotIdx+1,SPOT_DATA.length,spotSc)
-    +shufBar('shuffleSpot()')
+    +shufBar('spotit')
     +'<div class="ibox">'
     +'<div class="iq">&#128065; Tap the one that is DIFFERENT!</div>'
     +'<div class="spot-row">'+rowHTML+'</div>'
     +'<div class="rmsg" id="spotR"></div>'
-    +navBtns(spotIdx>0?'spotIdx--;buildSpot()':'',false)
+    +navBtns(spotIdx>0?'spotIdx--;buildSpot()':'')
     +'</div>';
   spk('Find the one that is different! Tap it!');
 }
@@ -511,15 +529,14 @@ function chkSpot(i){
 }
 
 /* ══════════════════════════════════════
-   GAME 5 – SIZE IT UP!
+   GAME 5 – SIZE IT UP!  (no shuffle — ordering IS the game)
 ══════════════════════════════════════ */
 function buildSize(){
+  _nextFn=function(){sizeIdx++;buildSize();};
   if(sizeIdx>=SIZE_DATA.length){scoreScrn(sizeSc,SIZE_DATA.length,'Size Expert!','Good ordering!','sizeitup');return;}
   var p=SIZE_DATA[sizeOrder[sizeIdx]];
-  _nextFn=function(){sizeIdx++;buildSize();};
   sizeTapNext=0;
 
-  /* Shuffle display order */
   sizeShuf=[0,1,2].sort(function(){return Math.random()-.5;});
 
   var dotsHTML='<div class="size-dots">'
@@ -539,13 +556,14 @@ function buildSize(){
   }).join('')+'</div>';
 
   getThinkArea().innerHTML=scoreH(sizeIdx+1,SIZE_DATA.length,sizeSc)
+    +shufBar('sizeitup')
     +'<div class="ibox">'
     +'<div class="iq">&#128207; Tap SMALLEST &#8594; BIGGEST!</div>'
     +'<div class="size-hint" id="sizeHint">'+hints[0]+'</div>'
     +dotsHTML
     +itemsHTML
     +'<div class="rmsg" id="sizeR"></div>'
-    +navBtns(sizeIdx>0?'sizeIdx--;buildSize()':'',false)
+    +navBtns(sizeIdx>0?'sizeIdx--;buildSize()':'')
     +'</div>';
   spk('Tap from smallest to biggest!');
 }
@@ -578,17 +596,12 @@ function chkSize(dispIdx,origIdx){
 /* ══════════════════════════════════════
    GAME 6 – WHY? BECAUSE!
 ══════════════════════════════════════ */
-function shuffleWhy(){
-  whyOrder=WHY_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  whyIdx=0;whySc=0;buildWhy();
-}
 function buildWhy(){
+  _nextFn=function(){whyIdx++;buildWhy();};
   if(whyIdx>=WHY_DATA.length){scoreScrn(whySc,WHY_DATA.length,'Logic Champion!','Good reasoning!','whybecause');return;}
   var p=WHY_DATA[whyOrder[whyIdx]];
-  _nextFn=function(){whyIdx++;buildWhy();};
   whyAns=false;
 
-  /* Shuffle options, keep track of correct index */
   var allOpts=[p.ans].concat(p.wrong);
   allOpts.sort(function(){return Math.random()-.5;});
   var correctIdx=allOpts.indexOf(p.ans);
@@ -598,7 +611,7 @@ function buildWhy(){
   }).join('');
 
   getThinkArea().innerHTML=scoreH(whyIdx+1,WHY_DATA.length,whySc)
-    +shufBar('shuffleWhy()')
+    +shufBar('whybecause')
     +'<div class="ibox">'
     +'<div class="why-cause">'
     +'<span class="why-em">'+p.em+'</span>'
@@ -607,7 +620,7 @@ function buildWhy(){
     +'</div>'
     +'<div class="why-opts">'+optsHTML+'</div>'
     +'<div class="rmsg" id="whyR"></div>'
-    +navBtns(whyIdx>0?'whyIdx--;buildWhy()':'',false)
+    +navBtns(whyIdx>0?'whyIdx--;buildWhy()':'')
     +'</div>';
   spk(p.cause+'. What happens because of this?');
 }
@@ -625,14 +638,10 @@ function chkWhy(i,correctIdx){
 /* ══════════════════════════════════════
    GAME 7 – WHICH IS MORE?
 ══════════════════════════════════════ */
-function shuffleMore(){
-  moreOrder=MORE_DATA.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  moreIdx=0;moreSc=0;buildMore();
-}
 function buildMore(){
+  _nextFn=function(){moreIdx++;buildMore();};
   if(moreIdx>=MORE_DATA.length){scoreScrn(moreSc,MORE_DATA.length,'Counting Champion!','Good counting!','whichmore');return;}
   var p=MORE_DATA[moreOrder[moreIdx]];
-  _nextFn=function(){moreIdx++;buildMore();};
   moreAns=false;
 
   function makeGroup(count,em){
@@ -642,7 +651,7 @@ function buildMore(){
   }
 
   getThinkArea().innerHTML=scoreH(moreIdx+1,MORE_DATA.length,moreSc)
-    +shufBar('shuffleMore()')
+    +shufBar('whichmore')
     +'<div class="ibox">'
     +'<div class="iq">&#128290; Tap the group with MORE!</div>'
     +'<div class="more-row">'
@@ -650,7 +659,7 @@ function buildMore(){
     +'<div class="more-box" id="mboxR" onclick="chkMore(\'right\')">'+makeGroup(p.right,p.em)+'</div>'
     +'</div>'
     +'<div class="rmsg" id="moreR"></div>'
-    +navBtns(moreIdx>0?'moreIdx--;buildMore()':'',false)
+    +navBtns(moreIdx>0?'moreIdx--;buildMore()':'')
     +'</div>';
   spk('Which group has more? Tap it!');
 }
@@ -677,7 +686,7 @@ function chkMore(side){
 }
 
 /* ══════════════════════════════════════
-   INIT – show first tab on load
+   INIT
 ══════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',function(){
   showThink('patterns');

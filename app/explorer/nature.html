@@ -9,8 +9,21 @@
 <style>
 /* ── Override shared sidebar layout ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 14px 12px calc(90px + env(safe-area-inset-bottom)) !important; overflow-y: auto; overflow-x: hidden; }
 #sdrawer { top: 66px !important; }
+
+/* ── Tab sections ── */
+.sec { overflow-x: hidden; }
+
+/* ── Animals / Birds / Fruits / Vegs: 3-col grid, no overflow ── */
+#nat-animals .cgrid,
+#nat-birds .cgrid,
+#nat-fruits .cgrid,
+#nat-vegs .cgrid { grid-template-columns: repeat(3, 1fr) !important; overflow: hidden; max-width: 100%; }
+#nat-animals .crd,
+#nat-birds .crd,
+#nat-fruits .crd,
+#nat-vegs .crd { min-width: 0; overflow: hidden; word-break: break-word; }
 
 /* ── Solar grid ── */
 .solgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
@@ -64,55 +77,31 @@
 
     <!-- ══ ANIMALS ══ -->
     <div id="nat-animals" class="sec active">
-      <div class="bigbox" style="background:#FF8E53" onclick="spk('Animals')">
-        <div class="bigchar">&#128062;</div>
-        <div class="bigsub">Animals</div>
-      </div>
       <div class="cgrid" id="anCards"></div>
     </div>
 
     <!-- ══ BIRDS ══ -->
     <div id="nat-birds" class="sec">
-      <div class="bigbox" style="background:#29B6F6" onclick="spk('Birds')">
-        <div class="bigchar">&#128038;</div>
-        <div class="bigsub">Birds</div>
-      </div>
       <div class="cgrid" id="biCards"></div>
     </div>
 
     <!-- ══ FRUITS ══ -->
     <div id="nat-fruits" class="sec">
-      <div class="bigbox" style="background:#FF6B6B" onclick="spk('Fruits')">
-        <div class="bigchar">&#127822;</div>
-        <div class="bigsub">Fruits</div>
-      </div>
       <div class="cgrid" id="frCards"></div>
     </div>
 
     <!-- ══ VEGGIES ══ -->
     <div id="nat-vegs" class="sec">
-      <div class="bigbox" style="background:#43A047" onclick="spk('Vegetables')">
-        <div class="bigchar">&#129382;</div>
-        <div class="bigsub">Vegetables</div>
-      </div>
       <div class="cgrid" id="veCards"></div>
     </div>
 
     <!-- ══ WEATHER ══ -->
     <div id="nat-weather" class="sec">
-      <div class="bigbox" style="background:#0288D1" onclick="spk('Weather')">
-        <div class="bigchar">&#127782;</div>
-        <div class="bigsub">Weather</div>
-      </div>
       <div class="wgrid3" id="weCards"></div>
     </div>
 
     <!-- ══ SOLAR SYSTEM ══ -->
     <div id="nat-solar" class="sec">
-      <div class="bigbox" style="background:#1a1a2e" onclick="spk('Solar System')">
-        <div class="bigchar">&#127756;</div>
-        <div class="bigsub">Solar System</div>
-      </div>
       <div class="solgrid" id="solCards"></div>
     </div>
 
@@ -184,7 +173,7 @@ var WTH=[
 ];
 
 var SOL=[
-  {n:"Sun",    e:"&#9728;",  c:"#FDD835",f:"Our star!"},
+  {n:"Sun",    e:"&#127774;",c:"#FDD835",f:"Our star!"},
   {n:"Mercury",e:"&#129298;",c:"#9E9E9E",f:"Closest to Sun"},
   {n:"Venus",  e:"&#127775;",c:"#FFA000",f:"Hottest planet"},
   {n:"Earth",  e:"&#127757;",c:"#1E88E5",f:"Our home!"},
@@ -231,10 +220,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }).join('');
 
   document.getElementById('solCards').innerHTML = SOL.map(function(p) {
-    return '<div class="plncrd" onclick="spk(\'' + p.n + '. ' + p.f + '\')">'
-      + '<span style="font-size:2rem;display:block;margin-bottom:3px">' + p.e + '</span>'
-      + '<div style="font-size:calc(var(--b)*.66);font-weight:700;color:' + p.c + '">' + p.n + '</div>'
-      + '<div style="font-size:.58rem;color:#aaa;margin-top:1px">' + p.f + '</div></div>';
+    return '<div class="plncrd" style="border:2px solid ' + p.c + '44;box-shadow:0 4px 13px rgba(0,0,0,.3),0 0 10px ' + p.c + '33" onclick="spk(\'' + p.n + '. ' + p.f + '\')">'
+      + '<span style="font-size:2rem;display:block;margin-bottom:3px;filter:drop-shadow(0 0 6px ' + p.c + ')">' + p.e + '</span>'
+      + '<div style="font-size:var(--sm);font-weight:700;color:' + p.c + '">' + p.n + '</div>'
+      + '<div style="font-size:.58rem;color:#bbb;margin-top:1px">' + p.f + '</div></div>';
   }).join('');
 });
 </script>
