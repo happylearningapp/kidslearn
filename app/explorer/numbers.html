@@ -9,8 +9,43 @@
 <style>
 /* ── Override shared layout to full-width (no sidebar) ── */
 .subbody { display: block !important; }
-.submain { padding: 14px 12px calc(92px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
+.submain { padding: 8px 10px calc(80px + env(safe-area-inset-bottom)) !important; overflow-y: auto; }
 #sdrawer { top: 66px !important; }
+
+/* ── Tab sections: self-contained visibility — no shared.js timing dependency ── */
+.sec        { display: none;  max-width: 700px; margin: 0 auto; }
+.sec.active { display: block; }
+
+/* ── Compact bigbox for Android fit-to-screen ── */
+.bigbox { padding: 10px 12px !important; margin-bottom: 10px !important; border-radius: 20px; }
+.bigchar { font-size: calc(var(--b) * 3.2) !important; }
+.bigsub  { font-size: var(--md) !important; margin-top: 2px !important; }
+
+/* ── Emoji count grid: smaller + wrapping ── */
+.cntbox {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 4px; padding: 8px; border-radius: 16px;
+  margin-bottom: 8px; min-height: 36px;
+}
+.cntem { font-size: calc(var(--b) * 1.6) !important; animation: popIn .3s ease forwards; opacity: 0; }
+
+/* ── Compact nav buttons ── */
+.num-nav { margin-top: 8px !important; padding: 4px !important; }
+.num-nav-btn { padding: 10px 8px !important; min-height: 44px !important; font-size: var(--sm) !important; }
+.quiz-nav { margin-top: 8px !important; padding: 4px !important; }
+.quiz-nav-btn { padding: 10px 8px !important; min-height: 44px !important; font-size: var(--sm) !important; }
+
+/* ── Compact grid toggle ── */
+.grid-ctrl { margin-bottom: 8px !important; }
+.num-toggle { padding: 9px 14px !important; font-size: var(--sm) !important; }
+.num-shuf { padding: 9px 12px !important; }
+
+/* ── Compact color/shape cards ── */
+.cgrid { gap: 7px !important; }
+.crd { padding: 10px 4px 8px !important; border-radius: 14px !important; }
+.crdem { font-size: calc(var(--b) * 2) !important; }
+.crdlbl { font-size: calc(var(--b) * 0.72) !important; }
+.cswatch { width: 60px !important; height: 60px !important; margin-bottom: 6px !important; }
 
 /* ── Color swatch & quiz elements ── */
 .cswatch  { width:80px;height:80px;border-radius:50%;margin:0 auto 9px;
@@ -313,13 +348,20 @@ var CMPP=[
    DOCK NAV
 ════════════════════════════════ */
 function swDock(tab) {
-  window.speechSynthesis.cancel();
+  try { if(window.speechSynthesis) window.speechSynthesis.cancel(); } catch(e) {}
   document.querySelectorAll('.sec').forEach(function(s) {
     s.classList.toggle('active', s.id === 'num-' + tab);
   });
   document.querySelectorAll('.num-dock-btn').forEach(function(b) {
     b.classList.toggle('active', b.getAttribute('data-tab') === tab);
   });
+  // Re-init content on tab switch — ensures data shows even if DOMContentLoaded init failed
+  if (tab === 'numbers'  && !document.getElementById('bnc').textContent)  rN(numOrder[0]);
+  if (tab === 'colors'   && !document.getElementById('coCards').innerHTML) rC(colOrder[0]);
+  if (tab === 'shapes'   && !document.getElementById('shCards').innerHTML) rSh(shOrder[0]);
+  if (tab === 'addition' && !document.getElementById('addArea').innerHTML) buildAdd();
+  if (tab === 'patterns' && !document.getElementById('patArea').innerHTML) buildPat();
+  if (tab === 'compare'  && !document.getElementById('cmpArea').innerHTML) buildCmp();
 }
 
 /* ════════════════════════════════
