@@ -6,3 +6,17 @@ build/
 app/build/
 *.keystore
 *.jks
+
+# Mac OS junk
+.DS_Store
+**/.DS_Store
+
+# Auto-synced HTML assets (generated from app/ by Gradle syncWebAssets task)
+# Edit source files in app/ instead — they get copied here on every build
+app/src/main/assets/home.html
+app/src/main/assets/shared.js
+app/src/main/assets/explorer/
+app/src/main/assets/achiever/
+
+# Keep fonts — Android-only bundled files not in app/ source
+!app/src/main/assets/fonts/
