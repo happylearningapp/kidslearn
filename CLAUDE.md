@@ -1,6 +1,6 @@
 # Happy Learning World — Developer Reference
 
-> Auto-loaded by Claude Code every session. Keep this up to date after every significant change.
+> Auto-loaded by Claude Code every session. Keep this up to date after every significant change. 
 
 ---
 
