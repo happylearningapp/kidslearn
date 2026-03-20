@@ -105,6 +105,25 @@ class MainActivity : AppCompatActivity() {
                     ?: super.shouldInterceptRequest(view, request)
             }
 
+            override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                // Inject speechSynthesis polyfill EARLY — before DOMContentLoaded fires
+                // so swDock() doesn't crash when the page first loads
+                view?.evaluateJavascript("""
+                    (function() {
+                        if (!window.speechSynthesis) {
+                            window.speechSynthesis = {
+                                cancel: function(){},
+                                speak:  function(){},
+                                pause:  function(){},
+                                resume: function(){},
+                                getVoices: function(){ return []; }
+                            };
+                        }
+                    })();
+                """.trimIndent(), null)
+            }
+
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 injectBridgeAdapter()

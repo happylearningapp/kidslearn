@@ -94,7 +94,10 @@
   padding: 14px 12px calc(88px + env(safe-area-inset-bottom));
   overflow-y: auto;
 }
-.sec { max-width: 800px; margin: 0 auto; }
+
+/* ── Tab sections — self-contained, no dependency on shared.js timing ── */
+.sec         { display: none;  max-width: 800px; margin: 0 auto; }
+.sec.active  { display: block; }
 
 /* Dummy for stabico used elsewhere */
 .stabico { display: none; }
@@ -581,7 +584,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 // Dock tab switcher
 function swDock(tab) {
-  window.speechSynthesis.cancel();
+  try { if(window.speechSynthesis) window.speechSynthesis.cancel(); } catch(e) {}
   // show/hide sections
   document.querySelectorAll('.sec').forEach(function(s){
     s.classList.toggle('active', s.id === 'abc-' + tab);
