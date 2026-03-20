@@ -91,18 +91,62 @@
 /* ── Push content above the dock ── */
 .submain {
   flex: 1;
-  padding: 8px 10px calc(80px + env(safe-area-inset-bottom));
+  padding: 6px 10px calc(76px + env(safe-area-inset-bottom));
   overflow-y: auto;
 }
 
 /* ── Tab sections — self-contained, no dependency on shared.js timing ── */
-.sec         { display: none;  max-width: 800px; margin: 0 auto; }
-.sec.active  { display: block; }
+.sec        { display: none; max-width: 800px; margin: 0 auto; }
+.sec.active { display: block; }
 
-/* ── Compact bigbox for Android fit-to-screen ── */
-#lb { padding: 12px 14px !important; margin-bottom: 10px !important; border-radius: 20px !important; }
+/* ── Accent line: 4px colored strip under header, changes per tab ── */
+#tabAccent {
+  position: fixed;
+  top: 58px; left: 0; right: 0;
+  height: 4px;
+  z-index: 190;
+  background: #FF6B6B;
+  transition: background .25s ease;
+}
+
+/* ── Big letter box — compact, it IS the content not a header ── */
+#lb {
+  padding: 10px 14px !important;
+  margin-bottom: 8px !important;
+  border-radius: 18px !important;
+  cursor: pointer;
+  user-select: none;
+}
 #blc { font-size: calc(var(--b) * 4.5) !important; }
-#bls { font-size: calc(var(--b) * 2.2) !important; margin-top: 2px !important; }
+#bls { font-size: calc(var(--b) * 2) !important; margin-top: 2px !important; }
+
+/* ── Sticky nav — always in thumb zone just above dock, regardless of content length ── */
+.alpha-nav {
+  position: sticky;
+  bottom: calc(74px + env(safe-area-inset-bottom));
+  z-index: 100;
+  background: rgba(255, 253, 231, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 18px;
+  margin-top: 10px;
+  box-shadow: 0 -2px 12px rgba(0,0,0,.07);
+}
+
+/* ── Compact nav buttons ── */
+.alpha-nav-btn {
+  padding: 11px 8px !important;
+  min-height: 46px !important;
+  font-size: var(--sm) !important;
+}
+
+/* ── Compact toggle + cards ── */
+.alpha-ctrl  { margin-bottom: 8px !important; }
+.alpha-toggle { padding: 9px 14px !important; font-size: var(--sm) !important; }
+.cgrid  { gap: 7px !important; }
+.crd    { padding: 9px 4px 7px !important; border-radius: 14px !important; }
+.crdem  { font-size: calc(var(--b) * 2) !important; }
+.crdlbl { font-size: calc(var(--b) * 0.72) !important; }
 
 /* ── Compact word cards ── */
 .cgrid { gap: 7px !important; }
@@ -412,6 +456,8 @@
 </head>
 <body data-page-title="&#128292; ABC World" data-page-sub="Letters &amp; Language" data-page-gradient="linear-gradient(135deg,#FF6B6B,#FF8E53)" data-page-back="../home.html">
 
+<!-- Accent line: colored strip below header, driven by active tab -->
+<div id="tabAccent"></div>
 
 <div class="subbody">
 
@@ -450,33 +496,21 @@
 
     <!-- Sight Words -->
     <div id="abc-sight" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#C2185B,#E91E63)">
-        <div class="bigchar">&#128065;</div><div class="bigsub">Sight Words</div>
-      </div>
       <div class="cgrid" id="sightCards"></div>
     </div>
 
     <!-- Action Words -->
     <div id="abc-action" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#F57C00,#FFC300)">
-        <div class="bigchar">&#127939;</div><div class="bigsub">Action Words</div>
-      </div>
       <div class="cgrid" id="actionCards"></div>
     </div>
 
     <!-- Opposites -->
     <div id="abc-opp" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#00897B,#26C6DA)">
-        <div class="bigchar">&#8596;</div><div class="bigsub">Opposites</div>
-      </div>
       <div class="oppgrid" id="opCards"></div>
     </div>
 
     <!-- Letter Tracing -->
     <div id="abc-trace" class="sec">
-      <div class="bigbox" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53)">
-        <div class="bigchar">&#9999;</div><div class="bigsub">Letter Tracing</div>
-      </div>
       <!-- Toggle A-Z letter selector -->
       <button class="alpha-toggle" id="trAlphaToggle" onclick="toggleTrAlpha()">
         &#9999; Show A&#8211;Z Letters &nbsp;&#9660;
@@ -601,6 +635,12 @@ document.addEventListener('DOMContentLoaded',function(){
   swDock('alpha');
 });
 
+// Tab accent colours — matches each dock button active background
+var TAB_COLORS = {
+  alpha:'#FF6B6B', phonics:'#FF8E53', sight:'#C2185B',
+  action:'#F57C00', opp:'#00897B',   trace:'#7B1FA2'
+};
+
 // Dock tab switcher
 function swDock(tab) {
   try { if(window.speechSynthesis) window.speechSynthesis.cancel(); } catch(e) {}
@@ -613,6 +653,9 @@ function swDock(tab) {
     var on = b.getAttribute('data-tab') === tab;
     b.classList.toggle('active', on);
   });
+  // update accent line colour
+  var accent = document.getElementById('tabAccent');
+  if (accent) accent.style.background = TAB_COLORS[tab] || '#FF6B6B';
 }
 
 /* ── LETTER TRACING ── */
