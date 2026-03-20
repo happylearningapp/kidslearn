@@ -1,0 +1,80 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// ─────────────────────────────────────────────────────────────────
+// AUTO-SYNC: Copy web source (app/) → Android assets before every build
+//
+// Source of truth:  ../../app/          (kidslearn/app/)
+// Android assets:   src/main/assets/    (auto-populated, don't edit)
+//
+// Fonts folder is excluded — it lives only in Android assets
+// since the web version loads fonts from Google CDN directly.
+// ─────────────────────────────────────────────────────────────────
+task syncWebAssets(type: Copy) {
+    description = 'Sync web source files from app/ into Android assets'
+    group = 'build'
+
+    from('../../app') {
+        include '**/*.html'
+        include '**/*.js'
+        include '**/*.css'
+        include '**/*.json'
+    }
+    into 'src/main/assets'
+
+    // Preserve the fonts/ folder — it's Android-only (bundled TTF files)
+    preserve {
+        include 'fonts/**'
+    }
+}
+
+// Run sync automatically before every build
+preBuild.dependsOn syncWebAssets
+
+android {
+    namespace 'com.happylearningworld.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.happylearningworld.app"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'androidx.webkit:webkit:1.9.0'   // WebViewAssetLoader — fixes ../ relative paths
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
