@@ -1,0 +1,41 @@
+Simple 3-step process:
+
+Changing the Logo in Future
+Step 1 — Replace the source file
+Drop your new logo into:
+
+kidslearn/app/logo.png
+
+Must be square (ideally 1024×1024 px), PNG format.
+
+Step 2 — Regenerate Android icons
+Run this one command from the kidslearn/ folder:
+
+python3 << 'EOF'
+import subprocess, os
+
+SRC = "app/logo.png"
+RES = "android/app/src/main/res"
+
+icons = {
+    "mipmap-mdpi":    (48,  108),
+    "mipmap-hdpi":    (72,  162),
+    "mipmap-xhdpi":   (96,  216),
+    "mipmap-xxhdpi":  (144, 324),
+    "mipmap-xxxhdpi": (192, 432),
+}
+
+for density, (icon_size, fg_size) in icons.items():
+    d = os.path.join(RES, density)
+    subprocess.run(["sips", "-z", str(icon_size), str(icon_size), SRC, "--out", f"{d}/ic_launcher.png"], capture_output=True)
+    subprocess.run(["sips", "-z", str(icon_size), str(icon_size), SRC, "--out", f"{d}/ic_launcher_round.png"], capture_output=True)
+    subprocess.run(["sips", "-z", str(fg_size),   str(fg_size),   SRC, "--out", f"{d}/ic_launcher_foreground.png"], capture_output=True)
+    print(f"✅ {density}")
+
+print("Done!")
+EOF
+
+Step 3 — Sync & rebuild
+./sync-android.sh        # copies logo.png to Android assets (home page)
+
+Then in Android Studio: Build → Rebuild Project
