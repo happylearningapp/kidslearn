@@ -3,44 +3,419 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Science World</title>
+<title>Science World &#128300;</title>
 <link rel="stylesheet" href="../fonts/fonts.css"/>
 <script src="../shared.js"></script>
+<script src="data.js"></script>
 <style>
 .subbody{display:block!important;}
 .submain{padding:14px 12px calc(90px + env(safe-area-inset-bottom))!important;overflow-y:auto;}
 #sdrawer{top:66px!important;}
-.cs-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));gap:3px;}
-.cs-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px 5px;border-radius:12px;border:none;background:#f5f5f5;color:#ccc;font-family:var(--f);font-size:.46rem;font-weight:800;cursor:default;line-height:1.2;}
-.cs-btn .dock-ico{font-size:.9rem;line-height:1;}
-.cs-center{text-align:center;padding:40px 20px 20px;}
-.cs-icon{font-size:4rem;display:block;margin-bottom:14px;}
-.cs-title{font-size:1.3rem;font-weight:900;color:#444;margin-bottom:8px;}
-.cs-sub{font-size:.88rem;color:#888;line-height:1.6;margin-bottom:20px;}
-.cs-pill{display:inline-block;background:#f0f0f0;border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:900;color:#aaa;}
+
+.sci-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);display:grid;grid-template-columns:repeat(5,1fr);padding:5px 3px calc(5px + env(safe-area-inset-bottom));gap:3px;}
+.sci-dock-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:5px 2px 4px;border-radius:10px;border:none;background:#f5f5f5;color:#999;font-family:var(--f);font-size:.44rem;font-weight:800;cursor:pointer;line-height:1.2;transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent;}
+.sci-dock-btn.active{color:#fff;transform:scale(1.05);}
+.sci-dock-btn .dock-ico{font-size:.9rem;line-height:1;}
+.sci-dock-btn[data-tab="body"].active    {background:linear-gradient(135deg,#00897B,#26C6DA);}
+.sci-dock-btn[data-tab="plants"].active  {background:linear-gradient(135deg,#2E7D32,#66BB6A);}
+.sci-dock-btn[data-tab="animals"].active {background:linear-gradient(135deg,#E65100,#FF9800);}
+.sci-dock-btn[data-tab="weather"].active {background:linear-gradient(135deg,#1565C0,#42A5F5);}
+.sci-dock-btn[data-tab="space"].active   {background:linear-gradient(135deg,#4A148C,#7B1FA2);}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes popIn{0%{transform:scale(.8);opacity:.5}100%{transform:scale(1);opacity:1}}
+.ibox{background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:14px;}
+.iq{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:14px;text-align:center;line-height:1.4;}
+.rmsg{min-height:22px;text-align:center;font-size:.85rem;font-weight:900;color:#4CAF50;margin-bottom:8px;}
+.scorebar{background:#f7f7f7;border-radius:12px;padding:7px 12px;font-size:.78rem;font-weight:700;color:#666;margin-bottom:10px;}
+.scorescreen{text-align:center;padding:30px 20px;}
+.rbtn{padding:13px 32px;border-radius:18px;border:none;background:linear-gradient(135deg,#00897B,#26C6DA);color:#fff;font-family:var(--f);font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:all .2s;}
+.rbtn:active{transform:scale(.96);}
+.mcq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;margin:0 auto 14px;}
+.mcq-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:12px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:700;font-size:.88rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;width:100%;box-sizing:border-box;}
+.mcq-opt:hover{transform:scale(1.03);}
+.mcq-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.mcq-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* Mode toggle */
+.mode-toggle{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
+.mode-btn{padding:7px 16px;border-radius:12px;border:2px solid #eee;background:#f5f5f5;font-family:var(--f);font-size:.75rem;font-weight:900;cursor:pointer;color:#888;transition:all .18s;}
+.mode-btn.active{background:#00897B;color:#fff;border-color:#00897B;}
+
+/* Flashcard grid */
+.sci-card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.sci-card{background:#fff;border:3px solid #eee;border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;}
+.sci-card:active{transform:scale(.96);}
+.sci-card .sc-em{font-size:2.2rem;display:block;margin-bottom:6px;}
+.sci-card .sc-name{font-size:.88rem;font-weight:900;color:#333;margin-bottom:3px;}
+.sci-card .sc-fact{font-size:.68rem;color:#777;line-height:1.3;}
+
+/* Animal card */
+.ani-card{background:#fff;border:3px solid #eee;border-radius:16px;padding:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;}
+.ani-card:active{transform:scale(.97);}
+.ani-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.ani-em{font-size:2.5rem;line-height:1;}
+.ani-name{font-size:1.1rem;font-weight:900;color:#333;}
+.ani-type{display:inline-block;background:#f5f5f5;border-radius:8px;padding:2px 8px;font-size:.65rem;font-weight:700;color:#666;margin-top:2px;}
+.ani-facts{display:flex;gap:8px;flex-wrap:wrap;}
+.ani-fact-pill{background:#E0F7FA;border-radius:8px;padding:3px 10px;font-size:.68rem;font-weight:700;color:#00695C;}
+
+/* Weather card */
+.wx-card{background:linear-gradient(135deg,#1565C0,#42A5F5);border-radius:16px;padding:14px;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;}
+.wx-card:active{transform:scale(.97);}
+.wx-top{display:flex;align-items:center;gap:10px;}
+.wx-em{font-size:2.5rem;line-height:1;}
+.wx-name{font-size:1.1rem;font-weight:900;}
+.wx-desc{font-size:.75rem;margin-top:4px;opacity:.85;}
+
+/* Space card */
+.space-card{background:linear-gradient(135deg,#1A237E,#4A148C);border-radius:16px;padding:14px;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;}
+.space-card:active{transform:scale(.97);}
 </style>
 </head>
-<body data-page-title="&#128300; Science World" data-page-sub="Body, Plants &amp; Space" data-page-gradient="linear-gradient(135deg,#4527A0,#7E57C2)" data-page-back="../home.html">
+<body data-page-title="&#128300; Science World" data-page-sub="Body, Plants &amp; Space" data-page-gradient="linear-gradient(135deg,#00897B,#26C6DA)" data-page-back="../home.html">
+
+<div class="subhdr"></div>
+<script>(function(){
+  var b=document.body,h=document.querySelector('.subhdr');
+  if(!b||!h)return;
+  h.style.background=b.getAttribute('data-page-gradient')||'';
+  h.innerHTML='<a class="hdr-home" href="'+(b.getAttribute('data-page-back')||'../home.html')+'">&#8592;</a>'
+    +'<div class="hdr-title">'+(b.getAttribute('data-page-title')||'')+'<small>'+(b.getAttribute('data-page-sub')||'')+'</small></div>'
+    +'<div class="hdr-right">'
+    +'<button id="sndIconBtn" class="hdr-snd-btn" onclick="toggleSoundBtn()">&#128266;</button>'
+    +'<button class="hdr-gear" onclick="toggleSettings(event)">&#9881;</button>'
+    +'</div>';
+})();</script>
+
 <div class="subbody">
-  <div class="submain">
-    <div class="bigbox" style="background:linear-gradient(135deg,#4527A0,#7E57C2)">
-      <div class="bigchar">&#128300;</div>
-      <div class="bigsub">Science World</div>
-    </div>
-    <div class="cs-center">
-      <span class="cs-icon">&#128679;</span>
-      <div class="cs-title">Coming Soon!</div>
-      <div class="cs-sub">This section is being built with<br>exciting content for Young Achievers.<br>Check back soon!</div>
-      <span class="cs-pill">&#127381; In Progress</span>
-    </div>
-  </div>
+  <div class="submain" id="sciMain"></div>
 </div>
-<nav class="cs-dock">
-  <button class="cs-btn"><span class="dock-ico">&#129504;</span>My Body</button>
-  <button class="cs-btn"><span class="dock-ico">&#127807;</span>Plants</button>
-  <button class="cs-btn"><span class="dock-ico">&#127754;</span>Weather</button>
-  <button class="cs-btn"><span class="dock-ico">&#127760;</span>Space</button>
-  <button class="cs-btn"><span class="dock-ico">&#9879;</span>Experiments</button>
+
+<nav class="sci-dock">
+  <button class="sci-dock-btn" data-tab="body"    onclick="showSci('body')">   <span class="dock-ico">&#129504;</span>My Body</button>
+  <button class="sci-dock-btn" data-tab="plants"  onclick="showSci('plants')"> <span class="dock-ico">&#127807;</span>Plants</button>
+  <button class="sci-dock-btn" data-tab="animals" onclick="showSci('animals')"><span class="dock-ico">&#128062;</span>Animals</button>
+  <button class="sci-dock-btn" data-tab="weather" onclick="showSci('weather')"><span class="dock-ico">&#9925;</span>Weather</button>
+  <button class="sci-dock-btn" data-tab="space"   onclick="showSci('space')">  <span class="dock-ico">&#128640;</span>Space</button>
 </nav>
+
+<script>
+/* ── STATE ── */
+var bodyMode='learn',plantsMode='learn',weatherMode='learn',spaceMode='learn';
+var bqOrder=BODY_QUIZ.map(function(_,i){return i;}),bqIdx=0,bqSc=0,bqAns=false;
+var pqOrder=PLANTS_QUIZ.map(function(_,i){return i;}),pqIdx=0,pqSc=0,pqAns=false;
+var aniOrder=ANIMALS_DATA.map(function(_,i){return i;});
+var aqOrder=ANIMALS_QUIZ.map(function(_,i){return i;}),aqIdx=0,aqSc=0,aqAns=false;
+var wqOrder=WEATHER_QUIZ.map(function(_,i){return i;}),wqIdx=0,wqSc=0,wqAns=false;
+var sqOrder=SPACE_QUIZ.map(function(_,i){return i;}),sqIdx=0,sqSc=0,sqAns=false;
+var _nextFn=null;
+function nextSci(){if(_nextFn)_nextFn();}
+
+/* ── ROUTER ── */
+var SCI_HEADERS={
+  body:    {bg:'linear-gradient(135deg,#00897B,#26C6DA)',em:'&#129504;',title:'My Body'},
+  plants:  {bg:'linear-gradient(135deg,#2E7D32,#66BB6A)',em:'&#127807;',title:'Plants'},
+  animals: {bg:'linear-gradient(135deg,#E65100,#FF9800)',em:'&#128062;',title:'Animals'},
+  weather: {bg:'linear-gradient(135deg,#1565C0,#42A5F5)',em:'&#9925;',title:'Weather'},
+  space:   {bg:'linear-gradient(135deg,#4A148C,#7B1FA2)',em:'&#128640;',title:'Space'}
+};
+
+var currentSciTab='body';
+var sciShufOn=false;
+
+function showSci(name){
+  window.speechSynthesis.cancel();
+  currentSciTab=name;
+  sciShufOn=false;
+  document.querySelectorAll('.sci-dock-btn').forEach(function(b){b.classList.remove('active');b.style.background='';});
+  var btn=document.querySelector('.sci-dock-btn[data-tab="'+name+'"]');
+  if(btn){btn.classList.add('active');var h=SCI_HEADERS[name];if(h)btn.style.background=h.bg;}
+  var shufRowHTML=name==='animals'
+    ?'<div class="shuf-row"><button class="shuf-toggle" id="sciShufBtn" onclick="toggleSciShuf()">&#128256; Shuffle OFF</button></div>'
+    :'';
+  document.getElementById('sciMain').innerHTML=shufRowHTML+'<div id="sciArea"></div>';
+  resetSci(name);
+  ({body:buildBody,plants:buildPlants,animals:buildAnimals,weather:buildWeather,space:buildSpace})[name]();
+}
+
+function toggleSciShuf(){
+  sciShufOn=!sciShufOn;
+  var btn=document.getElementById('sciShufBtn');
+  if(btn){btn.classList.toggle('on',sciShufOn);btn.innerHTML='&#128256; Shuffle '+(sciShufOn?'ON':'OFF');}
+  resetSci(currentSciTab);
+  if(sciShufOn){aniOrder.sort(function(){return Math.random()-.5;});}
+  buildAnimals();
+}
+
+function resetSci(name){
+  if(name==='body')    {bqOrder=BODY_QUIZ.map(function(_,i){return i;});bqIdx=0;bqSc=0;bqAns=false;bodyMode='learn';}
+  if(name==='plants')  {pqOrder=PLANTS_QUIZ.map(function(_,i){return i;});pqIdx=0;pqSc=0;pqAns=false;plantsMode='learn';}
+  if(name==='animals') {aniOrder=ANIMALS_DATA.map(function(_,i){return i;});aqOrder=ANIMALS_QUIZ.map(function(_,i){return i;});aqIdx=0;aqSc=0;aqAns=false;}
+  if(name==='weather') {wqOrder=WEATHER_QUIZ.map(function(_,i){return i;});wqIdx=0;wqSc=0;wqAns=false;weatherMode='learn';}
+  if(name==='space')   {sqOrder=SPACE_QUIZ.map(function(_,i){return i;});sqIdx=0;sqSc=0;sqAns=false;spaceMode='learn';}
+}
+function getArea(){return document.getElementById('sciArea');}
+function scoreH(cur,tot,sc){return '<div class="scorebar">Q <b>'+cur+'</b>/'+tot+' &nbsp;&#183;&nbsp; Score: <b>'+sc+'</b></div>';}
+function navBtns(prevFn,showNext){
+  return '<div class="nav-row">'
+    +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
+    +(showNext
+      ?'<button class="nxtbtn" id="nxtBtn" onclick="nextSci()">Next &#8594;</button>'
+      :'<button class="nxtbtn" id="nxtBtn" style="display:none" onclick="nextSci()">Next &#8594;</button>')
+    +'</div>';
+}
+function showNxt(){var b=document.getElementById('nxtBtn');if(b)b.style.display='inline-block';}
+function wrongFlash(el,msgId){el.classList.add('wrong');spk('Try again!');setTimeout(function(){el.classList.remove('wrong');if(msgId)document.getElementById(msgId).innerHTML='';},900);}
+function scoreScrn(sc,tot,great,ok,gameId){
+  var pct=Math.round(sc/tot*100);
+  getArea().innerHTML='<div class="scorescreen">'
+    +'<div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div>'
+    +'<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+sc+' / '+tot+'</div>'
+    +'<div style="color:#777;margin-bottom:16px">'+(pct>=80?great:pct>=50?ok:'Keep practising!')+'</div>'
+    +'<button class="rbtn" onclick="showSci(\''+gameId+'\')">Play Again &#128257;</button></div>';
+  spk(pct>=80?great:ok);
+}
+function shufBar(fn){return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';}
+function modeToggle(tabName,mode,learnFn,quizFn){
+  return '<div class="mode-toggle">'
+    +'<button class="mode-btn'+(mode==='learn'?' active':'')+'" onclick="'+learnFn+'">&#128218; Learn</button>'
+    +'<button class="mode-btn'+(mode==='quiz'?' active':'')+'" onclick="'+quizFn+'">&#127953; Quiz</button>'
+    +'</div>';
+}
+
+/* ── MY BODY ── */
+function buildBody(){
+  _nextFn=null;
+  if(bodyMode==='learn'){
+    var html=modeToggle('body',bodyMode,'bodyMode=\'learn\';buildBody()','bodyMode=\'quiz\';bqIdx=0;bqSc=0;bqAns=false;buildBody()')
+      +'<div class="sci-card-grid">';
+    BODY_PARTS.forEach(function(p){
+      html+='<div class="sci-card" onclick="spk(\''+p.part+'. '+p.fact+'\')">'
+        +'<span class="sc-em">'+p.em+'</span>'
+        +'<div class="sc-name">'+p.part+'</div>'
+        +'<div class="sc-fact">'+p.fact+'</div>'
+        +'</div>';
+    });
+    html+='</div>';
+    getArea().innerHTML=html;
+  } else {
+    buildBodyQuiz();
+  }
+}
+function buildBodyQuiz(){
+  _nextFn=function(){bqIdx++;bqAns=false;buildBodyQuiz();};
+  if(bqIdx>=BODY_QUIZ.length){scoreScrn(bqSc,BODY_QUIZ.length,'Body Expert!','Good learning!','body');return;}
+  var p=BODY_QUIZ[bqOrder[bqIdx]];
+  bqAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="bopt'+i+'" onclick="chkBodyQ('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML=modeToggle('body',bodyMode,'bodyMode=\'learn\';buildBody()','bodyMode=\'quiz\';bqIdx=0;bqSc=0;bqAns=false;buildBodyQuiz()')
+    +scoreH(bqIdx+1,BODY_QUIZ.length,bqSc)
+    +'<div class="ibox">'
+    +'<div style="text-align:center;font-size:2.5rem;margin-bottom:8px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="bqR"></div>'
+    +navBtns(bqIdx>0?'bqIdx--;bqAns=false;buildBodyQuiz()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkBodyQ(i,ci){
+  if(bqAns)return;
+  var p=BODY_QUIZ[bqOrder[bqIdx]];
+  var el=document.getElementById('bopt'+i);
+  if(i===ci){
+    bqAns=true;bqSc++;
+    el.classList.add('correct');
+    document.getElementById('bqR').innerHTML='&#11088; '+p.opts[p.a]+'!';
+    spk('Correct! '+p.opts[p.a]+'!');showNxt();
+  }else{wrongFlash(el,'bqR');}
+}
+
+/* ── PLANTS ── */
+function buildPlants(){
+  _nextFn=null;
+  if(plantsMode==='learn'){
+    var html=modeToggle('plants',plantsMode,'plantsMode=\'learn\';buildPlants()','plantsMode=\'quiz\';pqIdx=0;pqSc=0;pqAns=false;buildPlants()')
+      +'<div class="ibox"><div class="iq">&#127807; Parts of a Plant</div><div class="sci-card-grid">';
+    PLANTS_DATA.forEach(function(p){
+      html+='<div class="sci-card" onclick="spk(\''+p.part+'. '+p.fact+'\')">'
+        +'<span class="sc-em">'+p.em+'</span>'
+        +'<div class="sc-name">'+p.part+'</div>'
+        +'<div class="sc-fact">'+p.fact+'</div>'
+        +'</div>';
+    });
+    html+='</div></div>';
+    getArea().innerHTML=html;
+  } else {
+    buildPlantsQuiz();
+  }
+}
+function buildPlantsQuiz(){
+  _nextFn=function(){pqIdx++;pqAns=false;buildPlantsQuiz();};
+  if(pqIdx>=PLANTS_QUIZ.length){scoreScrn(pqSc,PLANTS_QUIZ.length,'Plant Expert!','Good botany!','plants');return;}
+  var p=PLANTS_QUIZ[pqOrder[pqIdx]];
+  pqAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="popt'+i+'" onclick="chkPlantsQ('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML=modeToggle('plants',plantsMode,'plantsMode=\'learn\';buildPlants()','plantsMode=\'quiz\';pqIdx=0;pqSc=0;pqAns=false;buildPlantsQuiz()')
+    +scoreH(pqIdx+1,PLANTS_QUIZ.length,pqSc)
+    +'<div class="ibox">'
+    +'<div style="text-align:center;font-size:2.5rem;margin-bottom:8px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="pqR"></div>'
+    +navBtns(pqIdx>0?'pqIdx--;pqAns=false;buildPlantsQuiz()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkPlantsQ(i,ci){
+  if(pqAns)return;
+  var p=PLANTS_QUIZ[pqOrder[pqIdx]];
+  var el=document.getElementById('popt'+i);
+  if(i===ci){
+    pqAns=true;pqSc++;
+    el.classList.add('correct');
+    document.getElementById('pqR').innerHTML='&#11088; '+p.opts[p.a]+'!';
+    spk('Correct! '+p.opts[p.a]+'!');showNxt();
+  }else{wrongFlash(el,'pqR');}
+}
+
+/* ── ANIMALS ── */
+function shuffleAnimals(){aniOrder.sort(function(){return Math.random()-.5;});buildAnimals();}
+function buildAnimals(){
+  _nextFn=null;
+  var html='<div class="ibox"><div class="iq">&#128062; Animals of the World</div>';
+  aniOrder.forEach(function(i){
+    var a=ANIMALS_DATA[i];
+    html+='<div class="ani-card" onclick="spk(\''+a.name+'. It is a '+a.type+'. It lives in '+a.habitat+'. It eats '+a.food+'\')">'
+      +'<div class="ani-top"><span class="ani-em">'+a.em+'</span>'
+      +'<div><div class="ani-name">'+a.name+'</div><span class="ani-type">'+a.type+'</span></div></div>'
+      +'<div class="ani-facts">'
+      +'<span class="ani-fact-pill">&#127968; '+a.habitat+'</span>'
+      +'<span class="ani-fact-pill">&#127860; '+a.food+'</span>'
+      +'</div></div>';
+  });
+  html+='</div>';
+  getArea().innerHTML=html;
+}
+
+/* ── WEATHER ── */
+function buildWeather(){
+  _nextFn=null;
+  if(weatherMode==='learn'){
+    var html=modeToggle('weather',weatherMode,'weatherMode=\'learn\';buildWeather()','weatherMode=\'quiz\';wqIdx=0;wqSc=0;wqAns=false;buildWeather()')
+      +'<div class="ibox"><div class="iq">&#9925; Types of Weather</div>';
+    WEATHER_DATA.forEach(function(w){
+      html+='<div class="wx-card" onclick="spk(\''+w.name+'. '+w.desc+'\')">'
+        +'<div class="wx-top"><span class="wx-em">'+w.em+'</span>'
+        +'<div><div class="wx-name">'+w.name+'</div><div class="wx-desc">'+w.desc+'</div></div></div></div>';
+    });
+    html+='<div style="margin-top:14px"><div class="iq">&#127974; Seasons</div>';
+    SEASONS_DATA.forEach(function(s){
+      html+='<div style="background:#f5f5f5;border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;" onclick="spk(\''+s.name+'. '+s.months+'. '+s.desc+'\')">'
+        +'<b style="font-size:1.1rem">'+s.em+' '+s.name+'</b> <span style="font-size:.75rem;color:#777">'+s.months+'</span>'
+        +'<div style="font-size:.78rem;color:#555;margin-top:4px">'+s.desc+'</div></div>';
+    });
+    html+='</div></div>';
+    getArea().innerHTML=html;
+  } else {
+    buildWeatherQuiz();
+  }
+}
+function buildWeatherQuiz(){
+  _nextFn=function(){wqIdx++;wqAns=false;buildWeatherQuiz();};
+  if(wqIdx>=WEATHER_QUIZ.length){scoreScrn(wqSc,WEATHER_QUIZ.length,'Weather Watcher!','Good science!','weather');return;}
+  var p=WEATHER_QUIZ[wqOrder[wqIdx]];
+  wqAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="wopt'+i+'" onclick="chkWeatherQ('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML=modeToggle('weather',weatherMode,'weatherMode=\'learn\';buildWeather()','weatherMode=\'quiz\';wqIdx=0;wqSc=0;wqAns=false;buildWeatherQuiz()')
+    +scoreH(wqIdx+1,WEATHER_QUIZ.length,wqSc)
+    +'<div class="ibox">'
+    +'<div style="text-align:center;font-size:2.5rem;margin-bottom:8px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="wqR"></div>'
+    +navBtns(wqIdx>0?'wqIdx--;wqAns=false;buildWeatherQuiz()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkWeatherQ(i,ci){
+  if(wqAns)return;
+  var p=WEATHER_QUIZ[wqOrder[wqIdx]];
+  var el=document.getElementById('wopt'+i);
+  if(i===ci){
+    wqAns=true;wqSc++;
+    el.classList.add('correct');
+    document.getElementById('wqR').innerHTML='&#11088; '+p.opts[p.a]+'!';
+    spk('Correct! '+p.opts[p.a]+'!');showNxt();
+  }else{wrongFlash(el,'wqR');}
+}
+
+/* ── SPACE ── */
+function buildSpace(){
+  _nextFn=null;
+  if(spaceMode==='learn'){
+    var html=modeToggle('space',spaceMode,'spaceMode=\'learn\';buildSpace()','spaceMode=\'quiz\';sqIdx=0;sqSc=0;sqAns=false;buildSpace()')
+      +'<div class="ibox"><div class="iq">&#128640; Our Solar System</div>';
+    SPACE_DATA.forEach(function(s){
+      html+='<div class="space-card" onclick="spk(\''+s.name+'. '+s.fact+'\')">'
+        +'<div style="display:flex;align-items:center;gap:12px">'
+        +'<span style="font-size:2.5rem">'+s.em+'</span>'
+        +'<div><div style="font-size:1rem;font-weight:900">'+s.name+'</div>'
+        +'<div style="font-size:.75rem;opacity:.85;margin-top:3px">'+s.fact+'</div></div></div></div>';
+    });
+    html+='</div>';
+    getArea().innerHTML=html;
+  } else {
+    buildSpaceQuiz();
+  }
+}
+function buildSpaceQuiz(){
+  _nextFn=function(){sqIdx++;sqAns=false;buildSpaceQuiz();};
+  if(sqIdx>=SPACE_QUIZ.length){scoreScrn(sqSc,SPACE_QUIZ.length,'Space Explorer!','Good astronomy!','space');return;}
+  var p=SPACE_QUIZ[sqOrder[sqIdx]];
+  sqAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="sqopt'+i+'" onclick="chkSpaceQ('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML=modeToggle('space',spaceMode,'spaceMode=\'learn\';buildSpace()','spaceMode=\'quiz\';sqIdx=0;sqSc=0;sqAns=false;buildSpaceQuiz()')
+    +scoreH(sqIdx+1,SPACE_QUIZ.length,sqSc)
+    +'<div class="ibox">'
+    +'<div style="text-align:center;font-size:2.5rem;margin-bottom:8px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="sqR"></div>'
+    +navBtns(sqIdx>0?'sqIdx--;sqAns=false;buildSpaceQuiz()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkSpaceQ(i,ci){
+  if(sqAns)return;
+  var p=SPACE_QUIZ[sqOrder[sqIdx]];
+  var el=document.getElementById('sqopt'+i);
+  if(i===ci){
+    sqAns=true;sqSc++;
+    el.classList.add('correct');
+    document.getElementById('sqR').innerHTML='&#11088; '+p.opts[p.a]+'!';
+    spk('Correct! '+p.opts[p.a]+'!');showNxt();
+  }else{wrongFlash(el,'sqR');}
+}
+
+document.addEventListener('DOMContentLoaded',function(){showSci('body');});
+</script>
 </body>
 </html>

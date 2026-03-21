@@ -242,6 +242,9 @@ input,select,button{-webkit-appearance:none;appearance:none;}
 .prvbtn:hover,.nxtbtn:hover{opacity:.86;transform:scale(1.04);}
 .shufbtn{display:inline-block;min-width:100px;padding:10px 20px;border-radius:20px;border:none;background:linear-gradient(135deg,#6A1B9A,#1565C0);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;text-align:center;transition:opacity .18s,transform .15s;-webkit-tap-highlight-color:transparent;}
 .shufbtn:hover{opacity:.86;transform:scale(1.04);}
+.shuf-row{text-align:center;margin-bottom:8px;}
+.shuf-toggle{padding:7px 20px;border-radius:20px;border:2px solid #ddd;background:#f5f5f5;font-family:var(--f);font-size:var(--sm);font-weight:800;cursor:pointer;transition:all .22s;color:#888;-webkit-tap-highlight-color:transparent;}
+.shuf-toggle.on{background:linear-gradient(135deg,#E91E63,#FF8E53);color:#fff;border-color:transparent;}
 .scorescreen{background:#fff;border-radius:20px;padding:30px 20px;box-shadow:0 5px 20px rgba(0,0,0,.12);text-align:center;}
 .rbtn{padding:12px 28px;border-radius:20px;border:none;background:linear-gradient(135deg,#6A1B9A,#E91E63);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;margin-top:12px;}
 @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}

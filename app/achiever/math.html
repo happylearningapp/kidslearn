@@ -240,19 +240,37 @@ var MATH_HEADERS={
   countup: {bg:'linear-gradient(135deg,#00695C,#26A69A)',em:'&#128290;',title:'Count Up!'}
 };
 
+var currentMathTab='add';
+var mathShufOn=false;
+
 function showMath(name){
   window.speechSynthesis.cancel();
+  currentMathTab=name;
+  mathShufOn=false;
   document.querySelectorAll('.math-dock-btn').forEach(function(b){
     b.classList.remove('active');b.style.background='';
   });
   var btn=document.querySelector('.math-dock-btn[data-tab="'+name+'"]');
   if(btn)btn.classList.add('active');
   var h=MATH_HEADERS[name];
+  if(btn&&h)btn.style.background=h.bg;
   document.getElementById('mathMain').innerHTML=
-    '<div class="bigbox" style="background:'+h.bg+'"><div class="bigchar">'+h.em+'</div><div class="bigsub">'+h.title+'</div></div>'
+    '<div class="shuf-row"><button class="shuf-toggle" id="mathShufBtn" onclick="toggleMathShuf()">&#128256; Shuffle OFF</button></div>'
     +'<div id="mathArea"></div>';
   resetMath(name);
   ({add:buildAdd,subtract:buildSub,shapes:buildShapes,clock:buildClock,compare:buildCmp,countup:buildCount})[name]();
+}
+
+function toggleMathShuf(){
+  mathShufOn=!mathShufOn;
+  var btn=document.getElementById('mathShufBtn');
+  if(btn){btn.classList.toggle('on',mathShufOn);btn.innerHTML='&#128256; Shuffle '+(mathShufOn?'ON':'OFF');}
+  resetMath(currentMathTab);
+  if(mathShufOn){
+    var ord=currentMathTab==='add'?addOrder:currentMathTab==='subtract'?subOrder:currentMathTab==='shapes'?shpOrder:currentMathTab==='clock'?clkOrder:currentMathTab==='compare'?cmpOrder:cntOrder;
+    ord.sort(function(){return Math.random()-.5;});
+  }
+  ({add:buildAdd,subtract:buildSub,shapes:buildShapes,clock:buildClock,compare:buildCmp,countup:buildCount})[currentMathTab]();
 }
 
 function resetMath(name){
@@ -337,7 +355,6 @@ function buildAdd(){
   }).join('');
 
   getArea().innerHTML=scoreH(addIdx+1,ADD_DATA.length,addSc)
-    +shufBar('shuffleAdd()')
     +'<div class="ibox">'
     +'<div class="iq">&#10133; How many altogether?</div>'
     +'<div class="math-groups">'
@@ -394,7 +411,6 @@ function buildSub(){
   }).join('');
 
   getArea().innerHTML=scoreH(subIdx+1,SUB_DATA.length,subSc)
-    +shufBar('shuffleSub()')
     +'<div class="ibox">'
     +'<div class="iq">&#10134; '+p.total+' take away '+p.rem+' = ?</div>'
     +'<div style="text-align:center;margin-bottom:16px">'+dotsHTML+'</div>'
@@ -444,7 +460,6 @@ function buildShapes(){
   }).join('');
 
   getArea().innerHTML=scoreH(shpIdx+1,data.length,shpSc)
-    +shufBar('shuffleShapes()')
     +'<div class="ibox">'
     +'<div class="shape-tabs">'
     +'<button class="shape-tab'+(shapeMode==='2d'?' active':'')+'" onclick="switchShapeMode(\'2d\')">2D Shapes</button>'
@@ -493,7 +508,6 @@ function buildClock(){
   }).join('');
 
   getArea().innerHTML=scoreH(clkIdx+1,CLOCK_DATA.length,clkSc)
-    +shufBar('shuffleClock()')
     +'<div class="ibox">'
     +'<div class="iq">&#128336; What time is it?</div>'
     +'<div class="clock-face">'
@@ -539,7 +553,6 @@ function buildCmp(){
   var ans  =swapped?(p.ans==='a'?'right':'left'):(p.ans==='a'?'left':'right');
 
   getArea().innerHTML=scoreH(cmpIdx+1,CMP_DATA.length,cmpSc)
-    +shufBar('shuffleCmp()')
     +'<div class="ibox">'
     +'<div class="iq">'+p.q+'</div>'
     +'<div class="cmp-row">'
@@ -605,7 +618,6 @@ function buildCount(){
   }).join('');
 
   getArea().innerHTML=scoreH(cntIdx+1,COUNT_DATA.length,cntSc)
-    +shufBar('shuffleCount()')
     +'<div class="ibox">'
     +'<div class="iq">&#128290; '+question+'</div>'
     +bodyHTML

@@ -3,43 +3,339 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Challenge Zone</title>
+<title>Challenge Zone &#127919;</title>
 <link rel="stylesheet" href="../fonts/fonts.css"/>
 <script src="../shared.js"></script>
+<script src="data.js"></script>
 <style>
 .subbody{display:block!important;}
-.submain{padding:14px 12px calc(90px + env(safe-area-inset-bottom))!important;overflow-y:auto;}
+.submain{padding:14px 12px calc(80px + env(safe-area-inset-bottom))!important;overflow-y:auto;}
 #sdrawer{top:66px!important;}
-.cs-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));gap:3px;}
-.cs-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px 5px;border-radius:12px;border:none;background:#f5f5f5;color:#ccc;font-family:var(--f);font-size:.46rem;font-weight:800;cursor:default;line-height:1.2;}
-.cs-btn .dock-ico{font-size:.9rem;line-height:1;}
-.cs-center{text-align:center;padding:40px 20px 20px;}
-.cs-icon{font-size:4rem;display:block;margin-bottom:14px;}
-.cs-title{font-size:1.3rem;font-weight:900;color:#444;margin-bottom:8px;}
-.cs-sub{font-size:.88rem;color:#888;line-height:1.6;margin-bottom:20px;}
-.cs-pill{display:inline-block;background:#f0f0f0;border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:900;color:#aaa;}
+
+.chal-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);display:grid;grid-template-columns:repeat(3,1fr);padding:5px 3px calc(5px + env(safe-area-inset-bottom));gap:3px;}
+.chal-dock-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:5px 2px 4px;border-radius:10px;border:none;background:#f5f5f5;color:#999;font-family:var(--f);font-size:.5rem;font-weight:800;cursor:pointer;line-height:1.2;transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent;}
+.chal-dock-btn.active{color:#fff;transform:scale(1.05);}
+.chal-dock-btn .dock-ico{font-size:1rem;line-height:1;}
+.chal-dock-btn[data-tab="speed"].active  {background:linear-gradient(135deg,#B71C1C,#EF5350);}
+.chal-dock-btn[data-tab="streak"].active {background:linear-gradient(135deg,#E65100,#FF9800);}
+.chal-dock-btn[data-tab="mixed"].active  {background:linear-gradient(135deg,#4A148C,#7B1FA2);}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes popIn{0%{transform:scale(.8);opacity:.5}100%{transform:scale(1);opacity:1}}
+@keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.ibox{background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:14px;}
+.iq{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:14px;text-align:center;line-height:1.4;}
+.rmsg{min-height:22px;text-align:center;font-size:.85rem;font-weight:900;color:#4CAF50;margin-bottom:8px;}
+.scorescreen{text-align:center;padding:30px 20px;}
+.rbtn{padding:13px 32px;border-radius:18px;border:none;background:linear-gradient(135deg,#B71C1C,#EF5350);color:#fff;font-family:var(--f);font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:all .2s;}
+.rbtn:active{transform:scale(.96);}
+.mcq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;margin:0 auto 14px;}
+.mcq-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:12px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:700;font-size:.88rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;width:100%;box-sizing:border-box;}
+.mcq-opt:hover{transform:scale(1.03);}
+.mcq-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.mcq-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* Speed quiz timer */
+.timer-ring{width:80px;height:80px;border-radius:50%;background:conic-gradient(#EF5350 var(--pct,100%),#f5f5f5 0);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#B71C1C;position:relative;}
+.timer-ring::before{content:'';position:absolute;inset:8px;background:#fff;border-radius:50%;}
+.timer-num{position:relative;z-index:1;}
+.timer-ring.urgent{animation:timerPulse .5s ease-in-out infinite;}
+.speed-score{text-align:center;font-size:1.8rem;font-weight:900;color:#B71C1C;margin-bottom:4px;}
+.speed-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.cat-badge{display:inline-block;background:#f5f5f5;border-radius:10px;padding:3px 10px;font-size:.68rem;font-weight:900;color:#666;margin-bottom:8px;}
+
+/* Streak */
+.streak-count{text-align:center;margin-bottom:14px;}
+.streak-num{font-size:3.5rem;font-weight:900;color:#E65100;line-height:1;}
+.streak-label{font-size:.78rem;color:#888;font-weight:700;}
+.streak-fire{font-size:2rem;}
+
+/* Start screen */
+.start-card{background:linear-gradient(135deg,#B71C1C,#EF5350);border-radius:20px;padding:24px;text-align:center;color:#fff;margin-bottom:14px;}
+.start-em{font-size:3.5rem;display:block;margin-bottom:8px;}
+.start-title{font-size:1.3rem;font-weight:900;margin-bottom:6px;}
+.start-desc{font-size:.82rem;opacity:.85;margin-bottom:16px;line-height:1.5;}
+.start-btn{padding:12px 30px;border-radius:18px;border:none;background:rgba(255,255,255,.25);color:#fff;font-family:var(--f);font-size:1rem;font-weight:900;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+.start-btn:active{transform:scale(.96);}
 </style>
 </head>
-<body data-page-title="&#127919; Challenge Zone" data-page-sub="Timed Rounds &amp; Streaks" data-page-gradient="linear-gradient(135deg,#B71C1C,#EF5350)" data-page-back="../home.html">
+<body data-page-title="&#127919; Challenge Zone" data-page-sub="Timed &amp; Mixed" data-page-gradient="linear-gradient(135deg,#B71C1C,#EF5350)" data-page-back="../home.html">
+
+<div class="subhdr"></div>
+<script>(function(){
+  var b=document.body,h=document.querySelector('.subhdr');
+  if(!b||!h)return;
+  h.style.background=b.getAttribute('data-page-gradient')||'';
+  h.innerHTML='<a class="hdr-home" href="'+(b.getAttribute('data-page-back')||'../home.html')+'">&#8592;</a>'
+    +'<div class="hdr-title">'+(b.getAttribute('data-page-title')||'')+'<small>'+(b.getAttribute('data-page-sub')||'')+'</small></div>'
+    +'<div class="hdr-right">'
+    +'<button id="sndIconBtn" class="hdr-snd-btn" onclick="toggleSoundBtn()">&#128266;</button>'
+    +'<button class="hdr-gear" onclick="toggleSettings(event)">&#9881;</button>'
+    +'</div>';
+})();</script>
+
 <div class="subbody">
-  <div class="submain">
-    <div class="bigbox" style="background:linear-gradient(135deg,#B71C1C,#EF5350)">
-      <div class="bigchar">&#127919;</div>
-      <div class="bigsub">Challenge Zone</div>
-    </div>
-    <div class="cs-center">
-      <span class="cs-icon">&#128679;</span>
-      <div class="cs-title">Coming Soon!</div>
-      <div class="cs-sub">This section is being built with<br>exciting content for Young Achievers.<br>Check back soon!</div>
-      <span class="cs-pill">&#127381; In Progress</span>
-    </div>
-  </div>
+  <div class="submain" id="chalMain"></div>
 </div>
-<nav class="cs-dock">
-  <button class="cs-btn"><span class="dock-ico">&#9203;</span>Speed Round</button>
-  <button class="cs-btn"><span class="dock-ico">&#128293;</span>Streak</button>
-  <button class="cs-btn"><span class="dock-ico">&#127942;</span>Daily Quiz</button>
-  <button class="cs-btn"><span class="dock-ico">&#127881;</span>Trophy Room</button>
+
+<nav class="chal-dock">
+  <button class="chal-dock-btn" data-tab="speed"  onclick="showChal('speed')"> <span class="dock-ico">&#9889;</span>Speed Quiz</button>
+  <button class="chal-dock-btn" data-tab="streak" onclick="showChal('streak')"><span class="dock-ico">&#128293;</span>Streak</button>
+  <button class="chal-dock-btn" data-tab="mixed"  onclick="showChal('mixed')"> <span class="dock-ico">&#127922;</span>Mix It Up</button>
 </nav>
+
+<script>
+/* ── STATE ── */
+var speedPool=[],speedIdx=0,speedSc=0,speedAns=false,speedTimer=null,speedSecs=60;
+var streakPool=[],streakSc=0,streakAns=false,streakAlive=false;
+var mixOrder=ALL_QUIZ_POOL.map(function(_,i){return i;}),mixIdx=0,mixSc=0,mixAns=false;
+var _nextFn=null;
+function nextChal(){if(_nextFn)_nextFn();}
+
+/* ── ROUTER ── */
+var CHAL_HEADERS={
+  speed: {bg:'linear-gradient(135deg,#B71C1C,#EF5350)',em:'&#9889;',title:'Speed Quiz'},
+  streak:{bg:'linear-gradient(135deg,#E65100,#FF9800)',em:'&#128293;',title:'Streak'},
+  mixed: {bg:'linear-gradient(135deg,#4A148C,#7B1FA2)',em:'&#127922;',title:'Mix It Up'}
+};
+
+var currentChalTab='speed';
+var chalShufOn=false;
+
+function showChal(name){
+  window.speechSynthesis.cancel();
+  currentChalTab=name;
+  chalShufOn=false;
+  if(speedTimer){clearInterval(speedTimer);speedTimer=null;}
+  document.querySelectorAll('.chal-dock-btn').forEach(function(b){b.classList.remove('active');b.style.background='';});
+  var btn=document.querySelector('.chal-dock-btn[data-tab="'+name+'"]');
+  if(btn){btn.classList.add('active');var h=CHAL_HEADERS[name];if(h)btn.style.background=h.bg;}
+  var shufRowHTML=name==='mixed'
+    ?'<div class="shuf-row"><button class="shuf-toggle" id="chalShufBtn" onclick="toggleChalShuf()">&#128256; Shuffle OFF</button></div>'
+    :'';
+  document.getElementById('chalMain').innerHTML=shufRowHTML+'<div id="chalArea"></div>';
+  ({speed:buildSpeedStart,streak:buildStreakStart,mixed:buildMixed})[name]();
+}
+
+function toggleChalShuf(){
+  chalShufOn=!chalShufOn;
+  var btn=document.getElementById('chalShufBtn');
+  if(btn){btn.classList.toggle('on',chalShufOn);btn.innerHTML='&#128256; Shuffle '+(chalShufOn?'ON':'OFF');}
+  mixOrder=ALL_QUIZ_POOL.map(function(_,i){return i;});mixIdx=0;mixSc=0;mixAns=false;
+  if(chalShufOn){mixOrder.sort(function(){return Math.random()-.5;});}
+  buildMixed();
+}
+
+function getArea(){return document.getElementById('chalArea');}
+function navBtns(prevFn,showNext){
+  return '<div class="nav-row">'
+    +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
+    +(showNext
+      ?'<button class="nxtbtn" id="nxtBtn" onclick="nextChal()">Next &#8594;</button>'
+      :'<button class="nxtbtn" id="nxtBtn" style="display:none" onclick="nextChal()">Next &#8594;</button>')
+    +'</div>';
+}
+function showNxt(){var b=document.getElementById('nxtBtn');if(b)b.style.display='inline-block';}
+function shufBar(fn){return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';}
+
+function randPool(){
+  var p=ALL_QUIZ_POOL.slice().sort(function(){return Math.random()-.5;});
+  return p;
+}
+
+/* ── SPEED QUIZ ── */
+function buildSpeedStart(){
+  _nextFn=null;
+  getArea().innerHTML='<div class="start-card">'
+    +'<span class="start-em">&#9889;</span>'
+    +'<div class="start-title">60 Second Challenge!</div>'
+    +'<div class="start-desc">Answer as many questions as you can in 60 seconds. Every correct answer scores a point!</div>'
+    +'<button class="start-btn" onclick="startSpeed()">&#9654; Start!</button>'
+    +'</div>';
+}
+function startSpeed(){
+  if(speedTimer){clearInterval(speedTimer);speedTimer=null;}
+  speedPool=randPool();
+  speedIdx=0;speedSc=0;speedSecs=60;speedAns=false;
+  buildSpeedQ();
+  speedTimer=setInterval(function(){
+    speedSecs--;
+    var el=document.getElementById('speedTimer');
+    if(el){
+      var pct=(speedSecs/60*100)+'%';
+      el.style.setProperty('--pct',pct);
+      var num=document.getElementById('speedTimerNum');
+      if(num)num.textContent=speedSecs;
+      if(speedSecs<=10)el.classList.add('urgent');
+    }
+    if(speedSecs<=0){
+      clearInterval(speedTimer);speedTimer=null;
+      endSpeed();
+    }
+  },1000);
+}
+function buildSpeedQ(){
+  if(speedIdx>=speedPool.length){speedPool=randPool();speedIdx=0;}
+  var p=speedPool[speedIdx];
+  speedAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="spopt'+i+'" onclick="chkSpeed('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML='<div class="speed-top">'
+    +'<div class="timer-ring" id="speedTimer" style="--pct:100%"><span class="timer-num" id="speedTimerNum">'+speedSecs+'</span></div>'
+    +'<div class="speed-score">&#127919; '+speedSc+'</div>'
+    +'</div>'
+    +'<div class="ibox">'
+    +'<div class="cat-badge">'+p.cat+'</div>'
+    +'<div style="text-align:center;font-size:2rem;margin-bottom:6px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="spR"></div>'
+    +'</div>';
+}
+function chkSpeed(i,ci){
+  if(speedAns)return;
+  speedAns=true;
+  var el=document.getElementById('spopt'+i);
+  if(i===ci){
+    speedSc++;
+    el.classList.add('correct');
+    setTimeout(function(){speedIdx++;buildSpeedQ();},500);
+  }else{
+    el.classList.add('wrong');
+    setTimeout(function(){speedIdx++;buildSpeedQ();},700);
+  }
+}
+function endSpeed(){
+  window.speechSynthesis.cancel();
+  var msg=speedSc>=15?'Speed Star! Amazing!':speedSc>=8?'Great speed!':'Keep practising!';
+  getArea().innerHTML='<div class="scorescreen">'
+    +'<div style="font-size:4rem">&#9889;</div>'
+    +'<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+speedSc+' correct!</div>'
+    +'<div style="color:#777;margin-bottom:16px">in 60 seconds! '+msg+'</div>'
+    +'<button class="rbtn" onclick="showChal(\'speed\')">Try Again &#128257;</button></div>';
+  spk('Time up! You got '+speedSc+' correct! '+msg);
+}
+
+/* ── STREAK ── */
+function buildStreakStart(){
+  _nextFn=null;
+  streakSc=0;streakAlive=false;
+  getArea().innerHTML='<div class="start-card" style="background:linear-gradient(135deg,#E65100,#FF9800)">'
+    +'<span class="start-em">&#128293;</span>'
+    +'<div class="start-title">How Far Can You Go?</div>'
+    +'<div class="start-desc">Answer correctly to grow your streak! One wrong answer ends the game. No second chances!</div>'
+    +'<button class="start-btn" onclick="startStreak()">&#9654; Start Streak!</button>'
+    +'</div>';
+}
+function startStreak(){
+  streakPool=randPool();
+  streakSc=0;streakAns=false;streakAlive=true;
+  buildStreakQ();
+}
+function buildStreakQ(){
+  if(!streakAlive)return;
+  if(streakPool.length===0)streakPool=randPool();
+  var p=streakPool.shift();
+  streakAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="stopt'+i+'" onclick="chkStreak('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML='<div class="streak-count">'
+    +'<div class="streak-num">'+streakSc+'</div>'
+    +'<div class="streak-label">&#128293; Streak</div>'
+    +'</div>'
+    +'<div class="ibox">'
+    +'<div class="cat-badge">'+p.cat+'</div>'
+    +'<div style="text-align:center;font-size:2rem;margin-bottom:6px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="stR"></div>'
+    +'</div>';
+  spk(p.q);
+}
+function chkStreak(i,ci){
+  if(streakAns||!streakAlive)return;
+  streakAns=true;
+  var el=document.getElementById('stopt'+i);
+  if(i===ci){
+    streakSc++;
+    el.classList.add('correct');
+    spk('Correct! Streak: '+streakSc+'!');
+    setTimeout(function(){buildStreakQ();},600);
+  }else{
+    streakAlive=false;
+    el.classList.add('wrong');
+    spk('Wrong! Game over! Your streak was '+streakSc+'!');
+    setTimeout(function(){endStreak();},800);
+  }
+}
+function endStreak(){
+  var best=parseInt(localStorage.getItem('streakBest')||'0');
+  if(streakSc>best){best=streakSc;localStorage.setItem('streakBest',best);}
+  var msg=streakSc>=20?'Unbeatable!':streakSc>=10?'Impressive streak!':streakSc>=5?'Good streak!':'Keep practising!';
+  getArea().innerHTML='<div class="scorescreen">'
+    +'<div style="font-size:4rem">&#128293;</div>'
+    +'<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">Streak: '+streakSc+'</div>'
+    +'<div style="color:#777;margin-bottom:4px">'+msg+'</div>'
+    +'<div style="font-size:.8rem;color:#aaa;margin-bottom:16px">Best ever: '+best+'</div>'
+    +'<button class="rbtn" style="background:linear-gradient(135deg,#E65100,#FF9800)" onclick="showChal(\'streak\')">Try Again &#128257;</button></div>';
+}
+
+/* ── MIX IT UP ── */
+function shuffleMixed(){mixOrder.sort(function(){return Math.random()-.5;});mixIdx=0;mixSc=0;mixAns=false;buildMixed();}
+function buildMixed(){
+  _nextFn=function(){mixIdx++;mixAns=false;buildMixed();};
+  if(mixIdx>=ALL_QUIZ_POOL.length){
+    var pct=Math.round(mixSc/ALL_QUIZ_POOL.length*100);
+    var msg=pct>=80?'All Rounder!':pct>=50?'Good mix!':'Keep learning!';
+    getArea().innerHTML='<div class="scorescreen">'
+      +'<div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div>'
+      +'<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+mixSc+' / '+ALL_QUIZ_POOL.length+'</div>'
+      +'<div style="color:#777;margin-bottom:16px">'+msg+'</div>'
+      +'<button class="rbtn" style="background:linear-gradient(135deg,#4A148C,#7B1FA2)" onclick="showChal(\'mixed\')">Play Again &#128257;</button></div>';
+    spk(msg);
+    return;
+  }
+  var p=ALL_QUIZ_POOL[mixOrder[mixIdx]];
+  mixAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="mxopt'+i+'" onclick="chkMixed('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML='<div class="scorebar">Q <b>'+(mixIdx+1)+'</b>/'+ALL_QUIZ_POOL.length+' &nbsp;&#183;&nbsp; Score: <b>'+mixSc+'</b></div>'
+    +'<div class="ibox">'
+    +'<div class="cat-badge">'+p.cat+'</div>'
+    +'<div style="text-align:center;font-size:2rem;margin-bottom:8px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="mxR"></div>'
+    +navBtns(mixIdx>0?'mixIdx--;mixAns=false;buildMixed()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkMixed(i,ci){
+  if(mixAns)return;
+  var p=ALL_QUIZ_POOL[mixOrder[mixIdx]];
+  var el=document.getElementById('mxopt'+i);
+  if(i===ci){
+    mixAns=true;mixSc++;
+    el.classList.add('correct');
+    document.getElementById('mxR').innerHTML='&#11088; '+p.opts[p.a]+'!';
+    spk('Correct! '+p.opts[p.a]+'!');showNxt();
+  }else{
+    el.classList.add('wrong');
+    spk('Try again!');
+    setTimeout(function(){el.classList.remove('wrong');document.getElementById('mxR').innerHTML='';},900);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',function(){showChal('speed');});
+</script>
 </body>
 </html>

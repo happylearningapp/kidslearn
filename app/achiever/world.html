@@ -3,44 +3,275 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>World Explorer</title>
+<title>World Explorer &#127757;</title>
 <link rel="stylesheet" href="../fonts/fonts.css"/>
 <script src="../shared.js"></script>
+<script src="data.js"></script>
 <style>
 .subbody{display:block!important;}
 .submain{padding:14px 12px calc(90px + env(safe-area-inset-bottom))!important;overflow-y:auto;}
 #sdrawer{top:66px!important;}
-.cs-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));gap:3px;}
-.cs-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px 5px;border-radius:12px;border:none;background:#f5f5f5;color:#ccc;font-family:var(--f);font-size:.46rem;font-weight:800;cursor:default;line-height:1.2;}
-.cs-btn .dock-ico{font-size:.9rem;line-height:1;}
-.cs-center{text-align:center;padding:40px 20px 20px;}
-.cs-icon{font-size:4rem;display:block;margin-bottom:14px;}
-.cs-title{font-size:1.3rem;font-weight:900;color:#444;margin-bottom:8px;}
-.cs-sub{font-size:.88rem;color:#888;line-height:1.6;margin-bottom:20px;}
-.cs-pill{display:inline-block;background:#f0f0f0;border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:900;color:#aaa;}
+
+.world-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;box-shadow:0 -3px 20px rgba(0,0,0,.13);display:grid;grid-template-columns:repeat(5,1fr);padding:5px 3px calc(5px + env(safe-area-inset-bottom));gap:3px;}
+.world-dock-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:5px 2px 4px;border-radius:10px;border:none;background:#f5f5f5;color:#999;font-family:var(--f);font-size:.44rem;font-weight:800;cursor:pointer;line-height:1.2;transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent;}
+.world-dock-btn.active{color:#fff;transform:scale(1.05);}
+.world-dock-btn .dock-ico{font-size:.9rem;line-height:1;}
+.world-dock-btn[data-tab="continents"].active{background:linear-gradient(135deg,#1A237E,#3949AB);}
+.world-dock-btn[data-tab="countries"].active {background:linear-gradient(135deg,#1565C0,#42A5F5);}
+.world-dock-btn[data-tab="oceans"].active    {background:linear-gradient(135deg,#006064,#00BCD4);}
+.world-dock-btn[data-tab="quiz"].active      {background:linear-gradient(135deg,#AD1457,#F06292);}
+.world-dock-btn[data-tab="facts"].active     {background:linear-gradient(135deg,#E65100,#FF9800);}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes popIn{0%{transform:scale(.8);opacity:.5}100%{transform:scale(1);opacity:1}}
+.ibox{background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:14px;}
+.iq{font-size:var(--lg);font-weight:900;color:#333;margin-bottom:14px;text-align:center;line-height:1.4;}
+.rmsg{min-height:22px;text-align:center;font-size:.85rem;font-weight:900;color:#4CAF50;margin-bottom:8px;}
+.scorebar{background:#f7f7f7;border-radius:12px;padding:7px 12px;font-size:.78rem;font-weight:700;color:#666;margin-bottom:10px;}
+.scorescreen{text-align:center;padding:30px 20px;}
+.rbtn{padding:13px 32px;border-radius:18px;border:none;background:linear-gradient(135deg,#1A237E,#3949AB);color:#fff;font-family:var(--f);font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:all .2s;}
+.rbtn:active{transform:scale(.96);}
+.mcq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;margin:0 auto 14px;}
+.mcq-opt{background:#fff;border:3px solid #eee;border-radius:14px;padding:12px 8px;cursor:pointer;text-align:center;font-family:var(--f);font-weight:700;font-size:.88rem;color:#333;transition:all .18s;-webkit-tap-highlight-color:transparent;width:100%;box-sizing:border-box;}
+.mcq-opt:hover{transform:scale(1.03);}
+.mcq-opt.correct{background:#E8F5E9;border-color:#4CAF50;animation:popIn .3s ease;}
+.mcq-opt.wrong{background:#FFEBEE;border-color:#FF6B6B;animation:shake .4s ease;}
+
+/* Continent card */
+.cont-card{background:linear-gradient(135deg,#1A237E,#3949AB);border-radius:20px;padding:18px;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;}
+.cont-card:active{transform:scale(.97);}
+.cont-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.cont-em{font-size:2.5rem;}
+.cont-name{font-size:1.2rem;font-weight:900;}
+.cont-sub{font-size:.75rem;opacity:.8;margin-top:2px;}
+.cont-fact{font-size:.78rem;opacity:.85;}
+
+/* Country card */
+.ctry-card{background:#fff;border:3px solid #eee;border-radius:16px;padding:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;}
+.ctry-card:active{transform:scale(.97);}
+.ctry-top{display:flex;align-items:center;gap:12px;}
+.ctry-flag{font-size:2.5rem;}
+.ctry-info .ctry-name{font-size:1rem;font-weight:900;color:#333;}
+.ctry-info .ctry-cap{font-size:.75rem;color:#666;margin-top:2px;}
+.ctry-info .ctry-cont{font-size:.65rem;color:#999;}
+.ctry-fact{font-size:.72rem;color:#555;margin-top:6px;padding-top:6px;border-top:1px solid #f0f0f0;}
+
+/* Ocean card */
+.ocean-card{background:linear-gradient(135deg,#006064,#00BCD4);border-radius:16px;padding:14px;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;}
+.ocean-card:active{transform:scale(.97);}
+
+/* Fact card */
+.fact-card{background:#fff;border-left:5px solid #E65100;border-radius:12px;padding:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .18s;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.fact-card:active{transform:scale(.98);}
+.fact-em{font-size:1.8rem;display:block;margin-bottom:6px;}
+.fact-text{font-size:.82rem;font-weight:700;color:#333;line-height:1.4;}
 </style>
 </head>
-<body data-page-title="&#127757; World Explorer" data-page-sub="Countries, Maps &amp; Cultures" data-page-gradient="linear-gradient(135deg,#E65100,#FF9800)" data-page-back="../home.html">
+<body data-page-title="&#127757; World Explorer" data-page-sub="Countries &amp; Maps" data-page-gradient="linear-gradient(135deg,#1A237E,#3949AB)" data-page-back="../home.html">
+
+<div class="subhdr"></div>
+<script>(function(){
+  var b=document.body,h=document.querySelector('.subhdr');
+  if(!b||!h)return;
+  h.style.background=b.getAttribute('data-page-gradient')||'';
+  h.innerHTML='<a class="hdr-home" href="'+(b.getAttribute('data-page-back')||'../home.html')+'">&#8592;</a>'
+    +'<div class="hdr-title">'+(b.getAttribute('data-page-title')||'')+'<small>'+(b.getAttribute('data-page-sub')||'')+'</small></div>'
+    +'<div class="hdr-right">'
+    +'<button id="sndIconBtn" class="hdr-snd-btn" onclick="toggleSoundBtn()">&#128266;</button>'
+    +'<button class="hdr-gear" onclick="toggleSettings(event)">&#9881;</button>'
+    +'</div>';
+})();</script>
+
 <div class="subbody">
-  <div class="submain">
-    <div class="bigbox" style="background:linear-gradient(135deg,#E65100,#FF9800)">
-      <div class="bigchar">&#127757;</div>
-      <div class="bigsub">World Explorer</div>
-    </div>
-    <div class="cs-center">
-      <span class="cs-icon">&#128679;</span>
-      <div class="cs-title">Coming Soon!</div>
-      <div class="cs-sub">This section is being built with<br>exciting content for Young Achievers.<br>Check back soon!</div>
-      <span class="cs-pill">&#127381; In Progress</span>
-    </div>
-  </div>
+  <div class="submain" id="worldMain"></div>
 </div>
-<nav class="cs-dock">
-  <button class="cs-btn"><span class="dock-ico">&#127757;</span>Continents</button>
-  <button class="cs-btn"><span class="dock-ico">&#127988;</span>Flags</button>
-  <button class="cs-btn"><span class="dock-ico">&#127963;</span>Landmarks</button>
-  <button class="cs-btn"><span class="dock-ico">&#127869;</span>Food &amp; Culture</button>
-  <button class="cs-btn"><span class="dock-ico">&#9732;</span>Maps</button>
+
+<nav class="world-dock">
+  <button class="world-dock-btn" data-tab="continents" onclick="showWorld('continents')"><span class="dock-ico">&#128506;</span>Continents</button>
+  <button class="world-dock-btn" data-tab="countries"  onclick="showWorld('countries')"> <span class="dock-ico">&#127988;</span>Countries</button>
+  <button class="world-dock-btn" data-tab="oceans"     onclick="showWorld('oceans')">    <span class="dock-ico">&#127754;</span>Oceans</button>
+  <button class="world-dock-btn" data-tab="quiz"       onclick="showWorld('quiz')">      <span class="dock-ico">&#10067;</span>Quiz</button>
+  <button class="world-dock-btn" data-tab="facts"      onclick="showWorld('facts')">     <span class="dock-ico">&#128161;</span>Fun Facts</button>
 </nav>
+
+<script>
+/* ── STATE ── */
+var contOrder=CONTINENTS_DATA.map(function(_,i){return i;}),contIdx=0;
+var ctryOrder=COUNTRIES_DATA.map(function(_,i){return i;}),ctryIdx=0;
+var wqOrder=WORLD_QUIZ.map(function(_,i){return i;}),wqIdx=0,wqSc=0,wqAns=false;
+var factOrder=WORLD_FACTS.map(function(_,i){return i;});
+var _nextFn=null;
+function nextWorld(){if(_nextFn)_nextFn();}
+
+/* ── ROUTER ── */
+var WORLD_HEADERS={
+  continents:{bg:'linear-gradient(135deg,#1A237E,#3949AB)',em:'&#128506;',title:'Continents'},
+  countries: {bg:'linear-gradient(135deg,#1565C0,#42A5F5)',em:'&#127988;',title:'Countries'},
+  oceans:    {bg:'linear-gradient(135deg,#006064,#00BCD4)',em:'&#127754;',title:'Oceans'},
+  quiz:      {bg:'linear-gradient(135deg,#AD1457,#F06292)',em:'&#10067;',title:'World Quiz'},
+  facts:     {bg:'linear-gradient(135deg,#E65100,#FF9800)',em:'&#128161;',title:'Fun Facts'}
+};
+
+var currentWorldTab='continents';
+var worldShufOn=false;
+
+function showWorld(name){
+  window.speechSynthesis.cancel();
+  currentWorldTab=name;
+  worldShufOn=false;
+  document.querySelectorAll('.world-dock-btn').forEach(function(b){b.classList.remove('active');b.style.background='';});
+  var btn=document.querySelector('.world-dock-btn[data-tab="'+name+'"]');
+  if(btn){btn.classList.add('active');var h=WORLD_HEADERS[name];if(h)btn.style.background=h.bg;}
+  var hasShuf=(name==='countries'||name==='quiz'||name==='facts');
+  var shufRowHTML=hasShuf
+    ?'<div class="shuf-row"><button class="shuf-toggle" id="worldShufBtn" onclick="toggleWorldShuf()">&#128256; Shuffle OFF</button></div>'
+    :'';
+  document.getElementById('worldMain').innerHTML=shufRowHTML+'<div id="worldArea"></div>';
+  resetWorld(name);
+  ({continents:buildCont,countries:buildCtry,oceans:buildOceans,quiz:buildWQ,facts:buildFacts})[name]();
+}
+
+function toggleWorldShuf(){
+  worldShufOn=!worldShufOn;
+  var btn=document.getElementById('worldShufBtn');
+  if(btn){btn.classList.toggle('on',worldShufOn);btn.innerHTML='&#128256; Shuffle '+(worldShufOn?'ON':'OFF');}
+  resetWorld(currentWorldTab);
+  if(worldShufOn){
+    var ord=currentWorldTab==='countries'?ctryOrder:currentWorldTab==='quiz'?wqOrder:factOrder;
+    if(ord)ord.sort(function(){return Math.random()-.5;});
+  }
+  ({continents:buildCont,countries:buildCtry,oceans:buildOceans,quiz:buildWQ,facts:buildFacts})[currentWorldTab]();
+}
+
+function resetWorld(name){
+  if(name==='continents'){contOrder=CONTINENTS_DATA.map(function(_,i){return i;});contIdx=0;}
+  if(name==='countries') {ctryOrder=COUNTRIES_DATA.map(function(_,i){return i;});ctryIdx=0;}
+  if(name==='quiz')      {wqOrder=WORLD_QUIZ.map(function(_,i){return i;});wqIdx=0;wqSc=0;wqAns=false;}
+  if(name==='facts')     {factOrder=WORLD_FACTS.map(function(_,i){return i;});}
+}
+function getArea(){return document.getElementById('worldArea');}
+function scoreH(cur,tot,sc){return '<div class="scorebar">Q <b>'+cur+'</b>/'+tot+' &nbsp;&#183;&nbsp; Score: <b>'+sc+'</b></div>';}
+function navBtns(prevFn,showNext){
+  return '<div class="nav-row">'
+    +(prevFn?'<button class="prvbtn" onclick="'+prevFn+'">&#8592; Prev</button>':'')
+    +(showNext
+      ?'<button class="nxtbtn" id="nxtBtn" onclick="nextWorld()">Next &#8594;</button>'
+      :'<button class="nxtbtn" id="nxtBtn" style="display:none" onclick="nextWorld()">Next &#8594;</button>')
+    +'</div>';
+}
+function showNxt(){var b=document.getElementById('nxtBtn');if(b)b.style.display='inline-block';}
+function wrongFlash(el,msgId){el.classList.add('wrong');spk('Try again!');setTimeout(function(){el.classList.remove('wrong');if(msgId)document.getElementById(msgId).innerHTML='';},900);}
+function scoreScrn(sc,tot,great,ok,gameId){
+  var pct=Math.round(sc/tot*100);
+  getArea().innerHTML='<div class="scorescreen">'
+    +'<div style="font-size:4rem">'+(pct>=80?'&#127942;&#127942;&#127942;':pct>=50?'&#127942;&#127942;':'&#127942;')+'</div>'
+    +'<div style="font-size:var(--xxl);font-weight:900;margin-bottom:6px">'+sc+' / '+tot+'</div>'
+    +'<div style="color:#777;margin-bottom:16px">'+(pct>=80?great:pct>=50?ok:'Keep practising!')+'</div>'
+    +'<button class="rbtn" onclick="showWorld(\''+gameId+'\')">Play Again &#128257;</button></div>';
+  spk(pct>=80?great:ok);
+}
+function shufBar(fn){return '<div style="text-align:right;margin-bottom:8px"><button class="shufbtn" onclick="'+fn+'">&#128256; Shuffle</button></div>';}
+
+/* ── CONTINENTS ── */
+function buildCont(){
+  _nextFn=function(){contIdx++;buildCont();};
+  if(contIdx>=CONTINENTS_DATA.length){contIdx=0;buildCont();return;}
+  var p=CONTINENTS_DATA[contOrder[contIdx]];
+  var txt=p.name+'. '+p.fact+(p.countries>0?'. It has '+p.countries+' countries.':'');
+  getArea().innerHTML='<div class="cont-card" onclick="spk(\''+txt.replace(/'/g,'')+'\')">'
+    +'<div class="cont-top"><span class="cont-em">'+p.em+'</span>'
+    +'<div><div class="cont-name">'+p.name+'</div>'
+    +'<div class="cont-sub">'+(p.countries>0?p.countries+' countries':'No countries')+'</div></div></div>'
+    +'<div class="cont-fact">'+p.fact+'</div>'
+    +'</div>'
+    +'<div class="ibox" style="font-size:.82rem;color:#555"><b>&#128219; Capital example:</b> '+p.capital+'</div>'
+    +navBtns(contIdx>0?'contIdx--;buildCont()':'',true);
+  spk(txt);
+}
+
+/* ── COUNTRIES ── */
+function shuffleCtry(){ctryOrder.sort(function(){return Math.random()-.5;});ctryIdx=0;buildCtry();}
+function buildCtry(){
+  _nextFn=function(){ctryIdx++;buildCtry();};
+  if(ctryIdx>=COUNTRIES_DATA.length){ctryIdx=0;buildCtry();return;}
+  var p=COUNTRIES_DATA[ctryOrder[ctryIdx]];
+  var txt=p.country+'. Capital: '+p.capital+'. '+p.fact;
+  getArea().innerHTML='<div class="ctry-card" onclick="spk(\''+txt.replace(/'/g,'')+'\')">'
+    +'<div class="ctry-top"><span class="ctry-flag">'+p.em+'</span>'
+    +'<div class="ctry-info">'
+    +'<div class="ctry-name">'+p.country+'</div>'
+    +'<div class="ctry-cap">&#127968; Capital: '+p.capital+'</div>'
+    +'<div class="ctry-cont">'+p.continent+'</div>'
+    +'</div></div>'
+    +'<div class="ctry-fact">&#128161; '+p.fact+'</div>'
+    +'</div>'
+    +navBtns(ctryIdx>0?'ctryIdx--;buildCtry()':'',true);
+  spk(txt);
+}
+
+/* ── OCEANS ── */
+function buildOceans(){
+  _nextFn=null;
+  var html='<div class="ibox"><div class="iq">&#127754; The 5 Oceans</div>';
+  OCEANS_DATA.forEach(function(o){
+    html+='<div class="ocean-card" onclick="spk(\''+o.name+'. '+o.fact+'\')">'
+      +'<div style="display:flex;align-items:center;gap:12px">'
+      +'<span style="font-size:2rem">'+o.em+'</span>'
+      +'<div><div style="font-size:1rem;font-weight:900">'+o.name+'</div>'
+      +'<div style="font-size:.75rem;opacity:.85;margin-top:3px">'+o.fact+'</div></div></div></div>';
+  });
+  html+='<div class="rmsg" style="margin-top:10px">&#128266; Tap any ocean to hear about it</div></div>';
+  getArea().innerHTML=html;
+}
+
+/* ── WORLD QUIZ ── */
+function shuffleWQ(){wqOrder.sort(function(){return Math.random()-.5;});wqIdx=0;wqSc=0;wqAns=false;buildWQ();}
+function buildWQ(){
+  _nextFn=function(){wqIdx++;wqAns=false;buildWQ();};
+  if(wqIdx>=WORLD_QUIZ.length){scoreScrn(wqSc,WORLD_QUIZ.length,'World Champion!','Good geography!','quiz');return;}
+  var p=WORLD_QUIZ[wqOrder[wqIdx]];
+  wqAns=false;
+  var opts=p.opts.slice().sort(function(){return Math.random()-.5;});
+  var ci=opts.indexOf(p.opts[p.a]);
+  var optsHTML=opts.map(function(o,i){
+    return '<div class="mcq-opt" id="wqopt'+i+'" onclick="chkWQ('+i+','+ci+')">'+o+'</div>';
+  }).join('');
+  getArea().innerHTML=scoreH(wqIdx+1,WORLD_QUIZ.length,wqSc)
+    +'<div class="ibox">'
+    +'<div style="text-align:center;font-size:2.5rem;margin-bottom:8px">'+p.em+'</div>'
+    +'<div class="iq">'+p.q+'</div>'
+    +'<div class="mcq-grid">'+optsHTML+'</div>'
+    +'<div class="rmsg" id="wqR"></div>'
+    +navBtns(wqIdx>0?'wqIdx--;wqAns=false;buildWQ()':'',false)
+    +'</div>';
+  spk(p.q);
+}
+function chkWQ(i,ci){
+  if(wqAns)return;
+  var p=WORLD_QUIZ[wqOrder[wqIdx]];
+  var el=document.getElementById('wqopt'+i);
+  if(i===ci){
+    wqAns=true;wqSc++;
+    el.classList.add('correct');
+    document.getElementById('wqR').innerHTML='&#11088; '+p.opts[p.a]+'!';
+    spk('Correct! '+p.opts[p.a]+'!');showNxt();
+  }else{wrongFlash(el,'wqR');}
+}
+
+/* ── FUN FACTS ── */
+function shuffleFacts(){factOrder.sort(function(){return Math.random()-.5;});buildFacts();}
+function buildFacts(){
+  _nextFn=null;
+  var html='<div class="ibox"><div class="iq">&#128161; Amazing World Facts</div>';
+  factOrder.forEach(function(i){
+    var f=WORLD_FACTS[i];
+    html+='<div class="fact-card" onclick="spk(\''+f.fact.replace(/'/g,'')+'\')"><span class="fact-em">'+f.em+'</span><div class="fact-text">'+f.fact+'</div></div>';
+  });
+  html+='</div>';
+  getArea().innerHTML=html;
+}
+
+document.addEventListener('DOMContentLoaded',function(){showWorld('continents');});
+</script>
 </body>
 </html>
