@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Happy Learning World &#127775;</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="fonts/fonts.css"/>
 <script src="shared.js"></script>
 <style>
 
@@ -40,18 +40,22 @@ html { height: 100%; }
 .home-header {
   flex-shrink: 0;
   text-align: center;
-  padding: 20px 64px 8px;
+  padding: 10px 64px 6px;
 }
-.em-row {
-  font-size: 1.5rem; display: block; margin-bottom: 4px;
-  animation: bounce 2.5s ease-in-out infinite;
+.home-logo-img {
+  width: 168px; max-width: 68%;
+  aspect-ratio: 1;
+  display: block; margin: 0 auto 4px;
+  will-change: transform;
+  animation: bounce 3s ease-in-out infinite;
+  animation-delay: .4s;
 }
-.home-header h1 {
-  font-size: 1.7rem; font-weight: 900; line-height: 1.15; margin-bottom: 3px;
-  background: linear-gradient(135deg,#FF6B6B,#FF8E53,#FFC300,#4CAF50,#2196F3,#9C27B0);
+.home-header .sub {
+  font-size: .82rem; font-weight: 700;
+  background: linear-gradient(90deg,#FF6B6B,#FF8E53,#FFC300,#4CAF50,#2196F3,#9C27B0);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: .3px;
 }
-.home-header .sub { font-size: .8rem; color: #999; }
 
 /* ── Tile grid – fills remaining height ── */
 .app-grid {
@@ -156,9 +160,8 @@ html { height: 100%; }
   }
 
   /* Header — proper breathing room */
-  .em-row { font-size: 1.05rem; margin-bottom: 2px; display: block; }
-  .home-header { padding: 10px 52px 6px; }
-  .home-header h1 { font-size: 1.18rem; margin-bottom: 2px; }
+  .home-logo-img { width: 132px; aspect-ratio: 1; margin-bottom: 3px; }
+  .home-header { padding: 8px 52px 4px; }
   .home-header .sub { display: block; font-size: .7rem; }
 
   /*
@@ -279,8 +282,7 @@ html { height: 100%; }
 
 <!-- ══ HEADER ══ -->
 <div class="home-header">
-  <span class="em-row">&#127775;&#10024;&#127775;</span>
-  <h1 id="homeTitle">Happy Learning World</h1>
+  <img src="logo.png" class="home-logo-img" alt="LittleMind Kids">
   <p class="sub" id="homeSub">Tap a tile to start learning! &#128640;</p>
 </div>
 
@@ -425,7 +427,7 @@ html { height: 100%; }
 
 <!-- ══ FOOTER ══ -->
 <div class="home-footer" id="homeFooter">
-  Made with &#10084; &nbsp;|&nbsp; Keep learning, keep growing! &#127807;
+  &#128161; Every tap makes you smarter! Keep exploring! &#127919;
 </div>
 
 <script>
@@ -467,21 +469,16 @@ function wmSkip() {
 /* ── Apply kid's name to page ── */
 function applyKidName() {
   var name = localStorage.getItem(KID_NAME_KEY);
-  var age  = localStorage.getItem(KID_AGE_KEY);
-  var h1   = document.getElementById('homeTitle');
   var sub  = document.getElementById('homeSub');
   var foot = document.getElementById('homeFooter');
   if (name) {
-    h1.innerHTML   = name + '&#8217;s Learning World &#127775;';
-    sub.innerHTML  = 'Hi ' + name + '! Tap a tile to start! &#128640;';
-    foot.innerHTML = 'Made with &#10084; for <b>' + name + '</b> &nbsp;|&nbsp; Keep learning! &#127807;';
+    sub.innerHTML  = '&#127775; Hey <b>' + name + '</b>! Ready to learn something awesome today? &#127775;';
+    foot.innerHTML = '&#128161; Every tap makes you smarter! Keep exploring! &#127919;';
   } else {
-    h1.innerHTML   = 'Happy Learning World &#127775;';
-    sub.innerHTML  = 'Tap a tile to start learning! &#128640;';
-    foot.innerHTML = 'Made with &#10084; &nbsp;|&nbsp; Keep learning, keep growing! &#127807;';
+    sub.innerHTML  = '&#127775; Ready to learn something awesome today? &#127775;';
+    foot.innerHTML = '&#128161; Every tap makes you smarter! Keep exploring! &#127919;';
   }
-  // also update the document title
-  document.title = (name ? name + "'s Learning World" : 'Happy Learning World') + ' \u2728';
+  document.title = 'LittleMind Kids \u2728';
 }
 
 /* ── Hook: update title when name/age changes in settings ── */

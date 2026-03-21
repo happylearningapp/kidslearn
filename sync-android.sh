@@ -10,12 +10,17 @@ DEST="./android/app/src/main/assets"
 
 echo "🔄 Syncing web assets → Android..."
 
-# Sync HTML, JS, CSS (excludes fonts/ which is Android-only)
+# Sync HTML, JS, CSS, images (excludes fonts/ which is Android-only)
 rsync -av --include="*/" \
          --include="*.html" \
          --include="*.js" \
          --include="*.css" \
          --include="*.json" \
+         --include="*.png" \
+         --include="*.jpg" \
+         --include="*.jpeg" \
+         --include="*.webp" \
+         --include="*.svg" \
          --exclude="*" \
          --exclude="fonts/" \
          "$SOURCE/" "$DEST/"

@@ -243,6 +243,7 @@ body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7
 .rbtn{padding:12px 28px;border-radius:20px;border:none;background:linear-gradient(135deg,#6A1B9A,#E91E63);color:#fff;font-family:var(--f);font-size:var(--md);font-weight:700;cursor:pointer;margin-top:12px;}
 @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pgFadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .hdr-home{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;font-size:1.2rem;text-decoration:none;font-weight:900;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
 .hdr-home:active{background:rgba(255,255,255,.42);}
 .hdr-title{flex:1;color:#fff;font-size:1.05rem;font-weight:900;font-family:var(--f);text-align:center;line-height:1.2;}
@@ -489,14 +490,27 @@ function aS(cls, idx, col) {
   });
 }
 
+/* ── Hide page immediately to prevent layout-shift shake ── */
+/* All DOM injections (header, gear, drawer) happen while page is invisible, */
+/* then it fades in fully-formed — zero visible shake on any page.           */
+document.documentElement.style.opacity = '0';
+
+/* ── Inject CSS immediately (before first paint) to prevent FOUC ── */
+injectSharedCSS();
+
 /* ── AUTO-INIT on DOMContentLoaded ── */
 document.addEventListener('DOMContentLoaded', function() {
-  injectSharedCSS();
   injectGear();
   injectPageHeader();
   loadSettings();
   initGear();
   initSoundToggle();
-  populateVoices();                    // try immediately (desktop Chrome)
-  setTimeout(populateVoices, 400);     // retry – Android/iOS deliver voices async
+  populateVoices();               // try immediately (desktop Chrome)
+  setTimeout(populateVoices, 400); // retry – Android/iOS deliver voices async
+
+  /* Reveal page smoothly after all injections are done */
+  requestAnimationFrame(function() {
+    document.documentElement.style.transition = 'opacity .2s ease-out';
+    document.documentElement.style.opacity = '1';
+  });
 });
