@@ -175,13 +175,13 @@ input,select,button{-webkit-appearance:none;appearance:none;}
 .submain,.subbody{-webkit-overflow-scrolling:touch;}
 .back-btn{display:none!important;}
 .gear-btn{display:none!important;}
-.sdrawer{position:fixed;top:66px;right:12px;z-index:999;background:#fff;border-radius:18px;padding:18px 20px;box-shadow:0 8px 30px rgba(0,0,0,.15);min-width:280px;display:none;}
+.sdrawer{position:fixed;top:66px;right:12px;z-index:999;background:#fff;border-radius:18px;padding:16px 18px;box-shadow:0 8px 32px rgba(0,0,0,.18);width:298px;max-width:calc(100vw - 24px);max-height:calc(100vh - 82px);overflow-y:auto;display:none;}
 .sdrawer.open{display:block;}
 .sdrawer h3{font-size:var(--md);font-weight:900;color:#555;margin-bottom:12px;border-bottom:2px solid #f0f0f0;padding-bottom:8px;}
-.srow{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
-.slbl{font-size:var(--sm);font-weight:800;color:#888;min-width:60px;text-transform:uppercase;}
-.sbtns{display:flex;flex-wrap:wrap;gap:6px;}
-.fbtn,.zbtn{padding:5px 12px;border-radius:14px;border:2px solid #eee;background:#f9f9f9;cursor:pointer;font-size:var(--sm);font-weight:600;color:#666;}
+.srow{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:nowrap;}
+.slbl{font-size:var(--sm);font-weight:800;color:#888;min-width:48px;flex-shrink:0;text-transform:uppercase;}
+.sbtns{display:flex;flex-wrap:nowrap;gap:5px;flex:1;}
+.fbtn,.zbtn{flex:1;padding:6px 4px;border-radius:12px;border:2px solid #eee;background:#f9f9f9;cursor:pointer;font-size:var(--sm);font-weight:600;color:#666;text-align:center;white-space:nowrap;}
 .fbtn.active,.zbtn.active{background:#FF6B6B;color:#fff;border-color:#FF6B6B;}
 .subhdr{padding:0 10px;height:58px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 4px 14px rgba(0,0,0,.15);}
 .subhdr h1,.subhdr p,.sndbr{display:none;}
@@ -291,21 +291,15 @@ function injectGear() {
       <button class="zbtn" data-size="1.1rem"  onclick="setSize('1.1rem',this)">L</button>
       <button class="zbtn" data-size="1.25rem" onclick="setSize('1.25rem',this)">XL</button>
     </div></div>
-    <div class="srow" id="voiceRow">
-      <span class="slbl">&#127908; Voice</span>
-      <select class="vsel" id="voiceSel" onchange="setVoice(this.value)">
-        <option>Loading voices…</option>
-      </select>
-    </div>
     <hr style="border:none;border-top:1px solid #f0f0f0;margin:10px 0 8px">
     <div class="srow">
       <span class="slbl">&#128100; Name</span>
       <input type="text" id="kidNameInp" class="vsel" placeholder="Child's name…"
         maxlength="20" autocomplete="off" oninput="saveKidName(this.value)"/>
     </div>
-    <div class="srow">
-      <span class="slbl">&#127874; Age</span>
-      <div id="ageBtns" class="sbtns" style="flex-wrap:wrap;gap:5px"></div>
+    <div class="srow" style="align-items:flex-start;">
+      <span class="slbl" style="padding-top:4px;">&#127874; Age</span>
+      <div id="ageBtns" class="sbtns" style="flex-wrap:wrap;gap:6px;flex:1;"></div>
     </div>
     <p style="font-size:.6rem;color:#bbb;text-align:center;margin-top:6px">
       &#128274; Stored on this device only &mdash; never sent anywhere
@@ -444,7 +438,7 @@ function loadKidInfo() {
   if (!ab) return;
   var saved = localStorage.getItem(KID_AGE_KEY) || '';
   ab.innerHTML = '';
-  for (var a = 2; a <= 12; a++) {
+  for (var a = 2; a <= 6; a++) {
     var b = document.createElement('button');
     b.className = 'zbtn abtn';
     b.textContent = a;
