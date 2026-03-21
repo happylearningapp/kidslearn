@@ -25,15 +25,25 @@
 #gearBtn:active { transform: scale(.88); }
 #sdrawer { top: 64px !important; }
 
-/* ── Full-screen no-scroll layout ── */
-html { height: 100%; }
+/* ── Full-screen layout ── */
+/* height:100% cascade (html→body→#page-home) is the most reliable         */
+/* full-screen technique across ALL Android WebView versions. CSS viewport  */
+/* units (dvh/svh) can lag on first cold start; height:100% never does.     */
+html, body { height: 100%; margin: 0; }
 #page-home {
-  height: 100svh;
+  height: 100%;          /* = body height = html height = viewport height  */
   overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
   flex-direction: column;
   background: linear-gradient(145deg,#FFFDE7,#FFF3E0,#FCE4EC);
   font-family: var(--f);
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* ── Compact header ── */
@@ -43,8 +53,8 @@ html { height: 100%; }
   padding: 10px 64px 6px;
 }
 .home-logo-img {
-  width: 168px; max-width: 68%;
-  aspect-ratio: 1;
+  width: 168px; height: 168px;   /* explicit height — no aspect-ratio needed  */
+  max-width: 68%;                /* aspect-ratio not supported in old WebViews */
   display: block; margin: 0 auto 4px;
   will-change: transform;
   animation: bounce 3s ease-in-out infinite;
@@ -153,14 +163,8 @@ html { height: 100%; }
 
 /* ── Mobile: 3-column square-tile design ── */
 @media (max-width: 600px) {
-  #page-home {
-    height: 100dvh;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-sizing: border-box;
-  }
-
   /* Header — proper breathing room */
-  .home-logo-img { width: 132px; aspect-ratio: 1; margin-bottom: 3px; }
+  .home-logo-img { width: 132px; height: 132px; margin-bottom: 3px; }
   .home-header { padding: 8px 52px 4px; }
   .home-header .sub { display: block; font-size: .7rem; }
 
@@ -431,6 +435,20 @@ html { height: 100%; }
 </div>
 
 <script>
+/* ── Belt-and-suspenders height fix ───────────────────────────────────────
+   CSS height:100% is reliable but window.innerHeight is the ground truth.
+   Setting it explicitly via JS guarantees the correct size even if the
+   browser's height:100% cascade hasn't resolved yet at first paint.        */
+(function() {
+  function fixH() {
+    var h = window.innerHeight + 'px';
+    document.body.style.height    = h;   /* body IS #page-home */
+    document.body.style.minHeight = h;   /* override shared.js min-height:100vh */
+  }
+  fixH();
+  window.addEventListener('resize', fixH);
+})();
+
 /* ── Welcome modal ── */
 var wmSelectedAge = '';
 
