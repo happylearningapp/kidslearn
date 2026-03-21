@@ -6,6 +6,7 @@
 <title>Numbers &amp; Colors &#128290;</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="../shared.js"></script>
+<script src="../questions.js"></script>
 <style>
 /* ── Override shared layout to full-width (no sidebar) ── */
 .subbody { display: block !important; }
@@ -316,46 +317,6 @@ var SHD=[
   {n:"Diamond",   c:"#9C27B0",e:"&#128142;",i:[["Ring","&#128141;"],["Gem","&#128142;"],["Kite","&#129473;"],["Crystal","&#128302;"],["Card","&#127183;"]]},
   {n:"Oval",      c:"#1976D2",e:"&#129370;",i:[["Egg","&#129370;"],["Mango","&#129389;"],["Mirror","&#129518;"],["Ball","&#127953;"],["Avocado","&#129361;"]]}
 ];
-var ADDP=[
-  {a:1,ae:"&#127822;",b:1,be:"&#127822;",ans:2},
-  {a:2,ae:"&#128049;",b:1,be:"&#128049;",ans:3},
-  {a:1,ae:"&#127820;",b:2,be:"&#127820;",ans:3},
-  {a:2,ae:"&#11088;", b:2,be:"&#11088;", ans:4},
-  {a:3,ae:"&#128056;",b:1,be:"&#128056;",ans:4},
-  {a:2,ae:"&#128053;",b:3,be:"&#128053;",ans:5},
-  {a:3,ae:"&#127827;",b:2,be:"&#127827;",ans:5},
-  {a:4,ae:"&#127800;",b:1,be:"&#127800;",ans:5},
-  {a:1,ae:"&#127822;",b:3,be:"&#127822;",ans:4},
-  {a:2,ae:"&#11088;", b:3,be:"&#11088;", ans:5}
-];
-var PATP=[
-  {seq:["&#128308;","&#128309;","&#128308;","&#128309;"],missing:3,ans:"&#128309;",opts:["&#128309;","&#128993;","&#128994;"]},
-  {seq:["&#128993;","&#128994;","&#128993;","&#128994;"],missing:3,ans:"&#128994;",opts:["&#128308;","&#128994;","&#128309;"]},
-  {seq:["&#11088;","&#127769;","&#11088;","&#127769;"],  missing:2,ans:"&#11088;", opts:["&#11088;","&#127752;","&#127769;"]},
-  {seq:["&#128049;","&#128053;","&#128049;","&#128053;"],missing:3,ans:"&#128053;",opts:["&#128049;","&#128053;","&#128056;"]},
-  {seq:["&#127822;","&#127820;","&#127822;","&#127820;"],missing:2,ans:"&#127822;",opts:["&#127822;","&#127818;","&#127820;"]},
-  {seq:["&#128314;","&#11093;","&#128314;","&#11093;"],  missing:3,ans:"&#11093;", opts:["&#128314;","&#11093;","&#128998;"]},
-  {seq:["&#9728;","&#127769;","&#9728;","&#127769;"],    missing:2,ans:"&#9728;",  opts:["&#9728;","&#127769;","&#11088;"]},
-  {seq:["&#128024;","&#128045;","&#128024;","&#128045;"],missing:3,ans:"&#128045;",opts:["&#128024;","&#128047;","&#128045;"]}
-];
-var CMPP=[
-  {q:"Which is BIGGER?",       a:{e:"&#128024;",n:1,l:"Elephant"},  b:{e:"&#128045;",n:1,l:"Mouse"},    ans:"a",msg:"Elephant is BIGGER!"},
-  {q:"Which group has MORE?",  a:{e:"&#127822;",n:4,l:"4 Apples"},  b:{e:"&#127822;",n:2,l:"2 Apples"}, ans:"a",msg:"4 is MORE than 2!"},
-  {q:"Which is SMALLER?",      a:{e:"&#128049;",n:1,l:"Cat"},        b:{e:"&#129409;",n:1,l:"Lion"},     ans:"a",msg:"Cat is SMALLER!"},
-  {q:"Which group has LESS?",  a:{e:"&#11088;", n:2,l:"2 Stars"},   b:{e:"&#11088;", n:5,l:"5 Stars"},  ans:"a",msg:"2 is LESS than 5!"},
-  {q:"Which is TALLER?",       a:{e:"&#129426;",n:1,l:"Giraffe"},   b:{e:"&#128034;",n:1,l:"Turtle"},   ans:"a",msg:"Giraffe is TALLER!"},
-  {q:"Which is SHORTER?",      a:{e:"&#128027;",n:1,l:"Worm"},      b:{e:"&#128013;",n:1,l:"Snake"},    ans:"a",msg:"Worm is SHORTER!"},
-  {q:"Which is FASTER?",       a:{e:"&#128008;",n:1,l:"Cheetah"},   b:{e:"&#128012;",n:1,l:"Snail"},    ans:"a",msg:"Cheetah is FASTER!"},
-  {q:"Which is HEAVIER?",      a:{e:"&#128663;",n:1,l:"Car"},        b:{e:"&#127880;",n:1,l:"Balloon"},  ans:"a",msg:"Car is HEAVIER!"},
-  {q:"Which group has MORE?",  a:{e:"&#11088;", n:6,l:"6 Stars"},   b:{e:"&#11088;", n:3,l:"3 Stars"},  ans:"a",msg:"6 is MORE than 3!"},
-  {q:"Which is LONGER?",       a:{e:"&#128013;",n:1,l:"Snake"},      b:{e:"&#128027;",n:1,l:"Worm"},     ans:"a",msg:"Snake is LONGER!"},
-  {q:"Which is SMALLER?",      a:{e:"&#128028;",n:1,l:"Ant"},        b:{e:"&#128054;",n:1,l:"Dog"},      ans:"a",msg:"Ant is SMALLER!"},
-  {q:"Which group has LESS?",  a:{e:"&#127850;",n:1,l:"1 Candy"},   b:{e:"&#127850;",n:4,l:"4 Candies"},ans:"a",msg:"1 is LESS than 4!"},
-  {q:"Which is BIGGER?",       a:{e:"&#127757;",n:1,l:"Earth"},      b:{e:"&#128138;",n:1,l:"Ball"},     ans:"a",msg:"Earth is BIGGER!"},
-  {q:"Which is TALLER?",       a:{e:"&#127795;",n:1,l:"Tree"},       b:{e:"&#127804;",n:1,l:"Flower"},   ans:"a",msg:"Tree is TALLER!"},
-  {q:"Which group has MORE?",  a:{e:"&#128153;",n:5,l:"5 Hearts"},  b:{e:"&#128153;",n:2,l:"2 Hearts"},  ans:"a",msg:"5 is MORE than 2!"}
-];
-
 /* ════════════════════════════════
    DOCK NAV
 ════════════════════════════════ */

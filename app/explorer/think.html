@@ -6,6 +6,7 @@
 <title>Think Smart! &#129504;</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
 <script src="../shared.js"></script>
+<script src="../questions.js"></script>
 <style>
 .subbody{display:block!important;}
 .submain{padding:14px 12px calc(90px + env(safe-area-inset-bottom))!important;overflow-y:hidden;overflow-x:hidden;}
@@ -155,111 +156,6 @@
 </nav>
 
 <script>
-/* ══════════════════════════════════════
-   DATA
-══════════════════════════════════════ */
-var PAT_DATA=[
-  {seq:['🐱','🐶','🐱','🐶'],ans:'🐱',opts:['🐱','🦊','🐸']},
-  {seq:['⭐','❤️','⭐','❤️'],ans:'⭐',opts:['🌙','⭐','❤️']},
-  {seq:['🔴','🔵','🔴','🔵'],ans:'🔴',opts:['🔴','🟡','🟢']},
-  {seq:['🌙','⭐','🌙','⭐'],ans:'🌙',opts:['☀️','🌙','⭐']},
-  {seq:['🍎','🍊','🍎','🍊'],ans:'🍎',opts:['🍎','🍋','🍇']},
-  {seq:['🐘','🐱','🐱','🐘'],ans:'🐱',opts:['🐱','🐶','🐘']},
-  {seq:['🌻','🌸','🌸','🌻'],ans:'🌸',opts:['🌷','🌸','🌻']},
-  {seq:['🍕','🍕','🍔','🍕'],ans:'🍕',opts:['🍕','🍣','🍔']},
-  {seq:['🚗','🚂','🚗','🚂'],ans:'🚗',opts:['✈️','🚗','🚂']},
-  {seq:['🔴','🟡','🔵','🔴'],ans:'🟡',opts:['🔵','🟡','🔴']},
-  {seq:['🐶','🐱','🐸','🐶'],ans:'🐱',opts:['🐸','🐱','🐶']},
-  {seq:['🌞','🌧️','🌈','🌞'],ans:'🌧️',opts:['🌈','🌧️','🌞']}
-];
-
-var SEQ_DATA=[
-  {steps:['🥚','🐣'],ans:'🐔',opts:[{e:'🐔',l:'Hen'},{e:'🦋',l:'Butterfly'},{e:'🌱',l:'Plant'},{e:'🐟',l:'Fish'}],q:'Egg ➜ Chick ➜ ?'},
-  {steps:['🌱','🌿'],ans:'🌳',opts:[{e:'🌳',l:'Tree'},{e:'🍎',l:'Apple'},{e:'🌸',l:'Flower'},{e:'🌊',l:'Wave'}],q:'Seed ➜ Plant ➜ ?'},
-  {steps:['🐛','🫘'],ans:'🦋',opts:[{e:'🦋',l:'Butterfly'},{e:'🐝',l:'Bee'},{e:'🐢',l:'Turtle'},{e:'🐟',l:'Fish'}],q:'Caterpillar ➜ Cocoon ➜ ?'},
-  {steps:['👶','🧒'],ans:'🧑',opts:[{e:'🧑',l:'Adult'},{e:'👴',l:'Old man'},{e:'🍼',l:'Bottle'},{e:'🐣',l:'Chick'}],q:'Baby ➜ Child ➜ ?'},
-  {steps:['☁️','🌧️'],ans:'🌈',opts:[{e:'🌈',l:'Rainbow'},{e:'❄️',l:'Snow'},{e:'☀️',l:'Sun'},{e:'🌪️',l:'Storm'}],q:'Cloud ➜ Rain ➜ ?'},
-  {steps:['🌑','🌓'],ans:'🌕',opts:[{e:'🌕',l:'Full Moon'},{e:'🌑',l:'New Moon'},{e:'⭐',l:'Star'},{e:'☀️',l:'Sun'}],q:'New Moon ➜ Half Moon ➜ ?'},
-  {steps:['❄️','💧'],ans:'☁️',opts:[{e:'☁️',l:'Steam/Cloud'},{e:'❄️',l:'Ice'},{e:'🌊',l:'Sea'},{e:'🌧️',l:'Rain'}],q:'Ice ➜ Water ➜ ?'},
-  {steps:['🌸','🍃'],ans:'🍁',opts:[{e:'🍁',l:'Autumn leaf'},{e:'🌸',l:'Blossom'},{e:'❄️',l:'Snow'},{e:'🌱',l:'Sprout'}],q:'Spring ➜ Summer ➜ ?'},
-  {steps:['🥣','🍽️'],ans:'😊',opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😴',l:'Sleepy'},{e:'😡',l:'Angry'}],q:'Empty bowl ➜ Eating ➜ ?'},
-  {steps:['🌱','🌷'],ans:'🌹',opts:[{e:'🌹',l:'Rose'},{e:'🌲',l:'Pine'},{e:'🍎',l:'Apple'},{e:'🌿',l:'Leaf'}],q:'Bud ➜ Opening ➜ ?'}
-];
-
-var FEEL_DATA=[
-  {em:'🎂🎉',text:'It is your birthday today!',ans:0,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😨',l:'Scared'}]},
-  {em:'🤕',text:'You fell down and hurt your knee.',ans:1,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😴',l:'Sleepy'},{e:'😮',l:'Surprised'}]},
-  {em:'👻🌑',text:'You are alone in a very dark room at night.',ans:3,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😨',l:'Scared'}]},
-  {em:'🍦🎈',text:'You got your favourite ice cream!',ans:0,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'}]},
-  {em:'🧸💔',text:'Your favourite toy broke.',ans:1,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😎',l:'Cool'},{e:'😮',l:'Surprised'}]},
-  {em:'😤🧒',text:'Someone took your toy without asking.',ans:2,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'}]},
-  {em:'🎁✨',text:'You got a big surprise gift!',ans:3,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😮',l:'Surprised'}]},
-  {em:'🌙⏰',text:'You played all day and now it is late night.',ans:2,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😴',l:'Sleepy'},{e:'😡',l:'Angry'}]},
-  {em:'🐕🤝',text:'You made a new friend today!',ans:0,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'}]},
-  {em:'🏥💉',text:'The doctor gives you a small shot.',ans:3,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😮',l:'Surprised'},{e:'😨',l:'Scared'}]},
-  {em:'🍪🚫',text:'Mum says no more cookies today.',ans:2,opts:[{e:'😊',l:'Happy'},{e:'😢',l:'Sad'},{e:'😡',l:'Upset'},{e:'😴',l:'Sleepy'}]},
-  {em:'🌈✨',text:'You see a beautiful rainbow after the rain!',ans:3,opts:[{e:'😢',l:'Sad'},{e:'😡',l:'Angry'},{e:'😴',l:'Sleepy'},{e:'😮',l:'Amazed'}]}
-];
-
-var SPOT_DATA=[
-  {row:['🍎','🍎','🍊','🍎','🍎'],odd:2},
-  {row:['🐶','🐶','🐶','🐱','🐶'],odd:3},
-  {row:['⭐','⭐','🌙','⭐','⭐'],odd:2},
-  {row:['🔴','🔴','🔴','🔴','🔵'],odd:4},
-  {row:['🚗','🚗','✈️','🚗','🚗'],odd:2},
-  {row:['🍌','🍌','🍌','🍇','🍌'],odd:3},
-  {row:['🌸','🌻','🌸','🌸','🌸'],odd:1},
-  {row:['🐱','🐱','🐱','🐱','🐶'],odd:4},
-  {row:['❤️','❤️','⭐','❤️','❤️'],odd:2},
-  {row:['🌙','🌙','🌙','☀️','🌙'],odd:3},
-  {row:['🎈','🎈','🎈','🎁','🎈'],odd:3},
-  {row:['🍕','🍔','🍕','🍕','🍕'],odd:1},
-  {row:['🦁','🦁','🐯','🦁','🦁'],odd:2},
-  {row:['🌊','🌊','🌊','🌊','🔥'],odd:4}
-];
-
-var SIZE_DATA=[
-  {items:[{e:'🐜',l:'Ant'},{e:'🐈',l:'Cat'},{e:'🐘',l:'Elephant'}]},
-  {items:[{e:'🌱',l:'Sprout'},{e:'🌿',l:'Plant'},{e:'🌳',l:'Tree'}]},
-  {items:[{e:'🍇',l:'Grape'},{e:'🍊',l:'Orange'},{e:'🍉',l:'Watermelon'}]},
-  {items:[{e:'🐁',l:'Mouse'},{e:'🐇',l:'Rabbit'},{e:'🐄',l:'Cow'}]},
-  {items:[{e:'🏠',l:'House'},{e:'🏢',l:'Building'},{e:'🗼',l:'Tower'}]},
-  {items:[{e:'🧒',l:'Child'},{e:'👨',l:'Adult'},{e:'👴',l:'Grandpa'}]},
-  {items:[{e:'🐠',l:'Fish'},{e:'🐬',l:'Dolphin'},{e:'🐋',l:'Whale'}]},
-  {items:[{e:'🫐',l:'Berry'},{e:'🍊',l:'Orange'},{e:'🍉',l:'Melon'}]},
-  {items:[{e:'🌰',l:'Nut'},{e:'🌷',l:'Flower'},{e:'🌲',l:'Pine'}]},
-  {items:[{e:'🦟',l:'Mosquito'},{e:'🐓',l:'Chicken'},{e:'🦒',l:'Giraffe'}]}
-];
-
-var WHY_DATA=[
-  {em:'🌧️',cause:'It is raining heavily outside',ans:'The ground gets wet',wrong:['The sky turns green','Fish start flying','We get very hungry']},
-  {em:'🍦☀️',cause:'Ice cream is left in the hot sun',ans:'It melts and becomes liquid',wrong:['It gets bigger and bigger','It starts to sing','It turns into a ball']},
-  {em:'🌱💧',cause:'You water the plant every single day',ans:'The plant grows tall and healthy',wrong:['The plant turns into an animal','The plant flies away','The plant makes music']},
-  {em:'😴',cause:'You stayed up very, very late at night',ans:'You feel tired and sleepy',wrong:['You feel very hungry','You can run faster','You feel super cold']},
-  {em:'🏃',cause:'You run very fast for a long time',ans:'You breathe fast and feel tired',wrong:['You feel very cold','You stop growing','You feel hungry right away']},
-  {em:'🎁🎂',cause:'Today is your birthday!',ans:'You feel excited and happy',wrong:['You feel bored','You want to sleep all day','You feel worried']},
-  {em:'🤧',cause:'You played in cold rain without your jacket',ans:'You might catch a cold and sneeze',wrong:['You become very fast','You grow wings','You get stronger immediately']},
-  {em:'🌙⭐',cause:'The sun sets and it becomes night time',ans:'We can see the moon and stars',wrong:['We can see the rainbow','The birds start singing louder','It gets very hot and sunny']},
-  {em:'🚿🧼',cause:'You wash your hands with soap and water',ans:'Your hands become clean and germ-free',wrong:['Your hands turn blue','Your hands become bigger','Your hands start to itch']},
-  {em:'😢🧸',cause:'You dropped your favourite toy and it broke',ans:'You feel sad',wrong:['You feel happy and laugh','You fall asleep immediately','You jump with joy']},
-  {em:'📚✏️',cause:'You study and practice reading every day',ans:'You become smarter and learn more',wrong:['You grow taller overnight','You stop feeling hungry','You start flying in dreams']},
-  {em:'🌱☀️',cause:'Plants get sunlight and water every day',ans:'They grow, make food and give oxygen',wrong:['They walk to the market','They turn into animals','They start dancing at night']}
-];
-
-var MORE_DATA=[
-  {left:2,right:5,ans:'right',em:'⭐'},
-  {left:7,right:3,ans:'left',em:'🍎'},
-  {left:4,right:8,ans:'right',em:'🐟'},
-  {left:6,right:2,ans:'left',em:'❤️'},
-  {left:3,right:9,ans:'right',em:'🌸'},
-  {left:8,right:4,ans:'left',em:'🎈'},
-  {left:1,right:6,ans:'right',em:'🐱'},
-  {left:5,right:2,ans:'left',em:'🌙'},
-  {left:3,right:7,ans:'right',em:'🍭'},
-  {left:9,right:4,ans:'left',em:'🌟'},
-  {left:2,right:8,ans:'right',em:'🦋'},
-  {left:6,right:3,ans:'left',em:'🚗'}
-];
 
 /* ══════════════════════════════════════
    STATE

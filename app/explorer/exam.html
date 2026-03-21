@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Exam Time &#128221;</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="../shared.js"></script>
+<script src="../questions.js"></script>
+<style>
+.subbody { display:block !important; }
+.submain { padding:14px 12px 30px !important; overflow-y:auto; }
+#sdrawer { top:66px !important; }
+
+/* ── Setup screen ── */
+.ex-setup { max-width:400px; margin:0 auto; text-align:center; padding:4px 0 12px; }
+.ex-setup-hero { font-size:3.5rem; margin-bottom:6px; animation:bounce 2s ease-in-out infinite; }
+.ex-setup-title { font-size:var(--xxl); font-weight:900; color:#1565C0; margin-bottom:3px; }
+.ex-setup-sub { font-size:var(--md); color:#888; margin-bottom:18px; }
+.ex-sec-lbl { font-size:var(--sm); font-weight:900; color:#666; text-transform:uppercase;
+              letter-spacing:.5px; margin-bottom:8px; text-align:left; }
+.ex-mode-row { display:flex; gap:8px; margin-bottom:18px; }
+.ex-mode-btn { flex:1; padding:10px 4px; border-radius:16px; border:2.5px solid #eee;
+               background:#f9f9f9; font-family:var(--f); font-weight:900; font-size:var(--sm);
+               cursor:pointer; transition:all .22s cubic-bezier(.34,1.56,.64,1); color:#666;
+               -webkit-tap-highlight-color:transparent; }
+.ex-mode-btn .mode-em { font-size:1.5rem; display:block; margin-bottom:3px; }
+.ex-mode-btn[data-m="1"].sel { color:#2E7D32; border-color:#43A047; background:#E8F5E9; transform:scale(1.05); }
+.ex-mode-btn[data-m="2"].sel { color:#E65100; border-color:#FF8E53; background:#FFF3E0; transform:scale(1.05); }
+.ex-mode-btn[data-m="3"].sel { color:#B71C1C; border-color:#E53935; background:#FFEBEE; transform:scale(1.05); }
+.ex-count-row { display:flex; gap:8px; margin-bottom:22px; }
+.ex-count-btn { flex:1; padding:12px 4px; border-radius:14px; border:2.5px solid #eee;
+                background:#f9f9f9; font-family:var(--f); font-weight:900; font-size:var(--xl);
+                color:#666; cursor:pointer; transition:all .22s cubic-bezier(.34,1.56,.64,1);
+                -webkit-tap-highlight-color:transparent; }
+.ex-count-btn.sel { color:#1565C0; border-color:#1565C0; background:#E3F2FD; transform:scale(1.06); }
+.ex-start-btn { width:100%; padding:16px; border-radius:20px; border:none;
+                background:linear-gradient(135deg,#1565C0,#6A1B9A); color:#fff;
+                font-family:var(--f); font-size:var(--xl); font-weight:900; cursor:pointer;
+                box-shadow:0 5px 20px rgba(21,101,192,.38); transition:all .2s;
+                -webkit-tap-highlight-color:transparent; }
+.ex-start-btn:active { transform:scale(.97); }
+
+/* ── Progress bar ── */
+.ex-progress-wrap { margin-bottom:12px; }
+.ex-qinfo { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.ex-qnum  { font-size:var(--sm); font-weight:900; color:#555; }
+.ex-qsc   { font-size:var(--sm); font-weight:900; color:#1565C0; }
+.ex-pbar  { height:8px; background:#E3F2FD; border-radius:8px; overflow:hidden; }
+.ex-fill  { height:100%; background:linear-gradient(90deg,#1565C0,#6A1B9A); border-radius:8px;
+            transition:width .4s ease; }
+
+/* ── Question card ── */
+.ex-card { background:#fff; border-radius:20px; padding:16px 14px 14px;
+           box-shadow:0 3px 16px rgba(0,0,0,.08); margin-bottom:10px; overflow:hidden; }
+.eq-scene { text-align:center; margin-bottom:8px; }
+.eq-em    { font-size:3rem; line-height:1.2; }
+.eq-qtext { font-size:var(--lg); font-weight:700; color:#333; text-align:center;
+            margin-bottom:12px; line-height:1.4; }
+.eq-label { font-size:var(--sm); font-weight:900; color:#888; text-align:center;
+            margin-bottom:10px; text-transform:uppercase; letter-spacing:.3px; }
+
+/* ── Sequence / pattern row ── */
+.eq-seq   { display:flex; align-items:center; justify-content:center;
+            flex-wrap:wrap; gap:4px; margin-bottom:14px; }
+.eq-seqi  { font-size:1.8rem; background:#f5f5f5; border-radius:10px;
+            padding:5px 7px; min-width:40px; text-align:center; }
+.eq-seqi-q { background:#E3F2FD; color:#1565C0; font-weight:900; font-size:1.4rem; }
+.eq-arrow  { color:#bbb; font-size:.85rem; }
+
+/* ── 2×2 option grid ── */
+.eq-opts2x2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.eq-opt2 { padding:10px 8px; border-radius:14px; border:2px solid #eee; background:#f9f9f9;
+           font-family:var(--f); cursor:pointer; display:flex; flex-direction:column;
+           align-items:center; gap:4px; transition:all .18s; min-width:0;
+           -webkit-tap-highlight-color:transparent; }
+.eq-opt2:active { transform:scale(.96); }
+.eq-opt-em  { font-size:1.8rem; line-height:1.1; }
+.eq-opt-lbl { font-size:var(--sm); font-weight:700; color:#444; word-break:break-word;
+              text-align:center; white-space:normal; }
+.eq-opt2-text { font-size:var(--sm); font-weight:700; color:#333; flex-direction:row;
+                justify-content:center; white-space:normal; word-break:break-word;
+                text-align:center; line-height:1.35; }
+
+/* ── 3-option row ── */
+.eq-opts3 { display:flex; gap:8px; justify-content:center; }
+.eq-opt3  { flex:1; max-width:110px; padding:12px 6px; border-radius:14px;
+            border:2px solid #eee; background:#f9f9f9; font-size:1.8rem;
+            font-family:var(--f); cursor:pointer; text-align:center; transition:all .18s;
+            -webkit-tap-highlight-color:transparent; }
+.eq-opt3:active { transform:scale(.95); }
+.eq-opt3-num { font-size:var(--xxl); font-weight:900; color:#1565C0; }
+
+/* ── True/False ── */
+.eq-tf-row { display:flex; gap:10px; margin-top:4px; }
+.eq-tf-btn { flex:1; padding:14px 8px; border-radius:16px; border:none;
+             font-family:var(--f); font-size:var(--lg); font-weight:900;
+             cursor:pointer; transition:all .18s; -webkit-tap-highlight-color:transparent; }
+.eq-tf-btn:active { transform:scale(.96); }
+.eq-tf-true  { background:#E8F5E9; color:#2E7D32; }
+.eq-tf-false { background:#FFEBEE; color:#C62828; }
+
+/* ── Spot It row ── */
+.eq-spot-row  { display:flex; justify-content:center; gap:6px; }
+.eq-spot-item { font-size:1.8rem; padding:8px 4px; border-radius:12px; border:2.5px solid #eee;
+                background:#f9f9f9; cursor:pointer; transition:all .18s; flex:1;
+                max-width:56px; text-align:center; -webkit-tap-highlight-color:transparent; }
+.eq-spot-item:active { transform:scale(.92); }
+
+/* ── Compare / More ── */
+.eq-compare-row  { display:flex; align-items:stretch; gap:8px; margin-top:6px; }
+.eq-compare-side { flex:1; padding:12px 8px; border-radius:16px; border:2.5px solid #eee;
+                   background:#f9f9f9; font-family:var(--f); cursor:pointer; display:flex;
+                   flex-direction:column; align-items:center; gap:4px; transition:all .18s;
+                   min-width:0; -webkit-tap-highlight-color:transparent; }
+.eq-compare-side:active { transform:scale(.96); }
+.eq-cmp-em    { font-size:2.2rem; line-height:1.1; }
+.eq-cmp-count { font-size:var(--sm); font-weight:900; color:#555; }
+.eq-cmp-lbl   { font-size:.65rem; color:#888; font-weight:700; word-break:break-word;
+                text-align:center; white-space:normal; }
+.eq-vs        { font-size:var(--md); font-weight:900; color:#ccc; align-self:center; flex-shrink:0; }
+.eq-more-ems  { font-size:1.3rem; line-height:1.5; word-break:break-all; text-align:center;
+                display:block; }
+.eq-more-num  { font-size:var(--xxl); font-weight:900; color:#1565C0; display:block; margin-top:4px; }
+.eq-cmp-msg   { text-align:center; margin-top:8px; font-weight:700; color:#1565C0;
+                font-size:var(--sm); display:none; }
+
+/* ── Addition ── */
+.eq-add-row { display:flex; align-items:center; justify-content:center; gap:8px;
+              margin-bottom:16px; flex-wrap:wrap; }
+.eq-add-grp { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.eq-add-em  { font-size:1.3rem; line-height:1; }
+.eq-add-num { font-size:var(--xl); font-weight:900; color:#1565C0; margin-top:2px; }
+.eq-add-op  { font-size:var(--xxl); font-weight:900; color:#333; }
+.eq-add-q   { font-size:var(--xxl); font-weight:900; color:#6A1B9A; }
+
+/* ── Feedback ── */
+.ex-fb { text-align:center; font-size:var(--md); font-weight:900; padding:8px 14px;
+         border-radius:12px; margin-bottom:10px; display:none; }
+.ex-fb.show    { display:block; }
+.ex-fb.correct { background:#E8F5E9; color:#2E7D32; }
+.ex-fb.wrong   { background:#FFEBEE; color:#C62828; }
+
+/* ── Correct / Wrong highlights ── */
+.ex-correct { background:#E8F5E9 !important; border-color:#4CAF50 !important; }
+.ex-correct .eq-opt-lbl,.ex-correct .eq-cmp-lbl { color:#2E7D32 !important; }
+.ex-wrong   { background:#FFEBEE !important; border-color:#FF6B6B !important; }
+.ex-wrong .eq-opt-lbl,.ex-wrong .eq-cmp-lbl { color:#C62828 !important; }
+
+/* ── Next button ── */
+.ex-next-btn { display:none; width:100%; padding:14px; border-radius:18px; border:none;
+               background:linear-gradient(135deg,#1565C0,#6A1B9A); color:#fff;
+               font-family:var(--f); font-size:var(--lg); font-weight:900; cursor:pointer;
+               box-shadow:0 4px 16px rgba(21,101,192,.3); transition:all .2s;
+               -webkit-tap-highlight-color:transparent; }
+.ex-next-btn:active { transform:scale(.97); }
+
+/* ── Score screen ── */
+.ex-score       { max-width:400px; margin:0 auto; text-align:center; padding:8px 0 16px; }
+.ex-score-hero  { font-size:5rem; margin-bottom:8px; animation:bounce 1s ease-in-out infinite; }
+.ex-score-title { font-size:var(--xxl); font-weight:900; color:#1565C0; margin-bottom:4px; }
+.ex-score-val   { font-size:2.8rem; font-weight:900; color:#333; margin-bottom:6px; }
+.ex-score-val span { font-size:var(--lg); color:#888; }
+.ex-score-msg   { font-size:var(--md); color:#666; margin-bottom:12px; line-height:1.5; }
+.ex-score-stars { font-size:1.8rem; letter-spacing:3px; margin-bottom:18px; }
+.ex-breakdown   { background:#f9f9f9; border-radius:16px; padding:12px 14px; margin-bottom:20px;
+                  text-align:left; }
+.ex-bd-head     { font-size:var(--sm); font-weight:900; color:#888; text-transform:uppercase;
+                  letter-spacing:.4px; margin-bottom:8px; text-align:center; }
+.ex-bd-row      { display:flex; justify-content:space-between; font-size:var(--sm); padding:5px 0;
+                  border-bottom:1px solid #eee; color:#555; }
+.ex-bd-row:last-child { border-bottom:none; }
+.ex-score-btns  { display:flex; gap:10px; }
+.ex-again-btn,.ex-home-btn { flex:1; padding:14px; border-radius:18px; border:none;
+                              font-family:var(--f); font-size:var(--md); font-weight:900;
+                              cursor:pointer; transition:all .2s; -webkit-tap-highlight-color:transparent; }
+.ex-again-btn { background:linear-gradient(135deg,#1565C0,#6A1B9A); color:#fff;
+                box-shadow:0 4px 14px rgba(21,101,192,.3); }
+.ex-home-btn  { background:#f0f0f0; color:#555; }
+.ex-again-btn:active,.ex-home-btn:active { transform:scale(.97); }
+</style>
+</head>
+<body data-page-title="&#128221; Exam Time"
+      data-page-sub="Test Your Knowledge"
+      data-page-gradient="linear-gradient(135deg,#1565C0,#6A1B9A)"
+      data-page-back="../home.html">
+
+<div class="subbody">
+  <div class="submain" id="examMain"></div>
+</div>
+
+<script>
+/* ── State ── */
+var examMode = 2, examCount = 10;
+var examQuestions = [], examIdx = 0, examScore = 0;
+var examAnswered = false;
+var examTypeResults = {};
+
+/* ── Fisher-Yates ── */
+function fisherYates(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+}
+
+/* ── Build shuffled question pool ── */
+function buildExamPool() {
+  var pool = EXAM_POOL.filter(function(q) { return q.diff <= examMode; });
+  fisherYates(pool);
+  examQuestions = pool.slice(0, Math.min(examCount, pool.length));
+}
+
+/* ══════════════ SETUP SCREEN ══════════════ */
+function showSetup() {
+  var m = document.getElementById('examMain');
+  m.innerHTML = [
+    '<div class="ex-setup">',
+    '<div class="ex-setup-hero">&#128221;</div>',
+    '<div class="ex-setup-title">Exam Time!</div>',
+    '<div class="ex-setup-sub">Mix of questions from all sections</div>',
+    '<div class="ex-sec-lbl">Choose your level</div>',
+    '<div class="ex-mode-row">',
+    '<button class="ex-mode-btn" data-m="1" onclick="selMode(1)"><span class="mode-em">&#127807;</span>Easy</button>',
+    '<button class="ex-mode-btn" data-m="2" onclick="selMode(2)"><span class="mode-em">&#11088;</span>Medium</button>',
+    '<button class="ex-mode-btn" data-m="3" onclick="selMode(3)"><span class="mode-em">&#128293;</span>Hard</button>',
+    '</div>',
+    '<div class="ex-sec-lbl">How many questions?</div>',
+    '<div class="ex-count-row">',
+    '<button class="ex-count-btn" data-c="5" onclick="selCount(5)">5</button>',
+    '<button class="ex-count-btn" data-c="10" onclick="selCount(10)">10</button>',
+    '<button class="ex-count-btn" data-c="15" onclick="selCount(15)">15</button>',
+    '<button class="ex-count-btn" data-c="20" onclick="selCount(20)">20</button>',
+    '</div>',
+    '<button class="ex-start-btn" onclick="startExam()">Start Exam! &#128640;</button>',
+    '</div>'
+  ].join('');
+  selMode(examMode);
+  selCount(examCount);
+}
+
+function selMode(m) {
+  examMode = m;
+  document.querySelectorAll('.ex-mode-btn').forEach(function(b) {
+    b.classList.toggle('sel', parseInt(b.getAttribute('data-m')) === m);
+  });
+}
+
+function selCount(c) {
+  examCount = c;
+  document.querySelectorAll('.ex-count-btn').forEach(function(b) {
+    b.classList.toggle('sel', parseInt(b.getAttribute('data-c')) === c);
+  });
+}
+
+/* ══════════════ START / SHOW QUESTION ══════════════ */
+function startExam() {
+  examIdx = 0; examScore = 0; examTypeResults = {};
+  buildExamPool();
+  if (!examQuestions.length) { spk('No questions available'); return; }
+  spk('Exam starting! Good luck!');
+  showQuestion();
+}
+
+function showQuestion() {
+  examAnswered = false;
+  var q = examQuestions[examIdx];
+  var total = examQuestions.length;
+  var pct = Math.round((examIdx / total) * 100);
+  var isLast = (examIdx >= total - 1);
+
+  var html = '';
+  /* Progress */
+  html += '<div class="ex-progress-wrap">';
+  html += '<div class="ex-qinfo"><span class="ex-qnum">Question ' + (examIdx + 1) + ' / ' + total + '</span>';
+  html += '<span class="ex-qsc">&#9989; ' + examScore + '</span></div>';
+  html += '<div class="ex-pbar"><div class="ex-fill" style="width:' + pct + '%"></div></div></div>';
+  /* Question card */
+  html += '<div class="ex-card" id="exCard">' + renderQuestion(q) + '</div>';
+  /* Feedback */
+  html += '<div class="ex-fb" id="exFb"></div>';
+  /* Next button */
+  html += '<button class="ex-next-btn" id="exNextBtn" onclick="nextQuestion()">';
+  html += isLast ? 'See Results &#127942;' : 'Next &#10145;';
+  html += '</button>';
+
+  var m = document.getElementById('examMain');
+  m.innerHTML = html;
+  m.scrollTop = 0;
+}
+
+/* ══════════════ RENDER BY TYPE ══════════════ */
+function renderQuestion(q) {
+  var d = q.d;
+  switch (q.type) {
+    case 'mcq':        return renderMCQ(d);
+    case 'tf':         return renderTF(d);
+    case 'pattern':    return renderPattern(d);
+    case 'numpattern': return renderNumPattern(d);
+    case 'sequence':   return renderSequence(d);
+    case 'feelings':   return renderFeelings(d);
+    case 'spotit':     return renderSpotIt(d);
+    case 'compare':    return renderCompare(d);
+    case 'more':       return renderMore(d);
+    case 'add':        return renderAdd(d);
+    case 'why':        return renderWhy(d);
+    default:           return '<p>?</p>';
+  }
+}
+
+/* MCQ — {e, q, o[], a} */
+function renderMCQ(d) {
+  window._examCorrect = d.a;
+  var h = '<div class="eq-scene"><span class="eq-em">' + d.e + '</span></div>';
+  h += '<div class="eq-qtext">' + d.q + '</div>';
+  h += '<div class="eq-opts2x2">';
+  d.o.forEach(function(opt, i) {
+    h += '<button class="eq-opt2 eq-opt2-text" data-opt="' + i + '" onclick="examCheck(' + i + ')">' + opt + '</button>';
+  });
+  return h + '</div>';
+}
+
+/* True/False — {em, stmt, ans} */
+function renderTF(d) {
+  window._examCorrect = d.ans;
+  var h = '<div class="eq-scene"><span class="eq-em">' + d.em + '</span></div>';
+  h += '<div class="eq-qtext">' + d.stmt + '</div>';
+  h += '<div class="eq-tf-row">';
+  h += '<button class="eq-tf-btn eq-tf-true" id="tfT" onclick="examCheckTF(true)">&#9989; TRUE</button>';
+  h += '<button class="eq-tf-btn eq-tf-false" id="tfF" onclick="examCheckTF(false)">&#10060; FALSE</button>';
+  return h + '</div>';
+}
+
+/* Emoji Pattern — {seq[], ans, opts[]} */
+function renderPattern(d) {
+  var opts = d.opts.slice(); fisherYates(opts);
+  var ci = opts.indexOf(d.ans);
+  window._examCorrect = ci;
+  var h = '<div class="eq-label">Complete the pattern:</div>';
+  h += '<div class="eq-seq">';
+  for (var i = 0; i < d.seq.length - 1; i++) {
+    h += '<span class="eq-seqi">' + d.seq[i] + '</span>';
+    h += '<span class="eq-arrow">&#10132;</span>';
+  }
+  h += '<span class="eq-seqi eq-seqi-q">?</span></div>';
+  h += '<div class="eq-opts3">';
+  opts.forEach(function(opt, i) {
+    h += '<button class="eq-opt3" data-opt="' + i + '" onclick="examCheck(' + i + ')">' + opt + '</button>';
+  });
+  return h + '</div>';
+}
+
+/* Number Pattern — {seq[], missing, ans, opts[]} */
+function renderNumPattern(d) {
+  var opts = d.opts.slice(); fisherYates(opts);
+  var ci = opts.indexOf(d.ans);
+  window._examCorrect = ci;
+  var h = '<div class="eq-label">What goes in the blank?</div>';
+  h += '<div class="eq-seq">';
+  d.seq.forEach(function(s, i) {
+    if (i === d.missing) h += '<span class="eq-seqi eq-seqi-q">?</span>';
+    else h += '<span class="eq-seqi">' + s + '</span>';
+    if (i < d.seq.length - 1) h += '<span class="eq-arrow">&#10132;</span>';
+  });
+  h += '</div>';
+  h += '<div class="eq-opts3">';
+  opts.forEach(function(opt, i) {
+    h += '<button class="eq-opt3" data-opt="' + i + '" onclick="examCheck(' + i + ')" style="font-size:1.7rem;">' + opt + '</button>';
+  });
+  return h + '</div>';
+}
+
+/* Sequence — {steps[], ans, opts[{e,l}], q} */
+function renderSequence(d) {
+  var opts = d.opts.slice(); fisherYates(opts);
+  var ci = -1;
+  opts.forEach(function(o, i) { if (o.e === d.ans) ci = i; });
+  window._examCorrect = ci;
+  var h = '<div class="eq-label">What comes next?</div>';
+  h += '<div class="eq-seq">';
+  d.steps.forEach(function(s) {
+    h += '<span class="eq-seqi">' + s + '</span><span class="eq-arrow">&#10132;</span>';
+  });
+  h += '<span class="eq-seqi eq-seqi-q">?</span></div>';
+  if (d.q) h += '<div class="eq-qtext" style="font-size:var(--md);margin-top:0;">' + d.q + '</div>';
+  h += '<div class="eq-opts2x2">';
+  opts.forEach(function(opt, i) {
+    h += '<button class="eq-opt2" data-opt="' + i + '" onclick="examCheck(' + i + ')">';
+    h += '<span class="eq-opt-em">' + opt.e + '</span>';
+    h += '<span class="eq-opt-lbl">' + opt.l + '</span></button>';
+  });
+  return h + '</div>';
+}
+
+/* Feelings — {em, text, ans, opts[{e,l}]} */
+function renderFeelings(d) {
+  window._examCorrect = d.ans;
+  var h = '<div class="eq-scene"><span class="eq-em">' + d.em + '</span></div>';
+  h += '<div class="eq-qtext">' + d.text + '</div>';
+  h += '<div class="eq-label">How would you feel?</div>';
+  h += '<div class="eq-opts2x2">';
+  d.opts.forEach(function(opt, i) {
+    h += '<button class="eq-opt2" data-opt="' + i + '" onclick="examCheck(' + i + ')">';
+    h += '<span class="eq-opt-em">' + opt.e + '</span>';
+    h += '<span class="eq-opt-lbl">' + opt.l + '</span></button>';
+  });
+  return h + '</div>';
+}
+
+/* Spot It — {row[], odd} */
+function renderSpotIt(d) {
+  var h = '<div class="eq-label">Tap the one that is DIFFERENT!</div>';
+  h += '<div class="eq-spot-row">';
+  d.row.forEach(function(em, i) {
+    h += '<button class="eq-spot-item" id="sp' + i + '" onclick="examCheckSpot(' + i + ',' + d.odd + ')">' + em + '</button>';
+  });
+  return h + '</div>';
+}
+
+/* Compare — {q, a{e,n,l}, b{e,n,l}, ans, msg} */
+function renderCompare(d) {
+  var h = '<div class="eq-qtext">' + d.q + '</div>';
+  h += '<div class="eq-compare-row">';
+  h += '<button class="eq-compare-side" id="cmpA" onclick="examCheckSide(\'a\',' + (d.ans === 'a') + ')">';
+  h += '<span class="eq-cmp-em">' + d.a.e + '</span>';
+  if (d.a.n > 1) h += '<span class="eq-cmp-count">&#215;' + d.a.n + '</span>';
+  h += '<span class="eq-cmp-lbl">' + d.a.l + '</span></button>';
+  h += '<span class="eq-vs">VS</span>';
+  h += '<button class="eq-compare-side" id="cmpB" onclick="examCheckSide(\'b\',' + (d.ans === 'b') + ')">';
+  h += '<span class="eq-cmp-em">' + d.b.e + '</span>';
+  if (d.b.n > 1) h += '<span class="eq-cmp-count">&#215;' + d.b.n + '</span>';
+  h += '<span class="eq-cmp-lbl">' + d.b.l + '</span></button>';
+  h += '</div>';
+  if (d.msg) h += '<div class="eq-cmp-msg" id="cmpMsg">' + d.msg + '</div>';
+  return h;
+}
+
+/* Which is More — {left, right, ans, em} */
+function renderMore(d) {
+  var h = '<div class="eq-label">Which group has MORE? Tap it!</div>';
+  h += '<div class="eq-compare-row">';
+  h += '<button class="eq-compare-side" id="moreL" onclick="examCheckSide(\'left\',' + (d.ans === 'left') + ')">';
+  var le = ''; for (var i = 0; i < d.left; i++) le += d.em + ' ';
+  h += '<span class="eq-more-ems">' + le + '</span><span class="eq-more-num">' + d.left + '</span></button>';
+  h += '<span class="eq-vs">VS</span>';
+  h += '<button class="eq-compare-side" id="moreR" onclick="examCheckSide(\'right\',' + (d.ans === 'right') + ')">';
+  var re = ''; for (var j = 0; j < d.right; j++) re += d.em + ' ';
+  h += '<span class="eq-more-ems">' + re + '</span><span class="eq-more-num">' + d.right + '</span></button>';
+  return h + '</div>';
+}
+
+/* Addition — {a, ae, b, be, ans} */
+function renderAdd(d) {
+  var correct = d.ans;
+  var wrongs = [];
+  for (var n = Math.max(1, correct - 2); n <= correct + 5 && wrongs.length < 3; n++) {
+    if (n !== correct) wrongs.push(n);
+  }
+  var opts = [correct, wrongs[0], wrongs[1]]; fisherYates(opts);
+  var ci = opts.indexOf(correct);
+  window._examCorrect = ci;
+  var h = '<div class="eq-label">How many in total?</div>';
+  h += '<div class="eq-add-row">';
+  h += '<div class="eq-add-grp">';
+  for (var i = 0; i < d.a; i++) h += '<span class="eq-add-em">' + d.ae + '</span>';
+  h += '<div class="eq-add-num">' + d.a + '</div></div>';
+  h += '<span class="eq-add-op">+</span>';
+  h += '<div class="eq-add-grp">';
+  for (var jj = 0; jj < d.b; jj++) h += '<span class="eq-add-em">' + d.be + '</span>';
+  h += '<div class="eq-add-num">' + d.b + '</div></div>';
+  h += '<span class="eq-add-op">=</span><span class="eq-add-q">?</span></div>';
+  h += '<div class="eq-opts3">';
+  opts.forEach(function(opt, i) {
+    h += '<button class="eq-opt3 eq-opt3-num" data-opt="' + i + '" onclick="examCheck(' + i + ')">' + opt + '</button>';
+  });
+  return h + '</div>';
+}
+
+/* Why? Because! — {em, cause, ans, wrong[]} */
+function renderWhy(d) {
+  var allOpts = [d.ans, d.wrong[0], d.wrong[1], d.wrong[2]]; fisherYates(allOpts);
+  var ci = allOpts.indexOf(d.ans);
+  window._examCorrect = ci;
+  var h = '<div class="eq-scene"><span class="eq-em">' + d.em + '</span></div>';
+  h += '<div class="eq-qtext">' + d.cause + '</div>';
+  h += '<div class="eq-label">What happens because of this?</div>';
+  h += '<div class="eq-opts2x2">';
+  allOpts.forEach(function(opt, i) {
+    h += '<button class="eq-opt2 eq-opt2-text" data-opt="' + i + '" onclick="examCheck(' + i + ')" style="padding:9px 7px;">' + opt + '</button>';
+  });
+  return h + '</div>';
+}
+
+/* ══════════════ ANSWER CHECKERS ══════════════ */
+
+/* Index-based (mcq, pattern, numpattern, sequence, feelings, add, why) */
+function examCheck(idx) {
+  if (examAnswered) return;
+  examAnswered = true;
+  var isCorrect = (idx === window._examCorrect);
+  doMark(isCorrect);
+  document.querySelectorAll('[data-opt]').forEach(function(btn) {
+    var oi = parseInt(btn.getAttribute('data-opt'));
+    btn.disabled = true;
+    if (oi === window._examCorrect) btn.classList.add('ex-correct');
+    else if (oi === idx && !isCorrect) btn.classList.add('ex-wrong');
+  });
+}
+
+/* True/False */
+function examCheckTF(chosen) {
+  if (examAnswered) return;
+  examAnswered = true;
+  var isCorrect = (chosen === window._examCorrect);
+  doMark(isCorrect);
+  var tBtn = document.getElementById('tfT');
+  var fBtn = document.getElementById('tfF');
+  if (tBtn) { tBtn.disabled = true; tBtn.classList.toggle('ex-correct', window._examCorrect === true); tBtn.classList.toggle('ex-wrong', !isCorrect && chosen === true); }
+  if (fBtn) { fBtn.disabled = true; fBtn.classList.toggle('ex-correct', window._examCorrect === false); fBtn.classList.toggle('ex-wrong', !isCorrect && chosen === false); }
+}
+
+/* Spot It */
+function examCheckSpot(idx, oddIdx) {
+  if (examAnswered) return;
+  examAnswered = true;
+  var isCorrect = (idx === oddIdx);
+  doMark(isCorrect);
+  for (var i = 0; i < 5; i++) {
+    var btn = document.getElementById('sp' + i);
+    if (!btn) continue;
+    btn.disabled = true;
+    if (i === oddIdx) btn.classList.add('ex-correct');
+    else if (i === idx && !isCorrect) btn.classList.add('ex-wrong');
+  }
+}
+
+/* Compare / More (two-sided) */
+function examCheckSide(side, isCorrect) {
+  if (examAnswered) return;
+  examAnswered = true;
+  doMark(isCorrect);
+  /* figure out the two side element IDs */
+  var ids = (side === 'a' || side === 'b') ? ['cmpA', 'cmpB'] : ['moreL', 'moreR'];
+  var clickedId = (side === 'a' || side === 'left') ? ids[0] : ids[1];
+  var otherId   = (side === 'a' || side === 'left') ? ids[1] : ids[0];
+  var cEl = document.getElementById(clickedId);
+  var oEl = document.getElementById(otherId);
+  if (cEl) { cEl.disabled = true; cEl.classList.add(isCorrect ? 'ex-correct' : 'ex-wrong'); }
+  if (oEl) { oEl.disabled = true; if (!isCorrect) oEl.classList.add('ex-correct'); }
+  var msg = document.getElementById('cmpMsg');
+  if (msg) msg.style.display = 'block';
+}
+
+/* ══════════════ COMMON MARK ══════════════ */
+function doMark(isCorrect) {
+  var type = examQuestions[examIdx].type;
+  if (!examTypeResults[type]) examTypeResults[type] = { correct: 0, total: 0 };
+  examTypeResults[type].total++;
+  if (isCorrect) {
+    examScore++;
+    examTypeResults[type].correct++;
+    spk('Correct! Well done!');
+    showFb(true, '&#11088; Correct! Great job!');
+  } else {
+    spk('Not quite! Keep trying!');
+    showFb(false, '&#128148; Oops! Better luck next time!');
+  }
+  setTimeout(function() {
+    var nb = document.getElementById('exNextBtn');
+    if (nb) nb.style.display = 'block';
+    var sc = document.querySelector('.ex-qsc');
+    if (sc) sc.innerHTML = '&#9989; ' + examScore;
+  }, 600);
+}
+
+function showFb(correct, msg) {
+  var fb = document.getElementById('exFb');
+  if (!fb) return;
+  fb.innerHTML = msg;
+  fb.className = 'ex-fb show ' + (correct ? 'correct' : 'wrong');
+}
+
+/* ══════════════ NEXT / SCORE ══════════════ */
+function nextQuestion() {
+  examIdx++;
+  if (examIdx >= examQuestions.length) {
+    showScore();
+  } else {
+    showQuestion();
+  }
+}
+
+function showScore() {
+  var total = examQuestions.length;
+  var pct = Math.round((examScore / total) * 100);
+  var hero, msg;
+  if (pct >= 90)      { hero = '&#127942;'; msg = 'Outstanding! You are a superstar! &#127775;'; }
+  else if (pct >= 70) { hero = '&#11088;';  msg = 'Great job! You did really well! &#127881;'; }
+  else if (pct >= 50) { hero = '&#128077;'; msg = 'Good effort! Keep practising! &#128170;'; }
+  else                { hero = '&#128170;'; msg = 'Keep trying! You can do it! &#128640;'; }
+
+  var starCount = Math.round(pct / 20);
+  var stars = '';
+  for (var i = 0; i < 5; i++) stars += (i < starCount) ? '&#11088;' : '&#9734;';
+
+  var typeLabels = {
+    mcq:'Multiple Choice', tf:'True / False', pattern:'Patterns',
+    numpattern:'Number Patterns', sequence:'Life Cycles', feelings:'Feelings',
+    spotit:'Spot It', compare:'Big &amp; Small', more:'Which is More',
+    add:'Addition', why:'Why? Because!'
+  };
+  var bdHtml = '';
+  Object.keys(examTypeResults).forEach(function(t) {
+    var r = examTypeResults[t];
+    bdHtml += '<div class="ex-bd-row"><span>' + (typeLabels[t] || t) + '</span><span>' + r.correct + ' / ' + r.total + '</span></div>';
+  });
+
+  var m = document.getElementById('examMain');
+  m.innerHTML = [
+    '<div class="ex-score">',
+    '<div class="ex-score-hero">' + hero + '</div>',
+    '<div class="ex-score-title">Exam Complete!</div>',
+    '<div class="ex-score-val">' + examScore + ' <span>/ ' + total + '</span></div>',
+    '<div class="ex-score-msg">' + msg + '</div>',
+    '<div class="ex-score-stars">' + stars + '</div>',
+    bdHtml ? '<div class="ex-breakdown"><div class="ex-bd-head">&#128202; Breakdown by topic</div>' + bdHtml + '</div>' : '',
+    '<div class="ex-score-btns">',
+    '<button class="ex-again-btn" onclick="showSetup()">&#128257; Try Again</button>',
+    '<button class="ex-home-btn" onclick="location.href=\'../home.html\'">&#127968; Home</button>',
+    '</div>',
+    '</div>'
+  ].join('');
+  m.scrollTop = 0;
+  spk('Exam complete! You scored ' + examScore + ' out of ' + total + '!');
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', function() { showSetup(); });
+</script>
+</body>
+</html>
