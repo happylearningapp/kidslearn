@@ -174,9 +174,14 @@ class MainActivity : AppCompatActivity() {
 
                 // ════════════════════════════════════════
                 // FIX 1: Replace Google Fonts with bundled
-                // local fonts so UI looks correct offline
+                // local fonts — only if fonts.css not already
+                // linked (all sub-pages already include it)
                 // ════════════════════════════════════════
                 (function patchFonts() {
+                    var links = document.querySelectorAll('link[rel="stylesheet"]');
+                    for (var i = 0; i < links.length; i++) {
+                        if (links[i].href.indexOf('fonts.css') >= 0) return; // already loaded
+                    }
                     document.querySelectorAll('link[href*="fonts.googleapis.com"]')
                         .forEach(function(el) { el.parentNode.removeChild(el); });
                     var link = document.createElement('link');
@@ -185,21 +190,8 @@ class MainActivity : AppCompatActivity() {
                     document.head.appendChild(link);
                 })();
 
-                // ════════════════════════════════════════
-                // FIX 2: Android-specific CSS overrides
-                // ════════════════════════════════════════
-                (function injectAndroidCSS() {
-                    var style = document.createElement('style');
-                    style.textContent = [
-                        '* { -webkit-tap-highlight-color: transparent !important; }',
-                        'html { -webkit-text-size-adjust: 100% !important; text-size-adjust: 100% !important; }',
-                        'body { overflow-x: hidden !important; max-width: 100vw !important; }',
-                        'input, select, button { -webkit-appearance: none; appearance: none; }',
-                        '.submain, .subbody { -webkit-overflow-scrolling: touch; }',
-                        'html, body { background-color: #FFFDE7 !important; }'
-                    ].join('\n');
-                    document.head.appendChild(style);
-                })();
+                // FIX 2: Android CSS now lives in shared.js (applied before first paint)
+                // — nothing to inject here anymore —
 
                 // ════════════════════════════════════════
                 // FIX 3: Guard speechSynthesis before cancel

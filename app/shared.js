@@ -168,8 +168,11 @@ var SHARED_CSS = `
   --sm:calc(var(--b)*.78); --md:calc(var(--b)*.88);
   --lg:calc(var(--b)*1.15); --xl:calc(var(--b)*1.5);
   --xxl:calc(var(--b)*2.2); --hero:calc(var(--b)*2.8); }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7;overflow-x:hidden;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{font-family:var(--f);font-size:var(--b);min-height:100vh;background:#FFFDE7;overflow-x:hidden;max-width:100vw;}
+input,select,button{-webkit-appearance:none;appearance:none;}
+.submain,.subbody{-webkit-overflow-scrolling:touch;}
 .back-btn{display:none!important;}
 .gear-btn{display:none!important;}
 .sdrawer{position:fixed;top:66px;right:12px;z-index:999;background:#fff;border-radius:18px;padding:18px 20px;box-shadow:0 8px 30px rgba(0,0,0,.15);min-width:280px;display:none;}
@@ -332,6 +335,8 @@ function injectPageHeader() {
   var hdr = document.querySelector('.subhdr') || document.querySelector('.gkhdr');
   if (hdr) {
     hdr.className = 'subhdr';
+    // If already populated by inline script on first paint, skip re-injection
+    if (hdr.querySelector('.hdr-home')) return;
     hdr.style.cssText = 'background:' + gradient;
     hdr.innerHTML = inner;
   } else {
@@ -490,13 +495,17 @@ function aS(cls, idx, col) {
   });
 }
 
-/* ── Hide page immediately to prevent layout-shift shake ── */
-/* All DOM injections (header, gear, drawer) happen while page is invisible, */
-/* then it fades in fully-formed — zero visible shake on any page.           */
-document.documentElement.style.opacity = '0';
-
 /* ── Inject CSS immediately (before first paint) to prevent FOUC ── */
 injectSharedCSS();
+
+/* ── Apply saved font/size NOW (before body renders) to prevent reflow shake ── */
+/* document.documentElement is always available even in <head> scripts.         */
+(function() {
+  var f = localStorage.getItem('rlw_font');
+  var s = localStorage.getItem('rlw_size');
+  if (f) document.documentElement.style.setProperty('--f', f);
+  if (s) document.documentElement.style.setProperty('--b', s);
+})();
 
 /* ── AUTO-INIT on DOMContentLoaded ── */
 document.addEventListener('DOMContentLoaded', function() {
@@ -507,10 +516,4 @@ document.addEventListener('DOMContentLoaded', function() {
   initSoundToggle();
   populateVoices();               // try immediately (desktop Chrome)
   setTimeout(populateVoices, 400); // retry – Android/iOS deliver voices async
-
-  /* Reveal page smoothly after all injections are done */
-  requestAnimationFrame(function() {
-    document.documentElement.style.transition = 'opacity .2s ease-out';
-    document.documentElement.style.opacity = '1';
-  });
 });

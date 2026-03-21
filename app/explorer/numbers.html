@@ -146,6 +146,19 @@
       data-page-sub="Count, Colours &amp; Shapes"
       data-page-gradient="linear-gradient(135deg,#1976D2,#29B6F6)"
       data-page-back="../home.html">
+<div class="subhdr"></div>
+<script>(function(){
+  var b=document.body,h=document.querySelector('.subhdr');
+  if(!b||!h)return;
+  h.style.background=b.getAttribute('data-page-gradient')||'';
+  h.innerHTML=
+    '<a class="hdr-home" href="'+(b.getAttribute('data-page-back')||'../home.html')+'">&#8592;</a>'+
+    '<div class="hdr-title">'+(b.getAttribute('data-page-title')||'')+'<small>'+(b.getAttribute('data-page-sub')||'')+'</small></div>'+
+    '<div class="hdr-right">'+
+      '<button id="sndIconBtn" class="hdr-snd-btn" onclick="toggleSoundBtn()">&#128266;</button>'+
+      '<button class="hdr-gear" onclick="toggleSettings(event)">&#9881;</button>'+
+    '</div>';
+})();</script>
 
 <div class="subbody">
   <div class="submain">
