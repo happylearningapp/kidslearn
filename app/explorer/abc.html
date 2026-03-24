@@ -150,12 +150,12 @@
 /* ── Big letter display box ── */
 #lb {
   border-radius: 22px;
-  padding: 10px 14px 8px;
+  padding: clamp(10px, 2.5vh, 20px) 14px clamp(8px, 2vh, 18px);
   margin-bottom: 8px;
   text-align: center;
 }
 #blc {
-  font-size: 3.2rem;
+  font-size: clamp(4.5rem, 14vh, 8rem);
   font-weight: 900;
   color: #fff;
   line-height: 1;
@@ -163,11 +163,11 @@
   display: block;
 }
 #bls {
-  font-size: 1.7rem;
+  font-size: clamp(2rem, 5vh, 3rem);
   color: rgba(255,255,255,.75);
   font-weight: 700;
   display: block;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 /* ── Word cards grid ── */
