@@ -20,9 +20,11 @@
 /* ── Bigbox base ── */
 .bigbox { padding: 10px 14px !important; margin-bottom: 8px !important; border-radius: 18px; }
 
-/* ── Numbers tab: compact display ── */#nb .bigchar { font-size: 5rem !important; line-height: 1 !important; }
-#nb .bigsub  { font-size: 1.05rem !important; font-weight: 900 !important; margin-top: 2px !important; }
-#nb { padding: 6px 14px !important; margin-bottom: 6px !important; }
+/* ── Numbers tab: compact display ── */
+#nb .bigchar { font-size: clamp(4.5rem, 16vh, 7rem) !important; line-height: 1.1 !important; }
+#nb .bigsub  { font-size: clamp(1.1rem, 3.5vh, 1.6rem) !important; font-weight: 900 !important; margin-top: 4px !important; }
+#shb .bigchar { font-size: clamp(4.5rem, 14vh, 7rem) !important; line-height: 1.1 !important; }
+#cnb { font-size: clamp(2rem, 5vh, 3rem) !important; }
 
 /* ── Emoji count: compact, wrap, no scroll ── */
 .cntbox {
@@ -63,7 +65,7 @@
 .crd { padding: 10px 4px 8px !important; border-radius: 14px !important; min-width: 0; overflow: hidden; }
 .crdem { font-size: calc(var(--b) * 2) !important; }
 .crdlbl { font-size: calc(var(--b) * 0.72) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cswatch { width: 60px !important; height: 60px !important; margin-bottom: 6px !important; }
+.cswatch { width: clamp(90px,16vh,130px) !important; height: clamp(90px,16vh,130px) !important; margin-bottom: 8px !important; }
 
 /* ── Color swatch & quiz elements ── */
 .cswatch  { width:80px;height:80px;border-radius:50%;margin:0 auto 9px;
@@ -120,7 +122,7 @@
   gap:8px; margin-bottom:0;
 }
 .nfi-opt {
-  height:80px; border:none; border-radius:18px;
+  height:93px; border:none; border-radius:18px;
   font-size:2rem; font-weight:900; cursor:pointer;
   box-shadow:0 4px 12px rgba(0,0,0,.16);
   transition:transform .15s cubic-bezier(.34,1.56,.64,1);
@@ -231,7 +233,7 @@
         <div class="bigchar" id="bnc"></div>
         <div class="bigsub" id="bns"></div>
       </div>
-      <div class="cntbox" id="cb" onclick="spkCntBox()" style="cursor:pointer"></div>
+      <div class="cntbox" id="cb"></div>
       <div class="num-nav">
         <button class="num-nav-btn" id="numPrev" onclick="prevN()" style="visibility:hidden">&#8592; ?</button>
         <button class="num-nav-btn" id="numNext" onclick="nextN()">1 &#8594;</button>
@@ -379,10 +381,10 @@ var ND=[
   {w:"Three", c:"#FFC300",e:"&#128049;",n:"Cat"},
   {w:"Four",  c:"#8BC34A",e:"&#127820;",n:"Banana"},
   {w:"Five",  c:"#00C9A7",e:"&#128056;",n:"Frog"},
-  {w:"Six",   c:"#1976D2",e:"&#127827;",n:"Strawberry",p:"Strawberries"},
+  {w:"Six",   c:"#1976D2",e:"&#127827;",n:"Strawberry"},
   {w:"Seven", c:"#7B1FA2",e:"&#128037;",n:"Chick"},
   {w:"Eight", c:"#E91E63",e:"&#127818;",n:"Orange"},
-  {w:"Nine",  c:"#FF5722",e:"&#128032;",n:"Fish",p:"Fish"}
+  {w:"Nine",  c:"#FF5722",e:"&#128032;",n:"Fish"}
 ];
 var CD=[
   {n:"Red",    bg:"#E53935",t:"#fff",i:[["Apple","&#127822;"],["Rose","&#127801;"],["Tomato","&#127813;"],["Ladybug","&#128030;"],["Heart","&#10084;"]]},
@@ -464,13 +466,6 @@ function rN(n) {
   }
   spk(n === 0 ? 'zero' : d.w.toLowerCase());
   updateNumNav();
-}
-
-function spkCntBox() {
-  if (curN <= 0) return;
-  var d = ND[curN];
-  var name = curN === 1 ? d.n : (d.p || d.n + 's');
-  spk(d.w + ' ' + name.toLowerCase());
 }
 
 function updateNumNav() {
@@ -1007,9 +1002,9 @@ function buildNFI() {
   // Nav
   var prevHide = idx === 0 ? 'style="visibility:hidden"' : '';
   var nextHide = (idx >= ord.length-1 && !nfiShuffled) ? 'style="visibility:hidden"' : '';
-  html += '<div class="quiz-nav" style="margin-top:4px">';
-  html += '<button class="quiz-nav-btn" '+prevHide+' onclick="nfiPrev()">&#8592; Prev</button>';
-  html += '<button class="quiz-nav-btn" '+nextHide+' onclick="nfiNext()">Next &#8594;</button>';
+  html += '<div class="num-nav" style="margin-top:4px">';
+  html += '<button class="num-nav-btn" '+prevHide+' onclick="nfiPrev()">&#8592; Prev</button>';
+  html += '<button class="num-nav-btn" '+nextHide+' onclick="nfiNext()">Next &#8594;</button>';
   html += '</div>';
 
   document.getElementById('nfiArea').innerHTML = html;
