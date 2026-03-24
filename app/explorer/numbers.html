@@ -21,8 +21,10 @@
 .bigbox { padding: 10px 14px !important; margin-bottom: 8px !important; border-radius: 18px; }
 
 /* ── Numbers tab: compact display ── */
-#nb .bigchar { font-size: 3.2rem !important; line-height: 1.1 !important; }
-#nb .bigsub  { font-size: 1.1rem !important; font-weight: 900 !important; margin-top: 4px !important; }
+#nb .bigchar { font-size: clamp(4.5rem, 16vh, 7rem) !important; line-height: 1.1 !important; }
+#nb .bigsub  { font-size: clamp(1.1rem, 3.5vh, 1.6rem) !important; font-weight: 900 !important; margin-top: 4px !important; }
+#shb .bigchar { font-size: clamp(4.5rem, 14vh, 7rem) !important; line-height: 1.1 !important; }
+#cnb { font-size: clamp(2rem, 5vh, 3rem) !important; }
 
 /* ── Emoji count: compact, wrap, no scroll ── */
 .cntbox {
@@ -63,7 +65,7 @@
 .crd { padding: 10px 4px 8px !important; border-radius: 14px !important; min-width: 0; overflow: hidden; }
 .crdem { font-size: calc(var(--b) * 2) !important; }
 .crdlbl { font-size: calc(var(--b) * 0.72) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cswatch { width: 60px !important; height: 60px !important; margin-bottom: 6px !important; }
+.cswatch { width: clamp(90px,16vh,130px) !important; height: clamp(90px,16vh,130px) !important; margin-bottom: 8px !important; }
 
 /* ── Color swatch & quiz elements ── */
 .cswatch  { width:80px;height:80px;border-radius:50%;margin:0 auto 9px;
@@ -120,7 +122,7 @@
   gap:8px; margin-bottom:0;
 }
 .nfi-opt {
-  height:80px; border:none; border-radius:18px;
+  height:93px; border:none; border-radius:18px;
   font-size:2rem; font-weight:900; cursor:pointer;
   box-shadow:0 4px 12px rgba(0,0,0,.16);
   transition:transform .15s cubic-bezier(.34,1.56,.64,1);
@@ -1000,9 +1002,9 @@ function buildNFI() {
   // Nav
   var prevHide = idx === 0 ? 'style="visibility:hidden"' : '';
   var nextHide = (idx >= ord.length-1 && !nfiShuffled) ? 'style="visibility:hidden"' : '';
-  html += '<div class="quiz-nav" style="margin-top:4px">';
-  html += '<button class="quiz-nav-btn" '+prevHide+' onclick="nfiPrev()">&#8592; Prev</button>';
-  html += '<button class="quiz-nav-btn" '+nextHide+' onclick="nfiNext()">Next &#8594;</button>';
+  html += '<div class="num-nav" style="margin-top:4px">';
+  html += '<button class="num-nav-btn" '+prevHide+' onclick="nfiPrev()">&#8592; Prev</button>';
+  html += '<button class="num-nav-btn" '+nextHide+' onclick="nfiNext()">Next &#8594;</button>';
   html += '</div>';
 
   document.getElementById('nfiArea').innerHTML = html;
