@@ -821,8 +821,8 @@ function buildFindGame() {
   var letter = FIND_ALPHA[findIdx];
   findCorrectLetter = letter;
 
-  // Always 12 options
-  var distractors = shuffArr(FIND_ALPHA.filter(function(l){ return l !== letter; })).slice(0, 11);
+  // Always 9 options
+  var distractors = shuffArr(FIND_ALPHA.filter(function(l){ return l !== letter; })).slice(0, 8);
   var options = shuffArr(distractors.concat(letter));
 
   // Shuffle a fresh copy of colors for this round
