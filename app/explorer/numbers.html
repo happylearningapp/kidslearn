@@ -101,15 +101,15 @@
 .num-dock-btn[data-tab="findit"].active   { background:#2E7D32; }
 
 /* ══ Find It tab ══ */
-.nfi-cat-row { display:flex; gap:7px; margin-bottom:8px; }
+.nfi-cat-row { display:flex; gap:6px; margin-bottom:6px; }
 .nfi-cat-btn {
-  flex:1; padding:10px 4px; border-radius:16px; border:2.5px solid transparent;
-  font-family:var(--f); font-size:var(--sm); font-weight:900; cursor:pointer;
+  flex:1; padding:7px 4px; border-radius:14px; border:2.5px solid transparent;
+  font-family:var(--f); font-size:.55rem; font-weight:900; cursor:pointer;
   background:#f0f0f0; color:#888; transition:all .2s;
   -webkit-tap-highlight-color:transparent; display:flex; flex-direction:column;
-  align-items:center; gap:3px;
+  align-items:center; gap:2px;
 }
-.nfi-cat-btn .cat-ico { font-size:1.3rem; line-height:1; }
+.nfi-cat-btn .cat-ico { font-size:1.15rem; line-height:1; }
 .nfi-cat-btn.active { color:#fff; }
 .nfi-cat-num.active { background:#1976D2; }
 .nfi-cat-col.active { background:#E53935; }
@@ -117,12 +117,12 @@
 
 .nfi-grid {
   display:grid; grid-template-columns:repeat(3,1fr);
-  gap:10px; margin-bottom:8px;
+  gap:8px; margin-bottom:0;
 }
 .nfi-opt {
-  aspect-ratio:1; border:none; border-radius:20px;
-  font-size:2.2rem; font-weight:900; cursor:pointer;
-  box-shadow:0 5px 16px rgba(0,0,0,.18);
+  height:80px; border:none; border-radius:18px;
+  font-size:2rem; font-weight:900; cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.16);
   transition:transform .15s cubic-bezier(.34,1.56,.64,1);
   -webkit-tap-highlight-color:transparent; font-family:var(--f);
   text-shadow:0 2px 6px rgba(0,0,0,.18);
@@ -130,25 +130,26 @@
 .nfi-opt:active { transform:scale(.88); }
 .nfi-opt.nfi-correct { animation:popIn .35s ease forwards; outline:5px solid #4CAF50; outline-offset:2px; }
 .nfi-opt.nfi-wrong   { animation:shake .4s ease; }
-.nfi-feedback { text-align:center; font-size:1.05rem; font-weight:900; min-height:36px; padding:6px 12px; border-radius:14px; margin-bottom:4px; transition:all .25s; }
-.nfi-feedback.ok  { background:#E8F5E9; color:#2E7D32; }
-.nfi-feedback.bad { background:#FFEBEE; color:#C62828; }
+.nfi-feedback { text-align:center; font-size:1rem; font-weight:900; min-height:0; padding:0; border-radius:12px; margin-top:0; transition:all .25s; }
+.nfi-feedback.ok  { background:#E8F5E9; color:#2E7D32; padding:5px 12px; margin-top:5px; }
+.nfi-feedback.bad { background:#FFEBEE; color:#C62828; padding:5px 12px; margin-top:5px; }
 
 /* Question banner */
 .nfi-q {
-  border-radius:22px; padding:14px 16px 12px; margin-bottom:10px;
-  text-align:center; cursor:pointer; position:relative; overflow:hidden;
-  box-shadow:0 6px 20px rgba(0,0,0,.13);
+  border-radius:18px; padding:10px 16px 8px;
+  max-width:88%; margin:0 auto 8px;
+  text-align:center; cursor:pointer;
+  box-shadow:0 5px 16px rgba(0,0,0,.13);
 }
 .nfi-q-label {
-  font-size:.72rem; font-weight:800; letter-spacing:.6px; text-transform:uppercase;
-  opacity:.75; margin-bottom:4px;
+  font-size:.62rem; font-weight:800; letter-spacing:.5px; text-transform:uppercase;
+  opacity:.8; margin-bottom:3px;
 }
 .nfi-q-text {
-  font-size:1.25rem; font-weight:900; line-height:1.3;
+  font-size:1.15rem; font-weight:900; line-height:1.2;
 }
 .nfi-q-hint {
-  font-size:.68rem; font-weight:700; opacity:.65; margin-top:5px;
+  font-size:.62rem; font-weight:700; opacity:.65; margin-top:3px;
 }
 
 /* ── Grid control row: toggle only ── */
@@ -332,7 +333,7 @@
         </button>
       </div>
       <!-- Shuffle toggle -->
-      <div class="shuf-row">
+      <div class="shuf-row" style="margin-bottom:6px">
         <button class="shuf-toggle" id="nfiShufBtn" onclick="toggleNFIShuffle()">&#128256; Shuffle OFF</button>
       </div>
       <!-- Dynamic game area -->
@@ -999,7 +1000,7 @@ function buildNFI() {
   // Nav
   var prevHide = idx === 0 ? 'style="visibility:hidden"' : '';
   var nextHide = (idx >= ord.length-1 && !nfiShuffled) ? 'style="visibility:hidden"' : '';
-  html += '<div class="quiz-nav" style="margin-top:6px">';
+  html += '<div class="quiz-nav" style="margin-top:4px">';
   html += '<button class="quiz-nav-btn" '+prevHide+' onclick="nfiPrev()">&#8592; Prev</button>';
   html += '<button class="quiz-nav-btn" '+nextHide+' onclick="nfiNext()">Next &#8594;</button>';
   html += '</div>';
