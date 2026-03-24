@@ -134,6 +134,23 @@
 .nfi-feedback.ok  { background:#E8F5E9; color:#2E7D32; }
 .nfi-feedback.bad { background:#FFEBEE; color:#C62828; }
 
+/* Question banner */
+.nfi-q {
+  border-radius:22px; padding:14px 16px 12px; margin-bottom:10px;
+  text-align:center; cursor:pointer; position:relative; overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,.13);
+}
+.nfi-q-label {
+  font-size:.72rem; font-weight:800; letter-spacing:.6px; text-transform:uppercase;
+  opacity:.75; margin-bottom:4px;
+}
+.nfi-q-text {
+  font-size:1.25rem; font-weight:900; line-height:1.3;
+}
+.nfi-q-hint {
+  font-size:.68rem; font-weight:700; opacity:.65; margin-top:5px;
+}
+
 /* ── Grid control row: toggle only ── */
 .grid-ctrl { margin-bottom: 0; }
 
@@ -336,6 +353,9 @@
   <button class="num-dock-btn" data-tab="shapes"   onclick="swDock('shapes')">
     <span class="dock-ico">&#128311;</span>Shapes
   </button>
+  <button class="num-dock-btn" data-tab="findit"   onclick="swDock('findit')">
+    <span class="dock-ico">&#128270;</span>Find It!
+  </button>
   <button class="num-dock-btn" data-tab="addition" onclick="swDock('addition')">
     <span class="dock-ico">&#10133;</span>Addition
   </button>
@@ -344,9 +364,6 @@
   </button>
   <button class="num-dock-btn" data-tab="compare"  onclick="swDock('compare')">
     <span class="dock-ico">&#9878;</span>Big/Small
-  </button>
-  <button class="num-dock-btn" data-tab="findit"   onclick="swDock('findit')">
-    <span class="dock-ico">&#128270;</span>Find It!
   </button>
 </nav>
 
@@ -942,14 +959,21 @@ function buildNFI() {
 
   var soundOff = (typeof isSoundOn === 'function') && !isSoundOn();
   var catLabel = nfiCat==='num' ? 'number' : nfiCat==='col' ? 'color' : 'shape';
+  var catIco   = nfiCat==='num' ? '&#128290;' : nfiCat==='col' ? '&#127912;' : '&#128311;';
+  var catGrad  = nfiCat==='num'
+    ? 'linear-gradient(135deg,#1976D2,#29B6F6)'
+    : nfiCat==='col'
+    ? 'linear-gradient(135deg,#E53935,#FF8E53)'
+    : 'linear-gradient(135deg,#7B1FA2,#E91E63)';
   var name = nfiName(correctI);
   nfiCurrentQ = 'Can you find the ' + catLabel + ' ' + name;
 
-  // Question box
-  var html = '<div class="find-question" onclick="spk(nfiCurrentQ)" style="cursor:pointer">'
-    + '&#128269; Can you find the ' + catLabel + (soundOff ? ' ' + name + '?' : '?')
-    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">'
-    + (soundOff ? '' : '&#128266; Tap to hear again') + '</div></div>';
+  // Question banner
+  var html = '<div class="nfi-q" onclick="spk(nfiCurrentQ)" style="background:'+catGrad+';color:#fff">'
+    + '<div class="nfi-q-label">' + catIco + ' Find the ' + catLabel + '</div>'
+    + '<div class="nfi-q-text">&#128269; ' + (soundOff ? name : '?') + '</div>'
+    + '<div class="nfi-q-hint">' + (soundOff ? '' : '&#128266; Tap to hear') + '</div>'
+    + '</div>';
 
   // Options grid
   html += '<div class="nfi-grid">';
