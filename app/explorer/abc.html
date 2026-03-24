@@ -374,7 +374,7 @@
   gap: 10px;
   margin-bottom: 10px;
 }
-@media(min-width: 480px) { .find-grid { grid-template-columns: repeat(5, 1fr); } }
+@media(min-width: 480px) { .find-grid { grid-template-columns: repeat(6, 1fr); } }
 .find-opt {
   aspect-ratio: 1;
   border: none;
@@ -818,8 +818,8 @@ function buildFindGame() {
   var letter = FIND_ALPHA[findIdx];
   findCorrectLetter = letter;
 
-  // Always 10 options
-  var distractors = shuffArr(FIND_ALPHA.filter(function(l){ return l !== letter; })).slice(0, 9);
+  // Always 12 options
+  var distractors = shuffArr(FIND_ALPHA.filter(function(l){ return l !== letter; })).slice(0, 11);
   var options = shuffArr(distractors.concat(letter));
 
   // Shuffle a fresh copy of colors for this round
