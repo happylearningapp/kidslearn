@@ -231,24 +231,42 @@ function toggleGKShuffle() {
   spk(gkShuffled ? 'Shuffle on' : 'Shuffle off');
 }
 
-/* ── Accordion toggle — collapse current, expand clicked ── */
+/* ── Accordion toggle — collapse / expand ── */
 function gkToggle(ci) {
-  if (gkOpen === ci) return; /* already open, do nothing */
-  /* collapse current */
   var curBody = document.getElementById('gsBody' + gkOpen);
   var curIco  = document.getElementById('gsIco'  + gkOpen);
+
+  /* clicking the already-open section → collapse it */
+  if (gkOpen === ci) {
+    if (curBody) curBody.classList.remove('open');
+    if (curIco)  curIco.classList.remove('open');
+    gkOpen = -1;
+    return;
+  }
+
+  /* collapse previously open section */
   if (curBody) curBody.classList.remove('open');
   if (curIco)  curIco.classList.remove('open');
-  /* expand new */
+
+  /* expand clicked section */
   gkOpen = ci;
   var newBody = document.getElementById('gsBody' + ci);
   var newIco  = document.getElementById('gsIco'  + ci);
   if (newBody) newBody.classList.add('open');
   if (newIco)  newIco.classList.add('open');
+
   /* speak first question if single view */
   if (gkView === 'single') {
     var q = GKQ[GKBN[ci] + gkCatOrder[ci][gkCatIdx[ci]]];
     spk(q[1]);
+  }
+
+  /* list view — scroll category header to top so first question is visible */
+  if (gkView === 'list') {
+    setTimeout(function() {
+      var sec = document.getElementById('gs' + ci);
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60); /* small delay lets the section finish opening before scroll */
   }
 }
 
