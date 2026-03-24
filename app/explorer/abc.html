@@ -828,10 +828,11 @@ function buildFindGame() {
   // Shuffle a fresh copy of colors for this round
   var cols = shuffArr(FIND_COLS.slice());
 
-  // Question — tap to repeat the audio, letter NOT shown visually
+  // Question — show letter only when sound is off, tap to repeat when sound is on
+  var soundOff = (typeof isSoundOn === 'function') && !isSoundOn();
   var html = '<div class="find-question" onclick="spk(\'Can you find the letter \'+findCorrectLetter)" style="cursor:pointer">'
-    + '&#128269; Can you find the letter?'
-    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">&#128266; Tap to hear again</div>'
+    + '&#128269; Can you find the letter' + (soundOff ? ' ' + letter + '?' : '?')
+    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">' + (soundOff ? '' : '&#128266; Tap to hear again') + '</div>'
     + '</div>';
   html += '<div class="find-grid">';
   options.forEach(function(opt, i) {
