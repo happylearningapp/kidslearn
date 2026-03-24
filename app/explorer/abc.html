@@ -832,7 +832,7 @@ function buildFindGame() {
   var soundOff = (typeof isSoundOn === 'function') && !isSoundOn();
   var html = '<div class="find-question" onclick="spk(\'Can you find the letter \'+findCorrectLetter)" style="cursor:pointer">'
     + '&#128269; Can you find the letter' + (soundOff ? ' ' + letter + '?' : '?')
-    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">' + (soundOff ? '' : '&#128266; Tap to hear again') + '</div>'
+    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">&#128266; Tap to Hear</div>'
     + '</div>';
   html += '<div class="find-grid">';
   options.forEach(function(opt, i) {
