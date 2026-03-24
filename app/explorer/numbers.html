@@ -98,6 +98,41 @@
 .num-dock-btn[data-tab="addition"].active { background:#00897B; }
 .num-dock-btn[data-tab="patterns"].active { background:#E91E63; }
 .num-dock-btn[data-tab="compare"].active  { background:#FF8E53; }
+.num-dock-btn[data-tab="findit"].active   { background:#2E7D32; }
+
+/* ══ Find It tab ══ */
+.nfi-cat-row { display:flex; gap:7px; margin-bottom:8px; }
+.nfi-cat-btn {
+  flex:1; padding:10px 4px; border-radius:16px; border:2.5px solid transparent;
+  font-family:var(--f); font-size:var(--sm); font-weight:900; cursor:pointer;
+  background:#f0f0f0; color:#888; transition:all .2s;
+  -webkit-tap-highlight-color:transparent; display:flex; flex-direction:column;
+  align-items:center; gap:3px;
+}
+.nfi-cat-btn .cat-ico { font-size:1.3rem; line-height:1; }
+.nfi-cat-btn.active { color:#fff; }
+.nfi-cat-num.active { background:#1976D2; }
+.nfi-cat-col.active { background:#E53935; }
+.nfi-cat-sh.active  { background:#9C27B0; }
+
+.nfi-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:10px; margin-bottom:8px;
+}
+.nfi-opt {
+  aspect-ratio:1; border:none; border-radius:20px;
+  font-size:2.2rem; font-weight:900; cursor:pointer;
+  box-shadow:0 5px 16px rgba(0,0,0,.18);
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color:transparent; font-family:var(--f);
+  text-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+.nfi-opt:active { transform:scale(.88); }
+.nfi-opt.nfi-correct { animation:popIn .35s ease forwards; outline:5px solid #4CAF50; outline-offset:2px; }
+.nfi-opt.nfi-wrong   { animation:shake .4s ease; }
+.nfi-feedback { text-align:center; font-size:1.05rem; font-weight:900; min-height:36px; padding:6px 12px; border-radius:14px; margin-bottom:4px; transition:all .25s; }
+.nfi-feedback.ok  { background:#E8F5E9; color:#2E7D32; }
+.nfi-feedback.bad { background:#FFEBEE; color:#C62828; }
 
 /* ── Grid control row: toggle only ── */
 .grid-ctrl { margin-bottom: 0; }
@@ -265,6 +300,28 @@
       </div>
     </div>
 
+    <!-- ══ FIND IT ══ -->
+    <div id="num-findit" class="sec">
+      <!-- Sub-category selector -->
+      <div class="nfi-cat-row">
+        <button class="nfi-cat-btn nfi-cat-num active" data-cat="num" onclick="setNFICat('num')">
+          <span class="cat-ico">&#128290;</span>Numbers
+        </button>
+        <button class="nfi-cat-btn nfi-cat-col" data-cat="col" onclick="setNFICat('col')">
+          <span class="cat-ico">&#127912;</span>Colors
+        </button>
+        <button class="nfi-cat-btn nfi-cat-sh" data-cat="sh" onclick="setNFICat('sh')">
+          <span class="cat-ico">&#128311;</span>Shapes
+        </button>
+      </div>
+      <!-- Shuffle toggle -->
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="nfiShufBtn" onclick="toggleNFIShuffle()">&#128256; Shuffle OFF</button>
+      </div>
+      <!-- Dynamic game area -->
+      <div id="nfiArea"></div>
+    </div>
+
   </div><!-- /submain -->
 </div><!-- /subbody -->
 
@@ -287,6 +344,9 @@
   </button>
   <button class="num-dock-btn" data-tab="compare"  onclick="swDock('compare')">
     <span class="dock-ico">&#9878;</span>Big/Small
+  </button>
+  <button class="num-dock-btn" data-tab="findit"   onclick="swDock('findit')">
+    <span class="dock-ico">&#128270;</span>Find It!
   </button>
 </nav>
 
@@ -348,6 +408,7 @@ function swDock(tab) {
   if (tab === 'addition' && !document.getElementById('addArea').innerHTML) buildAdd();
   if (tab === 'patterns' && !document.getElementById('patArea').innerHTML) buildPat();
   if (tab === 'compare'  && !document.getElementById('cmpArea').innerHTML) buildCmp();
+  if (tab === 'findit'   && !document.getElementById('nfiArea').innerHTML)  buildNFI();
 }
 
 /* ════════════════════════════════
@@ -828,6 +889,139 @@ document.addEventListener('DOMContentLoaded', function() {
   buildCmp();
   swDock('numbers'); // activate first tab
 });
+
+/* ════════════════════════════════
+   FIND IT GAME
+════════════════════════════════ */
+var nfiCat      = 'num';   // 'num' | 'col' | 'sh'
+var nfiShuffled = false;
+var nfiAnswered = false;
+var nfiCorrectI = 0;
+var nfiCurrentQ = '';
+
+// Per-category: order arrays + current position
+var nfiNumOrder = [0,1,2,3,4,5,6,7,8,9];
+var nfiColOrder = CD.map(function(_,i){return i;});
+var nfiShOrder  = SHD.map(function(_,i){return i;});
+var nfiNumIdx = 0, nfiColIdx = 0, nfiShIdx = 0;
+
+function nfiOrd(){ return nfiCat==='num' ? nfiNumOrder : nfiCat==='col' ? nfiColOrder : nfiShOrder; }
+function nfiIdx(){ return nfiCat==='num' ? nfiNumIdx   : nfiCat==='col' ? nfiColIdx   : nfiShIdx;   }
+function nfiSetI(i){ if(nfiCat==='num') nfiNumIdx=i; else if(nfiCat==='col') nfiColIdx=i; else nfiShIdx=i; }
+
+function nfiName(i){
+  if(nfiCat==='num') return ND[i].w;
+  if(nfiCat==='col') return CD[i].n;
+  return SHD[i].n;
+}
+
+function nfiShuffArr(a){
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+
+function setNFICat(cat) {
+  nfiCat = cat;
+  document.querySelectorAll('.nfi-cat-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-cat') === cat);
+  });
+  buildNFI();
+}
+
+function toggleNFIShuffle() {
+  nfiShuffled = !nfiShuffled;
+  var btn = document.getElementById('nfiShufBtn');
+  btn.classList.toggle('on', nfiShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (nfiShuffled ? 'ON' : 'OFF');
+  spk('Shuffle ' + (nfiShuffled ? 'on' : 'off'));
+  buildNFI();
+}
+
+function buildNFI() {
+  nfiAnswered = false;
+  var ord = nfiOrd(), idx = nfiIdx();
+  var correctI = ord[idx];
+  nfiCorrectI = correctI;
+
+  // Build 9 options: correct + 8 random wrong
+  var wrong = nfiShuffArr(ord.filter(function(i){ return i !== correctI; })).slice(0, 8);
+  var opts = nfiShuffArr(wrong.concat(correctI));
+
+  var soundOff = (typeof isSoundOn === 'function') && !isSoundOn();
+  var catLabel = nfiCat==='num' ? 'number' : nfiCat==='col' ? 'color' : 'shape';
+  var name = nfiName(correctI);
+  nfiCurrentQ = 'Can you find the ' + catLabel + ' ' + name;
+
+  // Question box
+  var html = '<div class="find-question" onclick="spk(nfiCurrentQ)" style="cursor:pointer">'
+    + '&#128269; Can you find the ' + catLabel + (soundOff ? ' ' + name + '?' : '?')
+    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">'
+    + (soundOff ? '' : '&#128266; Tap to hear again') + '</div></div>';
+
+  // Options grid
+  html += '<div class="nfi-grid">';
+  opts.forEach(function(optI) {
+    var bg, label, fsize, tcol;
+    if(nfiCat === 'num') {
+      bg = ND[optI].c; label = String(optI); fsize = '2.2rem'; tcol = '#fff';
+    } else if(nfiCat === 'col') {
+      bg = CD[optI].bg;
+      label = soundOff ? CD[optI].n : '';
+      fsize = soundOff ? '0.78rem' : '1rem';
+      tcol = CD[optI].t;
+    } else {
+      bg = SHD[optI].c; label = SHD[optI].e; fsize = '2.2rem'; tcol = '#fff';
+    }
+    html += '<button class="nfi-opt" style="background:'+bg+';color:'+tcol+';font-size:'+fsize+'" onclick="chkNFI(this,'+optI+')" data-idx="'+optI+'">'+label+'</button>';
+  });
+  html += '</div>';
+
+  // Feedback
+  html += '<div class="nfi-feedback" id="nfiFeedback"></div>';
+
+  // Nav
+  var prevHide = idx === 0 ? 'style="visibility:hidden"' : '';
+  var nextHide = (idx >= ord.length-1 && !nfiShuffled) ? 'style="visibility:hidden"' : '';
+  html += '<div class="quiz-nav" style="margin-top:6px">';
+  html += '<button class="quiz-nav-btn" '+prevHide+' onclick="nfiPrev()">&#8592; Prev</button>';
+  html += '<button class="quiz-nav-btn" '+nextHide+' onclick="nfiNext()">Next &#8594;</button>';
+  html += '</div>';
+
+  document.getElementById('nfiArea').innerHTML = html;
+  spk(nfiCurrentQ);
+}
+
+function chkNFI(btn, optI) {
+  if(nfiAnswered) return;
+  var fb = document.getElementById('nfiFeedback');
+  var name = nfiName(nfiCorrectI);
+  if(optI === nfiCorrectI) {
+    nfiAnswered = true;
+    btn.classList.add('nfi-correct');
+    fb.className = 'nfi-feedback ok';
+    fb.innerHTML = '&#127881; Yes! ' + name + '! Well done!';
+    spk('Yes! ' + name + '. Well done!');
+  } else {
+    btn.classList.add('nfi-wrong');
+    fb.className = 'nfi-feedback bad';
+    fb.innerHTML = '&#128577; Try again!';
+    spk('Try again!');
+    setTimeout(function(){ btn.classList.remove('nfi-wrong'); fb.innerHTML=''; fb.className='nfi-feedback'; }, 800);
+  }
+}
+
+function nfiNext() {
+  var ord = nfiOrd(), cur = nfiIdx();
+  if(nfiShuffled) {
+    var next; do { next=Math.floor(Math.random()*ord.length); } while(next===cur && ord.length>1);
+    nfiSetI(next);
+  } else { if(cur < ord.length-1) nfiSetI(cur+1); }
+  buildNFI();
+}
+
+function nfiPrev() {
+  var cur = nfiIdx(); if(cur > 0) nfiSetI(cur-1); buildNFI();
+}
 </script>
 </body>
 </html>
