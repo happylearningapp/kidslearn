@@ -71,6 +71,7 @@
 .abc-dock-btn[data-tab="action"].active { background: #F57C00; }
 .abc-dock-btn[data-tab="opp"].active    { background: #00897B; }
 .abc-dock-btn[data-tab="trace"].active  { background: #7B1FA2; }
+.abc-dock-btn[data-tab="find"].active   { background: #2E7D32; }
 
 /* Inactive hover */
 .abc-dock-btn:hover:not(.active) { background: #f5f5f5; color: #888; }
@@ -347,6 +348,68 @@
 }
 /* ── Common shuffle toggle (matches games/think pages) ── */
 .shuf-row { text-align:center; margin-bottom:8px; }
+
+/* ══ Find the Letter game ══ */
+.find-question {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #333;
+  margin-bottom: 14px;
+  padding: 14px 12px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 3px 14px rgba(0,0,0,.09);
+}
+.find-target {
+  font-size: 2.8rem;
+  color: #FF6B6B;
+  display: inline-block;
+  animation: bounce .5s ease;
+  line-height: 1;
+}
+.find-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+@media(min-width: 480px) { .find-grid { grid-template-columns: repeat(5, 1fr); } }
+.find-opt {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 20px;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 5px 16px rgba(0,0,0,.18);
+  transition: transform .15s cubic-bezier(.34,1.56,.64,1);
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--f);
+  text-shadow: 0 2px 6px rgba(0,0,0,.22);
+  position: relative;
+  overflow: hidden;
+}
+.find-opt:active { transform: scale(.88); }
+.find-opt.find-correct {
+  animation: popIn .35s ease forwards;
+  outline: 5px solid #4CAF50;
+  outline-offset: 2px;
+}
+.find-opt.find-wrong { animation: shake .4s ease; }
+.find-feedback {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 900;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  margin-bottom: 4px;
+  transition: all .25s;
+}
+.find-feedback.ok  { background: #E8F5E9; color: #2E7D32; }
+.find-feedback.bad { background: #FFEBEE; color: #C62828; }
 .shuf-toggle {
   padding:7px 20px; border-radius:20px; border:2px solid #ddd;
   background:#f5f5f5; font-family:var(--f); font-size:var(--sm);
@@ -488,6 +551,16 @@
     <!-- Opposites -->
     <div id="abc-opp" class="sec">
       <div class="oppgrid" id="opCards"></div>
+    </div>
+
+    <!-- Find the Letter -->
+    <div id="abc-find" class="sec">
+      <!-- Shuffle toggle -->
+      <div class="shuf-row">
+        <button class="shuf-toggle" id="findShufBtn" onclick="toggleFindShuffle()">&#128256; Shuffle OFF</button>
+      </div>
+      <!-- Dynamic content injected here -->
+      <div id="findArea"></div>
     </div>
 
     <!-- Letter Tracing -->
@@ -717,6 +790,114 @@ function toggleGuide(){
   else{drawGuide();}
 }
 function gPos(e){var r=trCanvas.getBoundingClientRect();var sx=trCanvas.width/r.width,sy=trCanvas.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};}
+/* ══════════════════════════════════════════
+   FIND THE LETTER GAME
+   ══════════════════════════════════════════ */
+var FIND_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+var findIdx = 0;
+var findShuffled = false;
+var findAnswered = false;
+var findCorrectLetter = '';
+var findInitDone = false;
+
+var FIND_COLS = [
+  '#FF6B6B','#FF8E53','#FFC300','#8BC34A','#56D364',
+  '#00C9A7','#0097A7','#1976D2','#7B1FA2','#C2185B',
+  '#E91E63','#FF5722','#00BCD4','#4CAF50','#FF7043',
+  '#2196F3','#9C27B0','#E040FB','#F06292','#FF8A65',
+  '#80DEEA','#DCE775','#4DB6AC','#81C784','#BA68C8','#FFD54F'
+];
+
+function shuffArr(a) {
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+
+function buildFindGame() {
+  findAnswered = false;
+  var letter = FIND_ALPHA[findIdx];
+  findCorrectLetter = letter;
+
+  // Always 10 options
+  var distractors = shuffArr(FIND_ALPHA.filter(function(l){ return l !== letter; })).slice(0, 9);
+  var options = shuffArr(distractors.concat(letter));
+
+  // Shuffle a fresh copy of colors for this round
+  var cols = shuffArr(FIND_COLS.slice());
+
+  // Question — tap to repeat the audio, letter NOT shown visually
+  var html = '<div class="find-question" onclick="spk(\'Can you find the letter \'+findCorrectLetter)" style="cursor:pointer">'
+    + '&#128269; Can you find the letter?'
+    + '<div style="font-size:.72rem;color:#aaa;font-weight:700;margin-top:4px">&#128266; Tap to hear again</div>'
+    + '</div>';
+  html += '<div class="find-grid">';
+  options.forEach(function(opt, i) {
+    html += '<button class="find-opt" style="background:'+cols[i % cols.length]+'" onclick="chkFind(this,\''+opt+'\')" data-letter="'+opt+'">'+opt+'</button>';
+  });
+  html += '</div>';
+  html += '<div class="find-feedback" id="findFeedback"></div>';
+
+  // Nav — generic labels, no letter names
+  var prevHide = findIdx === 0 ? 'style="visibility:hidden"' : '';
+  var nextHide = (findIdx === FIND_ALPHA.length - 1 && !findShuffled) ? 'style="visibility:hidden"' : '';
+
+  html += '<div class="alpha-nav" style="margin-top:10px">';
+  html += '<button class="alpha-nav-btn" '+prevHide+' onclick="findPrev()">&#8592; Prev</button>';
+  html += '<button class="alpha-nav-btn" '+nextHide+' onclick="findNext()">Next &#8594;</button>';
+  html += '</div>';
+
+  document.getElementById('findArea').innerHTML = html;
+  spk('Can you find the letter ' + letter);
+}
+
+function chkFind(btn, letter) {
+  if(findAnswered) return;
+  var fb = document.getElementById('findFeedback');
+  if(letter === findCorrectLetter) {
+    findAnswered = true;
+    btn.classList.add('find-correct');
+    fb.className = 'find-feedback ok';
+    fb.innerHTML = '&#127881; Yes! That\'s <b>'+letter+'</b>! Well done!';
+    spk('Yes! That is ' + letter + '. Well done!');
+  } else {
+    btn.classList.add('find-wrong');
+    fb.className = 'find-feedback bad';
+    fb.innerHTML = '&#128577; Not quite! Find <b>'+findCorrectLetter+'</b>';
+    spk('Try again! Find ' + findCorrectLetter);
+    setTimeout(function(){ btn.classList.remove('find-wrong'); fb.innerHTML=''; fb.className='find-feedback'; }, 800);
+  }
+}
+
+function findNext() {
+  if(findShuffled) {
+    var next;
+    do { next = Math.floor(Math.random() * FIND_ALPHA.length); } while(next === findIdx && FIND_ALPHA.length > 1);
+    findIdx = next;
+  } else {
+    if(findIdx < FIND_ALPHA.length - 1) findIdx++;
+  }
+  buildFindGame();
+}
+
+function findPrev() {
+  if(findIdx > 0) findIdx--;
+  buildFindGame();
+}
+
+function toggleFindShuffle() {
+  findShuffled = !findShuffled;
+  var btn = document.getElementById('findShufBtn');
+  btn.classList.toggle('on', findShuffled);
+  btn.innerHTML = '&#128256; Shuffle ' + (findShuffled ? 'ON' : 'OFF');
+  spk('Shuffle ' + (findShuffled ? 'on' : 'off'));
+  buildFindGame();
+}
+
+function initFind() {
+  if(!findInitDone) { findInitDone = true; findIdx = 0; }
+  buildFindGame();
+}
+
 document.addEventListener('DOMContentLoaded',function(){
   trCanvas=document.getElementById('trCanvas');
   trCtx=trCanvas.getContext('2d');
@@ -735,17 +916,20 @@ document.addEventListener('DOMContentLoaded',function(){
   <button class="abc-dock-btn" data-tab="alpha"   onclick="swDock('alpha')">
     <span class="dock-ico">&#128292;</span>A–Z
   </button>
-  <button class="abc-dock-btn" data-tab="sight"    onclick="swDock('sight')">
-    <span class="dock-ico">&#128065;</span>Sight
+  <button class="abc-dock-btn" data-tab="find"     onclick="swDock('find');initFind()">
+    <span class="dock-ico">&#128270;</span>Find It!
   </button>
-  <button class="abc-dock-btn" data-tab="action"   onclick="swDock('action')">
-    <span class="dock-ico">&#127939;</span>Action
+  <button class="abc-dock-btn" data-tab="trace"    onclick="swDock('trace')">
+    <span class="dock-ico">&#9999;</span>Tracing
   </button>
   <button class="abc-dock-btn" data-tab="opp"      onclick="swDock('opp')">
     <span class="dock-ico">&#8596;</span>Opposite
   </button>
-  <button class="abc-dock-btn" data-tab="trace"    onclick="swDock('trace')">
-    <span class="dock-ico">&#9999;</span>Tracing
+  <button class="abc-dock-btn" data-tab="action"   onclick="swDock('action')">
+    <span class="dock-ico">&#127939;</span>Action
+  </button>
+  <button class="abc-dock-btn" data-tab="sight"    onclick="swDock('sight')">
+    <span class="dock-ico">&#128065;</span>Sight
   </button>
 </nav>
 
