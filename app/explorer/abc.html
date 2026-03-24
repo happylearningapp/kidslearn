@@ -255,10 +255,11 @@
   margin-bottom: 8px;
 }
 .trwrap h3 {
-  font-size: 1.8rem;
+  font-size: clamp(3rem, 10vh, 5rem);
   font-weight: 900;
   color: #FF6B6B;
   margin-bottom: 2px;
+  line-height: 1;
 }
 .trwrap p {
   font-size: .68rem;
@@ -275,8 +276,8 @@
   display: block;
   margin: 0 auto;
   width: 100%;
-  max-width: 300px;
-  height: 190px;
+  max-width: 340px;
+  height: clamp(200px, 28vh, 300px);
 }
 
 .trbtns {
@@ -370,11 +371,11 @@
 }
 .find-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-bottom: 10px;
 }
-@media(min-width: 480px) { .find-grid { grid-template-columns: repeat(6, 1fr); } }
+@media(min-width: 480px) { .find-grid { grid-template-columns: repeat(4, 1fr); } }
 .find-opt {
   aspect-ratio: 1;
   border: none;
@@ -764,6 +765,9 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   trCanvas=document.getElementById('trCanvas');
   trCtx=trCanvas.getContext('2d');
+  // Sync canvas buffer size to its CSS-rendered size so coords stay accurate
+  trCanvas.width=trCanvas.offsetWidth||300;
+  trCanvas.height=trCanvas.offsetHeight||240;
   setupTr();
   drawGuide(true);   // show guide by default on load
   updateTrNav('A');  // init nav state
@@ -776,8 +780,9 @@ function clearTrOnly(){
 }
 function drawGuide(silent){
   clearTr();
-  trCtx.font='bold 190px Nunito,sans-serif';trCtx.fillStyle='rgba(255,107,107,0.14)';
-  trCtx.textAlign='center';trCtx.textBaseline='middle';trCtx.fillText(trLetter,150,140);
+  var sz=Math.round(trCanvas.height*0.78);
+  trCtx.font='bold '+sz+'px Nunito,sans-serif';trCtx.fillStyle='rgba(255,107,107,0.14)';
+  trCtx.textAlign='center';trCtx.textBaseline='middle';trCtx.fillText(trLetter,trCanvas.width/2,trCanvas.height/2);
   trCtx.strokeStyle='#FF6B6B';trCtx.lineWidth=7;trCtx.lineCap='round';trCtx.lineJoin='round';
   trGuideShown=true;
   var btn=document.getElementById('trGuideBtn');if(btn)btn.textContent='Hide';
