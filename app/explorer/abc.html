@@ -93,7 +93,7 @@
 .submain {
   flex: 1;
   padding: 6px 10px calc(76px + env(safe-area-inset-bottom));
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -418,16 +418,15 @@
 }
 .shuf-toggle.on { background:linear-gradient(135deg,#E91E63,#FF8E53); color:#fff; border-color:transparent; }
 
-/* A-Z selector — max height so it doesn't overflow when expanded */
+/* A-Z selector — hidden by default, shown via .open class */
 #lg, #trSel {
-  max-height: 108px;
-  overflow-y: auto;
-  display: flex !important;
+  display: none;
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
   margin-bottom: 8px;
 }
+#lg.open, #trSel.open { display: flex; }
 
 /* ── Prev / Next letter nav buttons ── */
 .alpha-nav {
@@ -519,7 +518,7 @@
       </button>
 
       <!-- Collapsible A-Z letter selector (hidden by default) -->
-      <div class="selgrid" id="lg" style="display:none!important"></div>
+      <div class="selgrid" id="lg"></div>
 
       <!-- Big letter display – tap to hear the letter -->
       <div class="bigbox" id="lb" onclick="spk(curL.toLowerCase())">
@@ -570,7 +569,7 @@
         &#9999; Show A&#8211;Z Letters &nbsp;&#9660;
       </button>
       <!-- Collapsible letter selector (hidden by default) -->
-      <div class="trsel" id="trSel" style="display:none!important"></div>
+      <div class="trsel" id="trSel"></div>
       <div class="trwrap">
         <h3 id="trLetter">A</h3>
         <p>Trace with finger or mouse!</p>
@@ -633,9 +632,8 @@ function prevL(){var i=letters.indexOf(curL);if(i>0)rL(letters[i-1]);}
 function nextL(){var i=letters.indexOf(curL);if(i<letters.length-1)rL(letters[i+1]);}
 function toggleAlpha(){
   var g=document.getElementById('lg'),btn=document.getElementById('alphaToggle');
-  var shown=g.style.display!=='none!important'&&g.style.display!==''&&g.getAttribute('style')!=='display:none!important';
-  var nowShown=!shown;
-  g.setAttribute('style',nowShown?'':'display:none!important');
+  var nowShown=!g.classList.contains('open');
+  g.classList.toggle('open',nowShown);
   btn.classList.toggle('open',nowShown);
   btn.innerHTML=(nowShown?'&#128292; Hide A&#8211;Z Alphabet &nbsp;&#9650;':'&#128292; Show A&#8211;Z Alphabet &nbsp;&#9660;');
 }
@@ -749,8 +747,8 @@ function trPrevL(){var i=trABC.indexOf(trLetter);if(i>0)trActiveLetter(trABC[i-1
 function trNextL(){var i=trABC.indexOf(trLetter);if(i<25)trActiveLetter(trABC[i+1]);}
 function toggleTrAlpha(){
   var g=document.getElementById('trSel'),btn=document.getElementById('trAlphaToggle');
-  var nowShown=g.getAttribute('style')==='display:none!important';
-  g.setAttribute('style',nowShown?'':'display:none!important');
+  var nowShown=!g.classList.contains('open');
+  g.classList.toggle('open',nowShown);
   btn.classList.toggle('open',nowShown);
   btn.innerHTML=(nowShown?'&#9999; Hide A&#8211;Z Letters &nbsp;&#9650;':'&#9999; Show A&#8211;Z Letters &nbsp;&#9660;');
 }
